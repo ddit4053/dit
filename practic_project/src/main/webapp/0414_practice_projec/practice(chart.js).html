@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chart.js 연습</title>
+<!--   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script> -->
+<script src="../js/chart.umd.min.js"></script>
+<script src="../js/jquery-3.7.1.js"></script>
+<script>
+let myChart;
+$(function(){
+	
+    const ctx = document.getElementById('myChart').getContext('2d');
+    myChart = new Chart(ctx, {
+      type: 'bar', // bar, line, pie 등
+      data: {
+        labels: [],
+        datasets: [{
+          label: '월별 대출 건수',
+          data: [],
+          borderWidth: 1,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)'
+        }]
+      },
+      options: {
+    	responsive: false,  
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+	$("#fetch_member").on('click', function(){
+		fetch("/practic_project/LoanChart.do")
+		.then( resp =>{
+			
+			console.log(resp);
+			if(resp.ok){
+				
+				return resp.json()
+			}
+			else{
+				throw new Error(resp.statusText)
+			}
+		})
+		.then ( data =>{
+			console.log(data);
+            // data가 배열이라고 가정할 때
+            // 레이블과 데이터를 추출합니다.
+			const labels = data.map(item =>item.monthNo);
+			const counts = data.map(item =>item.count);
+			
+			//chart 인스턴스 업데이트 : 레이블과 데이터 설정후 update() 호출
+			myChart.data.labels= labels;
+			myChart.data.datasets[0].data = counts;
+			myChart.update();
+			
+		})
+		.catch( err =>{
+			console.log(err);
+		})
+	})
+})
+
+</script>
+<style>
+#myChart{
+	width : 400px;
+	height : 200px;
+}
+</style>
+</head>
+<body>
+  <canvas id="myChart"></canvas>
+  <input type="button" value="비동기fetch" id="fetch_member">
+  
+</body>
+</html>

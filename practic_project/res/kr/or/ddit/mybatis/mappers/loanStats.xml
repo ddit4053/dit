@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loans">
+<!-- 	<select id="loansList" resultType="LoansVo"> -->
+<!-- 		SELECT * -->
+<!-- 		FROM LOAN_STATS -->
+<!-- 	</select> -->
+		<select id="loansList" resultType="LoansVo">
+		    SELECT month_no AS monthNo,
+		           count AS count
+		    FROM LOAN_STATS
+		</select>
+	
+
+</mapper>

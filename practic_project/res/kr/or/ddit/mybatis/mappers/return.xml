@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="return">
+
+	<select id="returnList" resultType="ReturnVo">
+		SELECT MEMBER_NAME as memberName, 
+			BOOK_TITLE as bookTitle, 
+			TO_CHAR(RETURN_DATE, 'YYYY-MM-DD') as returnDate
+		FROM RETURN_SCHEDULE
+	</select>
+	
+</mapper>
