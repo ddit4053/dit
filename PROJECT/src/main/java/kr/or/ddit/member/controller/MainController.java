@@ -20,7 +20,7 @@ public class MainController extends HttpServlet {
         if (session.getAttribute("member") != null) {
             resp.sendRedirect(req.getContextPath() + "/member/list.do");
             return;
-        }
+        } 
         
         // 로그인 페이지 표시
         ServletContext ctx = req.getServletContext();
