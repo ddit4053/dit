@@ -1,0 +1,117 @@
+@charset "UTF-8";
+
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* 로그인 컨테이너 스타일 */
+.container {
+    background: white;
+    border : 3px solid;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 360px;
+    text-align: center;
+}
+
+/* 제목 스타일 */
+.container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 입력 그룹 */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* 체크박스 그룹 */
+.checkbox-group {
+    margin-bottom: 15px;
+    text-align: left;
+    font-size: 14px;
+    color: #555;
+}
+
+/* 일반 로그인 버튼 */
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.btn, .btn-kakao {
+    width: 100%;
+    box-sizing: border-box;
+}
+/* 카카오 로그인 버튼 */
+.btn-kakao {
+    background-color: #FEE500;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.btn-kakao img {
+    margin-right: 10px;
+    height: 20px;
+    width: 20px;
+}
+
+
+/* 오류 메시지 */
+.error-message {
+    color: red;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+.input-error {
+	border: 1px solid red !important;
+}
+.error-text {
+	color: red;
+	font-size: 12px;
+	margin-top: 5px;
+	display: none;
+}
