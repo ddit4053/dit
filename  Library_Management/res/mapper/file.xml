@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="file">
+
+	<select id="download" resultType="FileVo" parameterType="FileVo">
+		SELECT *
+		FROM UPLOAD_FILE
+		WHERE FILE_NO = #{fileNo}
+	
+	</select>
+	
+	<select id="getFileNo" resultType="int">
+		SELECT  NVL(MAX(FILE_NO)+1,0)
+					FROM UPLOAD_FILE
+	</select>
+	
+	<insert id="insertFile" parameterType="Filevo">
+		INSERT INTO UPLOAD_FILE(FILE_NO, ORG_NAME, SAVE_NAME, EXT, FILE_SIZE, REG_DATE)
+			VALUES(#{fileNo}, #{orgName}, #{saveName}, #{ext}, #{fileSize}, #{regDate})
+	
+	</insert>
+</mapper>
