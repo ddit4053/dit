@@ -37,9 +37,26 @@
         .menu a:hover {
             transform: scale(1.05);
         }
+        .top-bar {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+        .top-bar button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    <div class="top-bar">
+        <button onclick="window.close();">CLOSE</button>
+    </div>
     <div class="title">National Library of Korea, Team3<br>BOOKING SYSTEM</div>
     <div class="menu">
         <a href="/seatList?roomName=디지털열람실">디지털 열람석</a>
@@ -47,6 +64,6 @@
         <a href="/myReservation.jsp">My 예약현황</a>
     </div>
     <br><br>
-    <p>*** 님 환영합니다.</p>
+    <p>대덕인재 님 환영합니다.</p>
 </body>
 </html>
