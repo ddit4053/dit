@@ -38,35 +38,34 @@ document.addEventListener("DOMContentLoaded", function () {
           {
             title: "도서/자료 관리",
             items: [
-              { name: "도서 목록", url: "/admin/books" },
-              { name: "신청 도서", url: "/admin/book-requests" },
-              { name: "분실/파손 도서", url: "/admin/book-damaged" },
-              { name: "도서 통계", url: "/admin/book-stats" },
+              { name: "도서 목록", url: "/admin/books/list" },
+              { name: "신청 도서", url: "/admin/books/requests" },
+              { name: "분실/파손 도서", url: "/admin/books/damaged" },
+              { name: "도서 통계", url: "/admin/books/stats" },
             ],
           },
           {
             title: "대출/반납 관리",
             items: [
-              { name: "대출 관리", url: "/admin/loans" },
-              { name: "반납 도서 목록", url: "/admin/returns" },
-              { name: "연체/정지", url: "/admin/overdue" },
-              { name: "알림 관리", url: "/admin/notifications" },
-              { name: "대출/반납 통계", url: "/admin/statistics" },
+              { name: "대출 관리", url: "/admin/loans/management" },
+              { name: "반납 도서 목록", url: "/admin/loans/returns" },
+              { name: "연체/정지", url: "/admin/loans/overdue" },
+              { name: "알림 관리", url: "/admin/loans/notifications" },
+              { name: "대출/반납 통계", url: "/admin/loans/stats" },
             ],
           },
           {
             title: "열람실 관리",
             items: [
-              { name: "구역별 열람실 관리", url: "/admin/reading-rooms" },
-              { name: "열람실 이용 내역", url: "/admin/room-usage" },
+              { name: "열람실 이용 내역", url: "/admin/reading/room-history" },
             ],
           },
           {
             title: "게시판 관리",
             items: [
-              { name: "커뮤니티 게시판", url: "/admin/board-community" },
-              { name: "이용안내 게시판", url: "/admin/board-guide" },
-              { name: "게시판 통합 관리", url: "/admin/board-settings" },
+              { name: "커뮤니티 게시판", url: "/admin/board/community" },
+              { name: "이용안내 게시판", url: "/admin/board/info" },
+              { name: "게시판 통합 관리", url: "/admin/board/settings" },
             ],
           },
         ];
@@ -76,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
           {
             title: "자료 검색",
             items: [
-              { name: "도서 검색", url: "/books/list" },
+              { name: "도서 검색", url: "/books/search" },
               { name: "신착 도서", url: "/books/new" },
               { name: "관심 도서", url: "/books/favor" },
               { name: "추천 도서", url: "/books/recommend" },
@@ -85,31 +84,32 @@ document.addEventListener("DOMContentLoaded", function () {
           {
             title: "열람실",
             items: [
-              { name: "열람실 현황", url: "/reading-room" },
-              { name: "열람실 예약", url: "/reading-room/reserve" },
+              { name: "열람실 현황", url: "/reading/room-status" },
+              { name: "열람실 예약", url: "/reading/room-booking" },
             ],
           },
           {
             title: "도서관 소개",
             items: [
-              { name: "인사말", url: "/guide/library-greetings" },
-              { name: "도서관 소개", url: "/guide/library-intro" },
-              { name: "편의 시설", url: "/guide/library-facillities" },
-              { name: "오시는 길", url: "/guide/library-path" },
+              { name: "인사말", url: "/board/guide/greetings" },
+              { name: "도서관 소개", url: "/board/guide/intro" },
+              { name: "편의 시설", url: "/board/guide/facillities" },
+              { name: "오시는 길", url: "/board/guide/path" },
             ],
           },
           {
             title: "커뮤니티",
             items: [
-              { name: "독후감 게시판", url: "/board/commu-review" },
-              { name: "토론게시판", url: "/board/commu-discussion" },
-              { name: "회원 도서추천게시판", url: "/board/commu-recommend" },
+              { name: "독후감 게시판", url: "/board/community/review" },
+              { name: "토론게시판", url: "/board/community/discussion" },
+              { name: "회원 도서추천게시판", url: "/board/community/recommend" },
             ],
           },
           {
             title: "이용안내",
             items: [
               { name: "공지사항", url: "/board/info/notice" },
+              { name: "교육/행사", url: "/board/info/edu-event" },
               { name: "시설 이용 안내", url: "/board/info/facility" },
               { name: "자주 묻는 질문", url: "/board/info/faq" },
               { name: "1:1 문의", url: "/board/info/qa" },

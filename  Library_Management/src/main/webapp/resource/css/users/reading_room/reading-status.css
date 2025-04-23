@@ -1,0 +1,649 @@
+/* 열람실 현황 페이지 스타일 */
+.reading-room-container {
+  width: 100%;
+}
+
+/* 열람실 정보 섹션 */
+.room-info-section {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 20px 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-selector {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.room-selector label {
+  font-weight: 500;
+  color: var(--text-color);
+  margin-right: 10px;
+}
+
+.room-selector select {
+  padding: 8px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--hover-color);
+  color: var(--text-color);
+  font-size: 14px;
+  outline: none;
+  width: 200px;
+}
+
+.room-stats {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  border-right: 1px solid var(--border-color);
+  flex: 1;
+  min-width: 100px;
+  text-align: center;
+}
+
+.stat-item:last-child {
+  border-right: none;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--light-text);
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.room-status-legend {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  margin-bottom: 5px;
+}
+
+.seat-marker {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.seat-marker.available {
+  background-color: #10B981;
+}
+
+.seat-marker.in-use {
+  background-color: #EF4444;
+}
+
+.seat-marker.reserved {
+  background-color: #F59E0B;
+}
+
+.seat-marker.disabled {
+  background-color: #9CA3AF;
+}
+
+.legend-item span {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.room-refresh {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.last-update {
+  font-size: 13px;
+  color: var(--light-text);
+}
+
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.refresh-btn i {
+  margin-right: 5px;
+}
+
+.refresh-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+/* 열람실 좌석 배치도 */
+.room-layout {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.room-name {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 20px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.entrance-marker {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  display: flex;
+  align-items: center;
+  background-color: var(--hover-color);
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.entrance-marker i {
+  margin-right: 5px;
+  color: var(--primary-color);
+}
+
+.seating-area {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.seat-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.left-section, .right-section {
+  width: 45%;
+}
+
+.aisle {
+  width: 10%;
+  background-color: var(--hover-color);
+  border-radius: 4px;
+}
+
+.seat {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.seat:hover {
+  transform: scale(1.05);
+}
+
+.seat.available {
+  background-color: rgba(16, 185, 129, 0.2);
+  border: 2px solid #10B981;
+}
+
+.seat.in-use {
+  background-color: rgba(239, 68, 68, 0.2);
+  border: 2px solid #EF4444;
+}
+
+.seat.reserved {
+  background-color: rgba(245, 158, 11, 0.2);
+  border: 2px solid #F59E0B;
+}
+
+.seat.disabled {
+  background-color: rgba(156, 163, 175, 0.2);
+  border: 2px solid #9CA3AF;
+}
+
+.seat-number {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.second-row {
+  margin-top: 30px;
+}
+
+.center-section {
+  width: 100%;
+}
+
+.pc-area {
+  margin-top: 30px;
+  border-top: 1px dashed var(--border-color);
+  padding-top: 20px;
+}
+
+.area-label {
+  font-size: 16px;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.pc-seats {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.pc-row {
+  display: flex;
+  gap: 10px;
+}
+
+.pc-seat {
+  background-color: var(--hover-color);
+}
+
+/* 실시간 이용 현황 알림 섹션 */
+.usage-alert-section {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.alert-header {
+  padding: 15px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.alert-header i {
+  margin-right: 10px;
+}
+
+.alert-content {
+  padding: 15px 20px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.alert-message {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+}
+
+.alert-message:last-child {
+  border-bottom: none;
+}
+
+.alert-time {
+  font-size: 13px;
+  color: var(--light-text);
+  margin-right: 15px;
+  min-width: 50px;
+}
+
+.alert-text {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+/* 이용 안내 섹션 */
+.usage-guide-section {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 18px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.guide-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.guide-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.guide-icon {
+  width: 40px;
+  height: 40px;
+  background-color: var(--hover-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  color: var(--primary-color);
+  font-size: 16px;
+}
+
+.guide-text h4 {
+  font-size: 16px;
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+
+.guide-text p {
+  font-size: 14px;
+  color: var(--light-text);
+  line-height: 1.6;
+}
+
+/* 좌석 모달 */
+.seat-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+}
+
+.modal-content {
+  background-color: var(--card-background);
+  margin: 10% auto;
+  padding: 25px;
+  width: 400px;
+  max-width: 90%;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  color: var(--light-text);
+  cursor: pointer;
+}
+
+.close-modal:hover {
+  color: var(--text-color);
+}
+
+.modal-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 20px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.seat-info {
+  margin-bottom: 25px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.info-label {
+  font-size: 15px;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 15px;
+  color: var(--text-color);
+}
+
+.info-value.available {
+  color: #10B981;
+  font-weight: 600;
+}
+
+.info-value.in-use {
+  color: #EF4444;
+  font-weight: 600;
+}
+
+.info-value.reserved {
+  color: #F59E0B;
+  font-weight: 600;
+}
+
+.info-value.disabled {
+  color: #9CA3AF;
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.action-btn i {
+  margin-right: 8px;
+}
+
+.book-btn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.book-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+.extend-btn {
+  background-color: #F59E0B;
+  color: white;
+}
+
+.extend-btn:hover {
+  background-color: #D97706;
+}
+
+.extend-btn:disabled {
+  background-color: #FCD34D;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background-color: #EF4444;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #DC2626;
+}
+
+/* 다크 모드 테마용 스타일 */
+.dark-theme .room-info-section,
+.dark-theme .room-layout,
+.dark-theme .usage-alert-section,
+.dark-theme .usage-guide-section,
+.dark-theme .modal-content {
+  background-color: #1e1e2d;
+}
+
+.dark-theme .room-selector select {
+  background-color: #2a2a3c;
+  border-color: #333340;
+  color: #e6e6e6;
+}
+
+.dark-theme .stat-value {
+  color: #e6e6e6;
+}
+
+.dark-theme .aisle,
+.dark-theme .pc-seat,
+.dark-theme .guide-icon {
+  background-color: #2a2a3c;
+}
+
+.dark-theme .seat-number {
+  color: #e6e6e6;
+}
+
+.dark-theme .alert-message {
+  border-color: #333340;
+}
+
+.dark-theme .section-title {
+  border-color: #333340;
+}
+
+/* 반응형 대응 */
+@media (max-width: 992px) {
+  .room-stats {
+    flex-wrap: wrap;
+  }
+  
+  .stat-item {
+    min-width: calc(50% - 1px);
+    margin-bottom: 10px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .stat-item:nth-child(even) {
+    border-left: 1px solid var(--border-color);
+  }
+  
+  .stat-item:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .room-selector {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .room-selector label {
+    margin-bottom: 5px;
+  }
+  
+  .room-selector select {
+    width: 100%;
+  }
+  
+  .seat {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .seat-number {
+    font-size: 12px;
+  }
+  
+  .guide-item {
+    flex-direction: column;
+  }
+  
+  .guide-icon {
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .seating-area {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .left-section, .right-section {
+    width: 100%;
+  }
+  
+  .aisle {
+    width: 100%;
+    height: 10px;
+  }
+  
+  .seat {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .modal-content {
+    margin: 20% auto;
+    padding: 20px;
+  }
+}

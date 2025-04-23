@@ -15,7 +15,7 @@
     <header class="main-header">
         <div class="header-container">
             <div class="logo">
-                <a href="${pageContext.request.contextPath}/bookmain.do">
+                <a href="${pageContext.request.contextPath}/main.do">
                     <h1>책GPT 도서관 시스템</h1>
                 </a>
             </div>

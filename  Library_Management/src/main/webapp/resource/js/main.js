@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 자동 슬라이드 시작
     function startSlideShow() {
-      slideInterval = setInterval(nextSlide, 8000);
+      slideInterval = setInterval(nextSlide, 5000);
     }
 
     // 자동 슬라이드 정지
