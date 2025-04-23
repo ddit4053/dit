@@ -40,7 +40,7 @@
     </style>
 </head>
 <body>
-    <div class="title">National Library of Korea, Sejong<br>BOOKING SYSTEM</div>
+    <div class="title">National Library of Korea, Team3<br>BOOKING SYSTEM</div>
     <div class="menu">
         <a href="/seatList?roomName=디지털열람실">디지털 열람석</a>
         <a href="/seatList?roomName=미디어열람실">미디어 열람석</a>
