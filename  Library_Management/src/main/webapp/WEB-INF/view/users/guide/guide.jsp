@@ -20,11 +20,11 @@
         
         <div class="content-layout">
             <!-- 사이드바 포함 -->
-            <jsp:include page="guide-sidebar.jsp" />
+            <jsp:include page="../../sidebar.jsp" />
             
             <!-- 메인 콘텐츠 영역 -->
             <div class="main-content-area">
-                <jsp:include page="facilities.jsp" />
+                <jsp:include page="${contentPage}" />
             </div>
         </div>
     </div>

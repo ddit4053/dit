@@ -3,7 +3,7 @@ package kr.or.ddit.vo;
 import lombok.Data;
 
 @Data
-public class CommentVo {
+public class CommentsVo {
 	
 	private int cmNo;
 	private String cmContent;

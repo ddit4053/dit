@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2025 by original authors @ fontello.com</metadata>
+<defs>
+<font id="arrow" horiz-adv-x="1000" >
+<font-face font-family="arrow" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="down-circle" unicode="&#xe800;" d="M1000 349q0-136-67-251t-182-182-251-67-251 67-182 182-67 251 67 251 182 182 251 67 251-67 182-182 67-251z m-500-186l232 233-71 71-161-161-161 161-71-71z" horiz-adv-x="1000" />
+
+<glyph glyph-name="up-circle" unicode="&#xe801;" d="M1000 349q0-136-67-251t-182-182-251-67-251 67-182 182-67 251 67 251 182 182 251 67 251-67 182-182 67-251z m-339-118l71 71-232 233-232-233 71-71 161 161z" horiz-adv-x="1000" />
+
+<glyph glyph-name="left-circle" unicode="&#xe802;" d="M1000 349q0-136-67-251t-182-182-251-67-251 67-182 182-67 251 67 251 182 182 251 67 251-67 182-182 67-251z m-453-232l71 71-161 161 161 161-71 71-233-232z" horiz-adv-x="1000" />
+
+<glyph glyph-name="right-circle" unicode="&#xe803;" d="M1000 349q0-136-67-251t-182-182-251-67-251 67-182 182-67 251 67 251 182 182 251 67 251-67 182-182 67-251z m-547-232l233 232-233 232-71-71 161-161-161-161z" horiz-adv-x="1000" />
+
+<glyph glyph-name="right-open" unicode="&#xe804;" d="M154 849l500-500-500-500-154 154 346 346-346 346z" horiz-adv-x="654" />
+
+<glyph glyph-name="left-open" unicode="&#xe805;" d="M308 349l346-346-154-154-500 500 500 500 154-154z" horiz-adv-x="654" />
+
+<glyph glyph-name="down-dir" unicode="&#xe806;" d="M265 84l-265 530h529z" horiz-adv-x="529" />
+
+<glyph glyph-name="right-dir" unicode="&#xe807;" d="M529 349l-529-265v530z" horiz-adv-x="529" />
+
+<glyph glyph-name="up-micro" unicode="&#xe808;" d="M471 231h-471l235 236z" horiz-adv-x="471" />
+
+<glyph glyph-name="down-micro" unicode="&#xe809;" d="M235 231l-235 236h471z" horiz-adv-x="471" />
+
+<glyph glyph-name="updown-circle" unicode="&#xe80a;" d="M1000 350q0-136-67-251t-182-182-251-67-251 67-182 182-67 251 67 251 182 182 251 67 251-67 182-182 67-251z m-353-294l162 236h-103v293h-118v-293h-103z m-235 353h103l-162 265-162-265h103v-294h118v294z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>

@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/common.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/main.css">
 </head>
-<!-- 세션에 user 객체가 있고 그 안에 user_no 값이 있으면 해당 값을 속성에 저장하고, 없으면 기본값으로 0을 저장 -->
-<body data-user-no="${sessionScope.user.user_no != null ? sessionScope.user.user_no : 0}">
+
+<body data-role="${sessionScope.role != null ? sessionScope.role : 'USER'}">
     <header class="main-header">
         <div class="header-container">
             <div class="logo">
@@ -25,23 +25,23 @@
             	  <c:choose>
 				    <%-- 비로그인 상태 --%>
 				    <c:when test="${empty sessionScope.user}">
-				      <a href="/login.jsp">로그인</a>
-				      <a href="/join.jsp">회원가입</a>
+				      <a href="${pageContext.request.contextPath}/user/login.do">로그인</a>
+				      <a href="${pageContext.request.contextPath}/user/register.do">회원가입</a>
     				</c:when>
     				
     				<%--로그인 상태 --%>
 				    <c:otherwise>
 				      <c:choose>
 				        <%--관리자  --%> 
-				        <c:when test="${sessionScope.user.user_no == 1}">
+				        <c:when test="${sessionScope.role eq 'ADMIN'}">
 				          <a href="/admin.jsp">관리자페이지</a>
-				          <a href="/logout.jsp">로그아웃</a>
+				          <a href="${pageContext.request.contextPath}/user/logout.do">로그아웃</a>
 				        </c:when>
 				
 				        <%-- 일반 사용자 --%>
 				        <c:otherwise>
-				          <a href="/mypage.jsp">마이페이지</a>
-				          <a href="/logout.jsp">로그아웃</a>
+				          <a href="${pageContext.request.contextPath}/user/mypage.do">마이페이지</a>
+				          <a href="${pageContext.request.contextPath}/user/logout.do">로그아웃</a>
 				        </c:otherwise>
 				      </c:choose>
 				    </c:otherwise>

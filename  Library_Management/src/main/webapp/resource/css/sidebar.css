@@ -1,3 +1,6 @@
+@import url("fontello/css/arrow.css");
+@import url("fontello/css/animation.css");
+
 /* 사이드바 스타일 */
 .sidebar {
   width: 280px;
@@ -9,7 +12,7 @@
 }
 
 .sidebar-title {
-  font-family: 'Noto Serif KR', serif;
+  font-family: "Noto Serif KR", serif;
   font-size: 22px;
   color: var(--primary-color);
   padding: 0 25px 15px;
@@ -49,11 +52,49 @@
   padding-left: 21px;
 }
 
+/* 아코디언 효과 추가 2025-04-25 */
 .sidebar-submenu {
   list-style: none;
   padding: 0;
   margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
   background-color: rgba(0, 0, 0, 0.02);
+}
+
+.sidebar-submenu.open {
+  max-height: 1000px; /*충분히 큰 값으로 설정*/
+  transition: max-height 0.5s ease-in;
+}
+
+/* 드롭다운 아이콘 최상위 메뉴만 추가 */
+.sidebar-link-with-submenu,
+.sidebar-sublink-with-submenu {
+  position: relative;
+}
+
+.sidebar-link-with-submenu:after,
+.sidebar-sublink-with-submenu:after {
+  font-family: "arrow";
+  content: "\e803"; /*닫힌 상태*/
+  font-size: 10px;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s;
+}
+
+.sidebar-menu-item.active > .sidebar-link-with-submenu:after,
+.sidebar-submenu-item.active > .sidebar-sublink-with-submenu:after {
+  font-family: "arrow";
+  content: "\e800"; /* 아래 화살표 (열린 상태) */
+}
+
+/* 최상위 메뉴 화살표 크기 조정 */
+.sidebar-link-with-submenu:after {
+  font-size: 12px; /* 최상위 메뉴는 조금 더 큰 화살표 */
 }
 
 .sidebar-sublink {

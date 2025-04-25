@@ -5,7 +5,7 @@
     <div class="nav-container">
     <%--contextPath 이하 URL은 각 @WebServlet 어노테이션 URL에 맞춰 수정 --%>
     	<c:choose>
-    		<c:when test ="${sessionScope.user.user_no == 1}">
+    		<c:when test ="${sessionScope.role eq 'ADMIN'}">
 	    		<%-- 관리자용 메뉴 --%>
 	    		<ul>
 	                <li><a href="${pageContext.request.contextPath}/admin/books">도서/자료 관리</a></li>

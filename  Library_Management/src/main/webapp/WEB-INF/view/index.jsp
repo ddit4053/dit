@@ -104,7 +104,7 @@
     <section class="reading-room-section">
         <div class="section-header">
             <h2>열람실 현황</h2>
-            <a href="${pageContext.request.contextPath}/reading/room" class="view-more">예약하기</a>
+            <a href="${pageContext.request.contextPath}/reading" class="view-more">예약하기</a>
         </div>
         <div class="room-status" id="roomStatus">
             <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->

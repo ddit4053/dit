@@ -1,4 +1,4 @@
-// 공통 JavaScript 기능
+// header, nav, footer관련 javaScript
 
 // 메가 드롭다운 메뉴 기능
 document.addEventListener("DOMContentLoaded", function () {
@@ -27,12 +27,12 @@ document.addEventListener("DOMContentLoaded", function () {
       megaDropdownContainer.className = "mega-dropdown-container";
 
       // 사용자 권한 확인 - body 태그에 data-user-no 속성을 사용
-      const userNo = parseInt(document.body.getAttribute("data-user-no")) || 0;
+      const userRole = document.body.getAttribute("data-role") || 'USER';
 
       // 메뉴 데이터 - 권한별로 분리
       let menuData;
 
-      if (userNo === 1) {
+      if (userRole === 'ADMIN') {
         // 관리자인 경우
         menuData = [
           {

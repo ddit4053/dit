@@ -12,7 +12,7 @@
             <h1 class="page-title">${pageTitle}</h1>
             <div class="breadcrumb">
                 <a href="${pageContext.request.contextPath}/main.do">홈</a> > 
-                <a href="${pageContext.request.contextPath}/board/community">커뮤니티</a> >
+                <a href="${pageContext.request.contextPath}/admin/loans">대출/반납 관리</a> >
                 <span>${breadcrumbTitle}</span>
             </div>
         </div>
@@ -23,7 +23,7 @@
             
             <!-- 메인 콘텐츠 영역 -->
             <div class="main-content-area">
-                <jsp:include page="${contentPage}" />
+                <jsp:include page="${contentPage}" /> 
             </div>
         </div>
     </div>
