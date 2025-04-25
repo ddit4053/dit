@@ -1,0 +1,373 @@
+/* 메인 페이지 콘텐츠 스타일 */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 15px;
+}
+
+/* 배너 슬라이더 */
+.banner-section {
+  margin-bottom: 40px;
+}
+
+.banner-slider {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.9);
+}
+
+.slide-content {
+  position: absolute;
+  bottom: 60px;
+  left: 60px;
+  max-width: 60%;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.slide-content h2 {
+  font-size: 32px;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.slide-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.slide-content .btn {
+  background-color: var(--accent-color);
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.slide-content .btn:hover {
+  background-color: #e64a19;
+}
+
+.prev-btn,
+.next-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 15px;
+  cursor: pointer;
+  font-size: 18px;
+  z-index: 10;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.prev-btn:hover,
+.next-btn:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.prev-btn {
+  left: 20px;
+}
+
+.next-btn {
+  right: 20px;
+}
+
+.dots-container {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dot.active {
+  background-color: white;
+}
+
+/* 메인 검색 섹션 스타일 */
+.main-search-section {
+  background-color: var(--card-background);
+  padding: 30px 20px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.main-search-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.main-search-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+.main-search-box {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.main-search-box input {
+  flex-grow: 1;
+  padding: 15px;
+  font-size: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px 0 0 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.3s;
+}
+
+.main-search-box input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+}
+
+.main-search-box button {
+  padding: 15px 30px;
+  background-color: var(--secondary-color);
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.main-search-box button:hover {
+  background-color: var(--primary-color);
+}
+
+.search-options {
+  color: var(--light-text);
+  font-size: 14px;
+}
+
+.popular-keyword {
+  display: inline-block;
+  margin: 0 5px;
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+.popular-keyword:hover {
+  color: var(--primary-color);
+}
+
+/* 도서 컨테이너 스타일 */
+.books-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 25px;
+}
+
+.book-item {
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.book-item:hover {
+  transform: translateY(-5px);
+}
+
+.book-cover {
+  height: 260px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.book-cover:hover img {
+  transform: scale(1.05);
+}
+
+.book-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 16px;
+  color: var(--text-color);
+}
+
+.book-author {
+  color: var(--light-text);
+  font-size: 14px;
+}
+
+/* 공지사항 및 이벤트 섹션 */
+.notice-section {
+  display: flex;
+  gap: 25px;
+}
+
+.half-section {
+  flex: 1;
+}
+
+.notice-list li,
+.event-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.notice-list li:last-child,
+.event-list li:last-child {
+  border-bottom: none;
+}
+
+.notice-list a,
+.event-list a {
+  display: flex;
+  justify-content: space-between;
+  transition: color 0.3s;
+}
+
+.notice-list a:hover,
+.event-list a:hover {
+  color: var(--primary-color);
+}
+
+.notice-date,
+.event-date {
+  color: var(--light-text);
+  font-size: 14px;
+}
+
+/* 열람실 현황 섹션 */
+.room-status {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.room-card {
+  flex: 1;
+  min-width: 200px;
+  background-color: #efebe9;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s;
+}
+
+.room-card:hover {
+  transform: translateY(-5px);
+}
+
+.room-name {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.seat-info {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: var(--text-color);
+}
+
+.availability-percentage {
+  width: 100%;
+  height: 10px;
+  background-color: #d7ccc8;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.availability-bar {
+  height: 100%;
+  background-color: var(--secondary-color);
+}
+
+.room-card .btn {
+  background-color: var(--secondary-color);
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.room-card .btn:hover {
+  background-color: var(--primary-color);
+}
+
+/* 반응형 - 모바일 */
+@media (max-width: 768px) {
+  .slide-content {
+    bottom: 30px;
+    left: 30px;
+    max-width: 80%;
+  }
+
+  .slide-content h2 {
+    font-size: 24px;
+  }
+
+  .slide-content p {
+    font-size: 16px;
+  }
+
+  .notice-section {
+    flex-direction: column;
+  }
+
+  .half-section {
+    margin-bottom: 20px;
+  }
+
+  .room-card {
+    min-width: 100%;
+  }
+}

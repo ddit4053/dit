@@ -1,0 +1,96 @@
+<svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <rect width="1200" height="400" fill="#5D4037" />
+  
+  <!-- 이벤트 공간 배경 -->
+  <rect x="0" y="0" width="1200" height="400" fill="#3E2723" opacity="0.5" />
+  
+  <!-- 무대 배경 -->
+  <rect x="100" y="100" width="1000" height="200" rx="10" fill="#4E342E" />
+  <rect x="120" y="120" width="960" height="160" rx="5" fill="#5D4037" />
+  
+  <!-- 무대 커튼 -->
+  <path d="M120,120 Q600,180 1080,120 L1080,280 Q600,220 120,280 Z" fill="#8D6E63" />
+  
+  <!-- 사람들 실루엣 (관객) -->
+  <ellipse cx="200" cy="350" rx="20" ry="25" fill="#263238" />
+  <rect x="190" y="375" width="20" height="25" fill="#263238" />
+  
+  <ellipse cx="250" cy="340" rx="20" ry="25" fill="#263238" />
+  <rect x="240" y="365" width="20" height="25" fill="#263238" />
+  
+  <ellipse cx="300" cy="355" rx="20" ry="25" fill="#263238" />
+  <rect x="290" y="380" width="20" height="20" fill="#263238" />
+  
+  <ellipse cx="350" cy="345" rx="20" ry="25" fill="#263238" />
+  <rect x="340" y="370" width="20" height="30" fill="#263238" />
+  
+  <ellipse cx="400" cy="360" rx="20" ry="25" fill="#263238" />
+  <rect x="390" y="385" width="20" height="15" fill="#263238" />
+  
+  <ellipse cx="450" cy="350" rx="20" ry="25" fill="#263238" />
+  <rect x="440" y="375" width="20" height="25" fill="#263238" />
+  
+  <ellipse cx="500" cy="340" rx="20" ry="25" fill="#263238" />
+  <rect x="490" y="365" width="20" height="35" fill="#263238" />
+  
+  <ellipse cx="550" cy="350" rx="20" ry="25" fill="#263238" />
+  <rect x="540" y="375" width="20" height="25" fill="#263238" />
+  
+  <ellipse cx="600" cy="345" rx="20" ry="25" fill="#263238" />
+  <rect x="590" y="370" width="20" height="30" fill="#263238" />
+  
+  <ellipse cx="650" cy="355" rx="20" ry="25" fill="#263238" />
+  <rect x="640" y="380" width="20" height="20" fill="#263238" />
+  
+  <ellipse cx="700" cy="340" rx="20" ry="25" fill="#263238" />
+  <rect x="690" y="365" width="20" height="35" fill="#263238" />
+  
+  <ellipse cx="750" cy="350" rx="20" ry="25" fill="#263238" />
+  <rect x="740" y="375" width="20" height="25" fill="#263238" />
+  
+  <ellipse cx="800" cy="360" rx="20" ry="25" fill="#263238" />
+  <rect x="790" y="385" width="20" height="15" fill="#263238" />
+  
+  <ellipse cx="850" cy="345" rx="20" ry="25" fill="#263238" />
+  <rect x="840" y="370" width="20" height="30" fill="#263238" />
+  
+  <ellipse cx="900" cy="350" rx="20" ry="25" fill="#263238" />
+  <rect x="890" y="375" width="20" height="25" fill="#263238" />
+  
+  <ellipse cx="950" cy="340" rx="20" ry="25" fill="#263238" />
+  <rect x="940" y="365" width="20" height="35" fill="#263238" />
+  
+  <ellipse cx="1000" cy="355" rx="20" ry="25" fill="#263238" />
+  <rect x="990" y="380" width="20" height="20" fill="#263238" />
+  
+  <!-- 무대 위 사람 (강연자) -->
+  <ellipse cx="600" cy="200" rx="30" ry="35" fill="#263238" />
+  <rect x="585" y="235" width="30" height="45" fill="#263238" />
+  <rect x="580" y="235" width="5" height="30" fill="#263238" />
+  <rect x="615" y="235" width="5" height="30" fill="#263238" />
+  
+  <!-- 책상 -->
+  <rect x="450" y="260" width="300" height="20" fill="#A1887F" />
+  <rect x="460" y="280" width="20" height="50" fill="#8D6E63" />
+  <rect x="720" y="280" width="20" height="50" fill="#8D6E63" />
+  
+  <!-- 조명 효과 -->
+  <circle cx="600" cy="200" r="80" fill="#FF9800" opacity="0.1" />
+  <circle cx="600" cy="200" r="60" fill="#FF9800" opacity="0.2" />
+  <circle cx="600" cy="200" r="40" fill="#FF9800" opacity="0.3" />
+  
+  <!-- 프로젝터 스크린 -->
+  <rect x="450" y="130" width="300" height="5" fill="#BCAAA4" />
+  <rect x="450" y="135" width="300" height="100" fill="#EFEBE9" />
+  
+  <!-- 전경에 반투명 오버레이 -->
+  <rect width="1200" height="400" fill="#3E2723" opacity="0.2" />
+  
+  <!-- 텍스트 배경 -->
+  <rect x="150" y="270" width="500" height="100" rx="10" fill="#3E2723" opacity="0.7" />
+  
+  <!-- 텍스트 -->
+  <text x="180" y="320" font-family="'Noto Serif KR', serif" font-size="36" fill="#EFEBE9" font-weight="bold">문화 프로그램 및 이벤트</text>
+  <text x="180" y="350" font-family="'Noto Sans KR', sans-serif" font-size="18" fill="#D7CCC8">다양한 문화 프로그램과 이벤트에 참여하세요</text>
+</svg>
