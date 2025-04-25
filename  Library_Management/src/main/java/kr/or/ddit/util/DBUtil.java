@@ -4,19 +4,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBUtil {
-    private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-    private static final String USER = "LIBRARY";          
-    private static final String PASSWORD = "library123";   
+	 private static final String URL = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
+	    private static final String USER = "JINWON";      
+	    private static final String PASSWORD = "JAVA";   
 
-    static {
-        try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+	    static {
+	        try {
+	            Class.forName("oracle.jdbc.driver.OracleDriver");
+	        } catch (ClassNotFoundException e) {
+	            e.printStackTrace();
+	        }
+	    }
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
+	    public static Connection getConnection() throws SQLException {
+	        return DriverManager.getConnection(URL, USER, PASSWORD);
+	    }
 }
