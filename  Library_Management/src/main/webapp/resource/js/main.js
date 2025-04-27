@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (mainSearchButton && mainSearchInput) {
       mainSearchButton.addEventListener("click", function () {
         if (mainSearchInput.value.trim() !== "") {
-          window.location.href = `${getContextPath()}/books/search?query=${encodeURIComponent(
+          window.location.href = `${getContextPath()}/books/search/result?query=${encodeURIComponent(
             mainSearchInput.value.trim()
           )}`;
         }
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       mainSearchInput.addEventListener("keypress", function (e) {
         if (e.key === "Enter" && mainSearchInput.value.trim() !== "") {
-          window.location.href = `${getContextPath()}/books/search?query=${encodeURIComponent(
+          window.location.href = `${getContextPath()}/books/search/result?query=${encodeURIComponent(
             mainSearchInput.value.trim()
           )}`;
         }

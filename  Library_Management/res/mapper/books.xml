@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="books">
+
+<!-- 	
+<sql id="dynamicCondition">
+   	 where rownum &lt;= 5
+      <choose>
+         <when test="searchType == 'book_title' and keyword != null and keyword != ''">
+            and book_title like '%' || #{keyword} || '%'
+         </when>
+         <when test="searchType == 'author' and keyword != null and keyword != ''">
+            and author like '%' || #{keyword} || '%'
+         </when>
+         필요한 컬럼 조건 추가
+      </choose>
+   
+</sql> -->
+
+
+<sql id="dynamicCondition">
+   <where>
+      <if test="searchType != null and searchType != '' and keyword != null and keyword != ''" >
+         ${searchType} like '%' || #{keyword} || '%'
+	      <if test="pubdate != null and pubdate != ''">
+	         and pubdate between '20'||#{pubdate}||'-01-01' and '20'||#{pubdate}||'-12-31'
+	      </if>
+      </if>
+   </where>
+</sql>
+
+	<insert id="insertBooks" parameterType="BooksVo">
+		insert into books
+		values(SEQ_BOOKS.NEXTVAL,#{bookTitle},#{isbn},#{pubdate},#{cover},
+		'보유',#{author},#{publisher},#{categoryNo},sysdate)
+	</insert>
+
+	<select id="listBooks" resultType="BooksVo">
+	    SELECT *
+	    FROM books
+	    WHERE rownum &lt;= 50
+	</select>
+	
+	<!-- 책 검색 리스트 -->
+	<select id="searchBookList" resultType="BooksVo" parameterType="Map">
+		   SELECT * FROM (
+	        SELECT b.*, ROWNUM rn
+	        FROM (
+	            SELECT * FROM books
+	            <include refid="dynamicCondition"/>
+	            ORDER BY book_no DESC
+	        ) b
+	        WHERE ROWNUM &lt;= #{offset} + #{limit}
+	    )
+	    WHERE rn &gt; #{offset}
+	</select>
+	
+	<!-- 책카운트갯수 -->
+		<select id="countSearchBook" resultType="int" parameterType="Map">
+	    SELECT COUNT(*)
+	    FROM books
+	    <include refid="dynamicCondition"/>
+	</select>
+	
+	<!-- 책 상세페이지 -->
+	<select id="booksDetail" parameterType="BooksVo" resultType="BooksVo">
+		select BOOK_TITLE, ISBN, PUBDATE, COVER, AUTHOR, PUBLISHER, CATEGORY_NO
+		from books
+		where book_no = #{bookNo}
+	</select>
+	
+	<!-- 메인검색 리스트 -->
+	<select id="mainSearchBookList" parameterType="Map" resultType="BooksVo">
+
+		
+	   SELECT * FROM (
+	        SELECT b.*, ROWNUM rn
+	        FROM (
+	            		SELECT *
+						FROM books
+						WHERE book_title LIKE '%' || #{query} || '%'
+						   OR author LIKE '%' || #{query} || '%'
+						   OR publisher LIKE '%' || #{query} || '%'
+						ORDER BY book_no DESC
+	        ) b
+	        WHERE ROWNUM &lt;= #{offset} + #{limit}
+	    )
+	    WHERE rn &gt; #{offset}
+	    
+	</select>
+	
+	<!-- 메인검색갯수 -->
+	<select id="countMainSearchBook" parameterType="Map" resultType="int">
+	    SELECT COUNT(*)
+	    FROM books
+	    WHERE book_title LIKE '%' || #{query} || '%'
+	       OR author LIKE '%' || #{query} || '%'
+	       OR publisher LIKE '%' || #{query} || '%'
+	</select>
+</mapper>
+

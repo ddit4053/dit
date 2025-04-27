@@ -15,7 +15,7 @@
 	                        데이터베이스 연결을 초기화하고 사용자를 인증하는 과정이 없기 때문에 속도가 빠르다.
 	 -->
 		<typeAliases>
-
+				<typeAlias type="kr.or.ddit.vo.BooksVo" alias="BooksVo" />
 		</typeAliases>
 	
 	<environments default="dev">
@@ -35,7 +35,7 @@
 	</environments>
 	<mappers>
 <!-- 		<mapper resource="mapper/file.xml"/> -->
-
+			<mapper resource="mapper/books.xml"/>
 	</mappers>
 
 </configuration>
