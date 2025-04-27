@@ -24,6 +24,7 @@
     const isAdmin = ${isAdmin};
     const currentURL = '${currentURL}';
     const contextPath = '${pageContext.request.contextPath}';
+    console.log("contextPath:", contextPath);
 </script>
 
 <%-- CSS와 JavaScript 파일 포함 --%>

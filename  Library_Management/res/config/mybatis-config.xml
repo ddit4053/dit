@@ -15,6 +15,14 @@
 	                        데이터베이스 연결을 초기화하고 사용자를 인증하는 과정이 없기 때문에 속도가 빠르다.
 	 -->
 		<typeAliases>
+			<typeAlias type="kr.or.ddit.vo.BookBoardVo" alias="BookBoardVo"/>
+			<typeAlias type="kr.or.ddit.vo.CommentsVo" alias="CommentsVo"/>
+			<typeAlias type="kr.or.ddit.vo.UsersVo" alias="UsersdVo"/>
+			<typeAlias type="kr.or.ddit.vo.BooksVo" alias="BooksVo"/>
+			<typeAlias type="kr.or.ddit.vo.EduEventVo" alias="EduEventVo"/>
+			<typeAlias type="kr.or.ddit.vo.FileGroupVo" alias="FileGroupVo"/>
+			<typeAlias type="kr.or.ddit.vo.File_StorageVo" alias="File_StorageVo"/>
+			<typeAlias type="kr.or.ddit.vo.BookBoardCodeVo" alias="BookBoardCodeVo"/>
 
 		</typeAliases>
 	
@@ -35,6 +43,8 @@
 	</environments>
 	<mappers>
 <!-- 		<mapper resource="mapper/file.xml"/> -->
+	<mapper resource="mapper/board.xml"/>
+	<mapper resource="mapper/comments.xml"/>
 
 	</mappers>
 

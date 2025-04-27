@@ -1,15 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/info/notice-list.css">
+<script src="${pageContext.request.contextPath}/resource/js/users/community/review.js"></script>
 <div class="info-content">
     <div class="info-content-header">
         <h2 class="content-title">독후감 게시판</h2>
         <p class="content-description">
-            인기 독후감 게시물을 확인하실 수 있습니다.
+            회원들의 독후감을 확인하실 수 있습니다.
         </p>
+        <div class="boardTopOption">
+        	<div class="hideNotice">
+        		<input id="isNoticeVisible" type="checkbox" class="input_check">
+        		<label for="isNoticeVisible" class="label">"공지 숨기기"
+        		</label>
+        	</div>
+	        <div class="order-search">
+	        	<select class="order-type">
+	        		<option value="latest">최신순</option>
+	        		<option value="oldest">과거순</option>
+	        		<option value="views">조회수순</option>
+	        		<option value="comments">댓글순</option>
+	        	</select>
+	        </div>
+	        <div class="block-size">
+	        	<select class="block-select">
+	        		<option value="5">5개씩</option>
+	        		<option value="10">10개씩</option>
+	        		<option value="15">15개씩</option>
+	        		<option value="30">30개씩</option>
+	        		<option value="50">50개씩</option>
+	        	</select>
+	        </div>
+    	</div>
     </div>
-    
     <div class="notice-section">
-        <!-- 공지사항 게시판 내용 -->
+        <!-- 상단 고정 공지사항 출력 -->
         <div class="board-list">
             <table class="board-table">
                 <thead>
@@ -21,63 +45,32 @@
                         <th width="10%">조회수</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>5</td>
-                        <td class="title"><a href="#">2025년 설 연휴 도서관 휴관 안내</a> <span class="new-badge">NEW</span></td>
-                        <td>관리자</td>
-                        <td>2025.01.15</td>
-                        <td>45</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td class="title"><a href="#">겨울방학 독서 캠프 참가자 모집</a></td>
-                        <td>관리자</td>
-                        <td>2025.01.10</td>
-                        <td>132</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td class="title"><a href="#">전자책 서비스 확대 안내</a></td>
-                        <td>관리자</td>
-                        <td>2025.01.05</td>
-                        <td>87</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td class="title"><a href="#">도서관 회원 정보 업데이트 안내</a></td>
-                        <td>관리자</td>
-                        <td>2024.12.28</td>
-                        <td>103</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td class="title"><a href="#">연말 도서 반납 연장 서비스 안내</a></td>
-                        <td>관리자</td>
-                        <td>2024.12.20</td>
-                        <td>215</td>
-                    </tr>
+                <tbody id=boardTableBody>
+                <!-- 내용은 비동기로 동적 추가 -->
                 </tbody>
             </table>
             
-            <div class="board-pagination">
-                <a href="#" class="page-btn prev">이전</a>
-                <a href="#" class="page-num active">1</a>
-                <a href="#" class="page-num">2</a>
-                <a href="#" class="page-num">3</a>
-                <a href="#" class="page-num">4</a>
-                <a href="#" class="page-num">5</a>
-                <a href="#" class="page-btn next">다음</a>
+            <!-- 페이징 영역 -->
+            <div class="board-pagination" id="paginationArea">
             </div>
             
+            <!-- 검색 폼 -->
             <div class="board-search">
-                <select class="search-type">
-                    <option value="title">제목</option>
-                    <option value="content">내용</option>
-                    <option value="both">제목+내용</option>
-                </select>
-                <input type="text" class="search-input" placeholder="검색어를 입력하세요">
-                <button class="search-btn">검색</button>
+            	<form id="searchForm" onsubmit="return false;">
+	                <select name="searchType" class="search-type">
+	                    <option value="title">제목</option>
+	                    <option value="content">내용</option>
+	                    <option value="writer">작성자</option>
+	                    <option value="titleContent">제목+내용</option>
+	                </select>
+	                <input type="text" name="searchKeyword" class="search-input" placeholder="검색어를 입력하세요">
+	                <button type="button" class="search-btn" onclick="searchBoard()">검색</button>
+            	</form>
+            </div>
+            
+            <!-- 통합 글쓰기 에디터 진입 -->
+            <div class="board-editor">
+            	<button type="button" class="go-to-editor">글쓰기</button>
             </div>
         </div>
     </div>

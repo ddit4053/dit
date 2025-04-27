@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
 <jsp:include page="../../header.jsp" />
 <jsp:include page="../../nav.jsp" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/board.css">

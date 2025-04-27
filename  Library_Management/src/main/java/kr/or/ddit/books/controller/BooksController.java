@@ -1,4 +1,4 @@
-package kr.or.ddit.board.controller;
+package kr.or.ddit.books.controller;
 
 import java.io.IOException;
 
