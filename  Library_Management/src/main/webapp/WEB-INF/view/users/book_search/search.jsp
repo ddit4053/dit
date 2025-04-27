@@ -12,8 +12,7 @@
         <form class="search-form" action="${pageContext.request.contextPath}/books/search/result" method="get">
             <div class="search-input-group">
                 <select name="searchType" class="search-select">
-                    <option value="all">전체</option>
-                    <option value="title">제목</option>
+          	      	<option value="book_title">제목</option>
                     <option value="author">저자</option>
                     <option value="publisher">출판사</option>
                     <option value="isbn">ISBN</option>
@@ -34,25 +33,16 @@
                         </c:forEach>
                     </select>
                 </div>
+
                 
-                <div class="search-option-group">
-                    <label class="search-option-label">자료유형</label>
-                    <select name="bookType" class="search-option-select">
-                        <option value="">전체</option>
-                        <option value="book">단행본</option>
-                        <option value="ebook">E-Book</option>
-                        <option value="journal">학술지</option>
-                    </select>
-                </div>
-                
-                <div class="search-option-group">
+<!--                 <div class="search-option-group">
                     <label class="search-option-label">정렬방식</label>
                     <select name="sortBy" class="search-option-select">
                         <option value="newest">최신순</option>
                         <option value="popular">인기순</option>
                         <option value="title">제목순</option>
                     </select>
-                </div>
+                </div> -->
             </div>
         </form>
     </div>
