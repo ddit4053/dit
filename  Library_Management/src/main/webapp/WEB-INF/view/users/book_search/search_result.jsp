@@ -58,6 +58,11 @@
     margin: 4px 0;
     color: #555;
   }
+  
+   .subtitle {
+      font-size: 16px;
+      color: gray;
+    }
 </style>
 <script type="text/javascript">
 		//const contextPath = "${pageContext.request.contextPath}";
@@ -84,7 +89,12 @@
       <div class="book-card" data-bookno="${book.bookNo}">
         <img src="${book.cover}" alt="표지">
         <div class="book-info">
-          <h3>${book.bookTitle}</h2>
+          <h3>
+          	<c:out value="${fn:split(book.bookTitle, '-')[0]}"/> 
+          	<span class="subtitle">
+            <c:out value="${fn:split(book.bookTitle, '-')[1]}"/>
+          </span>
+		  </h3>
           <p><strong>저자:</strong> ${book.author}</p>
           <p><strong>출판사:</strong> ${book.publisher}</p>
         </div>

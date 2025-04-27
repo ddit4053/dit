@@ -30,7 +30,6 @@
     }
 
     .book-cover {
-      /* 이미지를 원본 크기 그대로 표시할 수 있도록 설정 */
       display: inline-block;
       max-width: 100%;
       height: auto;
@@ -38,10 +37,10 @@
     }
 
     .book-cover img {
-      width: auto;  /* 이미지의 너비를 자동으로 설정 */
-      height: auto; /* 이미지의 높이를 자동으로 설정 */
-      max-width: 100%;  /* 이미지가 넘지 않도록 설정 */
-      max-height: 500px; /* 이미지가 너무 커지지 않게 최대 높이 설정 */
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 500px;
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
@@ -97,6 +96,11 @@
     .back-link a:hover {
       text-decoration: underline;
     }
+
+    .subtitle {
+      font-size: 16px;
+      color: gray;
+    }
   </style>
 </head>
 <body>
@@ -111,7 +115,12 @@
 
       <!-- 책 정보 -->
       <div class="book-info">
-        <h2>${bookDetail.bookTitle}</h2>
+        <h2>
+          <c:out value="${fn:split(bookDetail.bookTitle, '-')[0]}"/> 
+          <span class="subtitle">
+            <c:out value="${fn:split(bookDetail.bookTitle, '-')[1]}"/>
+          </span>
+        </h2>
         <p><strong>저자:</strong> ${bookDetail.author}</p>
         <p><strong>출판사:</strong> ${bookDetail.publisher}</p>
         <p><strong>출판일:</strong> ${bookDetail.pubdate}</p>
