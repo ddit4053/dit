@@ -60,7 +60,7 @@
   }
 </style>
 <script type="text/javascript">
-		const contextPath = "${pageContext.request.contextPath}";
+		//const contextPath = "${pageContext.request.contextPath}";
 		
 		console.log(contextPath);
 			$(function() {
