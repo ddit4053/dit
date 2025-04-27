@@ -32,8 +32,9 @@ public class BooksInsertController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int start = 1;
-        int max =	10;
-        int end = 100; // 50페이지까지 불러오고 싶다면 1페이지 부터 10권씩 50페이지까지
+        int max =	3;
+        int end = 1; // 50페이지까지 불러오고 싶다면 1페이지 부터 10권씩 50페이지까지
+        int CategoryId = 53719;
         
         Gson gson = new Gson();
         JsonArray allItems = new JsonArray();
@@ -42,9 +43,9 @@ public class BooksInsertController extends HttpServlet {
 
         do {
             String apiUrl = "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=" + ttbKey +
-                            "&QueryType=Bestseller&MaxResults=" + max +
+                            "&QueryType=ItemEditorChoice&MaxResults=" + max +
                             "&start=" + start +
-                            "&Cover=Mini&SearchTarget=Book&output=JS&Version=20131101";
+                            "&Cover=Small&CategoryId="+CategoryId+"&SearchTarget=Book&output=JS&Version=20131101";
             //카테고리 아이디 1230으로 일단 가져오기
             
 
@@ -85,9 +86,9 @@ public class BooksInsertController extends HttpServlet {
 		List<BooksVo> bookList = gson.fromJson(items, listType);
 		
 		for (BooksVo booksVo : bookList) {
-
-			booksService.insertBooks(booksVo);
-
+		    if (booksVo.getCategoryNo() == CategoryId) {
+		        booksService.insertBooks(booksVo);
+		    }
 		}
 		//System.out.println(bookList);
 		

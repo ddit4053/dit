@@ -35,6 +35,7 @@ public class BooksSearchController extends HttpServlet {
 		String year =req.getParameter("year");
 		String pageParam = req.getParameter("page");
 		
+		System.out.println(searchType);
 		int currentPage = (pageParam != null) ? Integer.parseInt(pageParam) : 1;
 	    int pageSize = 5;
 	    int offset = (currentPage - 1) * pageSize;
@@ -59,6 +60,7 @@ public class BooksSearchController extends HttpServlet {
 		
 		List<BooksVo> SearchBookList = null;
 		String query = req.getParameter("query"); // 메인화면에서 검색
+		System.out.println(query);
 		if(query != null) {
 			Map<String, Object> mapMain = new HashMap<String, Object>();
 			mapMain.put("query", query);
