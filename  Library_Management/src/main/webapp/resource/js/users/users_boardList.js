@@ -6,31 +6,31 @@ document.addEventListener("DOMContentLoaded", function () {
 function getCurrentBoardType() {
   const currentPath = window.location.pathname;
 
-  if (currentPath.includes("community/review")) {
-    return "review";
-  } else if (currentPath.includes("/community/discussion")) {
-    return "discussion";
-  } else if (currentPath.includes("/community/recommend")) {
-    return "recommend";
-  } else if (currentPath.includes("/info/notice")) {
-    return "notice";
-  } else if (currentPath.includes("/info/event")) {
-    return "event";
-  } else if (currentPath.includes("/info/qa")) {
+  if (currentPath.includes("community/reviews")) {
+    return "reviews";
+  } else if (currentPath.includes("/community/discussions")) {
+    return "discussions";
+  } else if (currentPath.includes("/community/recommendations")) {
+    return "recommendations";
+  } else if (currentPath.includes("/support/notices")) {
+    return "notices";
+  } else if (currentPath.includes("/support/events")) {
+    return "events";
+  } else if (currentPath.includes("/support/qa")) {
     return "qa";
   }
-  return "review"; // 기본값
+  return "reviews"; // 기본값
 }
 // API 엔드포인트 가져오기
 function getBoardApiEndpoint() {
   const boardType = getCurrentBoardType();
-  return contextPath + "/board" + boardType + "ListAjax";
+  return "/" + boardType + "ListAjax";
 }
 
 // 상세 페이지 URL 가져오기
 function getDetailPageUrl(boardNo) {
   const boardType = getCurrentBoardType();
-  return contextPath + "/board" + boardType + "detail?boardNo=" + boardNo;
+  return contextPath + "/board/" + boardType + "detail?boardNo=" + boardNo;
 }
 
 // 옵션 변경 이벤트 리스너
@@ -119,7 +119,6 @@ function displayBoardList(boardList) {
             <td>${board.boardNo}</td>
             <td class="title">
             <a href="${getDetailPageUrl(board.boardNo)}">
-            }">
             ${board.codeNo === 4 ? '<span class="notice-tag">공지</span>' : ""}
             ${board.title}
             ${

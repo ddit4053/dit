@@ -10,10 +10,8 @@
 <div class="main-content">
     <div class="container">
         <div class="page-header">
-            <h1 class="page-title">${pageTitle}</h1>
             <div class="breadcrumb">
                 <a href="${pageContext.request.contextPath}/main.do">홈</a> > 
-                <a href="${pageContext.request.contextPath}/board/community">커뮤니티</a> >
                 <span>${breadcrumbTitle}</span>
             </div>
         </div>

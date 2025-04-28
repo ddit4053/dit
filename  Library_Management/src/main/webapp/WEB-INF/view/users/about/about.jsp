@@ -5,6 +5,7 @@
 <jsp:include page="../../header.jsp" />
 <jsp:include page="../../nav.jsp" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/board.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/about/facilities.css">
 
 <div class="main-content">
     <div class="container">
@@ -12,7 +13,6 @@
             <h1 class="page-title">${pageTitle}</h1>
             <div class="breadcrumb">
                 <a href="${pageContext.request.contextPath}/main.do">홈</a> > 
-                <a href="${pageContext.request.contextPath}/board/info">이용안내</a> >
                 <span>${breadcrumbTitle}</span>
             </div>
         </div>
@@ -28,5 +28,5 @@
         </div>
     </div>
 </div>
-
+<script src="${pageContext.request.contextPath}/resource/js/breadcrumb.js"></script>
 <jsp:include page="../../footer.jsp" />

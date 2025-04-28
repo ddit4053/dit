@@ -19,14 +19,14 @@ import kr.or.ddit.vo.BookBoardVo;
 import kr.or.ddit.vo.PagingVo;
 
 @WebServlet(urlPatterns = {
-		"/board/reviewListAjax",
-		"/board/discussionListAjax",
-		"/board/recommendListAjax",
-		"/board/noticeListAjax",
-		"/board/eventListAjax",
-		"/board/qaListAjax"
+		"/reviewsListAjax",
+		"/discussionsListAjax",
+		"/recommendationsListAjax",
+		"/noticesListAjax",
+		"/eventsListAjax",
+		"/qaListAjax"
 })
-public class ReviewBoardAjaxController extends HttpServlet {
+public class BoardAjaxController extends HttpServlet {
 	
 	private static final long serialVersionUTD = 1L;
 	private IBoardService boardService = BoardServiceImpl.getInstance();
@@ -67,10 +67,10 @@ public class ReviewBoardAjaxController extends HttpServlet {
             String requestURI = req.getRequestURI();
             int codeNo = 1; // 기본값 독후감 
             
-            if (requestURI.contains("discussionListAjax"))  codeNo = 2;  // 토론
-            if (requestURI.contains("recommendListAjax"))   codeNo = 3;  // 회원도서추천
-            if (requestURI.contains("noticeListAjax")) 		codeNo = 4;  // 공지사항
-            if (requestURI.contains("eventListAjax")) 		codeNo = 5;  // 교육행사
+            if (requestURI.contains("discussionsListAjax"))  codeNo = 2;  // 토론
+            if (requestURI.contains("recommendationsListAjax"))   codeNo = 3;  // 회원도서추천
+            if (requestURI.contains("noticesListAjax")) 		codeNo = 4;  // 공지사항
+            if (requestURI.contains("eventsListAjax")) 		codeNo = 5;  // 교육행사
             if (requestURI.contains("qaListAjax")) 			codeNo = 6;  // QA
             
             // 검색 조건 설정

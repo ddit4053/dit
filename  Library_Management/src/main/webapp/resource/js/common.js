@@ -57,65 +57,62 @@ document.addEventListener("DOMContentLoaded", function () {
           {
             title: "열람실 관리",
             items: [
-              { name: "열람실 이용 내역", url: "/admin/reading/room-history" },
+              { name: "열람실 이용 내역", url: "/admin/reading" },
             ],
           },
           {
             title: "게시판 관리",
             items: [
-              { name: "커뮤니티 게시판", url: "/admin/board/community" },
-              { name: "이용안내 게시판", url: "/admin/board/info" },
-              { name: "게시판 통합 관리", url: "/admin/board/settings" },
+              { name: "커뮤니티 게시판", url: "/admin/community/reviews" },
+              { name: "이용안내 게시판", url: "/admin/support/notices" },
             ],
           },
         ];
       } else {
         // 일반 사용자인 경우
-        menuData = [
-          {
-            title: "자료 검색",
-            items: [
-              { name: "도서 검색", url: "/books/search" },
-              { name: "신착 도서", url: "/books/new" },
-              { name: "관심 도서", url: "/books/favor" },
-              { name: "추천 도서", url: "/books/recommend" },
-            ],
-          },
-          {
-            title: "열람실",
-            items: [
-              { name: "열람실 현황", url: "/reading/room-status" },
-              { name: "열람실 예약", url: "/reading/room-booking" },
-            ],
-          },
-          {
-            title: "도서관 소개",
-            items: [
-              { name: "인사말", url: "/board/guide/greetings" },
-              { name: "도서관 소개", url: "/board/guide/intro" },
-              { name: "편의 시설", url: "/board/guide/facillities" },
-              { name: "오시는 길", url: "/board/guide/path" },
-            ],
-          },
-          {
-            title: "커뮤니티",
-            items: [
-              { name: "독후감 게시판", url: "/board/community/review" },
-              { name: "토론게시판", url: "/board/community/discussion" },
-              { name: "회원 도서추천게시판", url: "/board/community/recommend" },
-            ],
-          },
-          {
-            title: "이용안내",
-            items: [
-              { name: "공지사항", url: "/board/info/notice" },
-              { name: "교육/행사", url: "/board/info/edu-event" },
-              { name: "시설 이용 안내", url: "/board/info/facility" },
-              { name: "자주 묻는 질문", url: "/board/info/faq" },
-              { name: "1:1 문의", url: "/board/info/qa" },
-            ],
-          },
-        ];
+		menuData = [
+		  {
+		    title: "자료 검색",
+		    items: [
+		      { name: "도서 검색", url: "/books/search" },
+		      { name: "신착 도서", url: "/books/new" },
+		      { name: "관심 도서", url: "/books/favor" },
+		      { name: "추천 도서", url: "/books/recommend" },
+		    ],
+		  },
+		  {
+		    title: "열람실",
+		    items: [
+		      { name: "열람실 현황", url: "/reading/status" },
+		      { name: "열람실 예약", url: "/reading/booking" },
+		    ],
+		  },
+		  {
+		    title: "도서관 소개",
+		    items: [
+		      { name: "인사말", url: "/about/greetings" },
+		      { name: "시설 소개", url: "/about/facilities" },
+		      { name: "오시는 길", url: "/about/location" },
+		    ],
+		  },
+		  {
+		    title: "커뮤니티",
+		    items: [
+		      { name: "독후감 게시판", url: "/community/reviews" },
+		      { name: "토론게시판", url: "/community/discussions" },
+		      { name: "회원 도서추천게시판", url: "/community/recommendations" },
+		    ],
+		  },
+		  {
+		    title: "이용안내",
+		    items: [
+		      { name: "공지사항", url: "/support/notices"},
+		      { name: "교육/행사", url: "/support/events"},
+		      { name: "자주 묻는 질문", url: "/support/faq"},
+		      { name: "1:1 문의", url: "/support/qa"},
+		    ],
+		  },
+		];
       }
 
       // 메가 드롭다운 메뉴 생성

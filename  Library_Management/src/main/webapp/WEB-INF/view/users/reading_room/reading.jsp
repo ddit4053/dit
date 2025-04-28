@@ -12,7 +12,6 @@
             <h1 class="page-title">${pageTitle}</h1>
             <div class="breadcrumb">
                 <a href="${pageContext.request.contextPath}/main.do">홈</a> > 
-                <a href="${pageContext.request.contextPath}/reading">열람실</a> >
                 <span>${breadcrumbTitle}</span>
             </div>
         </div>
@@ -28,5 +27,5 @@
         </div>
     </div>
 </div>
-
+<script src="${pageContext.request.contextPath}/resource/js/breadcrumb.js"></script>
 <jsp:include page="../../footer.jsp" />

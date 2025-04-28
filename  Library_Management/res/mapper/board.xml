@@ -111,7 +111,7 @@
 				  JOIN USERS U ON (B.USER_NO = U.USER_NO)
 				 WHERE B.CODE_NO = (SELECT CODE_NO
 				                      FROM BOOK_BOARD_CODE
-				                     WHERE CODE_TYPE = 'NOTICE')
+				                     WHERE CODE_NO = 4)
 				 ORDER BY B.WRITTEN_DATE DESC
 		 )
 		<![CDATA[ 

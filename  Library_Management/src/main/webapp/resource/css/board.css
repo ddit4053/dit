@@ -18,6 +18,33 @@
   margin-bottom: 10px;
 }
 
+/* 콘텐츠 타이틀과 설명 스타일 */
+.content-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.content-description {
+  font-size: 15px;
+  color: var(--text-color);
+  line-height: 1.5;
+  margin-bottom: 20px;
+  max-width: 800px;
+}
+
+/* 모바일 반응형 스타일 */
+@media screen and (max-width: 768px) {
+  .content-title {
+    font-size: 20px;
+  }
+  
+  .content-description {
+    font-size: 14px;
+  }
+}
+
 .breadcrumb {
   font-size: 14px;
   color: var(--light-text);
@@ -53,7 +80,8 @@
   min-width: 0;
 }
 
-/* 이용안내 메인 페이지 */
+
+/* 도서관 소개 페이지 CSS */
 .info-main {
   width: 100%;
 }

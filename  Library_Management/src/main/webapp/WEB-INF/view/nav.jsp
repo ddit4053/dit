@@ -18,11 +18,11 @@
          	<c:otherwise>
 	    		<%-- 일반 사용자용 메뉴 --%>
 	        	<ul>
-		            <li><a href="${pageContext.request.contextPath}/books">자료 검색</a></li>
-		            <li><a href="${pageContext.request.contextPath}/reading">열람실 예약</a></li>
-		            <li><a href="${pageContext.request.contextPath}/board/guide">도서관 소개</a></li>
-		            <li><a href="${pageContext.request.contextPath}/board/community">커뮤니티</a></li>
-		            <li><a href="${pageContext.request.contextPath}/board/info">이용안내</a></li>
+		            <li><a href="${pageContext.request.contextPath}/books/search">자료 검색</a></li>
+		            <li><a href="${pageContext.request.contextPath}/reading/status">열람실 예약</a></li>
+		            <li><a href="${pageContext.request.contextPath}/about/greetings">도서관 소개</a></li>
+		            <li><a href="${pageContext.request.contextPath}/community/reviews">커뮤니티</a></li>
+		            <li><a href="${pageContext.request.contextPath}/support/notices">이용안내</a></li>
 	        	</ul>
        		</c:otherwise>
       	</c:choose>

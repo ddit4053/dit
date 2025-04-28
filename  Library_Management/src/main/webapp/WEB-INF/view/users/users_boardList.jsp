@@ -3,10 +3,8 @@
 <script src="${pageContext.request.contextPath}/resource/js/users/users_boardList.js"></script>
 <div class="info-content">
     <div class="info-content-header">
-        <h2 class="content-title">독후감 게시판</h2>
-        <p class="content-description">
-            회원들의 독후감을 확인하실 수 있습니다.
-        </p>
+        <h2 class="content-title">${pageTitle}</h2>
+        <p class="content-description">${pageDescription}</p>
         <div class="boardTopOption">
         	<div class="hideNotice">
         		<input id="isNoticeVisible" type="checkbox" class="input_check">

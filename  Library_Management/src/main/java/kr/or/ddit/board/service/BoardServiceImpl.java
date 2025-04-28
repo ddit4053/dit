@@ -73,7 +73,7 @@ public class BoardServiceImpl implements IBoardService {
         
         // 첫 페이지 상단 공지사항 조회
         List<BookBoardVo> noticeList = null;
-        if(currentPage == 1) {
+        if(currentPage == 1 && codeNo != 4) {
             noticeList = boardDao.selectNoticeList();
         }
         
