@@ -163,8 +163,8 @@
                 		  
                 		  if (loggedInUserNo !== null && loggedInUserNo === item.userNo) {
                 		    html += `
-                		      <button class="editReview">수정</button>
-                		      <button class="deleteReview">삭제</button>
+                		    	 <button class="editReview" data-reviewno="\${item.revNo}">수정</button>
+                		        <button class="deleteReview" data-reviewno="\${item.revNo}">삭제</button>
                 		    `;
                 		  }
                 		  
@@ -185,9 +185,58 @@
       })
     }
     
+    
+    function openModal(reviewNo,rating,revContent) {
+    	 $('#editReviewNo').val(reviewNo);
+    	  $('#editRating').val(rating);
+    	  $('#editRevContent').val(revContent);
+    	  $('#editReviewModal').show();
+    }
+    
+    function closeModal() {
+    	  $('#editReviewModal').hide();
+   	}
+    
     $(document).on('click','.editReview',function(){
+   	 	const parentDiv = $(this).closest('div');
+	   	const ratingText = parentDiv.find('strong').text(); // "별점: 5점" 이런식
+	    const rating = ratingText.match(/\d+/)[0]; // 별점 숫자만 추출
+	    const revContent = parentDiv.find('p').text().replace('내용: ', '');
+	    const reviewNo = $(this).data('reviewno');
+	    
+	    console.log("수정 눌렀을때 no : "+reviewNo)
+	    openModal(reviewNo, rating, revContent);
     	
     })
+    
+    function updateReview() {
+    	  const reviewNo = $('#editReviewNo').val();
+    	  const rating = $('#editRating').val();
+    	  const revContent = $('#editRevContent').val();
+    	  
+    	  if (!rating || !revContent) {
+    		    alert("별점과 리뷰 내용을 모두 입력해주세요.");
+    		    return;
+   		  }
+    	  
+    	  $.ajax({
+    		  url: "detail/reviewUpdate",
+    		  type: "post",
+    		  data: {
+    			  revNo: reviewNo,
+    			  rating: rating,
+    			  revContent: revContent
+    		  },
+    		  success: function(res){
+    			  alert("리뷰가 수정되었습니다.");
+    			  closeModal();
+    			  loadReviewList();
+    		  },
+    		  error: function(xhr){
+    			  alert("수정 실패")
+    		  }
+    	  });
+    }
 
     // 페이지 로딩시 리뷰 불러오기기
     $(document).ready(function() {
@@ -257,5 +306,30 @@
     </div>
   </div>
 
+
+	<div id="editReviewModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
+    background:white; padding:20px; border:1px solid #ccc; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.2); z-index:9999;">
+    	
+    	<h3>리뷰 수정</h3>
+    	<input type="hidden" id="editReviewNo">
+    	
+    	<label for="editRating">별점 (1~5):</label>
+    	<select id="editRating">
+    		<option value="1">1점</option>
+    		<option value="2">2점</option>
+    		<option value="3">3점</option>
+    		<option value="4">4점</option>
+    		<option value="5">5점</option>
+    	
+    	</select><br><br>
+    	
+    	
+    	 <label for="editRevContent">리뷰내용</label><br>
+         <textarea name="editRevContent" id="editRevContent" rows="4" cols="30"></textarea><br><br>
+         
+            
+		    <button onclick="updateReview()">수정 완료</button>         
+		    <button onclick="closeModal()">취소</button>         
+    </div>
 </body>
 </html>

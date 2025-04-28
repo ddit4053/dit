@@ -9,4 +9,6 @@ public interface IReviewsService {
 	public List<Map<String, Object>> reviewList(int bookNo);
 
 	public void reviewInsert(ReviewsVo reviewsVo);
+
+	public void reviewUpdate(ReviewsVo reviewsVo);
 }

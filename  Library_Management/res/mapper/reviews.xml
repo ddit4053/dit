@@ -37,4 +37,11 @@
 		values(seq_reviews.nextval,#{rating},
 			#{revContent},sysdate,#{bookNo},#{userNo})
 	</insert>
+	
+	<update id="reviewUpdate" parameterType="ReviewsVo">
+		update REVIEWS
+		set rating =#{rating},
+			REV_CONTENT =#{revContent}
+			where REV_NO=#{revNo}
+	</update>
 </mapper>
