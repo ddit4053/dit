@@ -87,12 +87,6 @@ public class BooksServiceImp implements IBooksService{
 	
 	}
 
-	@Override
-	public List<ReviewsVo> reviewList(int bookNo) {
-		// TODO Auto-generated method stub
-		return booksDao.reviewList(bookNo);
-	}
-
 
 	
 

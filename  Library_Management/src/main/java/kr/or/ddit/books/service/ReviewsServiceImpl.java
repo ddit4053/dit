@@ -1,0 +1,34 @@
+package kr.or.ddit.books.service;
+
+import java.util.List;
+
+import kr.or.ddit.books.dao.IReviewsDao;
+import kr.or.ddit.books.dao.ReviewsDaoImpl;
+import kr.or.ddit.vo.ReviewsVo;
+
+public class ReviewsServiceImpl implements IReviewsService {
+	
+	IReviewsDao reviewsDao = ReviewsDaoImpl.getInstance();
+	
+	private static ReviewsServiceImpl instance;
+
+	private ReviewsServiceImpl() {
+
+	}
+
+	public static ReviewsServiceImpl getInstance() {
+		if (instance == null) {
+			instance = new ReviewsServiceImpl();
+		}
+		return instance;
+	}
+
+	
+
+	@Override
+	public List<ReviewsVo> reviewList(int bookNo) {
+		// TODO Auto-generated method stub
+		return reviewsDao.reviewList(bookNo);
+	}
+
+}

@@ -23,5 +23,4 @@ public interface IBooksDao {
 
 	public List<BooksVo> bookIsbnList();
 
-	public List<ReviewsVo> reviewList(int bookNo);
 }

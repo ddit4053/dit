@@ -23,6 +23,6 @@ public interface IBooksService {
 
 	public void insertBooksIfNotExist(BooksVo bookList);
 
-	public List<ReviewsVo> reviewList(int bookNo);
+
 	
 }

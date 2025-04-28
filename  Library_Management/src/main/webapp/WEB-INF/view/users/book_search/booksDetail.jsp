@@ -104,6 +104,33 @@
     }
   </style>
   <script>
+  	function insertReview(){
+  		const rating = $('#rating').val();
+      const reviewContent = $('#reviewContent').val();
+      const bookNo = $('#bookNo').val();
+      
+      $.ajax({
+        url: "detail/reviewInsert",
+        type:'post',
+        contentType:'application/json',
+        data: JSON.stringify({
+          rating: rating,
+          revContent: reviewContent,
+          bookNo: bookNo
+          //userNo: userNo
+        }),
+        success: function(res){
+          alert("리뷰등록");
+          $('#rating').val('');
+          $('#reviewContent').val('');
+          loadReviewList();
+        },
+        error: function(xhr) {
+          alert(xhr.status);
+        }
+      })
+  	}
+  
     function loadReviewList(){
       const bookNo = $('#bookNo').val();
       
@@ -112,7 +139,23 @@
         type: 'get',
         dataType: 'json',
         success : function(list){
-          console.log(list);
+        	 let html = '';
+             if(list.length == 0){
+                 html = "<p>등록된 리뷰가 없습니다.</p>";
+             } else {
+                 list.forEach(function(item) {
+                     html += `
+                         <div style="margin-bottom:15px;">
+                             <strong>별점: \${item.rating}점</strong><br>
+                             <p>내용: \${item.revContent}</p>
+                             <small>작성일 : \${item.revDate}</small>
+                             <small>작성자 : \${item.userNo}</small>
+                             <hr>
+                         </div>
+                     `;
+                 });
+             }
+             $('#reviewList').html(html);
         },
         error: function(xhr){
           alert(xhr.status);
@@ -162,7 +205,7 @@
             <label for="rating">별점 (1~5):</label>
             <select name="rating" id="rating" required>
               <option value="">선텍</option>
-              <option value="1">1점점</option>
+              <option value="1">1점</option>
               <option value="2">2점</option>
               <option value="3">3점</option>
               <option value="4">4점</option>
@@ -179,7 +222,7 @@
 
           <!-- 등록된 리뷰 -->
            <h3>등록된 리뷰</h3>
-           <div id="revieList">
+           <div id="reviewList">
 
            </div>
         </div>

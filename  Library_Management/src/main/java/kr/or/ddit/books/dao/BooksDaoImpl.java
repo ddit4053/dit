@@ -72,10 +72,6 @@ public class BooksDaoImpl extends MybatisDao implements IBooksDao {
 		return selectList("books.bookIsbnList");
 	}
 
-	@Override
-	public List<ReviewsVo> reviewList(int bookNo) {
-		// TODO Auto-generated method stub
-		return selectList("review.reviewList",bookNo);
-	}
+
 	
 }
