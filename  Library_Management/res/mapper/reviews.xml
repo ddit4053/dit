@@ -6,4 +6,10 @@
 		from REVIEWS
 		where BOOK_NO = #{bookNo}
 	</select>
+	
+	<insert id="reviewInsert" parameterType="ReviewsVo">
+		insert into	REVIEWS
+		values(seq_reviews.nextval(),#{rating},
+			#{revContent},sysdate,#{bookNo},#{userNo})
+	</insert>
 </mapper>

@@ -31,4 +31,10 @@ public class ReviewsServiceImpl implements IReviewsService {
 		return reviewsDao.reviewList(bookNo);
 	}
 
+	@Override
+	public void reviewInsert(ReviewsVo reviewsVo) {
+		// TODO Auto-generated method stub
+		 reviewsDao.reviewInsert(reviewsVo);
+	}
+
 }

@@ -6,4 +6,6 @@ import kr.or.ddit.vo.ReviewsVo;
 
 public interface IReviewsDao {
 	public List<ReviewsVo> reviewList(int bookNo);
+
+	public void reviewInsert(ReviewsVo reviewsVo);
 }

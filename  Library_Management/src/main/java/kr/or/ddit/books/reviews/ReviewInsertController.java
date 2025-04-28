@@ -9,10 +9,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.or.ddit.books.service.BooksServiceImp;
 import kr.or.ddit.books.service.IBooksService;
+import kr.or.ddit.books.service.IReviewsService;
+import kr.or.ddit.books.service.ReviewsServiceImpl;
+import kr.or.ddit.vo.ReviewsVo;
 
 @WebServlet("/books/detail/reviewInsert")
 public class ReviewInsertController extends HttpServlet {
-	IBooksService booksService = BooksServiceImp.getInsatance();
+	
+	IReviewsService reviewsService = ReviewsServiceImpl.getInstance();
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -24,7 +28,16 @@ public class ReviewInsertController extends HttpServlet {
 		String bookNoStr = req.getParameter("bookNo");
 		int bookNo= Integer.parseInt(bookNoStr);
 		
+		ReviewsVo reviewsVo = new ReviewsVo();
 		
+		reviewsVo.setRating(rating);
+		reviewsVo.setRevContent(revContent);
+		reviewsVo.setBookNo(bookNo);
+		reviewsVo.setUserNo(1); // 일단 그냥 넣은 데이터
+		
+		
+		
+		reviewsService.reviewInsert(reviewsVo);
 		
 	}
 }
