@@ -152,7 +152,7 @@
                              <strong>별점: \${item.rating}점</strong><br>
                              <p>내용: \${item.revContent}</p>
                              <small>작성일 : \${item.revDate}</small>
-                             <small>작성자 : \${item.userNo}</small>
+                             <small>작성자 : \${item.name}</small>
                              <hr>
                          </div>
                      `;

@@ -2,6 +2,7 @@ package kr.or.ddit.books.reviews;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,7 +29,7 @@ public class ReviewListController extends HttpServlet{
 		String bookBoStr = req.getParameter("bookNo");
 		int bookNo = Integer.parseInt(bookBoStr);
 		
-		List<ReviewsVo>reviewList =  reviewsService.reviewList(bookNo);
+		List<Map<String, Object>>reviewList =  reviewsService.reviewList(bookNo);
 		
 		Gson gson = new GsonBuilder().create();
 		

@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="reviews">
-	<select id="reviewList" parameterType="int" resultType="ReviewsVo">
-		select *
-		from REVIEWS
-		where BOOK_NO = #{bookNo}
-		order by REV_DATE desc
-	</select>
+
+	   <resultMap id="reviewListMap" type="hashMap">
+        <result property="revNo" column="REV_NO"/>
+        <result property="rating" column="RATING"/>
+        <result property="revContent" column="REV_CONTENT"/>
+        <result property="revDate" column="REV_DATE"/>
+        <result property="bookNo" column="BOOK_NO"/>
+        <result property="userNo" column="USER_NO"/>
+        <result property="name" column="NAME"/>  
+    </resultMap>
+
+    <select id="reviewList" resultMap="reviewListMap">
+		SELECT 
+		    R.REV_NO,               -- 리뷰 번호
+		    R.RATING,               -- 리뷰 평점
+		    R.REV_CONTENT,          -- 리뷰 내용
+		    R.REV_DATE,             -- 리뷰 작성일
+		    R.BOOK_NO,              -- 책 번호
+		    R.USER_NO,              -- 사용자 번호
+		    U.name AS NAME     -- 사용자 이름
+		FROM 
+		    REVIEWS R
+		INNER JOIN 
+		    USERS U 
+		    ON R.USER_NO = U.USER_NO -- USERS 테이블과 JOIN
+		WHERE 
+		    R.BOOK_NO = 20          -- 책 번호가 20인 리뷰만 조회
+		ORDER BY 
+		    R.REV_DATE DESC
+    </select>
 	
 	<insert id="reviewInsert" parameterType="ReviewsVo">
 		insert into	REVIEWS (REV_NO, RATING, REV_CONTENT, REV_DATE, BOOK_NO, USER_NO)

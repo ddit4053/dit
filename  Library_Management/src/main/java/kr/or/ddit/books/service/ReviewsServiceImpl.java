@@ -26,7 +26,7 @@ public class ReviewsServiceImpl implements IReviewsService {
 	
 
 	@Override
-	public List<ReviewsVo> reviewList(int bookNo) {
+	public List reviewList(int bookNo) {
 		// TODO Auto-generated method stub
 		return reviewsDao.reviewList(bookNo);
 	}

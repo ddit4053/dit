@@ -23,7 +23,7 @@ public class ReviewsDaoImpl extends MybatisDao implements IReviewsDao {
 
 	
 	@Override
-	public List<ReviewsVo> reviewList(int bookNo) {
+	public List reviewList(int bookNo) {
 		// TODO Auto-generated method stub
 		return selectList("reviews.reviewList",bookNo);
 	}
