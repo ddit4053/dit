@@ -16,6 +16,7 @@
 	 -->
 		<typeAliases>
 				<typeAlias type="kr.or.ddit.vo.BooksVo" alias="BooksVo" />
+				<typeAlias type="kr.or.ddit.vo.ReviewsVo" alias="ReviewsVo"/>
 		</typeAliases>
 	
 	<environments default="dev">
@@ -36,6 +37,7 @@
 	<mappers>
 <!-- 		<mapper resource="mapper/file.xml"/> -->
 			<mapper resource="mapper/books.xml"/>
+			<mapper resource="mapper/reviews.xml"/>
 	</mappers>
 
 </configuration>
