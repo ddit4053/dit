@@ -5,11 +5,12 @@
 		select *
 		from REVIEWS
 		where BOOK_NO = #{bookNo}
+		order by REV_DATE desc
 	</select>
 	
 	<insert id="reviewInsert" parameterType="ReviewsVo">
-		insert into	REVIEWS
-		values(seq_reviews.nextval(),#{rating},
+		insert into	REVIEWS (REV_NO, RATING, REV_CONTENT, REV_DATE, BOOK_NO, USER_NO)
+		values(seq_reviews.nextval,#{rating},
 			#{revContent},sysdate,#{bookNo},#{userNo})
 	</insert>
 </mapper>

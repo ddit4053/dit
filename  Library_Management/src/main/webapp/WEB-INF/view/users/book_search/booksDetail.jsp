@@ -105,20 +105,24 @@
   </style>
   <script>
   	function insertReview(){
-  		const rating = $('#rating').val();
+  	  const rating = $('#rating').val();
       const reviewContent = $('#reviewContent').val();
       const bookNo = $('#bookNo').val();
+      
+      if (!rating || !reviewContent) {
+		alert("별점과 리뷰를 모두 작성해주세요")
+		return;
+      }
       
       $.ajax({
         url: "detail/reviewInsert",
         type:'post',
-        contentType:'application/json',
-        data: JSON.stringify({
+        data:{
           rating: rating,
           revContent: reviewContent,
           bookNo: bookNo
           //userNo: userNo
-        }),
+        },
         success: function(res){
           alert("리뷰등록");
           $('#rating').val('');
@@ -126,7 +130,6 @@
           loadReviewList();
         },
         error: function(xhr) {
-          alert(xhr.status);
         }
       })
   	}
@@ -158,7 +161,6 @@
              $('#reviewList').html(html);
         },
         error: function(xhr){
-          alert(xhr.status);
         }
       })
     }
@@ -216,6 +218,7 @@
             <textarea name="reviewContent" id="reviewContent" rows="4" cols="30" required></textarea>
             <input type="hidden" name="bookNo" id="bookNo" value="${bookDetail.bookNo}">
             <!-- <input type="hidden" name="userId" id="userId" value="${user.userId}"> 로그인 구현시 보여줌 -->
+			    <button type="button" onclick="insertReview()">등록</button>         
           </form>    
 
           <hr>

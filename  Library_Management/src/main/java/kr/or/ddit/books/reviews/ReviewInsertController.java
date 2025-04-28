@@ -22,11 +22,15 @@ public class ReviewInsertController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String ratingStr = req.getParameter("rating");
 		int rating = Integer.parseInt(ratingStr);
+		System.out.println("평점은 : "+rating);
 		
-		String revContent = req.getParameter("reviewContent");
+		String revContent = req.getParameter("revContent");
+		System.out.println("내용은 : "+revContent);
 		
 		String bookNoStr = req.getParameter("bookNo");
 		int bookNo= Integer.parseInt(bookNoStr);
+		
+		System.out.println("책번호는 : "+bookNo);
 		
 		ReviewsVo reviewsVo = new ReviewsVo();
 		
