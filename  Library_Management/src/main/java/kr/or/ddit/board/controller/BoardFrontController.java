@@ -26,17 +26,22 @@ public class BoardFrontController extends HttpServlet {
 		
 		switch (pathInfo) {
 			case "/community":
-	            contentPage = "/WEB-INF/view/users/community/review.jsp";
-	            forwardPage = "/WEB-INF/view/users/community/community.jsp";
+	            contentPage = "/WEB-INF/view/users/users_boardList.jsp";
+	            forwardPage = "/WEB-INF/view/users/users_board.jsp";
 	            break;
 	            
+			case "/community/review/list":
+				contentPage = "/WEB-INF/view/users/users_boardList.jsp";
+	            forwardPage = "/WEB-INF/view/users/users_board.jsp";
+	            break;    
+	            
 	        case "/info":
-	            contentPage = "/WEB-INF/view/users/info/notice-list.jsp";
-	            forwardPage = "/WEB-INF/view/users/info/info.jsp";
+	        	contentPage = "/WEB-INF/view/users/users_boardList.jsp";
+	            forwardPage = "/WEB-INF/view/users/users_board.jsp";
 	            break;
 	            
 	        case "/guide":
-	            contentPage = "/WEB-INF/view/users/guide/facilities.jsp";
+	        	contentPage = "/WEB-INF/view/users/guide/facilities.jsp";
 	            forwardPage = "/WEB-INF/view/users/guide/guide.jsp";
 	            break;
 	            

@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="header.jsp" />
-<jsp:include page="nav.jsp" />
+
+<div style="position:sticky; top:0; z-index:100;">
+	<jsp:include page="header.jsp" />
+	<jsp:include page="nav.jsp" />
+</div>
 
 <main class="main-content">
     <!-- 배너 섹션 -->

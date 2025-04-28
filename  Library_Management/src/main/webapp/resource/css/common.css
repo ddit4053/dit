@@ -64,6 +64,12 @@ h6 {
   background-color: var(--primary-color);
 }
 
+.header-nav-container {
+	position: stickey;
+	top: 0;
+	z-index: 100;
+}
+
 /* 헤더 스타일 */
 .main-header {
   background-color: var(--card-background);

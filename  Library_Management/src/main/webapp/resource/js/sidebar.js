@@ -6,7 +6,13 @@ const menuStructure = {
       title: "자료검색",
       url: "/books",
       subMenus: [
-        { title: "도서 검색", url: "/books/search" },
+        {
+          title: "도서 검색",
+          url: "/books/search",
+          subMenus: [
+            { title: "카테고리 검색", url: "/books/search/searchCategory" },
+          ],
+        },
         { title: "신착 도서", url: "/books/new" },
         { title: "관심 도서", url: "/books/favor" },
         { title: "추천 도서", url: "/books/recommend" },
@@ -37,18 +43,10 @@ const menuStructure = {
         {
           title: "독후감 게시판",
           url: "/board/community/review",
-          subMenus: [
-            { title: "독후감 게시판", url: "/board/community/review/list" },
-            { title: "나의 독후감", url: "/board/community/review/my" },
-          ],
         },
         {
           title: "토론 게시판",
           url: "/board/community/discussion",
-          subMenus: [
-            { title: "토론 게시판", url: "/board/community/discussion/list" },
-            { title: "참여중인 토론", url: "/board/community/discussion/my" },
-          ],
         },
         { title: "회원 도서 추천 게시판", url: "/board/community/recommend" },
       ],
@@ -162,6 +160,10 @@ const menuStructure = {
           subMenus: [
             { title: "대출 예약 통계", url: "/admin/loans/stats/reservation" },
             { title: "누적 대출 통계", url: "/admin/loans/stats/cumulative" },
+            {
+              title: "대출/반납/연체 월별 통계",
+              url: "/admin/loans/stats/chart",
+            },
             { title: "예정 반납일 캘린더", url: "/admin/loans/stats/calendar" },
           ],
         },

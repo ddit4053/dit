@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/info/notice-list.css">
-<script src="${pageContext.request.contextPath}/resource/js/users/community/review.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/users_boardList.css">
+<script src="${pageContext.request.contextPath}/resource/js/users/users_boardList.js"></script>
 <div class="info-content">
     <div class="info-content-header">
         <h2 class="content-title">독후감 게시판</h2>
@@ -10,7 +10,7 @@
         <div class="boardTopOption">
         	<div class="hideNotice">
         		<input id="isNoticeVisible" type="checkbox" class="input_check">
-        		<label for="isNoticeVisible" class="label">"공지 숨기기"
+        		<label for="isNoticeVisible" class="label">공지 숨기기
         		</label>
         	</div>
 	        <div class="order-search">
@@ -32,7 +32,7 @@
 	        </div>
     	</div>
     </div>
-    <div class="notice-section">
+    <div class="board-section">
         <!-- 상단 고정 공지사항 출력 -->
         <div class="board-list">
             <table class="board-table">
@@ -66,11 +66,10 @@
 	                <input type="text" name="searchKeyword" class="search-input" placeholder="검색어를 입력하세요">
 	                <button type="button" class="search-btn" onclick="searchBoard()">검색</button>
             	</form>
-            </div>
-            
-            <!-- 통합 글쓰기 에디터 진입 -->
-            <div class="board-editor">
+            	<!-- 통합 글쓰기 에디터 진입 -->
+            	<div class="board-editor">
             	<button type="button" class="go-to-editor">글쓰기</button>
+            	</div>
             </div>
         </div>
     </div>

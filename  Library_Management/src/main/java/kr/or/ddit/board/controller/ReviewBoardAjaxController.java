@@ -18,7 +18,14 @@ import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.vo.BookBoardVo;
 import kr.or.ddit.vo.PagingVo;
 
-@WebServlet("/board/reviewListAjax")
+@WebServlet(urlPatterns = {
+		"/board/reviewListAjax",
+		"/board/discussionListAjax",
+		"/board/recommendListAjax",
+		"/board/noticeListAjax",
+		"/board/eventListAjax",
+		"/board/qaListAjax"
+})
 public class ReviewBoardAjaxController extends HttpServlet {
 	
 	private static final long serialVersionUTD = 1L;
@@ -56,14 +63,22 @@ public class ReviewBoardAjaxController extends HttpServlet {
                 sortType = "comments";
             }
             
+            // URL 패턴에서 게시판 타입 판별
+            String requestURI = req.getRequestURI();
+            int codeNo = 1; // 기본값 독후감 
+            
+            if (requestURI.contains("discussionListAjax"))  codeNo = 2;  // 토론
+            if (requestURI.contains("recommendListAjax"))   codeNo = 3;  // 회원도서추천
+            if (requestURI.contains("noticeListAjax")) 		codeNo = 4;  // 공지사항
+            if (requestURI.contains("eventListAjax")) 		codeNo = 5;  // 교육행사
+            if (requestURI.contains("qaListAjax")) 			codeNo = 6;  // QA
+            
             // 검색 조건 설정
             Map<String, Object> params = new HashMap<>();
             params.put("currentPage", currentPage);
             params.put("pageSize", pageSize);
             params.put("sortType", sortType);
-            
-            // 독후감[1], 토론[2], 회원도서추천[3], 공지사항[4], 교육행사[5], FAQ[6], QA[7]
-            params.put("codeNo", 1);
+            params.put("codeNo", codeNo);
             
             // 검색 조건이 존재할 경우
             if(searchType != null && !searchType.isEmpty() && 
@@ -78,8 +93,10 @@ public class ReviewBoardAjaxController extends HttpServlet {
             
             // 서비스 호출
             Map<String, Object> result = boardService.selectBoardList(params);
-            List<BookBoardVo> boardList = (List<BookBoardVo>) result.get("boardList");
-            List<BookBoardVo> noticeList = (List<BookBoardVo>) result.get("noticeList");
+            @SuppressWarnings("unchecked")
+			List<BookBoardVo> boardList = (List<BookBoardVo>) result.get("boardList");
+            @SuppressWarnings("unchecked")
+			List<BookBoardVo> noticeList = (List<BookBoardVo>) result.get("noticeList");
             PagingVo paging = (PagingVo) result.get("paging");
             
             // 공지사항 숨기기 옵션 처리

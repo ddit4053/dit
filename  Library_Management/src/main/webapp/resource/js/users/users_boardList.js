@@ -3,6 +3,36 @@ document.addEventListener("DOMContentLoaded", function () {
   setupOptionListeners();
 });
 
+function getCurrentBoardType() {
+  const currentPath = window.location.pathname;
+
+  if (currentPath.includes("community/review")) {
+    return "review";
+  } else if (currentPath.includes("/community/discussion")) {
+    return "discussion";
+  } else if (currentPath.includes("/community/recommend")) {
+    return "recommend";
+  } else if (currentPath.includes("/info/notice")) {
+    return "notice";
+  } else if (currentPath.includes("/info/event")) {
+    return "event";
+  } else if (currentPath.includes("/info/qa")) {
+    return "qa";
+  }
+  return "review"; // 기본값
+}
+// API 엔드포인트 가져오기
+function getBoardApiEndpoint() {
+  const boardType = getCurrentBoardType();
+  return contextPath + "/board" + boardType + "ListAjax";
+}
+
+// 상세 페이지 URL 가져오기
+function getDetailPageUrl(boardNo) {
+  const boardType = getCurrentBoardType();
+  return contextPath + "/board" + boardType + "detail?boardNo=" + boardNo;
+}
+
 // 옵션 변경 이벤트 리스너
 function setupOptionListeners() {
   // 공지사항 숨기기 체크박스
@@ -50,21 +80,21 @@ function loadBoardList(page, searchType = "", searchKeyword = "") {
   };
 
   $.ajax({
-    url: contextPath + "/board/reviewListAjax",
+    url: contextPath + getBoardApiEndpoint(), // 동적 엔드포인트 생성
     type: "GET",
     data: params,
     dataType: "json",
     success: function (res) {
-		console.log("성공", res) 
-	
+      console.log("성공", res);
+
       displayBoardList(res.boardList);
       displayPagination(res.paging, searchType, searchKeyword);
     },
     error: function (xhr, status, error) {
-	  console.log("요청 URL:", contextPath + "/board/reviewListAjax");
+      console.log("요청 URL:", getBoardApiEndpoint());
       console.error("Error:", error);
-	  console.error("상태:", status);
-	  console.error("응답:", xhr.responseText);
+      console.error("상태:", status);
+      console.error("응답:", xhr.responseText);
       alert("게시글을 불러오는데 실패했습니다.");
     },
   });
@@ -74,22 +104,23 @@ function loadBoardList(page, searchType = "", searchKeyword = "") {
 function displayBoardList(boardList) {
   const tbody = document.getElementById("boardTableBody");
   tbody.innerHTML = "";
+  const boardType = getCurrentBoardType();
 
   if (boardList && boardList.length > 0) {
     boardList.forEach((board) => {
       const tr = document.createElement("tr");
 
       // 공지사항인 경우 클래스 추가
-      if (board.codeNo === 1) {
+      if (board.codeNo === 4) {
         tr.classList.add("notice-row");
       }
 
       tr.innerHTML = `
             <td>${board.boardNo}</td>
             <td class="title">
-            <a href="{contextPath}/board/review/detail?boardNo=${
-              board.boardNo
+            <a href="${getDetailPageUrl(board.boardNo)}">
             }">
+            ${board.codeNo === 4 ? '<span class="notice-tag">공지</span>' : ""}
             ${board.title}
             ${
               board.commentsCount > 0
@@ -190,5 +221,5 @@ function formatDate(dateStr) {
 
 // 글쓰기 버튼 이벤트
 document.querySelector(".go-to-editor").addEventListener("click", function () {
-  window.location.href = contextPath + "/board/review/write";
+  window.location.href = contextPath + "/board/textEditor";
 });
