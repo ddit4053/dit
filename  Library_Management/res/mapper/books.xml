@@ -64,7 +64,7 @@
 	
 	<!-- 책 상세페이지 -->
 	<select id="booksDetail" parameterType="BooksVo" resultType="BooksVo">
-		select BOOK_TITLE, ISBN, PUBDATE, COVER, AUTHOR, PUBLISHER, CATEGORY_NO
+		select BOOK_NO,BOOK_TITLE, ISBN, PUBDATE, COVER, AUTHOR, PUBLISHER, CATEGORY_NO
 		from books
 		where book_no = #{bookNo}
 	</select>
@@ -96,6 +96,12 @@
 	    WHERE book_title LIKE '%' || #{query} || '%'
 	       OR author LIKE '%' || #{query} || '%'
 	       OR publisher LIKE '%' || #{query} || '%'
+	</select>
+	
+	<!-- isbn 리스트 (책 등록시 중복방지) -->
+	<select id="bookIsbnList" resultType="BooksVo">
+		select ISBN
+		from books
 	</select>
 </mapper>
 

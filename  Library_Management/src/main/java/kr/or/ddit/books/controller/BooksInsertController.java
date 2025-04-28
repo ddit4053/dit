@@ -32,9 +32,9 @@ public class BooksInsertController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int start = 1;
-        int max =	3;
+        int max =	10;
         int end = 1; // 50페이지까지 불러오고 싶다면 1페이지 부터 10권씩 50페이지까지
-        int CategoryId = 53719;
+        int CategoryId = 53562;
         
         Gson gson = new Gson();
         JsonArray allItems = new JsonArray();
@@ -77,6 +77,8 @@ public class BooksInsertController extends HttpServlet {
             
         } while (start < end); // 종료 조건 수정
 
+      //  List<BooksVo> isbnList  = booksService.bookIsbnList();
+        
         JsonObject responseJson = new JsonObject();
 		responseJson.add("item", allItems);
 		
@@ -86,8 +88,8 @@ public class BooksInsertController extends HttpServlet {
 		List<BooksVo> bookList = gson.fromJson(items, listType);
 		
 		for (BooksVo booksVo : bookList) {
-		    if (booksVo.getCategoryNo() == CategoryId) {
-		        booksService.insertBooks(booksVo);
+		    if (booksVo.getCategoryNo() == CategoryId) {	// 내가 입력한 것과 같은 카테고리 값만 등록
+		        booksService.insertBooksIfNotExist(booksVo);
 		    }
 		}
 		//System.out.println(bookList);

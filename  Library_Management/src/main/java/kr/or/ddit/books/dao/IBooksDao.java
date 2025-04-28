@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.ddit.vo.BooksVo;
+import kr.or.ddit.vo.ReviewsVo;
 
 public interface IBooksDao {
 	public int insertBooks (BooksVo vo);
@@ -19,4 +20,8 @@ public interface IBooksDao {
 	public int countSearchBook(Map<String, Object> map);
 	
 	public int countMainSearchBook(Map<String, Object> map);
+
+	public List<BooksVo> bookIsbnList();
+
+	public List<ReviewsVo> reviewList(int bookNo);
 }

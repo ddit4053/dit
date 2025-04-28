@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<script src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -102,6 +103,28 @@
       color: gray;
     }
   </style>
+  <script>
+    function loadReviewList(){
+      const bookNo = $('#bookNo').val();
+      
+      $.ajax({
+        url: "detail/reviewList?bookNo=" + bookNo,
+        type: 'get',
+        dataType: 'json',
+        success : function(list){
+          console.log(list);
+        },
+        error: function(xhr){
+          alert(xhr.status);
+        }
+      })
+    }
+
+    // 페이지 로딩시 리뷰 불러오기기
+    $(document).ready(function() {
+    loadReviewList();
+    });
+  </script>
 </head>
 <body>
 
@@ -132,8 +155,34 @@
           <a href="javascript:history.back()">목록으로 돌아가기</a>
         </div>
         
-        <!-- 상세 정보 추가 버튼 (선택사항) -->
-        <a href="${pageContext.request.contextPath}/books/otherDetails?bookNo=${bookDetail.bookNo}" class="button">더 많은 정보</a>
+        <!-- 도서리뷰 등록 밑 출력 -->
+        <div class="book-review">
+			    <h3>도서 리뷰 작성</h3>    
+          <form id="reviewForm">
+            <label for="rating">별점 (1~5):</label>
+            <select name="rating" id="rating" required>
+              <option value="">선텍</option>
+              <option value="1">1점점</option>
+              <option value="2">2점</option>
+              <option value="3">3점</option>
+              <option value="4">4점</option>
+              <option value="5">5점</option>
+            </select><br><br>
+            
+            <label for="reviewContent">리뷰내용</label><br>
+            <textarea name="reviewContent" id="reviewContent" rows="4" cols="30" required></textarea>
+            <input type="hidden" name="bookNo" id="bookNo" value="${bookDetail.bookNo}">
+            <!-- <input type="hidden" name="userId" id="userId" value="${user.userId}"> 로그인 구현시 보여줌 -->
+          </form>    
+
+          <hr>
+
+          <!-- 등록된 리뷰 -->
+           <h3>등록된 리뷰</h3>
+           <div id="revieList">
+
+           </div>
+        </div>
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.ddit.vo.BooksVo;
+import kr.or.ddit.vo.ReviewsVo;
 
 public interface IBooksService {
 	public int insertBooks (BooksVo vo);
@@ -19,5 +20,9 @@ public interface IBooksService {
 	public int countSearchBook(Map<String, Object> map);
 
 	public int countMainSearchBook(Map<String, Object> map); // 메인 검색 결과 수
+
+	public void insertBooksIfNotExist(BooksVo bookList);
+
+	public List<ReviewsVo> reviewList(int bookNo);
 	
 }

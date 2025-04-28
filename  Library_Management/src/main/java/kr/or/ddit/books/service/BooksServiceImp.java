@@ -1,11 +1,14 @@
 package kr.or.ddit.books.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import kr.or.ddit.books.dao.BooksDaoImpl;
 import kr.or.ddit.books.dao.IBooksDao;
 import kr.or.ddit.vo.BooksVo;
+import kr.or.ddit.vo.ReviewsVo;
 
 public class BooksServiceImp implements IBooksService{
 	private static BooksServiceImp insatance;
@@ -63,6 +66,31 @@ public class BooksServiceImp implements IBooksService{
 	public int countMainSearchBook(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return booksDao.countMainSearchBook(map);
+	}
+
+	@Override
+	public void insertBooksIfNotExist(BooksVo book) { //isbn비교해서 삽입
+		List<BooksVo> isbnList = booksDao.bookIsbnList(); // db에서 isbn 가져옴
+		Set<String> isbnSet = new HashSet(); // set에 담아 중복체크
+		
+		 for (BooksVo vo : isbnList) {
+		        isbnSet.add(vo.getIsbn());
+		    }
+		
+		
+			if(!isbnSet.contains(book.getIsbn())) {
+				booksDao.insertBooks(book);
+				isbnSet.add(book.getIsbn());
+			}
+		
+		// TODO Auto-generated method stub
+	
+	}
+
+	@Override
+	public List<ReviewsVo> reviewList(int bookNo) {
+		// TODO Auto-generated method stub
+		return booksDao.reviewList(bookNo);
 	}
 
 

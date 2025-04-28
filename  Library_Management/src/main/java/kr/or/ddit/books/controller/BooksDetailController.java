@@ -35,7 +35,7 @@ public class BooksDetailController extends HttpServlet {
 		
 		String bookNoStr =request.getParameter("bookNo");
 		int bookNo = Integer.parseInt(bookNoStr);
-		
+
 		BooksVo bookvo = new BooksVo();
 		
 		bookvo.setBookNo(bookNo);
@@ -45,7 +45,7 @@ public class BooksDetailController extends HttpServlet {
 		request.setAttribute("contentPage", "booksDetail.jsp");
 		request.setAttribute("bookDetail", bookvo);
 		
-		System.out.println(bookvo);
+
 		
 		ServletContext ctx = request.getServletContext();
 		ctx.getRequestDispatcher("/WEB-INF/view/users/book_search/books.jsp").forward(request, response);

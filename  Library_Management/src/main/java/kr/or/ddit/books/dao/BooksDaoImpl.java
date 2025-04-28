@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kr.or.ddit.util.MybatisDao;
 import kr.or.ddit.vo.BooksVo;
+import kr.or.ddit.vo.ReviewsVo;
 
 public class BooksDaoImpl extends MybatisDao implements IBooksDao {
 
@@ -63,6 +64,18 @@ public class BooksDaoImpl extends MybatisDao implements IBooksDao {
 	public int countMainSearchBook(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return selectOne("books.countMainSearchBook", map);
+	}
+
+	@Override
+	public List<BooksVo> bookIsbnList() {
+		// TODO Auto-generated method stub
+		return selectList("books.bookIsbnList");
+	}
+
+	@Override
+	public List<ReviewsVo> reviewList(int bookNo) {
+		// TODO Auto-generated method stub
+		return selectList("review.reviewList",bookNo);
 	}
 	
 }
