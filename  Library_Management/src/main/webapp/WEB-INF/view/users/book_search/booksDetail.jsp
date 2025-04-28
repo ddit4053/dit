@@ -104,7 +104,15 @@
     }
   </style>
   <script>
+  	const loggedInUserNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'};
+
+  
   	function insertReview(){
+  	  if (loggedInUserNo == null) {
+          alert("로그인 후 리뷰를 등록할 수 있습니다.");
+          return;
+        }
+  	  
   	  const rating = $('#rating').val();
       const reviewContent = $('#reviewContent').val();
       const bookNo = $('#bookNo').val();
@@ -147,15 +155,27 @@
                  html = "<p>등록된 리뷰가 없습니다.</p>";
              } else {
                  list.forEach(function(item) {
-                     html += `
-                         <div style="margin-bottom:15px;">
-                             <strong>별점: \${item.rating}점</strong><br>
-                             <p>내용: \${item.revContent}</p>
-                             <small>작성일 : \${item.revDate}</small>
-                             <small>작성자 : \${item.name}</small>
-                             <hr>
-                         </div>
-                     `;
+                	  html += `
+                		    <div style="margin-bottom:15px;">
+                		      <div style="display: flex; align-items: center; gap: 10px;">
+                		        <strong>별점: \${item.rating}점</strong>
+                		  `;
+                		  
+                		  if (loggedInUserNo !== null && loggedInUserNo === item.userNo) {
+                		    html += `
+                		      <button class="editReview">수정</button>
+                		      <button class="deleteReview">삭제</button>
+                		    `;
+                		  }
+                		  
+                		  html += `
+                		      </div> <!-- flex 끝 -->
+                		      <p>내용: \${item.revContent}</p>
+                		      <small>작성일 : \${item.revDate}</small><br>
+                		      <small>작성자 : \${item.name}</small>
+                		      <hr>
+                		    </div>
+                		  `;
                  });
              }
              $('#reviewList').html(html);
@@ -164,6 +184,10 @@
         }
       })
     }
+    
+    $(document).on('click','.editReview',function(){
+    	
+    })
 
     // 페이지 로딩시 리뷰 불러오기기
     $(document).ready(function() {
@@ -218,7 +242,7 @@
             <textarea name="reviewContent" id="reviewContent" rows="4" cols="30" required></textarea>
             <input type="hidden" name="bookNo" id="bookNo" value="${bookDetail.bookNo}">
             <!-- <input type="hidden" name="userId" id="userId" value="${user.userId}"> 로그인 구현시 보여줌 -->
-			    <button type="button" onclick="insertReview()">등록</button>         
+			    <button type="button" onclick="insertReview()" id="reviewBtn">등록</button>         
           </form>    
 
           <hr>
