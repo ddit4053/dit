@@ -1,8 +1,76 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<script src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/book_search/search.css">
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mainCategory = document.querySelector('select[name="mainCategory"]');
+    const midCategory = document.querySelector('select[name="midCategory"]');
+    const subCategory = document.querySelector('select[name="subCategory"]');
+
+    function fetchCategories(parentId, targetSelect) {
+        fetch(`${pageContext.request.contextPath}/books/categoryList?parentId=\${parentId}`)
+            .then(response => response.json())
+            .then(data => {
+                targetSelect.innerHTML = '<option value="">선택하세요</option>';
+                data.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.categoryNo;
+                    option.textContent = category.categoryName;
+                    targetSelect.appendChild(option);
+                });
+            });
+    }
+
+    mainCategory.addEventListener('change', function() {
+        const parentId = this.value;
+
+        if (parentId) {
+            fetchCategories(parentId, midCategory);
+        } else {
+            midCategory.innerHTML = '<option value="">선택하세요</option>';
+            subCategory.innerHTML = '<option value="">선택하세요</option>';
+        }
+    });
+
+    midCategory.addEventListener('change', function() {
+        const parentId = this.value;
+
+        if (parentId) {
+            fetchCategories(parentId, subCategory);
+        } else {
+            subCategory.innerHTML = '<option value="">선택하세요</option>';
+        }
+    });
+
+    // 초기 대분류 카테고리 로딩
+    fetchCategories('', mainCategory);
+    
+	const form = document.querySelector('.search-form');
+	const hiddenCategoryInput = document.getElementById('selectedCategoryId');
+	
+	form.addEventListener('submit', function(e) {
+	    const mainVal = mainCategory.value;
+	    const midVal = midCategory.value;
+	    const subVal = subCategory.value;
+	
+	    let selected = '';
+	    if (subVal) {
+	        selected = subVal;
+	    } else if (midVal) {
+	        selected = midVal;
+	    } else if (mainVal) {
+	        selected = mainVal;
+	    }
+	
+	    $('#selectedCategoryId').val(selected);
+	});
+});
+
+
+</script>
 
 <div class="search-container">
     <div class="search-box">
@@ -12,8 +80,7 @@
         <form class="search-form" action="${pageContext.request.contextPath}/books/search/result" method="get">
             <div class="search-input-group">
                 <select name="searchType" class="search-select">
-                    <option value="all">전체</option>
-                    <option value="title">제목</option>
+                    <option value="book_title">제목</option>
                     <option value="author">저자</option>
                     <option value="publisher">출판사</option>
                     <option value="isbn">ISBN</option>
@@ -27,33 +94,26 @@
             <div class="search-options">
                 <div class="search-option-group">
                     <label class="search-option-label">1차 카테고리</label>
-                    <select name="year" class="search-option-select">
-                        <option value="">전체</option>
-                        <c:forEach var="year" begin="2000" end="2025" step="1" varStatus="status">
-                            <option value="${2025 - status.index}">${2025 - status.index}년</option>
-                        </c:forEach>
+                    <select name="mainCategory" class="search-option-select">
+
                     </select>
                 </div>
                 
                 <div class="search-option-group">
                     <label class="search-option-label">2차 카테고리</label>
-                    <select name="bookType" class="search-option-select">
-                        <option value="">전체</option>
-                        <option value="book">단행본</option>
-                        <option value="ebook">E-Book</option>
-                        <option value="journal">학술지</option>
+                    <select name="midCategory" class="search-option-select">
+
                     </select>
                 </div>
                 
                 <div class="search-option-group">
                     <label class="search-option-label">3차 카테고리</label>
-                    <select name="sortBy" class="search-option-select">
-                        <option value="newest">최신순</option>
-                        <option value="popular">인기순</option>
-                        <option value="title">제목순</option>
+                    <select name="subCategory" class="search-option-select">
+
                     </select>
                 </div>
             </div>
+            <input type="hidden" name="selectedCategoryId" id="selectedCategoryId">
         </form>
     </div>
     

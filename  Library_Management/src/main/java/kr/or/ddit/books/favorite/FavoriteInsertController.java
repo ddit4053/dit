@@ -28,7 +28,19 @@ public class FavoriteInsertController extends HttpServlet{
 		favorVo.setBookNo(bookNo);
 		favorVo.setUserNo(userNo);
 		
-		favoriteService.farvoriteInsert(favorVo);
+		String result="";
+		int count = favoriteService.favoriteCheck(favorVo); // 이미 등록된게 있는지 확인
+
+	    if (count == 0) {
+	        favoriteService.favoriteInsert(favorVo); // 관심 등록
+	        result = "insert"; // 등록 완료
+	    } else {
+	        favoriteService.favoriteDelete(favorVo); // 관심 삭제
+	        result = "delete"; // 삭제 완료
+	    }
+		
+	    resp.setContentType("text/plain;charset=UTF-8");
+		resp.getWriter().write(result);
 		
 	}
 }

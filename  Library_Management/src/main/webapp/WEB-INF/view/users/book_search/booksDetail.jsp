@@ -245,7 +245,6 @@
     $(document).on('click','.deleteReview',function(){
     	
     	const revNo = $(this).data('reviewno');
-    	
     	$.ajax({
     		url : "detail/reviewDelete",
     		type : "get",
@@ -260,9 +259,13 @@
     })
     
     function BookFavorite(){
-    	const userNo = ${sessionScope.userNo};
+    	const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'}
     	const bookNo = $('#BookFavorite').val();
-
+    	
+    	if (userNo == null) {
+            alert("로그인 후 이용할 수 있습니다.");
+            return;
+        }
     	
      	$.ajax({
     		url: "detail/favoriteInsert",
@@ -272,7 +275,16 @@
     			bookNo : bookNo
     		},
     		success : function(res){
-    			alert("관심 등록 성공!");
+    			if (res === "insert") {
+                    alert("관심 도서 등록 완료!");
+                } else if (res === "delete") {
+                    alert("관심 도서가 삭제되었습니다.");
+                } else {
+                    alert("처리 실패");
+                }
+    		},
+    		error: function(xhr){
+    			alert(xhr.status);
     		}
     	}) 
     }

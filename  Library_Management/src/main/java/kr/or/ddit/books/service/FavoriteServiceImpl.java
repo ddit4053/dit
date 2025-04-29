@@ -19,9 +19,21 @@ public class FavoriteServiceImpl implements IFavoriteService {
 	}
 
 	@Override
-	public void farvoriteInsert(BookFavoritesVo favorVo) {
+	public void favoriteInsert(BookFavoritesVo favorVo) {
 		// TODO Auto-generated method stub
-		favoriteDao.farvoriteInsert(favorVo);
+		favoriteDao.favoriteInsert(favorVo);
+	}
+
+	@Override
+	public int favoriteCheck(BookFavoritesVo favorVo) {
+		// TODO Auto-generated method stub
+		return favoriteDao.favoriteCheck(favorVo);
+	}
+
+	@Override
+	public void favoriteDelete(BookFavoritesVo favorVo) {
+		// TODO Auto-generated method stub
+		favoriteDao.favoriteDelete(favorVo);
 	}
 
 }

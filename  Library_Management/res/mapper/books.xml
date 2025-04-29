@@ -20,15 +20,22 @@
 
 <sql id="dynamicCondition">
    <where>
-      <if test="searchType != null and searchType != '' and keyword != null and keyword != ''" >
+      <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
          ${searchType} like '%' || #{keyword} || '%'
-	      <if test="pubdate != null and pubdate != ''">
-	         and pubdate between '20'||#{pubdate}||'-01-01' and '20'||#{pubdate}||'-12-31'
-	      </if>
+         <if test="pubdate != null and pubdate != ''">
+            and pubdate between '20'||#{pubdate}||'-01-01' and '20'||#{pubdate}||'-12-31'
+         </if>
+         <if test="categoryId != null">
+            AND CATEGORY_NO IN (
+                SELECT CATEGORY_NO 
+                FROM BOOK_CATEGORIES
+                START WITH CATEGORY_NO = #{categoryId}
+                CONNECT BY PRIOR CATEGORY_NO = PARENT_ID
+            )
+         </if>
       </if>
    </where>
 </sql>
-
 	<insert id="insertBooks" parameterType="BooksVo">
 		insert into books
 		values(SEQ_BOOKS.NEXTVAL,#{bookTitle},#{isbn},#{pubdate},#{cover},

@@ -46,6 +46,12 @@ public class BooksSearchController extends HttpServlet {
 		map.put("keyword",keyword);
 		map.put("pubdate", year);
 		
+		String categoryIdStr = req.getParameter("selectedCategoryId");
+		if(categoryIdStr != null && !categoryIdStr.isEmpty()){
+			 int categoryId = Integer.parseInt(categoryIdStr);
+			 map.put("categoryId", categoryId);
+		}
+		
 	    map.put("limit", pageSize);
 	    map.put("offset", offset);
 	    

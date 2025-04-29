@@ -19,9 +19,21 @@ public class FavoriteDaoImpl extends MybatisDao implements IFavoriteDao {
 	}
 
 	@Override
-	public void farvoriteInsert(BookFavoritesVo favorVo) {
+	public void favoriteInsert(BookFavoritesVo favorVo) {
 		// TODO Auto-generated method stub
 		insert("bookFavorites.farvoriteInsert", favorVo);
+	}
+
+	@Override
+	public int favoriteCheck(BookFavoritesVo favorVo) {
+		// TODO Auto-generated method stub
+		return selectOne("bookFavorites.favoriteCheck", favorVo);
+	}
+
+	@Override
+	public void favoriteDelete(BookFavoritesVo favorVo) {
+		// TODO Auto-generated method stub
+		delete("bookFavorites.farvoriteDelete", favorVo);
 	}
 
 

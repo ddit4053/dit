@@ -107,7 +107,7 @@
   
   
     <c:if test="${currentPage > 1}">
-      <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&page=${currentPage - 1}">이전</a>
+      <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${currentPage - 1}">이전</a>
     </c:if>
 
   
@@ -135,7 +135,7 @@
             </c:when>
             <c:otherwise>
   
-              <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&page=${i}">[${i}]</a>
+              <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${i}">[${i}]</a>
             </c:otherwise>
           </c:choose>
         </c:otherwise>
@@ -144,7 +144,7 @@
 
   
     <c:if test="${currentPage < totalPages}">
-      <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&page=${currentPage + 1}">다음</a>
+      <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${currentPage + 1}">다음</a>
     </c:if>
 
   </div>

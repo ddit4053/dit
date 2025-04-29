@@ -6,4 +6,16 @@
 		values(seq_bookfacorites.nextval,#{userNo},#{bookNo})
 	</insert>
 	
+	<select id="favoriteCheck" parameterType="BookFavoritesVo" resultType="int">
+		select count(*)
+		from BOOK_FAVORITES
+		where user_no = #{userNo}
+		and	  book_no = #{bookNo}
+	</select>
+	
+	<delete id="farvoriteDelete" parameterType="BookFavoritesVo">
+		delete BOOK_FAVORITES
+		where user_no = #{userNo}
+		and	  book_no = #{bookNo}
+	</delete>
 </mapper>

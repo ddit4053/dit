@@ -18,6 +18,7 @@
 				<typeAlias type="kr.or.ddit.vo.BooksVo" alias="BooksVo" />
 				<typeAlias type="kr.or.ddit.vo.ReviewsVo" alias="ReviewsVo"/>
 				<typeAlias type="kr.or.ddit.vo.BookFavoritesVo" alias="BookFavoritesVo"/>
+				<typeAlias type="kr.or.ddit.vo.BookCategoriesVo" alias="BookCategoriesVo"/>
 		</typeAliases>
 	
 	<environments default="dev">
@@ -40,6 +41,7 @@
 			<mapper resource="mapper/books.xml"/>
 			<mapper resource="mapper/reviews.xml"/>
 			<mapper resource="mapper/bookFavorites.xml"/>
+			<mapper resource="mapper/bookCategorie.xml"/>
 	</mappers>
 
 </configuration>
