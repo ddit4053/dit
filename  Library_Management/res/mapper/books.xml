@@ -36,6 +36,7 @@
       </if>
    </where>
 </sql>
+
 	<insert id="insertBooks" parameterType="BooksVo">
 		insert into books
 		values(SEQ_BOOKS.NEXTVAL,#{bookTitle},#{isbn},#{pubdate},#{cover},

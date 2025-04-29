@@ -288,6 +288,38 @@
     		}
     	}) 
     }
+    
+    function requestLoan() {
+    	  const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'};
+    	  const bookNo = $('#BookLoan').val();
+    	  
+    	  if (userNo == null) {
+    		    alert("로그인 후 대출 신청이 가능합니다.");
+    		    return;
+   		  }
+    	  
+    	  $.ajax({
+    		    url: "detail/loanInsert", // 실제 처리 경로에 맞게 수정 필요
+    		    type: "get",
+    		    data: {
+    		      userNo: userNo,
+    		      bookNo: bookNo
+    		    },
+    		    success: function(res) {
+    		      if (res === "success") {
+    		        alert("대출 신청이 완료되었습니다.");
+    		      } else if (res === "notAvailable") {
+    		        alert("대여 가능한 도서가 없습니다.");
+    		      } else {
+    		        alert("대출 신청 실패");
+    		      }
+    		    },
+    		    error: function(xhr) {
+    		      alert("오류 발생: " + xhr.status);
+    		    }
+    		  });
+    		}
+    }
 
     // 페이지 로딩시 리뷰 불러오기기
     $(document).ready(function() {
@@ -321,6 +353,7 @@
         
         
         <div style="margin-top: 20px; text-align: right;">
+          <button class="button" onclick="requestLoan()" value="${bookDetail.bookNo}" id="BookLoan">대출 신청</button>
 		  <button class="button" onclick="BookFavorite()" value="${bookDetail.bookNo}" id="BookFavorite"}>관심 도서 추가</button>
 		</div>
         <!-- 책 상세 설명을 위한 링크 -->

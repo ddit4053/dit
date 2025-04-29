@@ -48,18 +48,22 @@ public class BooksSearchController extends HttpServlet {
 		
 		String categoryIdStr = req.getParameter("selectedCategoryId");
 
-		 int categoryId = Integer.parseInt(categoryIdStr);
-		 map.put("categoryId", categoryId);
+		Map<String, Object> countmap = new HashMap<String, Object>();
+		if(categoryIdStr!=null) {
+			
+			int categoryId = Integer.parseInt(categoryIdStr);
+			map.put("categoryId", categoryId);
+			
+			countmap.put("categoryId", categoryId);
+		}
+		countmap.put("searchType", searchType);
+		countmap.put("keyword",keyword);
+		countmap.put("pubdate", year);
 		
 		
 	    map.put("limit", pageSize);
 	    map.put("offset", offset);
 	    
-	    Map<String, Object> countmap = new HashMap<String, Object>();
-	    countmap.put("searchType", searchType);
-	    countmap.put("keyword",keyword);
-	    countmap.put("pubdate", year);
-	    countmap.put("categoryId", categoryId);
 		
 		//System.out.println(map.get("searchType"));
 		//System.out.println(map.get("keyword"));
