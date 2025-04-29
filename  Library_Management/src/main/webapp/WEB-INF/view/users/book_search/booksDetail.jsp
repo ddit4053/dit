@@ -258,6 +258,24 @@
     		}
     	})
     })
+    
+    function BookFavorite(){
+    	const userNo = ${sessionScope.userNo};
+    	const bookNo = $('#BookFavorite').val();
+
+    	
+     	$.ajax({
+    		url: "detail/favoriteInsert",
+    		type: "get",
+    		data : {
+    			userNo : userNo,
+    			bookNo : bookNo
+    		},
+    		success : function(res){
+    			alert("관심 등록 성공!");
+    		}
+    	}) 
+    }
 
     // 페이지 로딩시 리뷰 불러오기기
     $(document).ready(function() {
@@ -289,6 +307,10 @@
         <p><strong>ISBN:</strong> ${bookDetail.isbn}</p>
         <p><strong>카테고리 번호:</strong> ${bookDetail.categoryNo}</p>
         
+        
+        <div style="margin-top: 20px; text-align: right;">
+		  <button class="button" onclick="BookFavorite()" value="${bookDetail.bookNo}" id="BookFavorite"}>관심 도서 추가</button>
+		</div>
         <!-- 책 상세 설명을 위한 링크 -->
         <div class="back-link">
           <a href="javascript:history.back()">목록으로 돌아가기</a>
