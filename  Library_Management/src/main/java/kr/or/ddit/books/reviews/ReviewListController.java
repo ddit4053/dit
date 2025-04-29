@@ -29,6 +29,8 @@ public class ReviewListController extends HttpServlet{
 		String bookBoStr = req.getParameter("bookNo");
 		int bookNo = Integer.parseInt(bookBoStr);
 		
+		System.out.println("책번호 : "+bookNo);
+		
 		List<Map<String, Object>>reviewList =  reviewsService.reviewList(bookNo);
 		
 		Gson gson = new GsonBuilder().create();

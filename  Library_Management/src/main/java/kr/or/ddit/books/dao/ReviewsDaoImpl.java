@@ -39,4 +39,10 @@ public class ReviewsDaoImpl extends MybatisDao implements IReviewsDao {
 		// TODO Auto-generated method stub
 		update("reviews.reviewUpdate", reviewsVo);
 	}
+
+	@Override
+	public void reviewDelete(int revNo) {
+		// TODO Auto-generated method stub
+		delete("reviews.reviewDelete", revNo);
+	}
 }

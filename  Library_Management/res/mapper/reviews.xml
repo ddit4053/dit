@@ -12,7 +12,7 @@
         <result property="name" column="NAME"/>  
     </resultMap>
 
-    <select id="reviewList" resultMap="reviewListMap">
+    <select id="reviewList" resultMap="reviewListMap" parameterType="int">
 		SELECT 
 		    R.REV_NO,               -- 리뷰 번호
 		    R.RATING,               -- 리뷰 평점
@@ -27,7 +27,7 @@
 		    USERS U 
 		    ON R.USER_NO = U.USER_NO -- USERS 테이블과 JOIN
 		WHERE 
-		    R.BOOK_NO = 20          -- 책 번호가 20인 리뷰만 조회
+		    R.BOOK_NO = #{bookNo}          -- 책 번호가 20인 리뷰만 조회
 		ORDER BY 
 		    R.REV_DATE DESC
     </select>
@@ -44,4 +44,9 @@
 			REV_CONTENT =#{revContent}
 			where REV_NO=#{revNo}
 	</update>
+	
+	<delete id="reviewDelete" parameterType="int">
+		delete REVIEWS
+		where REV_NO=#{revNo}
+	</delete>
 </mapper>

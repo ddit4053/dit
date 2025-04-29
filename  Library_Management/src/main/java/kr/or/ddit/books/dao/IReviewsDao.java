@@ -11,4 +11,6 @@ public interface IReviewsDao {
 	public void reviewInsert(ReviewsVo reviewsVo);
 
 	public void reviewUpdate(ReviewsVo reviewsVo);
+
+	public void reviewDelete(int revNo);
 }

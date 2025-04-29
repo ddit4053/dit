@@ -185,7 +185,7 @@
       })
     }
     
-    
+    //모달창 띄우기
     function openModal(reviewNo,rating,revContent) {
     	 $('#editReviewNo').val(reviewNo);
     	  $('#editRating').val(rating);
@@ -193,10 +193,12 @@
     	  $('#editReviewModal').show();
     }
     
+    //모달창 닫기
     function closeModal() {
     	  $('#editReviewModal').hide();
    	}
     
+    //리뷰 수정버튼 이벤트
     $(document).on('click','.editReview',function(){
    	 	const parentDiv = $(this).closest('div');
 	   	const ratingText = parentDiv.find('strong').text(); // "별점: 5점" 이런식
@@ -209,6 +211,7 @@
     	
     })
     
+    //리뷰 수정
     function updateReview() {
     	  const reviewNo = $('#editReviewNo').val();
     	  const rating = $('#editRating').val();
@@ -237,6 +240,24 @@
     		  }
     	  });
     }
+    
+    //리뷰삭제 
+    $(document).on('click','.deleteReview',function(){
+    	
+    	const revNo = $(this).data('reviewno');
+    	
+    	$.ajax({
+    		url : "detail/reviewDelete",
+    		type : "get",
+    		data : {
+    			revNo: revNo
+    		},
+    		success: function(res){
+    			alert("리뷰 삭제");
+  			  	loadReviewList();
+    		}
+    	})
+    })
 
     // 페이지 로딩시 리뷰 불러오기기
     $(document).ready(function() {

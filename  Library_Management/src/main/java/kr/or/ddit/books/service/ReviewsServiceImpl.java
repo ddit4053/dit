@@ -43,4 +43,10 @@ public class ReviewsServiceImpl implements IReviewsService {
 		reviewsDao.reviewUpdate(reviewsVo);
 	}
 
+	@Override
+	public void reviewDelete(int revNo) {
+		// TODO Auto-generated method stub
+		reviewsDao.reviewDelete(revNo);
+	}
+
 }
