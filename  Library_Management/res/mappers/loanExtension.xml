@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="extension">
+
+		
+
+	<resultMap id="loanExtentionMap" type="BookLoanApprovalVo">
+	    <result property="approvalNo" column="approvalNo"/>
+	    <result property="approvalStatus" column="approvalStatus"/>
+	    <result property="approvedBy" column="approvedBy"/>
+	    <result property="approvedDate" column="approvedDate"/>
+	    <result property="loanNo" column="loanNo"/>
+	    <result property="userNo" column="userNo"/>
+	</resultMap>
+
+
+	<select id="extensionListMap" resultType="map">
+		SELECT  
+               U.NAME AS "name",
+               B.BOOK_TITLE AS "bookTitle" ,
+               A.APPROVAL_NO AS "approvalNo",
+		       A.APPROVAL_STATUS AS "approvalStatus",
+		       A.APPROVED_BY AS "approvedBy",
+		       TO_CHAR(A.APPROVED_DATE, 'YYYY-MM-DD') AS "approvedDate",
+		       A.LOAN_NO AS "loanNo",
+		       A.USER_NO AS "userNo"
+		  FROM BOOK_LOAN_APPROVAL A
+            JOIN USERS U ON  A.USER_NO=U.USER_NO
+            JOIN BOOK_LOANS L ON A.LOAN_NO=L.LOAN_NO
+            LEFT JOIN REAL_BOOK R ON L.REAL_BOOK=R.REAL_BOOK
+            LEFT JOIN BOOKS B ON R.BOOK_NO=B.BOOK_NO
+		  
+		  
+	</select>
+	
+	
+	
+	<!-- 연장 승인시 연장처리 테이블 변화  -->
+	
+	<update id="approveLoanExtension" parameterType="BookLoanApprovalVo">
+		UPDATE BOOK_LOAN_APPROVAL
+		 SET approval_status = '승인',
+		    approved_date = SYSDATE,
+		    approved_by = #{approvedBy}
+		WHERE approval_no =#{approvalNo}
+		  AND approval_status ='대기'
+	</update>
+	
+	<!-- 연장 승인시 대출관리 테이블 변화/한번 연장처리한 대출번호에 다시 연장 방지 -->
+	
+	<update id="extendDueDate" parameterType="BookLoanApprovalVo">
+		UPDATE BOOK_LOANS B
+		   SET B.DUE_DATE = B.DUE_DATE+7
+		 WHERE EXISTS (
+		    SELECT 1
+		    FROM  USERS U
+		    JOIN BOOK_LOAN_APPROVAL A ON B.LOAN_NO=A.LOAN_NO
+		    WHERE B.USER_NO = U.USER_NO
+		     AND A.approval_no =#{approvalNo}
+		     AND approval_status ='대기'
+		     AND U.STATUS = '정상'
+		     AND NOT EXISTS (
+			SELECT 1 FROM BOOK_LOAN_APPROVAL X
+		            WHERE X.LOAN_NO = A.LOAN_NO
+		                AND X.APPROVAL_STATUS = '승인'
+		      )
+		 )
+	</update>
+	
+	<!-- 연장 거부시 연장처리 테이블 변화  -->
+	
+	<update id="rejectLoanExtension" parameterType="BookLoanApprovalVo">
+		UPDATE BOOK_LOAN_APPROVAL
+		 SET approval_status = '반려',
+		    approved_date = SYSDATE,
+		    approved_by = #{approvedBy}
+		WHERE approval_no =#{approvalNo}
+		  AND approval_status ='대기'
+	</update>
+	
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="notiBan">
+
+		
+
+	<resultMap id="notiMap" type="Noti">
+	    <result property="notiNo" column="notiNo"/>
+	    <result property="notiType" column="notiType"/>
+	    <result property="message" column="message"/>
+	    <result property="sentDate" column="sentDate"/>
+	    <result property="userNo" column="userNo"/>
+	</resultMap>
+
+	<select id="selectBanUserMap" resultType="map">
+	    SELECT 
+	    	   bl.LOAN_NO    as "loanNo"
+	    	 , u.USER_NO     as "userNo"
+	         , u.NAME        as "name"
+	         , b.BOOK_TITLE  as "bookTitle"
+	         , u.EMAIL       as "email"
+	         , u.PHONE       as "phone"
+	         , TRUNC(SYSDATE)-TRUNC(bl.DUE_DATE)   as "banDays"
+	         , u.STATUS      as "status"
+	    FROM USERS u
+	    JOIN BOOK_LOANS bl ON u.USER_NO = bl.USER_NO
+	    JOIN BAN_USERS bu ON u.USER_NO = bu.USER_NO
+	    JOIN REAL_BOOK r ON bl.REAL_BOOK=r.REAL_BOOK
+	    JOIN BOOKS b ON R.BOOK_NO=b.BOOK_NO
+	   WHERE bl.RETURN_DATE IS NULL
+	     AND SYSDATE &gt; bl.DUE_DATE
+	  </select>
+		
+		<!-- 대출번호로 사용자 연락처 조회 -->
+	    <select id="selectLoanContact" parameterType="int" resultType="map">
+		    SELECT u.USER_NO    AS "userNo"
+		         , u.NAME       AS "name"
+		         , u.EMAIL      AS "email"
+	             , u.PHONE      AS "phone"
+		         , bl.LOAN_NO   AS "loanNo"
+		         , bl.DUE_DATE  AS "dueDate"
+		    FROM USERS u
+		    JOIN BOOK_LOANS bl ON u.USER_NO = bl.USER_NO
+		    WHERE bl.LOAN_NO = #{loanNo}
+		  </select>
+		
+		  <!-- 3) 경고 이력 남기기 -->
+		  <insert id="insertWarningHistory" parameterType="Noti">
+		   INSERT INTO NOTI
+		      (NOTI_NO, NOTI_TYPE, MESSAGE, SENT_DATE, USER_NO)
+		    VALUES
+		      (NOTI_SEQ.NEXTVAL, 'OVERDUE_WARNING', #{message}, SYSDATE, #{userNo})
+		  </insert>
+	
+	
+	
+	
+	
+</mapper>

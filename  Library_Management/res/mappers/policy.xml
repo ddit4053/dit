@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="policy">
+
+		
+
+	<resultMap id="policyMap" type="OverduePolicyVo">
+	    <result property="policyNo" column="policyNo"/>
+	    <result property="days" column="days"/>
+	    <result property="excludeWeekend" column="excludeWeekend"/>
+	    <result property="startDate" column="startDate"/>
+	    <result property="endDate" column="endDate"/>
+	    <result property="isActive" column="isActive"/>
+	    <result property="note" column="note"/>
+	</resultMap>
+
+
+	<select id="policyList" resultMap="policyMap">
+		 SELECT POLICY_NO AS "policyNo", 
+			    DAYS AS "days", 
+			    EXCLUDE_WEEKEND AS "excludeWeekend", 
+			    TO_CHAR(START_DATE, 'YYYY-MM-DD') AS "startDate", 
+			    TO_CHAR(END_DATE, 'YYYY-MM-DD') AS "endDate", 
+			    IS_ACTIVE AS "isActive", 
+			    NOTE AS "note"
+		   FROM OVERDUE_POLICY
+	</select>
+	
+	<!-- 연체기준목록 추가 -->
+	<insert id="policyInsert" parameterType="OverduePolicyVo">
+		<selectKey 
+		      keyProperty="policyNo" 
+		      resultType="int" 
+		      order="AFTER">    <!-- MyBatis 3.4.0 이상 : 'order' 속성 사용 -->
+		        <!-- MyBatis 3.4.0 미만 : 'before' 속성 -->
+		    SELECT SEQ_OVERDUE_POLICY.currval FROM dual
+		</selectKey>
+		
+		
+		INSERT INTO OVERDUE_POLICY(POLICY_NO, DAYS, EXCLUDE_WEEKEND, START_DATE, IS_ACTIVE)
+		VALUES(SEQ_OVERDUE_POLICY.nextval, #{days}, #{excludeWeekend}, SYSDATE, #{isActive}) 
+	</insert>
+	
+	<!-- 1) 모든 정책 비활성화 -->
+	<update id="deactivateAll">
+		UPDATE OVERDUE_POLICY
+		SET IS_ACTIVE = 'N'
+	</update>
+  
+	<!-- 연체기준 적용  -->
+	<update id="activateOne" parameterType="int">
+		UPDATE OVERDUE_POLICY
+		SET IS_ACTIVE = 'Y'
+		WHERE POLICY_NO= #{policyNo}
+		AND END_DATE IS NULL
+	</update>
+	
+	
+	<!-- 연체기준 삭제(영구 비활성화)  -->
+	<update id="policyDelete" parameterType="int">
+		UPDATE OVERDUE_POLICY
+		SET END_DATE= SYSDATE,
+			IS_ACTIVE = 'N'
+		WHERE POLICY_NO= #{policyNo}
+		   
+	</update>
+	
+	
+	<!-- 연체기준 수정  -->
+	<update id="policyUpdate" parameterType="OverduePolicyVo">
+		UPDATE OVERDUE_POLICY
+		SET DAYS = #{days},
+			EXCLUDE_WEEKEND = #{excludeWeekend},
+			START_DATE = SYSDATE,
+			NOTE = #{note}
+		WHERE POLICY_NO= #{policyNo}
+		   
+	</update>
+	
+	<select id="selectOne" parameterType="int" resultMap="policyMap">
+		 SELECT POLICY_NO AS "policyNo", 
+			    DAYS AS "days", 
+			    EXCLUDE_WEEKEND AS "excludeWeekend", 
+			    TO_CHAR(START_DATE, 'YYYY-MM-DD') AS "startDate", 
+			    TO_CHAR(END_DATE, 'YYYY-MM-DD') AS "endDate", 
+			    IS_ACTIVE AS "isActive", 
+			    NOTE AS "note"
+		   FROM OVERDUE_POLICY
+		  WHERE POLICY_NO = #{policyNo}
+		  	AND END_DATE IS NULL 
+	</select>
+	
+	
+
+</mapper>

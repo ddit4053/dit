@@ -1,0 +1,22 @@
+@charset "UTF-8";
+/* FullCalendar 셀 안 이벤트 높이·패딩 */
+.fc-daygrid-event{
+  height:auto!important;
+  padding:2px 6px!important;
+  overflow:visible!important;
+}
+
+/* 타이틀 줄바꿈 허용 */
+.fc .fc-daygrid-event .fc-event-title,
+.fc .fc-list-event .fc-event-title{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+
+/* 캘린더 컨테이너 */
+#calendar{
+  max-width:900px;
+  margin:40px auto;
+  height:600px;
+}

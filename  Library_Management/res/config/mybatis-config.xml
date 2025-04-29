@@ -15,7 +15,19 @@
 	                        데이터베이스 연결을 초기화하고 사용자를 인증하는 과정이 없기 때문에 속도가 빠르다.
 	 -->
 		<typeAliases>
-
+			<typeAlias type="kr.or.ddit.vo.BanUsersVo" alias="BanUsersVo"/>
+			<typeAlias type="kr.or.ddit.vo.BookLoanApprovalVo" alias="BookLoanApprovalVo"/>
+			<typeAlias type="kr.or.ddit.vo.BookLoansVo" alias="BookLoansVo"/>
+			<typeAlias type="kr.or.ddit.vo.BookRequestsVo" alias="BookRequestsVo"/>
+			<typeAlias type="kr.or.ddit.vo.BookReservationsVo" alias="BookReservationsVo"/>
+			<typeAlias type="kr.or.ddit.vo.BooksVo" alias="BooksVo"/>
+			<typeAlias type="kr.or.ddit.vo.DamagedLostBookVo" alias="DamagedLostBookVo"/>
+			<typeAlias type="kr.or.ddit.vo.Noti" alias="Noti"/>
+			<typeAlias type="kr.or.ddit.vo.OverduePolicyVo" alias="OverduePolicyVo"/>
+			<typeAlias type="kr.or.ddit.vo.RealBookVo" alias="RealBookVo"/>
+			<typeAlias type="kr.or.ddit.vo.RecommendBookVo" alias="RecommendBookVo"/>
+			<typeAlias type="kr.or.ddit.vo.UsersVo" alias="UsersVo"/>
+			<typeAlias type="kr.or.ddit.vo.PagingVo" alias="PagingVo"/>
 		</typeAliases>
 	
 	<environments default="dev">
@@ -35,7 +47,11 @@
 	</environments>
 	<mappers>
 <!-- 		<mapper resource="mapper/file.xml"/> -->
-
+		<mapper resource="mappers/return.xml"/>
+		<mapper resource="mappers/cart.xml"/>
+		<mapper resource="mappers/policy.xml"/>
+		<mapper resource="mappers/loanExtension.xml"/>
+		<mapper resource="mappers/notiBan.xml"/>
 	</mappers>
 
 </configuration>
