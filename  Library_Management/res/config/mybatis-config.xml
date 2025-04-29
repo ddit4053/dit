@@ -17,7 +17,7 @@
 		<typeAliases>
 			<typeAlias type="kr.or.ddit.vo.BookBoardVo" alias="BookBoardVo"/>
 			<typeAlias type="kr.or.ddit.vo.CommentsVo" alias="CommentsVo"/>
-			<typeAlias type="kr.or.ddit.vo.UsersVo" alias="UsersdVo"/>
+			<typeAlias type="kr.or.ddit.vo.UsersVo" alias="UsersVo"/>
 			<typeAlias type="kr.or.ddit.vo.BooksVo" alias="BooksVo"/>
 			<typeAlias type="kr.or.ddit.vo.EduEventVo" alias="EduEventVo"/>
 			<typeAlias type="kr.or.ddit.vo.FileGroupVo" alias="FileGroupVo"/>
@@ -45,6 +45,7 @@
 <!-- 		<mapper resource="mapper/file.xml"/> -->
 	<mapper resource="mapper/board.xml"/>
 	<mapper resource="mapper/comments.xml"/>
+	<mapper resource="mapper/user.xml"/>
 
 	</mappers>
 
