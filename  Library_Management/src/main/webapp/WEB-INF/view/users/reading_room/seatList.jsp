@@ -171,7 +171,7 @@
         <tr>
           <td>${vs.index + 1}</td>
           <td>${roomName}</td>
-          <td>${seat.seatNumber}번</td>
+          <td>${vs.index + 1}번</td>
           <td>
             <div class="bar">
               <c:set var="reservedHours" value="${reservationMap[seat.seatNo]}" />

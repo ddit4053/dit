@@ -15,6 +15,7 @@ public class MyReservationServiceImpl implements MyReservationService {
 
     @Override
     public List<ReadingReservationsVo> getReservationsByUserNo(int userNo) {
-        return dao.getReservationsByUser(userNo);  // ✅ 여기만 수정
-    }
+        return dao.getReservationsByUser(userNo);  
+        
+        }
 }

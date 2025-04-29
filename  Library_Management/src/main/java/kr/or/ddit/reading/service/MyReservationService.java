@@ -6,4 +6,6 @@ import kr.or.ddit.vo.ReadingReservationsVo;
 
 public interface MyReservationService {
     List<ReadingReservationsVo> getReservationsByUserNo(int userNo);
+    
+    
 }

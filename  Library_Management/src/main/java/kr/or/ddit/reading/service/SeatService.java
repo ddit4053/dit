@@ -4,6 +4,6 @@ import java.util.List;
 import kr.or.ddit.vo.ReadingSeatsVo;
 
 public interface SeatService {
-    List<ReadingSeatsVo> getSeatsByRoom(String roomName);
+    // 열람실 구분 없이 전체 좌석 조회
+    List<ReadingSeatsVo> getAllSeats();
 }
-

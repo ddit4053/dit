@@ -3,6 +3,10 @@ package kr.or.ddit.reading.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Time;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +29,13 @@ public class MyReservationDaoImpl implements MyReservationDao {
             while (rs.next()) {
                 ReadingReservationsVo vo = new ReadingReservationsVo();
                 vo.setRReserveNo(rs.getInt("r_reserve_no"));
-                vo.setStartTime(rs.getString("start_time"));
-                vo.setEndTime(rs.getString("end_time"));
-                vo.setRReserveStatus(rs.getString("r_reserve_status"));
-                vo.setSeatNo(rs.getInt("seat_no"));
                 vo.setUserNo(rs.getInt("user_no"));
+                vo.setSeatNo(rs.getInt("seat_no"));
+                vo.setReserveDate(rs.getDate("reserve_date").toLocalDate());   // Date -> LocalDate
+                vo.setStartTime(rs.getTime("start_time").toLocalTime());        // Time -> LocalTime
+                vo.setEndTime(rs.getTime("end_time").toLocalTime());            // Time -> LocalTime
+                vo.setRReserveStatus(rs.getString("r_reserve_status"));
+                vo.setRoomName(rs.getString("room_name"));                     // roomName 추가
                 list.add(vo);
             }
 
