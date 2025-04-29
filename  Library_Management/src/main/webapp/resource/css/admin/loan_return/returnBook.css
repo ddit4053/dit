@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+/* resource/css/admin/loan_return/returnBook.css */
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.alert {
+  background-color: #ffdddd;
+  border: 1px solid #ff5c5c;
+  color: #a33;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+.policy-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.policy-table th,
+.policy-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.policy-table thead {
+  background-color: #007acc;
+  color: white;
+}
+
+.policy-table tbody tr:hover {
+  background-color: #f1faff;
+}
+
+.policy-table button {
+  background-color: #007acc;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.policy-table button:hover {
+  background-color: #005fa3;
+}

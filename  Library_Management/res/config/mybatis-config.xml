@@ -47,7 +47,7 @@
 	</environments>
 	<mappers>
 <!-- 		<mapper resource="mapper/file.xml"/> -->
-		<mapper resource="mappers/return.xml"/>
+		<mapper resource="mappers/returnBook.xml"/>
 		<mapper resource="mappers/cart.xml"/>
 		<mapper resource="mappers/policy.xml"/>
 		<mapper resource="mappers/loanExtension.xml"/>

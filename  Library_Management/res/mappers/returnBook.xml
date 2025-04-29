@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="return">
+
+		
+
+	<resultMap id="loanMap" type="BookLoansVo">
+	    <result property="loanNo" column="loanNo"/>
+	    <result property="loanDate" column="loanDate"/>
+	    <result property="dueDate" column="dueDate"/>
+	    <result property="returnDate" column="returnDate"/>
+	    <result property="userNo" column="userNo"/>
+	    <result property="realBook" column="realBook"/>
+	    <result property="policyNo" column="policyNo"/>
+	</resultMap>
+
+
+	<select id="returnListMap" resultType="map">
+	 SELECT 
+        a.loan_no AS "loanNo",
+	    u.name AS "name",
+	    b.book_title AS "bookTitle",
+		a.user_no AS "userNo",
+		a.real_book AS "realBook",
+		a.policy_no AS "policyNo",
+	    TO_CHAR(a.loan_date, 'YYYY-MM-DD') AS "loanDate",
+	    TO_CHAR(a.due_date, 'YYYY-MM-DD') AS "dueDate",
+	    -- NULL일 경우 공백 문자열로 처리
+	    CASE 
+	      WHEN a.return_date IS NOT NULL 
+	      THEN TO_CHAR(a.return_date, 'YYYY-MM-DD')
+	      ELSE ''
+	    END AS "returnDate"
+	  FROM book_loans a
+	    JOIN USERS u ON a.user_no = u.user_no
+	    JOIN REAL_BOOK bl ON a.real_book = bl.real_book
+	    JOIN BOOKS b ON bl.book_no = b.book_no
+	</select>
+	
+	
+	
+    <!-- 10) 반납 시 Book_Loans.return_date 설정 -->
+    <update id="bookLoanReturn" parameterType="BookLoansVo">
+    	UPDATE BOOK_LOANS L
+		SET L.RETURN_DATE = SYSDATE
+		WHERE LOAN_NO = #{loanNo}
+		AND RETURN_DATE IS NULL
+		AND EXISTS (
+		      SELECT 1
+		      FROM REAL_BOOK R
+		      WHERE L.REAL_BOOK=R.REAL_BOOK
+		      AND R.REAL_BOOK_STATUS ='대여중'
+		)
+    </update>
+    
+    
+	<!-- 도서를 반납시 도서의 상태변화 -->
+	<update id="updateReturnBook" parameterType="BookLoansVo">
+		UPDATE REAL_BOOK
+	     SET REAL_BOOK_STATUS = '대여가능' 
+	   WHERE REAL_BOOK = (
+	     SELECT REAL_BOOK
+	       FROM BOOK_LOANS
+	      WHERE LOAN_NO = #{loanNo}
+   )
+	</update>
+    
+	<!-- 11) 연체자 반납 시 ban_users.release_date 설정 -->
+    <update id="banReleaseDateOnReturn" parameterType="BookLoansVo">
+    	MERGE INTO BAN_USERS B
+		USING (
+		  SELECT 
+		    L.LOAN_NO,
+		    TRUNC(L.RETURN_DATE) - TRUNC(L.LOAN_DATE) AS PENALTY_DAYS
+		  FROM BOOK_LOANS L
+		  JOIN OVERDUE_POLICY P ON L.POLICY_NO = P.POLICY_NO
+		  WHERE TRUNC(L.RETURN_DATE) > TRUNC(L.DUE_DATE) + P.DAYS
+		    AND L.LOAN_NO = #{loanNo}
+		) SRC
+		ON (B.LOAN_NO = SRC.LOAN_NO)
+		WHEN MATCHED THEN
+		  UPDATE SET
+		    BAN_DAYS     = SRC.PENALTY_DAYS,
+		    RELEASE_DATE = TRUNC(SYSDATE) + SRC.PENALTY_DAYS
+		    WHERE B.RELEASE_DATE IS NULL
+    </update>
+	
+	
+	<!-- 반납후 사용자 상태변화 -->
+	
+	
+	<!-- 5) 지연 반납자(경고) → 반납 완료 시 정상 복귀 -->
+	    <update id="restoreDelayed">
+	    	UPDATE USERS U
+		SET STATUS = '정상'
+		WHERE STATUS = '경고'
+		  AND NOT EXISTS (
+		    SELECT 1
+		    FROM BOOK_LOANS B
+		    WHERE B.USER_NO = U.USER_NO
+		      AND B.RETURN_DATE IS NULL
+		  )
+    </update>
+	
+	
+	 <!-- 1) 연체 만료(정지→정상) 자동 복귀 -->
+	<update id="restoreOverdue">
+		UPDATE USERS U
+		SET STATUS = '정상'
+		WHERE STATUS = '정지'
+		  AND NOT EXISTS (
+		    SELECT 1
+		    FROM BOOK_LOANS B
+		    JOIN OVERDUE_POLICY P ON(B.POLICY_NO=P.POLICY_NO)
+		    WHERE B.USER_NO = U.USER_NO
+		      AND B.RETURN_DATE IS NOT NULL
+		      AND P.IS_ACTIVE = 'Y'
+		      AND TRUNC(SYSDATE) &lt; TRUNC(B.RETURN_DATE) + P.DAYS
+		  )
+	</update>
+	
+	
+	
+ 	 <!-- 2)  ban_users 테이블 기준 정지자 자동 복귀 -->
+	<update id="restoreBanned">
+		UPDATE USERS U
+		     SET STATUS = '정상'
+		   WHERE U.STATUS = '정지'
+		     AND NOT EXISTS (
+		           SELECT 1
+		             FROM BAN_USERS BU
+		            WHERE BU.USER_NO     = U.USER_NO
+		              AND BU.RELEASE_DATE &gt; TRUNC(SYSDATE)  
+		         )
+	</update>
+	
+	
+	  <!-- 3)  대출 지연자 → 경고로 상태 변경 -->
+	 <update id="warnOverdue">
+		 UPDATE USERS U
+			SET STATUS = '경고'
+			WHERE STATUS = '정상'
+			  AND EXISTS (
+			    SELECT 1
+			    FROM BOOK_LOANS B
+			    JOIN OVERDUE_POLICY P ON(B.POLICY_NO=P.POLICY_NO)
+			    WHERE B.USER_NO = U.USER_NO
+			      AND B.RETURN_DATE IS NULL
+			      AND P.IS_ACTIVE = 'Y'
+			      AND TRUNC(SYSDATE) &gt; TRUNC(B.DUE_DATE)
+			      AND TRUNC(SYSDATE) &lt;= TRUNC(B.DUE_DATE) + P.DAYS
+			  )
+	 </update> 
+	 
+	 
+    <!-- 4) 경고 or 정상 → 지정일 초과 시 정지 -->
+    <update id="suspendOverdueUsers">
+    	UPDATE USERS U
+		SET STATUS = '정지'
+		WHERE (STATUS = '정상' OR STATUS = '경고')
+		  AND EXISTS (
+		    SELECT 1
+		    FROM BOOK_LOANS B
+		    JOIN OVERDUE_POLICY P ON(B.POLICY_NO=P.POLICY_NO)
+		    WHERE B.USER_NO = U.USER_NO
+		      AND P.IS_ACTIVE = 'Y'
+		      AND B.RETURN_DATE IS NULL
+		      AND TRUNC(SYSDATE) &gt; TRUNC(B.DUE_DATE)+ P.DAYS
+		  )
+	    </update>
+		
+	    
+    
+    
+    <!-- 6) 연체자 → ban_users 에 신규 등록 -->
+    <insert id="banUsersOverdue">
+    	INSERT INTO BAN_USERS
+		  ( BAN_NO
+		  , BAN_DATE
+		  , BAN_DAYS
+		  , RELEASE_DATE
+		  , POLICY_NO
+		  , LOAN_NO
+		  , USER_NO
+		  , BAN_NOTE
+		  )
+		SELECT 
+		    SEQ_BAN_USERS.NEXTVAL             AS BAN_NO
+		  , TRUNC(B.DUE_DATE) + P.DAYS + 1    AS BAN_DATE     -- 연체 시작일
+		  , NULL                              AS BAN_DAYS     -- 총 연체 일수 아직 미정
+		  , NULL                              AS RELEASE_DATE -- 아직 해제일 미정
+		  , P.POLICY_NO                       AS POLICY_NO
+		  , B.LOAN_NO                         AS LOAN_NO
+		  , B.USER_NO                         AS USER_NO
+		  , '연체'                             AS BAN_NOTE
+		FROM BOOK_LOANS      B
+		JOIN OVERDUE_POLICY  P ON P.POLICY_NO = B.POLICY_NO
+		JOIN USERS           U ON U.USER_NO   = B.USER_NO
+		WHERE U.STATUS            = '정지'
+		  AND P.IS_ACTIVE         = 'Y'
+		  AND B.RETURN_DATE    IS  NULL              -- 아직 미반납된 더미 데이터만
+		  AND TRUNC(SYSDATE) &gt; TRUNC(B.DUE_DATE) + P.DAYS  -- 실제 연체 발생 건만
+		  AND NOT EXISTS (
+		       SELECT 1
+		         FROM BAN_USERS BU
+		        WHERE BU.USER_NO = B.USER_NO
+		        AND BU.LOAN_NO = B.LOAN_NO
+		      )
+    </insert>
+    
+    
+	<!-- 7) 60일 초과 지연자는 ban_users 에서 분실로 업데이트 -->
+    <update id="lostBookBan">
+    	UPDATE BAN_USERS BU
+	   SET 
+	       BU.BAN_DAYS = 60,
+	       BU.RELEASE_DATE = TRUNC(SYSDATE) + 60,
+	       BU.BAN_NOTE     = '분실'
+	 WHERE EXISTS (
+	     SELECT 1
+	       FROM BOOK_LOANS B
+	      WHERE B.LOAN_NO      = BU.LOAN_NO
+	        AND B.RETURN_DATE IS NULL
+	        AND TRUNC(SYSDATE) &gt; TRUNC(B.DUE_DATE) + 60
+	 )
+    </update>
+    
+    
+	
+	
+	
+</mapper>
