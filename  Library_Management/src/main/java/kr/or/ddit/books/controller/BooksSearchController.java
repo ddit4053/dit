@@ -37,7 +37,7 @@ public class BooksSearchController extends HttpServlet {
 		
 		//System.out.println(searchType);
 		int currentPage = (pageParam != null) ? Integer.parseInt(pageParam) : 1;
-	    int pageSize = 5;
+	    int pageSize = 3;
 	    int offset = (currentPage - 1) * pageSize;
 	    
 		
@@ -47,10 +47,10 @@ public class BooksSearchController extends HttpServlet {
 		map.put("pubdate", year);
 		
 		String categoryIdStr = req.getParameter("selectedCategoryId");
-		if(categoryIdStr != null && !categoryIdStr.isEmpty()){
-			 int categoryId = Integer.parseInt(categoryIdStr);
-			 map.put("categoryId", categoryId);
-		}
+
+		 int categoryId = Integer.parseInt(categoryIdStr);
+		 map.put("categoryId", categoryId);
+		
 		
 	    map.put("limit", pageSize);
 	    map.put("offset", offset);
@@ -59,6 +59,7 @@ public class BooksSearchController extends HttpServlet {
 	    countmap.put("searchType", searchType);
 	    countmap.put("keyword",keyword);
 	    countmap.put("pubdate", year);
+	    countmap.put("categoryId", categoryId);
 		
 		//System.out.println(map.get("searchType"));
 		//System.out.println(map.get("keyword"));
