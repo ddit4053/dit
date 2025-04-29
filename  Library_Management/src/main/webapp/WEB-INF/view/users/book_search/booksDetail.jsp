@@ -289,37 +289,37 @@
     	}) 
     }
     
-    function requestLoan() {
-    	  const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'};
-    	  const bookNo = $('#BookLoan').val();
-    	  
-    	  if (userNo == null) {
-    		    alert("로그인 후 대출 신청이 가능합니다.");
-    		    return;
-   		  }
-    	  
-    	  $.ajax({
-    		    url: "detail/loanInsert", // 실제 처리 경로에 맞게 수정 필요
-    		    type: "get",
-    		    data: {
-    		      userNo: userNo,
-    		      bookNo: bookNo
-    		    },
-    		    success: function(res) {
-    		      if (res === "success") {
-    		        alert("대출 신청이 완료되었습니다.");
-    		      } else if (res === "notAvailable") {
-    		        alert("대여 가능한 도서가 없습니다.");
-    		      } else {
-    		        alert("대출 신청 실패");
-    		      }
-    		    },
-    		    error: function(xhr) {
-    		      alert("오류 발생: " + xhr.status);
-    		    }
-    		  });
-    		}
-    }
+   function requestLoan() {
+   	  const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'};
+   	  const bookNo = $('#BookLoan').val();
+   	  
+   	  if (userNo == null) {
+   		    alert("로그인 후 대출 신청이 가능합니다.");
+   		    return;
+  		  }
+   	  
+   	  $.ajax({
+   		    url: "detail/loanInsert", // 실제 처리 경로에 맞게 수정 필요
+   		    type: "post",
+   		    data: {
+   		      userNo: userNo,
+   		      bookNo: bookNo
+   		    },
+   		    success: function(res) {
+   		      if (res === "success") {
+   		        alert("대출 신청이 완료되었습니다.");
+   		      } else if (res === "notAvailable") {
+   		        alert("대여 가능한 도서가 없습니다.");
+   		      } else {
+   		        alert("대출 신청 실패");
+   		      }
+   		    },
+   		    error: function(xhr) {
+   		      alert("오류 발생: " + xhr.status);
+   		    }
+   		  });
+  		}
+    
 
     // 페이지 로딩시 리뷰 불러오기기
     $(document).ready(function() {
