@@ -30,7 +30,7 @@ function getBoardApiEndpoint() {
 // 상세 페이지 URL 가져오기
 function getDetailPageUrl(boardNo) {
   const boardType = getCurrentBoardType();
-  return contextPath + "/board/" + boardType + "detail?boardNo=" + boardNo;
+  return contextPath + "/board/" + boardType + "View?boardNo=" + boardNo;
 }
 
 // 옵션 변경 이벤트 리스너
