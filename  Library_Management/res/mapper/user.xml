@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+    
+    <sql id="userColumns">
+        USER_NO,
+        USER_ID,
+        PASSWORD,
+        NAME,
+        BIRTH,
+        EMAIL,
+        PHONE,
+        ADDRESS,
+        ROLE,
+        CREATED_DATE,
+        KAKAO_ID,
+        GENDER,
+        STATUS,
+        DELYN
+    </sql>
+    
+    <sql id="userActiveCondition">
+        AND DELYN = 'N'
+    </sql>
+    
+    <sql id="pagingPrefix">
+        SELECT A.* FROM
+        (SELECT ROWNUM AS RNUM, B.* FROM
+        (
+    </sql>
+    
+    <sql id="pagingSuffix">
+        ) B
+        <![CDATA[
+        WHERE ROWNUM <= #{end}) A
+        WHERE A.RNUM >= #{start}
+        ]]>
+    </sql>
+    
+    <select id="login" parameterType="UsersVo" resultType="UsersVo">
+        SELECT 
+            <include refid="userColumns" />
+        FROM USERS
+        WHERE USER_ID = #{userId}
+        AND PASSWORD = #{password}
+        <include refid="userActiveCondition" />
+    </select>
+    
+    <select id="findByKakaoId" parameterType="string" resultType="UsersVo">
+        SELECT 
+            <include refid="userColumns" />
+        FROM USERS
+        WHERE KAKAO_ID = #{kakaoId}
+        <include refid="userActiveCondition" />
+    </select>
+    
+    <select id="findDeletedUserByKakaoId" parameterType="string" resultType="UsersVo">
+        SELECT 
+            <include refid="userColumns" />
+        FROM USERS
+        WHERE KAKAO_ID = #{kakaoId}
+        AND DELYN = 'Y'
+    </select>
+    
+    <update id="reactivateUser" parameterType="int">
+        UPDATE USERS
+        SET DELYN = 'N'
+        WHERE USER_NO = #{userNo}
+    </update>
+
+    <insert id="registerKakaoUser" parameterType="UsersVo">
+        INSERT INTO USERS (
+            USER_NO,
+            USER_ID,
+            PASSWORD,    
+            NAME,
+            <if test="email != null">EMAIL,</if>
+            KAKAO_ID
+        ) VALUES (
+            (SELECT NVL(MAX(USER_NO), 0) + 1 FROM USERS),
+            #{userId},
+            #{password}, 
+            #{name},
+            <if test="email != null">#{email},</if>
+            #{kakaoId}
+        )
+    </insert>   
+   
+    <select id="getuserList" resultType="UsersVo">
+        SELECT 
+            <include refid="userColumns" />
+        FROM USERS
+        <include refid="userActiveCondition" />
+        ORDER BY USER_NO
+    </select>
+    
+    <select id="countUserByNameAndEmail" parameterType="map" resultType="int">
+        SELECT COUNT(*) 
+        FROM USERS 
+        WHERE NAME = #{name} 
+        AND EMAIL = #{email}
+        <include refid="userActiveCondition" />
+    </select>
+    
+    <select id="findUserIdByEmail" parameterType="string" resultType="string">
+        SELECT USER_ID
+        FROM USERS
+        WHERE EMAIL = #{email}
+        <include refid="userActiveCondition" />
+    </select>
+    
+    <insert id="saveEmailVerificationCode" parameterType="map">
+        INSERT INTO EMAIL_PASS (
+            PASS_NO, EMAIL, EM_TOKEN, VERIFIED, EM_REQ_DATE, PURPOSE
+        ) VALUES (
+            EMAIL_NO_SEQ.NEXTVAL, #{email}, #{emToken}, 'N', #{emReqDate}, #{purpose}
+        )
+    </insert>
+    
+    <select id="verifyEmailCode" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM EMAIL_PASS
+        WHERE EMAIL = #{email}
+        AND EM_TOKEN = #{emToken}
+        AND PURPOSE = #{purpose}
+        AND EM_REQ_DATE > SYSDATE
+        AND VERIFIED = 'N'
+    </select>
+    
+    <select id="verifyPassword" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM USERS
+        WHERE USER_NO = #{userNo}
+        AND PASSWORD = #{password}
+        <include refid="userActiveCondition" />
+    </select>
+    
+    <update id="updateEmailVerificationStatus" parameterType="map">
+        UPDATE EMAIL_PASS
+        SET VERIFIED = 'Y'
+        WHERE EMAIL = #{email}
+        AND EM_TOKEN = #{emToken}
+        AND PURPOSE = #{purpose}
+    </update>
+    
+    <select id="findUserByIdAndEmail" parameterType="map" resultType="UsersVo">
+        SELECT 
+            <include refid="userColumns" />
+        FROM USERS
+        WHERE USER_ID = #{userId}
+        AND EMAIL = #{email}
+        <include refid="userActiveCondition" />
+    </select>
+    
+    <insert id="savePasswordResetToken" parameterType="map">
+        INSERT INTO PW_RESET_TOKEN (
+            TOKEN_NO, PW_TOKEN, PW_REQ_DATE, USER_NO
+        ) VALUES (
+            PW_RESET_TOKEN_SEQ.NEXTVAL, #{pwToken}, SYSDATE + INTERVAL '24' HOUR, #{userNo}
+        )
+    </insert>
+    
+    <update id="resetPasswordWithToken" parameterType="map">
+        UPDATE USERS
+        SET PASSWORD = #{newPassword}
+        WHERE USER_NO = (
+            SELECT USER_NO 
+            FROM PW_RESET_TOKEN 
+            WHERE PW_TOKEN = #{pwToken} 
+            AND USER_NO = #{userNo}
+            AND PW_REQ_DATE > SYSDATE
+        )
+        <include refid="userActiveCondition" />
+    </update>
+    
+    <select id="countUserById" parameterType="string" resultType="int">
+        SELECT COUNT(*) 
+        FROM USERS 
+        WHERE USER_ID = #{userId}
+        <include refid="userActiveCondition" />
+    </select>
+    
+    <insert id="registerUser" parameterType="UsersVo">
+        INSERT INTO USERS (
+            USER_NO,
+            USER_ID,
+            PASSWORD,
+            NAME,
+            EMAIL
+            <if test="birth != null and birth != ''">, BIRTH</if>
+            <if test="gender != null and gender != ''">, GENDER</if>
+            <if test="phone != null and phone != ''">, PHONE</if>
+            <if test="address != null and address != ''">, ADDRESS</if>
+        ) VALUES (
+            (SELECT NVL(MAX(USER_NO), 0) + 1 FROM USERS),
+            #{userId},
+            #{password},
+            #{name},
+            #{email}
+            <if test="birth != null and birth != ''">, #{birth}</if>
+            <if test="gender != null and gender != ''">, #{gender}</if>
+            <if test="phone != null and phone != ''">, #{phone}</if>
+            <if test="address != null and address != ''">, #{address}</if>
+        )
+    </insert>
+    
+    <select id="findUserByEmail" parameterType="string" resultType="UsersVo">
+        SELECT 
+            <include refid="userColumns" />
+        FROM USERS
+        WHERE EMAIL = #{email}
+        <include refid="userActiveCondition" />
+    </select>
+    
+    <update id="updateUser" parameterType="UsersVo">
+        UPDATE USERS
+        SET 
+            <if test="name != null and name != ''">
+                 NAME = #{name},
+            </if>
+            <if test="birth != null">
+                 BIRTH = #{birth},
+            </if>
+            <if test="gender != null and gender != ''">
+                 GENDER = #{gender},
+            </if>
+            <if test="email != null and email != ''">
+                 EMAIL = #{email},
+            </if>
+            <if test="phone != null and phone != ''">
+                 PHONE = #{phone},
+            </if>
+            <if test="address != null and address != ''">
+                 ADDRESS = #{address}
+            </if>
+        WHERE 
+            <choose>
+                <when test="userNo != null and userNo > 0">
+                    USER_NO = #{userNo}
+                </when>
+                <when test="userId != null and userId != ''">
+                    USER_ID = #{userId}
+                </when>
+                <otherwise>
+                    1=0 
+                </otherwise>
+            </choose>
+        <include refid="userActiveCondition" />    
+    </update>
+    
+    <select id="getUserByNo" parameterType="int" resultType="UsersVo">
+        SELECT 
+            <include refid="userColumns" />
+        FROM USERS
+        WHERE USER_NO = #{userNo}
+        <include refid="userActiveCondition" />
+    </select>
+    
+    <select id="getTotalBookResCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOOK_RESERVATIONS BR, BOOKS B, USERS U
+        WHERE BR.BOOK_NO = B.BOOK_NO
+        AND BR.USER_NO = U.USER_NO
+        AND BR.USER_NO = #{userNo}
+    </select>
+    
+    <select id="bookResList" parameterType="map" resultType="map">
+        <include refid="pagingPrefix" />
+            SELECT RESERVE_NO, TO_CHAR(RESERVE_DATE,'YYYY-MM-DD') AS RESERVE_DATE, BOOK_TITLE, AUTHOR, ISBN, RESERVE_STATUS 
+            FROM BOOK_RESERVATIONS BR, BOOKS B, USERS U
+            WHERE BR.BOOK_NO = B.BOOK_NO
+            AND BR.USER_NO = U.USER_NO
+            AND BR.USER_NO = #{userNo}
+            ORDER BY RESERVE_DATE DESC
+        <include refid="pagingSuffix" />
+    </select>
+    
+    <select id="getTotalRoomResCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM READING_RESERVATIONS RR, READING_SEATS RS, USERS U
+        WHERE RR.SEAT_NO = RS.SEAT_NO
+        AND RR.USER_NO = U.USER_NO
+        AND RR.USER_NO = #{userNo}
+    </select>
+    
+    <select id="roomResList" parameterType="map" resultType="map">
+        <include refid="pagingPrefix" />
+            SELECT RR.R_RESERVE_NO, ROOM_NAME, TO_CHAR(START_TIME, 'YYYY.MM.DD HH24:MI') AS START_TIME, 
+                   SEAT_NUMBER, (END_TIME - START_TIME) * 24 AS RESTIME, R_RESERVE_STATUS 
+            FROM READING_RESERVATIONS RR, READING_SEATS RS, READING_ROOMS RRO
+            WHERE RR.SEAT_NO = RS.SEAT_NO
+            AND RS.ROOM_NO = RRO.ROOM_NO
+            AND RR.USER_NO = #{userNo}
+            ORDER BY START_TIME DESC
+        <include refid="pagingSuffix" />
+    </select>
+    
+    <select id="getTotalBookLoansCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOOK_LOANS RL, REAL_BOOK RB, USERS U
+        WHERE RL.REAL_BOOK = RB.REAL_BOOK
+        AND RL.USER_NO = U.USER_NO
+        AND RL.USER_NO = #{userNo}
+    </select>
+    
+    <select id="bookLoansList" parameterType="map" resultType="map">
+	    <include refid="pagingPrefix" />
+	        SELECT 
+	            BL.LOAN_NO, 
+	            B.BOOK_TITLE, 
+	            TO_CHAR(BL.LOAN_DATE, 'YYYY.MM.DD') AS LOAN_DATE, 
+	            TO_CHAR(BL.DUE_DATE, 'YYYY.MM.DD') AS DUE_DATE, 
+	            BLA.APPROVAL_STATUS
+	        FROM 
+	            BOOK_LOANS BL
+	        JOIN 
+	            REAL_BOOK RB ON BL.REAL_BOOK = RB.REAL_BOOK
+	        JOIN 
+	            BOOKS B ON RB.BOOK_NO = B.BOOK_NO
+	        JOIN 
+	            USERS U ON BL.USER_NO = U.USER_NO
+	        LEFT JOIN  
+	            BOOK_LOAN_APPROVAL BLA ON BL.LOAN_NO = BLA.LOAN_NO
+	        WHERE 
+	            BL.USER_NO = #{userNo}
+	            AND BL.RETURN_DATE IS NULL
+	        ORDER BY 
+	            BL.LOAN_DATE DESC
+	    <include refid="pagingSuffix" />
+	</select>
+    
+    <select id="getTotalLoansCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOOK_LOANS BL, REAL_BOOK RB, USERS U
+        WHERE BL.REAL_BOOK = RB.REAL_BOOK
+        AND BL.USER_NO = U.USER_NO
+        AND BL.USER_NO = #{userNo}
+        AND RETURN_DATE IS NOT NULL
+    </select>
+    
+    <select id="loansList" parameterType="map" resultType="map">
+        <include refid="pagingPrefix" />
+            SELECT BL.LOAN_NO, B.BOOK_TITLE, TO_CHAR(LOAN_DATE, 'YYYY.MM.DD') AS LOAN_DATE, 
+                   TO_CHAR(DUE_DATE, 'YYYY.MM.DD') AS DUE_DATE, TO_CHAR(RETURN_DATE, 'YYYY.MM.DD') AS RETURN_DATE
+            FROM BOOK_LOANS BL, REAL_BOOK RB, BOOKS B, USERS U
+            WHERE BL.REAL_BOOK = RB.REAL_BOOK
+            AND BL.USER_NO = U.USER_NO
+            AND RB.BOOK_NO = B.BOOK_NO
+            AND BL.USER_NO = #{userNo}
+            ORDER BY LOAN_DATE DESC
+        <include refid="pagingSuffix" />
+    </select>
+    
+    <select id="getTotalBookFavoritesCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOOK_FAVORITES BF, BOOKS B, USERS U
+        WHERE BF.BOOK_NO = B.BOOK_NO
+        AND BF.USER_NO = U.USER_NO
+        AND BF.USER_NO = #{userNo}
+    </select>
+    
+    <select id="bookFavoritesList" parameterType="map" resultType="map">
+        <include refid="pagingPrefix" />
+            SELECT BF.FAVORITE_NO, B.BOOK_TITLE, B.AUTHOR, B.PUBLISHER, B.ISBN
+            FROM BOOK_FAVORITES BF, BOOKS B, USERS U
+            WHERE BF.BOOK_NO = B.BOOK_NO
+            AND BF.USER_NO = U.USER_NO
+            AND BF.USER_NO = #{userNo}
+            ORDER BY FAVORITE_NO DESC
+        <include refid="pagingSuffix" />
+    </select>
+    
+    <select id="getTotalBookRequestsCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOOK_REQUESTS BR, USERS U
+        WHERE BR.USER_NO = U.USER_NO
+        AND BR.USER_NO = #{userNo}
+    </select>
+    
+    <select id="bookRequestsList" parameterType="map" resultType="map">
+        <include refid="pagingPrefix" />
+            SELECT REQ_BOOK_NO, REQ_BOOK_TITLE, REQ_BOOK_AUTHOR, 
+                   TO_CHAR(REQ_BOOK_DATE, 'YYYY.MM.DD') AS REQ_BOOK_DATE, REQ_BOOK_STATUS
+            FROM BOOK_REQUESTS BR, USERS U
+            WHERE BR.USER_NO = U.USER_NO
+            AND BR.USER_NO = #{userNo}
+            ORDER BY REQ_BOOK_DATE DESC
+        <include refid="pagingSuffix" />
+    </select>
+    
+    <select id="getTotalResCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM READING_RESERVATIONS RR, READING_SEATS RS, USERS U
+        WHERE RR.SEAT_NO = RS.SEAT_NO
+        AND RR.USER_NO = U.USER_NO
+        AND RR.USER_NO = #{userNo}
+        AND END_TIME IS NOT NULL
+    </select>
+    
+    <select id="resList" parameterType="map" resultType="map">
+        <include refid="pagingPrefix" />
+            SELECT RR.R_RESERVE_NO, ROOM_NAME, TO_CHAR(END_TIME, 'YYYY.MM.DD') AS END_TIME, 
+                   SEAT_NUMBER, (END_TIME - START_TIME) * 24 AS RESTIME 
+            FROM READING_RESERVATIONS RR, READING_SEATS RS, READING_ROOMS RRO
+            WHERE RR.SEAT_NO = RS.SEAT_NO
+            AND RS.ROOM_NO = RRO.ROOM_NO
+            AND RR.USER_NO = #{userNo}
+            ORDER BY END_TIME DESC
+        <include refid="pagingSuffix" />
+    </select>
+    
+    <select id="getTotalEventReqCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM REQUEST_EVENT RE, EDU_EVENT EE, USERS U
+        WHERE RE.EV_NO = EE.EV_NO
+        AND RE.USER_NO = U.USER_NO
+        AND RE.USER_NO = #{userNo}
+    </select>
+    
+    <select id="eventReqList" parameterType="map" resultType="map">
+        <include refid="pagingPrefix" />
+            SELECT RE.REQ_EV_NO, EV_TITLE, ACTIVITY_TYPE, TO_CHAR(EV_DATE, 'YYYY.MM.DD') AS EV_DATE, 
+                   TO_CHAR(REQ_EV_DATE, 'YYYY.MM.DD') AS REQ_EV_DATE, REQ_EV_STATUS
+            FROM REQUEST_EVENT RE, EDU_EVENT EE, USERS U
+            WHERE RE.EV_NO = EE.EV_NO
+            AND RE.USER_NO = U.USER_NO
+            AND RE.USER_NO = #{userNo}
+            ORDER BY REQ_EV_DATE DESC
+        <include refid="pagingSuffix" />
+    </select>
+    
+    <select id="getTotalbookReportCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOOK_BOARD BB, BOOK_BOARD_CODE BBC, USERS U
+        WHERE BB.CODE_NO = BBC.CODE_NO
+        AND BB.USER_NO = U.USER_NO
+        AND BB.USER_NO = #{userNo}
+        AND CODE_NAME LIKE '독후감'||'%'
+    </select>
+    
+    <select id="bookReportList" parameterType="map" resultType="map">
+        <include refid="pagingPrefix" />
+            SELECT BB.BOARD_NO, BB.TITLE, BBC.CODE_NAME, TO_CHAR(WRITTEN_DATE, 'YYYY.MM.DD') AS WRITTEN_DATE 
+            FROM BOOK_BOARD BB, BOOK_BOARD_CODE BBC, USERS U
+            WHERE BB.CODE_NO = BBC.CODE_NO
+            AND BB.USER_NO = U.USER_NO
+            AND BB.USER_NO = #{userNo}
+            ORDER BY WRITTEN_DATE DESC
+        <include refid="pagingSuffix" />
+    </select>
+    
+    <update id="changePassword" parameterType="map">
+        UPDATE USERS
+        SET PASSWORD = #{newPassword}
+        WHERE USER_NO = #{userNo}
+        <include refid="userActiveCondition" />
+    </update>
+    
+    <update id="quitUser" parameterType="map">
+        UPDATE USERS
+        SET DELYN = 'Y'
+        WHERE USER_NO = #{userNo}
+        AND PASSWORD = #{password}
+        <include refid="userActiveCondition" />
+    </update>
+    
+    <insert id="insertLoanExtension" parameterType="map">
+    	INSERT INTO BOOK_LOAN_APPROVAL(APPROVAL_NO, APPROVAL_STATUS, APPROVED_DATE, LOAN_NO, USER_NO)
+    	VALUES((SELECT NVL(MAX(APPROVAL_NO),0)+1 FROM BOOK_LOAN_APPROVAL),'대기',SYSDATE,#{loanNo},#{userNo})
+    
+    </insert>
+    
+    <delete id="deleteFavorite" parameterType="map">
+    	DELETE FROM BOOK_FAVORITES
+    	WHERE FAVORITE_NO = #{favoriteNo}
+    	AND USER_NO = #{userNo}
+    
+    </delete>
+    
+</mapper>
