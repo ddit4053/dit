@@ -25,12 +25,26 @@ public class BookLoanInsertController extends HttpServlet {
 		String bookNoStr = req.getParameter("bookNo");
 		int bookNo = Integer.parseInt(bookNoStr);
 		
+	    String status = bookLoansService.getUserStatus(userNo);
+	    if ("정지".equals(status)) {
+	        resp.getWriter().write("suspended");
+	        return;
+	    }
+		
 		BookLoansVo loansVo = new BookLoansVo();
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("userNo", userNo);
 		map.put("bookNo", bookNo);
+		
+		//대출중인지
+		boolean alreadyLoaned = bookLoansService.checkAlreadyLoaned(map);
+		if (alreadyLoaned) {
+			resp.getWriter().write("alreadyLoaned");
+			return;
+		}
+		
 		
 		int loanInsert = bookLoansService.loanInsert(map);
 		

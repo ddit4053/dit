@@ -10,4 +10,8 @@ public interface IBookLoansDao {
 
 	public void realbookUpdate(Map<String, Object> map);
 
+	public String getUserStatus(int userNo);
+
+	public boolean checkAlreadyLoaned(Map<String, Object> map);
+
 }

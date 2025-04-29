@@ -26,4 +26,23 @@
 		        ORDER BY REAL_BOOK
 		        FETCH FIRST 1 ROWS ONLY)
 	</update>
+	
+	<select id="getUserStatus" parameterType="int" resultType="String"> 
+		select STATUS
+		from users
+		where USER_NO=#{userNo}
+	</select>
+	
+	<select id="checkAlreadyLoaned" parameterType="Map" resultType="boolean">
+			SELECT COUNT(*)
+			FROM BOOK_LOANS
+			WHERE USER_NO = #{userNo}
+			  AND REAL_BOOK IN (
+			        SELECT REAL_BOOK
+			        FROM REAL_BOOK
+			        WHERE BOOK_NO = #{bookNo}
+			  )
+			  AND RETURN_DATE IS NULL
+
+	</select>
 </mapper>

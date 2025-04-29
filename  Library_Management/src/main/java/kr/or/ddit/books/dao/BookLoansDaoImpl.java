@@ -31,6 +31,18 @@ public class BookLoansDaoImpl extends MybatisDao implements IBookLoansDao {
 		
 	}
 
+	@Override
+	public String getUserStatus(int userNo) {
+		// TODO Auto-generated method stub
+		return selectOne("bookLoan.getUserStatus",userNo);
+	}
+
+	@Override
+	public boolean checkAlreadyLoaned(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return selectOne("bookLoan.checkAlreadyLoaned",map);
+	}
+
 	
 
 }
