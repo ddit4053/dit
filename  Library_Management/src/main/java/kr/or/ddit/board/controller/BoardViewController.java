@@ -18,7 +18,8 @@ import kr.or.ddit.vo.UsersVo;
         "/support/*",
         "/about/*"
 })
-public class BoardFrontController extends HttpServlet {
+// 게시판 화면 라우팅
+public class BoardViewController extends HttpServlet {
     
     IBoardService boardService = BoardServiceImpl.getInstance();
     
@@ -45,7 +46,7 @@ public class BoardFrontController extends HttpServlet {
                 int boardNo = Integer.parseInt(req.getParameter("boardNo"));
                 BookBoardVo board = boardService.selectBoardDetail(boardNo);
                 
-        		// 로그인 사용자 정보 (있을 경우)
+        		// 세션에서 로그인 사용자 정보 확인
         		HttpSession session = req.getSession();
         		UsersVo loginUser = (UsersVo) session.getAttribute("user");
         		String userId = null;
@@ -56,6 +57,7 @@ public class BoardFrontController extends HttpServlet {
         			userNo = (int) session.getAttribute("userNo");
         		}
         		req.setAttribute("userId", userId);
+        		req.setAttribute("userNo", userNo);
         		
                 
     			// 로그인 사용자와 작성자 일치 여부 확인 (수정/삭제 권한)

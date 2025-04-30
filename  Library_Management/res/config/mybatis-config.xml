@@ -46,6 +46,7 @@
 	<mapper resource="mapper/board.xml"/>
 	<mapper resource="mapper/comments.xml"/>
 	<mapper resource="mapper/user.xml"/>
+	<mapper resource="mapper/file.xml"/>
 
 	</mappers>
 

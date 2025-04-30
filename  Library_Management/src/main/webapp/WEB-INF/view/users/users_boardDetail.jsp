@@ -4,6 +4,10 @@
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/users_boardDetail.css">
 <div class="container">
+	<!-- 이전 페이지로 돌아가기 버튼 -->
+    <div class="back-link">
+        <a href="${prevPage}">목록으로</a>
+    </div>
 	<!-- 게시글 정보 영역 -->
 	<div class="board-detail">
 	    <div class="board-header">

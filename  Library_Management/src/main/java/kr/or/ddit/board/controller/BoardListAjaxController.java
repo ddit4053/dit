@@ -26,7 +26,8 @@ import kr.or.ddit.vo.PagingVo;
 		"/eventsListAjax",
 		"/qaListAjax"
 })
-public class BoardAjaxController extends HttpServlet {
+// 게시판 목록 데이터 AJAX 처리
+public class BoardListAjaxController extends HttpServlet {
 	
 	private static final long serialVersionUTD = 1L;
 	private IBoardService boardService = BoardServiceImpl.getInstance();

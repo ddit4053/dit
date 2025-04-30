@@ -247,6 +247,7 @@
 .comment-actions {
   display: flex;
   gap: 10px;
+  justify-content: flex-end;
   margin-bottom: 15px;
 }
 
@@ -374,6 +375,7 @@
 .reply-actions {
   display: flex;
   gap: 10px;
+  justify-content: flex-end;
 }
 
 /* 댓글 없음 메시지 */
