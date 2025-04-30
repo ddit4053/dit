@@ -28,7 +28,7 @@ const menuStructure = {
 		{ title: "신규도서 신청현황", url: "/user/mypage/bookReqList.do" },
 		{ title: "열람실 이용내역", url: "/user/mypage/resList.do" },
 		{ title: "교육/행사 신청내역", url: "/user/mypage/eventReqList.do" },
-		{ title: "독후감 작성내역", url: "/user/mypage/bookReportList.do" },
+		{ title: "게시글 작성내역", url: "/user/mypage/bookReportList.do" },
 	  ],
 	},
     {

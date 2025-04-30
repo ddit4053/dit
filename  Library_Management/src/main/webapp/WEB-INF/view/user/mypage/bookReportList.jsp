@@ -19,7 +19,7 @@
     <script src="${contextPath}/resource/js/user/mypage/searchFilter.js"></script>
     <script>
         $(document).ready(function() {
-            // 테이블 업데이트 함수
+           
             function updateBookReportTable(bookReportList) {
                 let tableBody = $('.board-table tbody');
                 tableBody.empty();
@@ -31,18 +31,18 @@
                         row.append($('<td>').addClass('title').attr('title', report.TITLE).text(report.TITLE));
                         row.append($('<td>').addClass('title').attr('title', report.CODE_NAME).text(report.CODE_NAME));
                         row.append($('<td>').text(report.WRITTEN_DATE));
-                        row.append($('<td>').html('<input type="button" value="독후감수정" class="extension-btn" onclick="">'));
+                        row.append($('<td>').html('<input type="button" value="게시글이동" class="extension-btn" onclick="moveToBoard(' + report.BOARD_NO +','+ report.CODE_NAME + ')">'));
                         tableBody.append(row);
                     });
                 } else { 
                     let row = $('<tr>');
-                    row.append($('<td>').attr('colspan', '5').text('독후감 작성내역이 없습니다.'));
+                    row.append($('<td>').attr('colspan', '5').text('게시글 작성내역이 없습니다.'));
                     tableBody.append(row);
                 }
             }
             
             const searchOptions = {
-                'title': '도서명',
+                'title': '게시글제목',
                 'type': '분류'
             };
             
@@ -62,14 +62,32 @@
             $('.filter-button').addClass('period-btn');
             
         });
+        
+        function moveToBoard(boardNo, codeName) {
+        	
+            if(boardNo) {
+                if(codeName === "독후감") {
+	                window.location.href = '${contextPath}/community/reviews/Detail?boardNo=' + boardNo;
+                }
+            	if(codeName === "토론") {
+            		window.location.href = '${contextPath}/community/discussions/Detail?boardNo=' + boardNo;
+            	}
+            	if(codeName === "추천") {
+            		window.location.href = '${contextPath}/community/recommendations/Detail?boardNo=' + boardNo;
+            	}
+            	
+            } else {
+                alert('게시글 정보를 찾을 수 없습니다.');
+            }
+        }
     </script>
 </head>
 <body>
     <div class="info-content">
         <div class="info-content-header">
-            <h2 class="content-title">독후감 작성내역</h2>
+            <h2 class="content-title">게시글 작성내역</h2>
             <p class="content-description">
-                독후감 작성내역을 확인하실 수 있습니다.
+                게시글 작성내역을 확인하실 수 있습니다.
             </p>
         </div>
         
@@ -94,10 +112,10 @@
                     <thead>
                         <tr>
                             <th width="8%">번호</th>
-                            <th width="32%">도서명</th>
+                            <th width="32%">게시글제목</th>
                             <th width="20%">분류</th>
                             <th width="20%">작성일</th>
-                            <th width="20%">독후감수정</th>
+                            <th width="20%">게시글이동</th>
                         </tr>
                     </thead>
                     <tbody>
