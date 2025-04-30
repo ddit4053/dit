@@ -49,7 +49,7 @@ public class BooksSearchController extends HttpServlet {
 		String categoryIdStr = req.getParameter("selectedCategoryId");
 
 		Map<String, Object> countmap = new HashMap<String, Object>();
-		if(categoryIdStr!=null) {
+		if(categoryIdStr!=null && !categoryIdStr.trim().isEmpty()) {
 			
 			int categoryId = Integer.parseInt(categoryIdStr);
 			map.put("categoryId", categoryId);

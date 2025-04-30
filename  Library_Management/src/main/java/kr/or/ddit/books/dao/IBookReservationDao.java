@@ -13,5 +13,7 @@ public interface IBookReservationDao {
 	
 	public void reservationInsert(BookReservationsVo vo);
 
+	public List<BookReservationsVo> reserveList(BookReservationsVo vo);
+
 	
 }

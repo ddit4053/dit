@@ -17,7 +17,7 @@ public class LoginController extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		
-		session.setAttribute("userNo", "3");
+		session.setAttribute("userNo", "2");
 		session.setAttribute("role", "user");
 		UsersVo user = new UsersVo();
 		user.setUserId("id");

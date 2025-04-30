@@ -21,4 +21,10 @@
 	      AND USER_NO = #{userNo}
 	      AND RESERVE_STATUS = '대기'
 	</select>
+	
+	<select id="reserveList" parameterType="BookReservationsVo" resultType="BookReservationsVo"> 
+			select *
+			from BOOK_RESERVATIONS
+			where book_no = #{bookNo}
+	</select>
 </mapper>

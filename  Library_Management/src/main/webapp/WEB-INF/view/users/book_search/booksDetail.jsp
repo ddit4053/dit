@@ -433,6 +433,53 @@
 	   	})
    }
    
+   function reserveList(){
+	   const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'};
+	   const bookNo = $('#bookNo').val();
+	   
+	   	$.ajax({
+	   		url : "detail/reserCheck",
+	   		type: 'post',
+	   		data: {
+	   			userNo : userNo,
+	   			bookNo : bookNo
+	   		},
+	   		success: function(res) {
+	   		    let html = '<table border="1">';
+	   		    html += '<tr>';
+	   		    html += '<th>예약 번호</th>';
+	   		    html += '<th>예약 일자</th>';
+	   		    html += '<th>상태</th>';
+	   		    html += '<th>사용자 이름</th>';
+	   		    html += '<th>책 제목</th>';
+	   		    html += '</tr>';
+
+	   		    if (res.length === 0) {
+	   		        html += '<tr><td colspan="5">예약 정보가 없습니다.</td></tr>';
+	   		    } else {
+	   		        res.forEach(function(item) {
+	   		            html += '<tr>';
+	   		            html += `<td>\${item.reserveNo}</td>`;
+	   		            html += `<td>\${item.reserveDate}</td>`;
+	   		            html += `<td>\${item.reserveStatus}</td>`;
+	   		            html += `<td>\${item.bookNo}</td>`;
+	   		            html += `<td>\${item.userNo}</td>`;
+	   		            html += '</tr>';
+	   		        });
+
+	   		    }
+
+	   		    html += '</table>';
+
+	   		    // 결과를 출력할 요소에 삽입 (예: #reserveTableContainer)
+	   		    $('#reserveTableContainer').html(html);
+	   		},
+	   		error : function(xhr){
+	   			alert(xhr.status);
+	   		}
+	   	})
+	   
+   }
 
     
     $(document).ready(function() {
@@ -477,8 +524,13 @@
 		  <button class="button" onclick="BookFavorite()" value="${bookDetail.bookNo}" id="BookFavorite"}>관심 도서 추가</button>
 		</div>
         <!-- 책 상세 설명을 위한 링크 -->
+       
+        	
+      	<div id="reserveTableContainer"></div>
         <div class="back-link">
-          <a href="javascript:history.back()">목록으로 돌아가기</a>
+          <a href="javascript:history.back()">목록으로 돌아가기</a> <br>
+          <a onclick="reserveList()" value="${bookDetail.bookNo}" id="reserveList">예약리스트 확인</a>
+          
         </div>
         
         <!-- 도서리뷰 등록 밑 출력 -->

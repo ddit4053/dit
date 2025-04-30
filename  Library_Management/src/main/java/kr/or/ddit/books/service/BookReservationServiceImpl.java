@@ -43,6 +43,12 @@ public class BookReservationServiceImpl implements IBookReservationService {
 		bookReservationDao.reservationInsert(vo);
 	}
 
+	@Override
+	public List<BookReservationsVo> reserveList(BookReservationsVo vo) {
+		// TODO Auto-generated method stub
+		return bookReservationDao.reserveList(vo);
+	}
+
 	
 	
 

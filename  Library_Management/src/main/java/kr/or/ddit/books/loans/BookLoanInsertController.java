@@ -48,6 +48,7 @@ public class BookLoanInsertController extends HttpServlet {
 		
 		int loanInsert = bookLoansService.loanInsert(map);
 		
+		//인서트 됐을 경우 업데이트
 		String res ="";
 		if(loanInsert >0) {
 			bookLoansService.realbookUpdate(map);

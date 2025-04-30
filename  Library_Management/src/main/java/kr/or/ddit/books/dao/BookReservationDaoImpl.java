@@ -38,6 +38,12 @@ public class BookReservationDaoImpl extends MybatisDao implements IBookReservati
 		insert("bookrervation.reservationInsert", vo);
 	}
 
+	@Override
+	public List<BookReservationsVo> reserveList(BookReservationsVo vo) {
+		// TODO Auto-generated method stub
+		return selectList("bookrervation.reserveList", vo);
+	}
+
 
 
 	
