@@ -364,15 +364,48 @@
    		}
    	})
    }
+   
+   function requestReservation() {
+		console.log("예약신청")
+	}
     
+   function loadReservation() {
+	   const bookNo = $('#bookNo').val();
+	   
+	   	$.ajax({
+	   		url : "detail/reserCheck",
+	   		type: 'get',
+	   		data: {
+	   			bookNo : bookNo
+	   		},
+	   		success : function(res){
+					if (res ==="reservation"){
+						$('#BookLoan')
+					    .text("예약신청")
+					    .css("background-color", "#4CAF50")
+					    .removeAttr('onclick')
+					    .on('click', function(){
+					    	requestReservation();
+					    }); // 함수 이름만 전달
+					}
+	   		},
+	   		error : function(xhr){
+	   			alert(xhr.status);
+	   		}
+	   	})
+   }
+   
 
-    // 페이지 로딩시 리뷰 불러오기기
+    
     $(document).ready(function() {
-    loadReviewList();
+    loadReviewList(); // 리뷰 불러오기
+    
     if(${sessionScope.userNo != null}){
-    	
-    loadFavorite();
+    	loadReservation();
+    	loadFavorite(); // 관심도서 체크하기
     }
+    
+    
     });
   </script>
 </head>
