@@ -16,6 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/pagination.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/dataLoader.js"></script>
+    <script src="${contextPath}/resource/js/user/mypage/searchFilter.js"></script>
     <script>
         
         let loadBookFavoritesList;
@@ -76,12 +77,28 @@
                     tableBody.append(row);
                 }
             }
-
-            loadBookFavoritesList = createDataLoader('${contextPath}/user/mypage/bookFavoritesList.do', updateBookFavoritesTable);
+            
+            const searchOptions = {
+                'title': '도서명',
+                'author': '저자',
+                'isbn': '청구번호'
+            };
+            
+            const searchFilterHandler = setupSearchFilter({
+                searchOptions: searchOptions
+            });
+            
+            const loadBookFavoritesList = searchFilterHandler.createAdvancedDataLoader(
+                '${contextPath}/user/mypage/bookFavoritesList.do', 
+                updateBookFavoritesTable
+            );
             
             loadBookFavoritesList(1);
             
-            setupPaginationHandlers(loadBookFavoritesList);
+            searchFilterHandler.setupAdvancedPaginationHandlers();
+            
+            $('.filter-button').addClass('period-btn');
+
         });
     </script>
     <style>
@@ -105,6 +122,14 @@
             <p class="content-description">
                 관심도서를 확인하실 수 있습니다.
             </p>
+        </div>
+        
+        <div class="board-search">
+            <select class="search-type">
+               
+            </select>
+            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+            <button class="search-btn">검색</button>
         </div>
         
         <div class="notice-section">

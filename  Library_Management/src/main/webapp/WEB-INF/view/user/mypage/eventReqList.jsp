@@ -16,6 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/pagination.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/dataLoader.js"></script>
+    <script src="${contextPath}/resource/js/user/mypage/searchFilter.js"></script>
     <script>
         $(document).ready(function() {
             function updateEventReqTable(eventReqList) {
@@ -39,12 +40,27 @@
                     tableBody.append(row);
                 }
             }
-
-            const loadEventReqList = createDataLoader('${contextPath}/user/mypage/eventReqList.do', updateEventReqTable);
+            
+            const searchOptions = {
+                'title': '교육/행사명',
+                'type': '종류'
+            };
+            
+            const searchFilterHandler = setupSearchFilter({
+                searchOptions: searchOptions
+            });
+            
+            const loadEventReqList = searchFilterHandler.createAdvancedDataLoader(
+                '${contextPath}/user/mypage/eventReqList.do', 
+                updateEventReqTable
+            );
             
             loadEventReqList(1);
             
-            setupPaginationHandlers(loadEventReqList);
+    		searchFilterHandler.setupAdvancedPaginationHandlers();
+            
+            $('.filter-button').addClass('period-btn');
+
         });
     </script>
 </head>
@@ -55,6 +71,21 @@
             <p class="content-description">
                교육/행사 신청내역을 확인하실 수 있습니다.
             </p>
+        </div>
+        
+        <div class="filter-buttons">
+            <button class="filter-button period-btn active" data-period="">전체</button>
+            <button class="filter-button period-btn" data-period="week">1주일</button>
+            <button class="filter-button period-btn" data-period="month">1개월</button>
+            <button class="filter-button period-btn" data-period="year">1년</button>
+        </div>
+        
+        <div class="board-search">
+            <select class="search-type">
+               
+            </select>
+            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+            <button class="search-btn">검색</button>
         </div>
         
         <div class="notice-section">

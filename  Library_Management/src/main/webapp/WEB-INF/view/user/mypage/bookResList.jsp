@@ -16,8 +16,11 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/pagination.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/dataLoader.js"></script>
+    <script src="${contextPath}/resource/js/user/mypage/searchFilter.js"></script>
     <script>
         $(document).ready(function() {
+            
+        	console.log("Book reservation list page loaded");
             function updateBookTable(bookList) {
                 let tableBody = $('.board-table tbody');
                 tableBody.empty();
@@ -40,11 +43,26 @@
                 }
             }
 
-            const loadBookReservations = createDataLoader('${contextPath}/user/mypage/bookResList.do', updateBookTable);
+            const searchOptions = {
+                'title': '도서명',
+                'author': '저자',
+                'isbn': '청구번호'
+            };
             
+            const searchFilterHandler = setupSearchFilter({
+                searchOptions: searchOptions
+            });
+            
+            const loadBookReservations = searchFilterHandler.createAdvancedDataLoader(
+                '${contextPath}/user/mypage/bookResList.do', 
+                updateBookTable
+            );
+            console.log("Loading initial book reservation data");
             loadBookReservations(1);
             
-            setupPaginationHandlers(loadBookReservations);
+            searchFilterHandler.setupAdvancedPaginationHandlers();
+            
+            $('.filter-button').addClass('period-btn');
         });
     </script>
 </head>
@@ -57,27 +75,43 @@
             </p>
         </div>
         
-        <div class="notice-section">
-            <div class="board-list">
-                <table class="board-table">
-                    <thead>
-                        <tr>
-                            <th width="8%">번호</th>
-                            <th width="20%">청구번호</th>
-                            <th width="32%">도서명</th>
-                            <th width="10%">저자</th>
-                            <th width="15%">예약일</th>
-                            <th width="15%">예약상태</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+        <div class="filter-buttons">
+            <button class="filter-button period-btn active" data-period="">전체</button>
+            <button class="filter-button period-btn" data-period="week">1주일</button>
+            <button class="filter-button period-btn" data-period="month">1개월</button>
+            <button class="filter-button period-btn" data-period="year">1년</button>
+        </div>
+        
+        <div class="board-search">
+            <select class="search-type">
+               
+            </select>
+            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+            <button class="search-btn">검색</button>
+        </div>
+        
+        <div class="board-list">
+            <table class="board-table">
+                <thead>
+                    <tr>
+                        <th width="8%">번호</th>
+                        <th width="15%">청구번호</th>
+                        <th width="37%">도서명</th>
+                        <th width="15%">저자</th>
+                        <th width="15%">예약일</th>
+                        <th width="10%">예약상태</th>
+                    </tr>
+                </thead>
+                <tbody>
                 
-                <div class="board-pagination">
-                </div>
+                </tbody>
+            </table>
+            
+            <div class="board-pagination">
+           
             </div>
         </div>
     </div>
+    
 </body>
 </html>

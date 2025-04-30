@@ -16,6 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/pagination.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/dataLoader.js"></script>
+    <script src="${contextPath}/resource/js/user/mypage/searchFilter.js"></script>
     <script>
        
     	let loadBookLoansList;
@@ -90,12 +91,25 @@
                     tableBody.append(row);
                 }
             }
-
-            loadBookLoansList = createDataLoader('${contextPath}/user/mypage/bookLoansList.do', updateBookLoanTable);
             
+            const searchOptions = {
+                'title': '도서명'
+            };
+            
+            const searchFilterHandler = setupSearchFilter({
+                searchOptions: searchOptions
+            });
+            
+            const loadBookLoansList = searchFilterHandler.createAdvancedDataLoader(
+                '${contextPath}/user/mypage/bookLoansList.do', 
+                updateBookLoanTable
+            );
+
             loadBookLoansList(1);
             
-            setupPaginationHandlers(loadBookLoansList);
+			searchFilterHandler.setupAdvancedPaginationHandlers();
+            
+            $('.filter-button').addClass('period-btn');
         });
     </script>
     <style>
@@ -124,6 +138,21 @@
             <p class="content-description">
                 도서 대출현황을 확인하실 수 있습니다.
             </p>
+        </div>
+        
+        <div class="filter-buttons">
+            <button class="filter-button period-btn active" data-period="">전체</button>
+            <button class="filter-button period-btn" data-period="week">1주일</button>
+            <button class="filter-button period-btn" data-period="month">1개월</button>
+            <button class="filter-button period-btn" data-period="year">1년</button>
+        </div>
+        
+        <div class="board-search">
+            <select class="search-type">
+               
+            </select>
+            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+            <button class="search-btn">검색</button>
         </div>
         
         <div class="notice-section">
