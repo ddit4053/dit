@@ -102,6 +102,35 @@
       font-size: 16px;
       color: gray;
     }
+    
+      .reserve-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+  }
+
+  .reserve-table th {
+  	color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+  .reserve-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .reserve-table th {
+    background-color:   #8d6e63;
+    font-weight: bold;
+  }
+
+  .reserve-table tr:hover {
+    background-color: #f1f1f1;
+  }
   </style>
   <script>
   	const loggedInUserNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'};
@@ -433,9 +462,21 @@
 	   	})
    }
    
+   let isReserveVisible = false; // 예약리스트 보이게
+   
    function reserveList(){
 	   const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'};
 	   const bookNo = $('#bookNo').val();
+	   
+	   	if (userNo == null) {
+	        alert("로그인 후 이용할 수 있습니다.");
+	        return;
+	    }
+		if (isReserveVisible) {
+			$("#reserveTableContainer").hide();
+			isReserveVisible = false;
+			return;
+		}
 	   
 	   	$.ajax({
 	   		url : "detail/reserCheck",
@@ -445,7 +486,7 @@
 	   			bookNo : bookNo
 	   		},
 	   		success: function(res) {
-	   		    let html = '<table border="1">';
+	   		    let html = '<table class="reserve-table" border="1">';
 	   		    html += '<tr>';
 	   		    html += '<th>예약 번호</th>';
 	   		    html += '<th>예약 일자</th>';
@@ -471,8 +512,8 @@
 
 	   		    html += '</table>';
 
-	   		    // 결과를 출력할 요소에 삽입 (예: #reserveTableContainer)
-	   		    $('#reserveTableContainer').html(html);
+				$('#reserveTableContainer').html(html).show();
+				isReserveVisible = true;
 	   		},
 	   		error : function(xhr){
 	   			alert(xhr.status);
@@ -526,7 +567,7 @@
         <!-- 책 상세 설명을 위한 링크 -->
        
         	
-      	<div id="reserveTableContainer"></div>
+      	<div id="reserveTableContainer" style="display: flex; flex-direction: row-reverse; gap: 10px"></div>
         <div class="back-link">
           <a href="javascript:history.back()">목록으로 돌아가기</a> <br>
           <a onclick="reserveList()" value="${bookDetail.bookNo}" id="reserveList">예약리스트 확인</a>

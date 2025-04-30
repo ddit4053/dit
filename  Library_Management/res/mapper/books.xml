@@ -43,10 +43,10 @@
 		'보유',#{author},#{publisher},#{categoryNo},sysdate)
 	</insert>
 
-	<select id="listBooks" resultType="BooksVo">
-	    SELECT *
-	    FROM books
-	    WHERE rownum &lt;= 50
+	<!-- 모든책 검색 -->
+	<select id="listBooks" resultType="BooksVo" parameterType="Map">
+           SELECT * FROM books
+           ORDER BY book_no 
 	</select>
 	
 	<!-- 책 검색 리스트 -->

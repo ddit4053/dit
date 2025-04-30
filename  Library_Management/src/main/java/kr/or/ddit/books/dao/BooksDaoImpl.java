@@ -30,9 +30,9 @@ public class BooksDaoImpl extends MybatisDao implements IBooksDao {
 	}
 
 	@Override
-	public List<BooksVo> listBooks() {
+	public List<BooksVo> listBooks(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		return selectList("books.listBooks");
+		return selectList("books.listBooks",map);
 	}
 
 	@Override

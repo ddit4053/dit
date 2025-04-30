@@ -9,7 +9,7 @@ import kr.or.ddit.vo.ReviewsVo;
 public interface IBooksDao {
 	public int insertBooks (BooksVo vo);
 	
-	public List<BooksVo> listBooks();
+	public List<BooksVo> listBooks(Map<String, Object> map);
 	
 	public List<BooksVo> searchBookList(Map<String, Object> map);
 	

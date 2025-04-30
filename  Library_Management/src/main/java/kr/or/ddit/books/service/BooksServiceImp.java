@@ -33,9 +33,9 @@ public class BooksServiceImp implements IBooksService{
 	}
 
 	@Override
-	public List<BooksVo> listBooks() {
+	public List<BooksVo> listBooks(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		return booksDao.listBooks();
+		return booksDao.listBooks(map);
 	}
 
 	@Override

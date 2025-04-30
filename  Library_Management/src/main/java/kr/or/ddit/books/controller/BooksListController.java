@@ -10,7 +10,9 @@ import kr.or.ddit.books.service.IBooksService;
 import kr.or.ddit.vo.BooksVo;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 
@@ -34,10 +36,14 @@ public class BooksListController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<BooksVo> bookList = booksService.listBooks();
+
 		
+		Map<String, Object> map = new HashMap<>();
+
+		List<BooksVo> bookList = booksService.listBooks(map);
+		System.out.println(bookList);
+
 		Gson gson = new Gson();
-		
 		
 		response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(gson.toJson(bookList));
