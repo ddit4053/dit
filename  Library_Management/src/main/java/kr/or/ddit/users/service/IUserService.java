@@ -72,6 +72,8 @@ public interface IUserService {
 	
 	public int getTotalbookReportCount(int userNo);
 	
+	public int getTotalNotiCount(int userNo);
+	
 	public List<Map<String, Object>> bookResList(Map<String, Object> pagingParams);
 	
 	public List<Map<String, Object>> roomResList(Map<String, Object> pagingParams);
@@ -89,6 +91,8 @@ public interface IUserService {
 	public List<Map<String, Object>> eventReqList(Map<String, Object> pagingParams);
 	
 	public List<Map<String, Object>> bookReportList(Map<String, Object> pagingParams);
+	
+	public List<Map<String, Object>> notiList(Map<String, Object> pagingParams);
 	
 	public boolean requestLoanExtension(Map<String, Object> params);
 	

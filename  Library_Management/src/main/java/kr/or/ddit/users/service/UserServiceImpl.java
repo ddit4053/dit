@@ -220,6 +220,12 @@ public class UserServiceImpl implements IUserService{
 		
 		return userDao.getTotalbookReportCount(userNo);
 	}
+	
+	@Override
+	public int getTotalNotiCount(int userNo) {
+		
+		return userDao.getTotalNotiCount(userNo);
+	}
 
 	@Override
 	public List<Map<String, Object>> bookResList(Map<String, Object> pagingParams) {
@@ -273,6 +279,12 @@ public class UserServiceImpl implements IUserService{
 	public List<Map<String, Object>> bookReportList(Map<String, Object> pagingParams) {
 		
 		return userDao.bookReportList(pagingParams);
+	}
+	
+	@Override
+	public List<Map<String, Object>> notiList(Map<String, Object> pagingParams) {
+		
+		return userDao.notiList(pagingParams);
 	}
 	
 	@Override

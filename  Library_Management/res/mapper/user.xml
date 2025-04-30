@@ -102,6 +102,16 @@
 	    </if>
 	</sql>
 	
+	<sql id="notiSearchCondition">
+	    <if test="searchType != null and searchKeyword != null">
+	        <choose>
+	            <when test="searchType == 'type'">
+	                AND NOTI_TYPE LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	        </choose>
+	    </if>
+	</sql>
+	
 	<sql id="roomSearchCondition">
 	    <if test="searchType != null and searchKeyword != null">
 	        <choose>
@@ -578,6 +588,27 @@
 	            <property name="dateColumn" value="WRITTEN_DATE"/>
 	        </include>
             ORDER BY WRITTEN_DATE DESC
+        <include refid="pagingSuffix" />
+    </select>
+    
+    <select id="getTotalNotiCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM NOTI N, USERS U
+        WHERE N.USER_NO = U.USER_NO
+        AND N.USER_NO = #{userNo}
+    </select>
+    
+    <select id="notiList" parameterType="map" resultType="map">
+        <include refid="pagingPrefix" />
+            SELECT NOTI_NO, NOTI_TYPE, MESSAGE, TO_CHAR(SENT_DATE, 'YYYY.MM.DD') AS SENT_DATE 
+            FROM NOTI N, USERS U
+            WHERE N.USER_NO = U.USER_NO
+            AND N.USER_NO = #{userNo}
+            <include refid="notiSearchCondition" />
+	        <include refid="periodCondition">
+	            <property name="dateColumn" value="SENT_DATE"/>
+	        </include>
+            ORDER BY SENT_DATE DESC
         <include refid="pagingSuffix" />
     </select>
     

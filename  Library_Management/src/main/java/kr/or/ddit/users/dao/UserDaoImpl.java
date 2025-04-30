@@ -250,6 +250,12 @@ public class UserDaoImpl extends MybatisDao implements IUserDao{
 		
 		return selectOne("user.getTotalbookReportCount",userNo);
 	}
+	
+	@Override
+	public int getTotalNotiCount(int userNo) {
+		
+		return selectOne("user.getTotalNotiCount",userNo);
+	}
 
 	@Override
 	public List<Map<String, Object>> bookResList(Map<String, Object> pagingParams) {
@@ -304,6 +310,12 @@ public class UserDaoImpl extends MybatisDao implements IUserDao{
 		
 		return selectList("user.bookReportList",pagingParams);
 	}
+	
+	@Override
+	public List<Map<String, Object>> notiList(Map<String, Object> pagingParams) {
+		
+		return selectList("user.notiList",pagingParams);
+	}
 
 	@Override
 	public boolean notiMessage(Map<String, Object> params) {
@@ -312,5 +324,6 @@ public class UserDaoImpl extends MybatisDao implements IUserDao{
 		
 		return notiMessage > 0;
 	}
+
 
 }
