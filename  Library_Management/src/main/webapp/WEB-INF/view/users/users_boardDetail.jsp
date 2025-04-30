@@ -84,7 +84,7 @@
 	                    </c:if>
 	                    
 	                    <!-- 댓글에 대한 답글 입력 폼 토글 버튼 (로그인한 경우만) -->
-                        <c:if test="${not empty sessionScope.loginUser}">
+                        <c:if test="${not empty sessionScope.user}">
                             <button class="btn-reply" onclick="toggleReplyForm(${comment.cmNo})">답글</button>
                             <div class="reply-form" id="reply-form-${comment.cmNo}" style="display: none;">
                                 <form onsubmit="submitReply(${comment.cmNo}, ${board.boardNo}); return false;">

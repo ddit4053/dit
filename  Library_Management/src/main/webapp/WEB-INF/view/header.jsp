@@ -32,6 +32,19 @@
     				
     				<%--로그인 상태 --%>
 				    <c:otherwise>
+ 		                <%-- 여러 환영 메시지 중 하나를 랜덤하게 선택 --%>
+						<%
+                        String[] greetings = {
+                          "오늘의 독서 영웅",
+                          "책의 세계로 오신 것을 환영합니다",
+                          "반갑습니다! 독서 모험가",
+                          "지식의 바다에 오신 걸 환영합니다",
+                          "오늘은 어떤 책과 함께하실건가요"
+                        };
+                        int randomIndex = (int)(Math.random() * greetings.length);
+                        pageContext.setAttribute("greeting", greetings[randomIndex]);
+                      %>
+                       <p class="welcome-message"><span class="user-name">${sessionScope.user.name}</span>님, ${greeting}</p>
 				      <c:choose>
 				        <%--관리자  --%> 
 				        <c:when test="${sessionScope.role eq 'ADMIN'}">

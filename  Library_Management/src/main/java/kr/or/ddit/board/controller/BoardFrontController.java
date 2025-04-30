@@ -48,10 +48,19 @@ public class BoardFrontController extends HttpServlet {
         		// 로그인 사용자 정보 (있을 경우)
         		HttpSession session = req.getSession();
         		UsersVo loginUser = (UsersVo) session.getAttribute("user");
+        		String userId = null;
+        		int userNo = 0;
+        		
+        		if (loginUser != null) {
+        			userId = loginUser.getUserId();
+        			userNo = (int) session.getAttribute("userNo");
+        		}
+        		req.setAttribute("userId", userId);
+        		
                 
     			// 로그인 사용자와 작성자 일치 여부 확인 (수정/삭제 권한)
     			boolean isAuthor = false;
-    			if(loginUser != null && board.getUserNo() == loginUser.getUserNo()) {
+    			if(loginUser != null && board.getUserNo() == userNo) {
     				isAuthor = true;
     			}
                 

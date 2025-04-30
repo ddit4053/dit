@@ -1,0 +1,195 @@
+@charset "UTF-8";
+
+/* 전체 페이지 스타일 */
+body {
+    font-family: 'Noto Serif KR', serif;
+    background-color: #f8f5f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* 로그인 컨테이너 스타일 */
+.container {
+    background: white;
+    border: 2px solid #6d4c41;
+    padding: 35px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(109, 76, 65, 0.15);
+    width: 380px;
+    text-align: center;
+}
+
+/* 제목 스타일 */
+.container h2 {
+    margin-bottom: 25px;
+    color: #5d4037;
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.container h2:after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 2px;
+    background-color: #8d6e63;
+    margin: 10px auto 0;
+}
+
+/* 입력 그룹 */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    color: #6d4c41;
+    margin-bottom: 6px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #bcaaa4;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #8d6e63;
+    box-shadow: 0 0 0 2px rgba(141, 110, 99, 0.2);
+}
+
+/* 체크박스 그룹 */
+.checkbox-group {
+    margin-bottom: 20px;
+    text-align: left;
+    font-size: 16px;
+    color: #6d4c41;
+}
+
+.checkbox-group input[type="checkbox"] {
+    accent-color: #8d6e63;
+    margin-right: 5px;
+}
+
+/* 일반 로그인 버튼 */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #6d4c41;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #5d4037;
+}
+
+/* 카카오 로그인 버튼 */
+.btn-kakao {
+    background-color: #FEE500;
+    color: #3c1e1e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 18px;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.btn-kakao:hover {
+    background-color: #f9dc00;
+}
+
+.btn-kakao img {
+    margin-right: 10px;
+    height: 20px;
+    width: 20px;
+}
+
+/* 링크 컨테이너 */
+.links-container {
+    margin-top: 25px;
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+    font-weight: 600;
+}
+
+.links-container a {
+    margin: 0 8px;
+    color: #8d6e63;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.links-container a:hover {
+    color: #5d4037;
+    text-decoration: underline;
+}
+
+.links-container span {
+    color: #bcaaa4;
+    margin: 0 2px;
+}
+
+/* 성공 메시지 */
+.success-message {
+    color: #2e7d32;
+    background-color: #e8f5e9;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-left: 4px solid #4caf50;
+    font-size: 16px;
+}
+
+/* 오류 메시지 */
+.error-message {
+    color: #c62828;
+    background-color: #ffebee;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-left: 4px solid #ef5350;
+    font-size: 16px;
+}
+
+.input-error {
+    border: 1px solid #ef5350 !important;
+    background-color: #ffebee;
+}
+
+.error-text {
+    color: #c62828;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+}

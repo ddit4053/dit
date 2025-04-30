@@ -71,6 +71,74 @@ h6 {
 }
 
 /* 헤더 스타일 */
+
+/* 빛나는 환영 메시지 스타일 */
+.welcome-message {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  background-color: var(--card-background);
+  background-size: 200% auto;
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin: 10px 0;
+  box-shadow: 0 0 10px rgba(253, 187, 45, 0.5);
+  animation: shine 3s linear infinite, glow 2s ease-in-out infinite alternate;
+  text-align: center;
+  display: inline-block;
+}
+
+.user-name {
+  font-weight: 700;
+  color: var(--primary-color);
+/*   text-shadow: 0 0 5px #ffdd57, 0 0 10px #ffdd57; */
+  letter-spacing: 0.5px;
+}
+
+
+
+/* 반짝이는 그라데이션 애니메이션 */
+@keyframes shine {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+/* 빛나는 효과 애니메이션 */
+@keyframes glow {
+  0% {
+    box-shadow: var(--secondary-color);
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px var(--dropdown-bg), 0 0 30px rgba(178, 31, 31, 0.3);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* 호버 효과 추가 */
+.welcome-message:hover {
+  animation-play-state: paused;
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+  box-shadow: 0 0 25px rgba(253, 187, 45, 0.9), 0 0 40px rgba(178, 31, 31, 0.4);
+}
+
+/* 반응형 미디어 쿼리 */
+@media (max-width: 768px) {
+  .welcome-message {
+    font-size: 1rem;
+    padding: 6px 12px;
+  }
+}
+
+
 .main-header {
   background-color: var(--card-background);
   border-bottom: 1px solid var(--border-color);
