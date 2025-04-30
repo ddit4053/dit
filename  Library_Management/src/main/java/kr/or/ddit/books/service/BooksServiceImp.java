@@ -8,6 +8,7 @@ import java.util.Set;
 import kr.or.ddit.books.dao.BooksDaoImpl;
 import kr.or.ddit.books.dao.IBooksDao;
 import kr.or.ddit.vo.BooksVo;
+import kr.or.ddit.vo.RealBookVo;
 import kr.or.ddit.vo.ReviewsVo;
 
 public class BooksServiceImp implements IBooksService{
@@ -85,6 +86,12 @@ public class BooksServiceImp implements IBooksService{
 		
 		// TODO Auto-generated method stub
 	
+	}
+
+	@Override
+	public List<Map<String, Object>> realBookList(int bookNo) {
+		// TODO Auto-generated method stub
+		return booksDao.realBookList(bookNo);
 	}
 
 

@@ -1,5 +1,6 @@
-package kr.or.ddit.books.controller;
+package kr.or.ddit.books.controller.admin;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,7 +20,7 @@ import com.google.gson.Gson;
 /**
  * Servlet implementation class BooksListController
  */
-@WebServlet("/books/bookList.do")
+@WebServlet("/admin/books/list")
 public class BooksListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     IBooksService booksService = BooksServiceImp.getInsatance();   
@@ -41,12 +42,12 @@ public class BooksListController extends HttpServlet {
 		Map<String, Object> map = new HashMap<>();
 
 		List<BooksVo> bookList = booksService.listBooks(map);
-		System.out.println(bookList);
-
-		Gson gson = new Gson();
 		
-		response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(gson.toJson(bookList));
+		request.setAttribute("contentPage", "bookList.jsp");
+		request.setAttribute("bookList", bookList);
+		
+		ServletContext ctx = request.getServletContext();
+		ctx.getRequestDispatcher("/WEB-INF/view/admin/book/book.jsp").forward(request, response);
 	}
 
 

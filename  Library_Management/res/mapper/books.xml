@@ -111,5 +111,22 @@
 		select ISBN
 		from books
 	</select>
+	
+	
+   <resultMap id="realBookListMap" type="hashMap">
+        <result property="realBook" column="REAL_BOOK"/>
+        <result property="bookNo" column="BOOK_NO"/>
+        <result property="realBookStatus" column="REAL_BOOK_STATUS"/>
+        <result property="cover" column="COVER"/>
+        <result property="bookTitle" column="BOOK_TITLE"/>
+    </resultMap>
+	
+	<!-- 실제책 리스트 -->
+	<select id="realBookList" resultMap="realBookListMap" parameterType="int">
+		 SELECT R.*, B.COVER as cover, B.BOOK_TITLE as BOOK_TITLE
+		    FROM REAL_BOOK R
+		    JOIN BOOKS B ON R.BOOK_NO = B.BOOK_NO
+		    WHERE R.BOOK_NO = #{bookNo}
+	</select>
 </mapper>
 

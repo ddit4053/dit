@@ -21,6 +21,7 @@
 				<typeAlias type="kr.or.ddit.vo.BookCategoriesVo" alias="BookCategoriesVo"/>
 				<typeAlias type="kr.or.ddit.vo.BookLoansVo" alias="BookLoansVo"/>
 				<typeAlias type="kr.or.ddit.vo.BookReservationsVo" alias="BookReservationsVo"/>
+				<typeAlias type="kr.or.ddit.vo.RealBookVo" alias="RealBookVo"/>
 		</typeAliases>
 	
 	<environments default="dev">

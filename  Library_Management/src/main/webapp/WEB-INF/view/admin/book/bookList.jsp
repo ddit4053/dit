@@ -1,46 +1,110 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
- <script src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>알라딘 도서 리스트</title>
+<script src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 20px;
+    }
+
+    header h1 {
+        text-align: center;
+        color: #4e342e;
+        margin-bottom: 30px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #ffffff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    thead {
+        background-color: #8d6e63;
+        color: white;
+    }
+
+    thead th {
+        padding: 12px;
+	    font-size: 16px;
+	    white-space: nowrap; /* 줄바꿈 방지 */
+    }
+
+    tbody td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    img {
+        border-radius: 4px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+</style>
+<script type="text/javascript">
+	$(function() {
+	    // 행에 커서 스타일 추가
+	    $(".bookList").css("cursor", "pointer");
+	
+	    // 클릭 이벤트 설정
+	    $(".bookList").on("click", function() {
+	        var bookNo = $(this).data("bookno");
+	        location.href = "${pageContext.request.contextPath}/admin/books/detailList?bookNo=" + bookNo;
+	    });
+	});
+</script>
 </head>
 <body>
- <header>
-    <h1>알라딘 도서 리스트</h1>
-  </header>
-  <div class="container">
-<!--     <input type="text" id="query" placeholder="책 제목을 입력하세요" value="자바스크립트">
-    <button id="searchBtn">검색</button> -->
-    <ul id="results"></ul>
-  </div>
-<script type="text/javascript">
+    <header>
+        <h1>알라딘 도서 리스트</h1>
+    </header>
 
-	$.ajax({
-		url: '${pageContext.request.contextPath}/books/bookList.do',
-	    method: 'GET',
-	    dataType: 'json',
-	    success: function (data) {
-	      console.log(data);
-		
-	      $('#results').empty(); // 이전 결과 지우기
-	      if (data && data.length > 0) {
-	        data.forEach(book => {
-	          console.log(book);
-	          $('#results').append(`<li> <img src=\${book.cover}> <strong>\${book.title}</strong> <p>저자- \${book.author} 출판사-\${book.publisher} isbn-\${book.isbn} 발행년도-\${book.pubDate} 
-	          카테고리id - \${book.categoryId}</p></li>`);
-	        });
-	      } else {
-	        $('#results').append('<li class="no-results">검색 결과가 없습니다.</li>');
-	      }
-	    },
-	    error: function (xhr) {
-	      alert(xhr.status);
-	      alert('API 요청 중 에러가 발생했습니다.');
-	    }
-	  });
-</script>
+    <table>
+        <thead>
+            <tr>
+                <th>도서번호</th>
+                <th>제목</th>
+                <th>ISBN</th>
+                <th>출판일</th>
+                <th>표지</th>
+                <th>상태</th>
+                <th>저자</th>
+                <th>출판사</th>
+                <th>카테고리</th>
+                <th>등록일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="book" items="${bookList}">
+                <tr class="bookList" data-bookno="${book.bookNo}">
+                    <td>${book.bookNo}</td>
+                    <td><c:out value="${fn:split(book.bookTitle, '-')[0]}"/> </td>
+                    <td>${book.isbn}</td>
+                    <td>${book.pubdate}</td>
+                    <td><img src="${book.cover}" alt="cover" width="60px"/></td>
+                    <td>${book.bookStatus}</td>
+                    <td>${book.author}</td>
+                    <td>${book.publisher}</td>
+                    <td>${book.categoryNo}</td>
+                    <td>${book.insertDate}</td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
 </body>
 </html>
