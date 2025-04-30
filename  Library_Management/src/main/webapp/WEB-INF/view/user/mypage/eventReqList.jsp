@@ -59,7 +59,12 @@
             
     		searchFilterHandler.setupAdvancedPaginationHandlers();
             
-            $('.filter-button').addClass('period-btn');
+    		$('#period-select').change(function() {
+       	       
+    			loadEventReqList(1, {
+    	            periodType: $(this).val()
+    	        });
+    	    });
 
         });
     </script>
@@ -73,11 +78,13 @@
             </p>
         </div>
         
-        <div class="filter-buttons">
-            <button class="filter-button period-btn active" data-period="">전체</button>
-            <button class="filter-button period-btn" data-period="week">1주일</button>
-            <button class="filter-button period-btn" data-period="month">1개월</button>
-            <button class="filter-button period-btn" data-period="year">1년</button>
+        <div class="period-select-container">
+            <select id="period-select" class="period-select">
+                <option value="">전체</option>
+                <option value="week">1주일</option>
+                <option value="month">1개월</option>
+                <option value="year">1년</option>
+            </select>
         </div>
         
         <div class="board-search">

@@ -109,27 +109,14 @@
             
 			searchFilterHandler.setupAdvancedPaginationHandlers();
             
-            $('.filter-button').addClass('period-btn');
+			$('#period-select').change(function() {
+	    	       
+				loadBookLoansList(1, {
+    	            periodType: $(this).val()
+    	        });
+    	    });
         });
     </script>
-    <style>
-        .extension-btn.disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-        .status-waiting {
-            color: #ff9900;
-            font-weight: bold;
-        }
-        .status-approved {
-            color: #009900;
-            font-weight: bold;
-        }
-        .status-rejected {
-            color: #cc0000;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
     <div class="info-content">
@@ -140,11 +127,13 @@
             </p>
         </div>
         
-        <div class="filter-buttons">
-            <button class="filter-button period-btn active" data-period="">전체</button>
-            <button class="filter-button period-btn" data-period="week">1주일</button>
-            <button class="filter-button period-btn" data-period="month">1개월</button>
-            <button class="filter-button period-btn" data-period="year">1년</button>
+        <div class="period-select-container">
+            <select id="period-select" class="period-select">
+                <option value="">전체</option>
+                <option value="week">1주일</option>
+                <option value="month">1개월</option>
+                <option value="year">1년</option>
+            </select>
         </div>
         
         <div class="board-search">
