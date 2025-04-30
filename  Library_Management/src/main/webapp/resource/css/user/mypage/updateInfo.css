@@ -1,133 +1,239 @@
-@charset "UTF-8";
-* {
-    		font-family: 'Noto Serif KR', serif;
-			font-size: 15px;
-			color: var(--primary-color);
-    	}
-    
-        .tab-menu {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .tab-menu a {
-            padding: 10px 20px;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            margin-right: 5px;
-            border: 1px solid #ddd;
-            border-bottom: none;
-            border-radius: 5px 5px 0 0;
-            background-color: #f5f5f5;
-        }
-        
-        .tab-menu a.active {
-            background-color: #fff;
-            border-bottom: 1px solid #fff;
-            margin-bottom: -1px;
-            color: #3e5175;
-        }
-        
-        .form-container {
-            max-width: 600px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        
-        .readonly {
-            background-color: #f5f5f5;
-            cursor: not-allowed;
-        }
-        
-        .gender-group {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .btn-primary {
-            background-color: #3e5175;
-            color: white;
-        }
-        
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        .message {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-        }
-        
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .address-group {
-            display: flex;
-            margin-bottom: 5px;
-            gap: 5px;
-        }
-        
-        #zipcode {
-            width: 100px;
-        }
-        .form-input {
-            position: relative;
-            margin-bottom: 15px;
-        }
-        
-        .form-input.is-error input {
-            border-color: #dc3545;
-        }
-        
-        .error-text {
-            display: none;
-            color: #dc3545;
-            font-size: 0.85em;
-            margin-top: 5px;
-        }
-        
-        .password-rules {
-            font-size: 0.85em;
-            color: #6c757d;
-            margin-top: 5px;
-        }
-        .aa {
-        	border: 0px;
-        }
+/* 마이페이지 공통 스타일 - updateInfo.css */
+/* 사이트 공통 변수를 활용 (common.css 연계) */
+
+/* 탭 메뉴 스타일 */
+.tab-menu {
+  display: flex;
+  background-color: var(--card-background);
+  border-radius: 8px 8px 0 0;
+  border-bottom: 2px solid var(--primary-color);
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+.tab-menu a {
+  padding: 15px 25px;
+  color: var(--light-text);
+  font-weight: 500;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.tab-menu a:hover {
+  color: var(--primary-color);
+  background-color: var(--hover-color);
+}
+
+.tab-menu a.active {
+  color: var(--primary-color);
+  background-color: var(--hover-color);
+  font-weight: 600;
+  position: relative;
+}
+
+.tab-menu a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--accent-color);
+}
+
+/* 폼 컨테이너 스타일 */
+.form-container {
+  background-color: var(--card-background);
+  border-radius: 0 0 8px 8px;
+  padding: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+/* 메시지 스타일 */
+.message {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.success-message {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.error-message {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #F44336;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+/* 폼 그룹 스타일 */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.form-group p {
+  padding: 10px 0;
+  color: var(--text-color);
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 15px;
+  color: var(--text-color);
+  background-color: #fff;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.2);
+  outline: none;
+}
+
+.form-control.readonly {
+  background-color: var(--hover-color);
+  cursor: not-allowed;
+}
+
+/* 폼 입력 컨테이너 (에러 상태용) */
+.form-input {
+  position: relative;
+}
+
+.form-input.is-error .form-control {
+  border-color: #F44336;
+}
+
+.error-text {
+  color: #F44336;
+  font-size: 13px;
+  margin-top: 5px;
+  display: none;
+}
+
+.form-input.is-error .error-text {
+  display: block;
+}
+
+/* 성별 라디오 버튼 스타일 */
+.gender-group {
+  display: flex;
+  gap: 20px;
+}
+
+.gender-group div {
+  display: flex;
+  align-items: center;
+}
+
+.gender-group input[type="radio"] {
+  margin-right: 8px;
+}
+
+/* 주소 관련 스타일 */
+.address-group {
+  display: flex;
+  gap: 10px;
+}
+
+.address-group .form-control {
+  flex: 1;
+}
+
+.address-group .btn {
+  flex-shrink: 0;
+}
+
+/* 비밀번호 규칙 텍스트 */
+.password-rules {
+  font-size: 13px;
+  color: var(--light-text);
+  margin-top: 5px;
+}
+
+/* 버튼 스타일 */
+.btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-color);
+}
+
+.btn-secondary {
+  background-color: #e0e0e0;
+  color: var(--text-color);
+}
+
+.btn-secondary:hover {
+  background-color: #d5d5d5;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .tab-menu {
+    flex-direction: column;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-bottom: none;
+  }
+  
+  .tab-menu a {
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .tab-menu a:last-child {
+    border-bottom: none;
+  }
+  
+  .tab-menu a.active::after {
+    width: 4px;
+    height: 100%;
+    top: 0;
+    bottom: auto;
+  }
+  
+  .form-container {
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .address-group {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}

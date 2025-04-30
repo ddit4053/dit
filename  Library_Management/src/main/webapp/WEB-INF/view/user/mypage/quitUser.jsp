@@ -13,7 +13,7 @@
        
         <div class="tab-menu">
             <a href="${pageContext.request.contextPath}/user/mypage/updateInfo.do">회원정보 수정</a>
-            <a href="${pageContext.request.contextPath}/user/mypage/changePassword.do" class="active">비밀번호 변경</a>
+            <a href="${pageContext.request.contextPath}/user/mypage/changePassword.do">비밀번호 변경</a>
             <a href="${pageContext.request.contextPath}/user/mypage/quitUser.do">회원탈퇴</a>
         </div>
         
