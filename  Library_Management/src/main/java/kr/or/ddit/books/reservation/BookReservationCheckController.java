@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.or.ddit.books.service.BookReservationServiceImpl;
 import kr.or.ddit.books.service.IBookReservationService;
+import kr.or.ddit.vo.BookReservationsVo;
 
 @WebServlet("/books/detail/reserCheck")
 public class BookReservationCheckController extends HttpServlet {
@@ -16,15 +17,24 @@ public class BookReservationCheckController extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+		int userNo = Integer.parseInt(req.getParameter("userNo"));
+		
 		String bookNoStr =	req.getParameter("bookNo");
 		int bookNo = Integer.parseInt(bookNoStr);
 		
+		BookReservationsVo vo = new BookReservationsVo();
+		vo.setBookNo(bookNo);
+		vo.setUserNo(userNo);
+		
 		int reservationcheck = bookReservationService.reservationcheck(bookNo);
+		int isAlreadyReserved = bookReservationService.isAlreadyReserved(vo);
 		
 		if(reservationcheck == 0) {
 			String res = "reservation";
-		    resp.setContentType("text/plain;charset=UTF-8");
+			if(isAlreadyReserved!=0) {
+				res = "alreadyreserve";
+			}
+			resp.setContentType("text/plain;charset=UTF-8");
 			resp.getWriter().write(res);
 		}
 	}

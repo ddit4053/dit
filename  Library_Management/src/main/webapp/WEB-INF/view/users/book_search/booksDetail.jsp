@@ -366,22 +366,60 @@
    }
    
    function requestReservation() {
-		console.log("예약신청")
+		
+		const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'}
+		const bookNo = $('#bookNo').val();
+		
+		$.ajax({
+	   		url : "detail/reserInsert",
+	   		type: 'get',
+	   		data: {
+	   			userNo : userNo,
+	   			bookNo : bookNo
+	   		},
+	   		success : function(res){
+	   			if (res === "reserveInsert") {
+	   				alert("예약성공");
+	   				$('#BookLoan')
+				    .text("예약중"); 
+	                  
+               } else if (res === "alreadyreserve"){
+            	   alert("이미 예약중입니다.");
+					
+            	   
+               } else {
+            	   alert("예약실패");
+               }
+	   		},
+	   		error : function(xhr){
+	   			alert(xhr.status);
+	   		}
+	   	})
 	}
     
    function loadReservation() {
+	   const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'};
 	   const bookNo = $('#bookNo').val();
 	   
 	   	$.ajax({
 	   		url : "detail/reserCheck",
 	   		type: 'get',
 	   		data: {
+	   			userNo : userNo,
 	   			bookNo : bookNo
 	   		},
 	   		success : function(res){
 					if (res ==="reservation"){
 						$('#BookLoan')
 					    .text("예약신청")
+					    .css("background-color", "#4CAF50")
+					    .removeAttr('onclick')
+					    .on('click', function(){
+					    	requestReservation();
+					    }); // 함수 이름만 전달
+					}else if(res ==="alreadyreserve"){
+						$('#BookLoan')
+					    .text("예약중")
 					    .css("background-color", "#4CAF50")
 					    .removeAttr('onclick')
 					    .on('click', function(){
@@ -401,7 +439,7 @@
     loadReviewList(); // 리뷰 불러오기
     
     if(${sessionScope.userNo != null}){
-    	loadReservation();
+    	loadReservation();// 대출인지 예약인지 체크하기
     	loadFavorite(); // 관심도서 체크하기
     }
     

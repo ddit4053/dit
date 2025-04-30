@@ -7,6 +7,7 @@ import kr.or.ddit.books.dao.BookReservationDaoImpl;
 import kr.or.ddit.books.dao.IBookCategoriesDao;
 import kr.or.ddit.books.dao.IBookReservationDao;
 import kr.or.ddit.vo.BookCategoriesVo;
+import kr.or.ddit.vo.BookReservationsVo;
 
 public class BookReservationServiceImpl implements IBookReservationService {
 	private static BookReservationServiceImpl instance;
@@ -28,6 +29,18 @@ public class BookReservationServiceImpl implements IBookReservationService {
 	public int reservationcheck(int bookNo) {
 		// TODO Auto-generated method stub
 		return bookReservationDao.reservationcheck(bookNo);
+	}
+
+	@Override
+	public int isAlreadyReserved(BookReservationsVo vo) {
+		// TODO Auto-generated method stub
+		return bookReservationDao.isAlreadyReserved(vo);
+	}
+
+	@Override
+	public void reservationInsert(BookReservationsVo vo) {
+		
+		bookReservationDao.reservationInsert(vo);
 	}
 
 	
