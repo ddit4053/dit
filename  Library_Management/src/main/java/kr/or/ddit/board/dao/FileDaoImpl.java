@@ -22,38 +22,33 @@ public class FileDaoImpl extends MybatisDao implements IFileDao{
 
 	@Override
 	public List<File_StorageVo> selectFilesByGroupNum(int fileGroupNum) {
-		// TODO Auto-generated method stub
-		return null;
+		List<File_StorageVo> fileList = null;
+		return fileList = selectList("file.selectFilesByGroupNum", fileGroupNum);
 	}
 
 	@Override
 	public File_StorageVo selectFileByNo(int fileNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return selectOne("file.selectFileByNo", fileNo);
 	}
 
 	@Override
 	public int insertFile(File_StorageVo file) {
-		// TODO Auto-generated method stub
-		return 0;
+		return insert("file.insertFile", file);
 	}
 
 	@Override
 	public int deleteFile(int fileNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return delete("file.deleteFile", fileNo);
 	}
 
 	@Override
 	public int deleteFilesByGroupNum(int fileGroupNum) {
-		// TODO Auto-generated method stub
-		return 0;
+		return delete("file.deleteFilesByGroupNum", fileGroupNum);
 	}
 
 	@Override
 	public int createFileGroup() {
-		// TODO Auto-generated method stub
-		return 0;
+		return insert("file.createFileGroup", null);
 	}
 
 	

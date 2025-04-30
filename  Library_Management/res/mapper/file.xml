@@ -3,44 +3,17 @@
 <mapper namespace="file">
 	 <!-- 파일 그룹 번호로 파일 목록 조회 -->
     <select id="selectFilesByGroupNum" parameterType="int" resultType="File_StorageVo">
-        SELECT 
-            FILE_NO as fileNo,
-            ORG_NAME as orgName,
-            SAVE_NAME as saveName,
-            FILE_PATH as filePath,
-            FILE_SIZE as fileSize,
-            FILE_TYPE as fileType,
-            TO_CHAR(UPLOADED_DATE, 'YYYY-MM-DD HH24:MI:SS') as uploadedDate,
-            REFERENCE_TYPE as referenceType,
-            REFERENCE_ID as referenceId,
-            USER_NO as userNo,
-            FILE_GROUP_NUM as fileGroupNum
-        FROM 
-            JAVA_FILE_STORAGE
-        WHERE 
-            FILE_GROUP_NUM = #{fileGroupNum}
-        ORDER BY 
-            FILE_NO ASC
+        SELECT * 
+          FROM FILE_STORAGE
+         WHERE FILE_GROUP_NUM = #{fileGroupNum}
+         ORDER BY FILE_NO ASC
     </select>
     
     <!-- 파일 번호로 파일 정보 조회 -->
     <select id="selectFileByNo" parameterType="int" resultType="File_StorageVo">
-        SELECT 
-            FILE_NO as fileNo,
-            ORG_NAME as orgName,
-            SAVE_NAME as saveName,
-            FILE_PATH as filePath,
-            FILE_SIZE as fileSize,
-            FILE_TYPE as fileType,
-            TO_CHAR(UPLOADED_DATE, 'YYYY-MM-DD HH24:MI:SS') as uploadedDate,
-            REFERENCE_TYPE as referenceType,
-            REFERENCE_ID as referenceId,
-            USER_NO as userNo,
-            FILE_GROUP_NUM as fileGroupNum
-        FROM 
-            JAVA_FILE_STORAGE
-        WHERE 
-            FILE_NO = #{fileNo}
+        SELECT *
+		  FROM FILE_STORAGE
+		 WHERE FILE_NO = #{fileNo}
     </select>
     
     <!-- 새 파일 등록 -->
@@ -48,42 +21,30 @@
         <selectKey keyProperty="fileNo" resultType="int" order="BEFORE">
             SELECT FILE_STORAGE_SEQ.NEXTVAL FROM DUAL
         </selectKey>
-        INSERT INTO JAVA_FILE_STORAGE (
-            FILE_NO,
-            ORG_NAME,
-            SAVE_NAME,
-            FILE_PATH,
-            FILE_SIZE,
-            FILE_TYPE,
-            UPLOADED_DATE,
-            REFERENCE_TYPE,
-            REFERENCE_ID,
-            USER_NO,
-            FILE_GROUP_NUM
-        ) VALUES (
-            #{fileNo},
-            #{orgName},
-            #{saveName},
-            #{filePath},
-            #{fileSize},
-            #{fileType},
-            SYSDATE,
-            #{referenceType},
-            #{referenceId},
-            #{userNo},
-            #{fileGroupNum}
-        )
+			INSERT INTO FILE_STORAGE
+			VALUES (#{fileNo},
+			        #{orgName},
+			        #{saveName},
+			        #{filePath},
+			        #{fileSize},
+			        #{fileType},
+			        SYSDATE,
+			        #{referenceType},
+			        #{referenceId},
+			        #{userNo},
+			        #{fileGroupNum}
+			        )
     </insert>
     
     <!-- 파일 삭제 -->
     <delete id="deleteFile" parameterType="int">
-        DELETE FROM JAVA_FILE_STORAGE
+        DELETE FROM FILE_STORAGE
         WHERE FILE_NO = #{fileNo}
     </delete>
     
     <!-- 파일 그룹에 속한 모든 파일 삭제 -->
     <delete id="deleteFilesByGroupNum" parameterType="int">
-        DELETE FROM JAVA_FILE_STORAGE
+        DELETE FROM FILE_STORAGE
         WHERE FILE_GROUP_NUM = #{fileGroupNum}
     </delete>
     
@@ -92,7 +53,7 @@
         <selectKey keyProperty="fileGroupNum" resultType="int" order="AFTER">
             SELECT FILE_GROUP_SEQ.CURRVAL FROM DUAL
         </selectKey>
-        INSERT INTO JAVA_FILE_GROUP (FILE_GROUP_NUM)
+        INSERT INTO FILE_GROUP (FILE_GROUP_NUM)
         VALUES (FILE_GROUP_SEQ.NEXTVAL)
     </insert>
 
