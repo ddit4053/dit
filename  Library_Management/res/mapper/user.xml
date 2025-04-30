@@ -37,6 +37,100 @@
         ]]>
     </sql>
     
+	<sql id="bookSearchCondition">
+	    <if test="searchType != null and searchKeyword != null">
+	        <choose>
+	            <when test="searchType == 'title'">
+	                AND BOOK_TITLE LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	            <when test="searchType == 'author'">
+	                AND AUTHOR LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	            <when test="searchType == 'isbn'">
+	                AND ISBN LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	        </choose>
+	    </if>
+	</sql>
+	
+	<sql id="bookReqSearchCondition">
+	    <if test="searchType != null and searchKeyword != null">
+	        <choose>
+	            <when test="searchType == 'title'">
+	                AND REQ_BOOK_TITLE LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	            <when test="searchType == 'author'">
+	                AND REQ_BOOK_AUTHOR LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	        </choose>
+	    </if>
+	</sql>
+	
+	<sql id="eventSearchCondition">
+	    <if test="searchType != null and searchKeyword != null">
+	        <choose>
+	            <when test="searchType == 'title'">
+	                AND EE.EV_TITLE LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	            <when test="searchType == 'type'">
+	                AND RE.ACTIVITY_TYPE LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	        </choose>
+	    </if>
+	</sql>
+	
+	<sql id="reportSearchCondition">
+	    <if test="searchType != null and searchKeyword != null">
+	        <choose>
+	            <when test="searchType == 'title'">
+	                AND BB.TITLE LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	            <when test="searchType == 'type'">
+	                AND BBC.CODE_NAME LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	        </choose>
+	    </if>
+	</sql>
+	
+	<sql id="bookLoanSearchCondition">
+	    <if test="searchType != null and searchKeyword != null">
+	        <choose>
+	            <when test="searchType == 'title'">
+	                AND BOOK_TITLE LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	        </choose>
+	    </if>
+	</sql>
+	
+	<sql id="roomSearchCondition">
+	    <if test="searchType != null and searchKeyword != null">
+	        <choose>
+	            <when test="searchType == 'roomName'">
+	                AND ROOM_NAME LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	            <when test="searchType == 'seatNumber'">
+	                AND SEAT_NUMBER LIKE '%' || #{searchKeyword} || '%'
+	            </when>
+	        </choose>
+	    </if>
+	</sql>
+    
+	<sql id="periodCondition">
+	    <if test="periodType != null">
+	        <choose>
+	            <when test="periodType == 'week'">
+	                AND ${dateColumn} >= SYSDATE - 7
+	            </when>
+	            <when test="periodType == 'month'">
+	                AND ${dateColumn} >= ADD_MONTHS(SYSDATE, -1)
+	            </when>
+	            <when test="periodType == 'year'">
+	                AND ${dateColumn} >= ADD_MONTHS(SYSDATE, -12)
+	            </when>
+	        </choose>
+	    </if>
+	</sql>
+	
     <select id="login" parameterType="UsersVo" resultType="UsersVo">
         SELECT 
             <include refid="userColumns" />
@@ -265,15 +359,19 @@
     </select>
     
     <select id="bookResList" parameterType="map" resultType="map">
-        <include refid="pagingPrefix" />
-            SELECT RESERVE_NO, TO_CHAR(RESERVE_DATE,'YYYY-MM-DD') AS RESERVE_DATE, BOOK_TITLE, AUTHOR, ISBN, RESERVE_STATUS 
-            FROM BOOK_RESERVATIONS BR, BOOKS B, USERS U
-            WHERE BR.BOOK_NO = B.BOOK_NO
-            AND BR.USER_NO = U.USER_NO
-            AND BR.USER_NO = #{userNo}
-            ORDER BY RESERVE_DATE DESC
-        <include refid="pagingSuffix" />
-    </select>
+	    <include refid="pagingPrefix" />
+	        SELECT RESERVE_NO, TO_CHAR(RESERVE_DATE,'YYYY-MM-DD') AS RESERVE_DATE, BOOK_TITLE, AUTHOR, ISBN, RESERVE_STATUS 
+	        FROM BOOK_RESERVATIONS BR, BOOKS B, USERS U
+	        WHERE BR.BOOK_NO = B.BOOK_NO
+	        AND BR.USER_NO = U.USER_NO
+	        AND BR.USER_NO = #{userNo}
+	        <include refid="bookSearchCondition" />
+	        <include refid="periodCondition">
+	            <property name="dateColumn" value="BR.RESERVE_DATE"/>
+	        </include>
+	        ORDER BY RESERVE_DATE DESC
+	    <include refid="pagingSuffix" />
+	</select>
     
     <select id="getTotalRoomResCount" parameterType="int" resultType="int">
         SELECT COUNT(*)
@@ -285,12 +383,16 @@
     
     <select id="roomResList" parameterType="map" resultType="map">
         <include refid="pagingPrefix" />
-            SELECT RR.R_RESERVE_NO, ROOM_NAME, TO_CHAR(START_TIME, 'YYYY.MM.DD HH24:MI') AS START_TIME, 
+            SELECT R_RESERVE_NO, ROOM_NAME, TO_CHAR(START_TIME, 'YYYY.MM.DD HH24:MI') AS START_TIME, 
                    SEAT_NUMBER, (END_TIME - START_TIME) * 24 AS RESTIME, R_RESERVE_STATUS 
             FROM READING_RESERVATIONS RR, READING_SEATS RS, READING_ROOMS RRO
             WHERE RR.SEAT_NO = RS.SEAT_NO
             AND RS.ROOM_NO = RRO.ROOM_NO
             AND RR.USER_NO = #{userNo}
+            <include refid="roomSearchCondition" />
+	        <include refid="periodCondition">
+	            <property name="dateColumn" value="RR.START_TIME"/>
+	        </include>
             ORDER BY START_TIME DESC
         <include refid="pagingSuffix" />
     </select>
@@ -310,7 +412,7 @@
 	            B.BOOK_TITLE, 
 	            TO_CHAR(BL.LOAN_DATE, 'YYYY.MM.DD') AS LOAN_DATE, 
 	            TO_CHAR(BL.DUE_DATE, 'YYYY.MM.DD') AS DUE_DATE, 
-	            BLA.APPROVAL_STATUS
+	            APPROVAL_STATUS
 	        FROM 
 	            BOOK_LOANS BL
 	        JOIN 
@@ -324,6 +426,10 @@
 	        WHERE 
 	            BL.USER_NO = #{userNo}
 	            AND BL.RETURN_DATE IS NULL
+	        <include refid="bookLoanSearchCondition" />
+	        <include refid="periodCondition">
+	            <property name="dateColumn" value="LOAN_DATE"/>
+	        </include>    
 	        ORDER BY 
 	            BL.LOAN_DATE DESC
 	    <include refid="pagingSuffix" />
@@ -340,13 +446,17 @@
     
     <select id="loansList" parameterType="map" resultType="map">
         <include refid="pagingPrefix" />
-            SELECT BL.LOAN_NO, B.BOOK_TITLE, TO_CHAR(LOAN_DATE, 'YYYY.MM.DD') AS LOAN_DATE, 
+            SELECT BL.LOAN_NO, BOOK_TITLE, TO_CHAR(LOAN_DATE, 'YYYY.MM.DD') AS LOAN_DATE, 
                    TO_CHAR(DUE_DATE, 'YYYY.MM.DD') AS DUE_DATE, TO_CHAR(RETURN_DATE, 'YYYY.MM.DD') AS RETURN_DATE
             FROM BOOK_LOANS BL, REAL_BOOK RB, BOOKS B, USERS U
             WHERE BL.REAL_BOOK = RB.REAL_BOOK
             AND BL.USER_NO = U.USER_NO
             AND RB.BOOK_NO = B.BOOK_NO
             AND BL.USER_NO = #{userNo}
+            <include refid="bookLoanSearchCondition" />
+	        <include refid="periodCondition">
+	            <property name="dateColumn" value="LOAN_DATE"/>
+	        </include>  
             ORDER BY LOAN_DATE DESC
         <include refid="pagingSuffix" />
     </select>
@@ -361,11 +471,12 @@
     
     <select id="bookFavoritesList" parameterType="map" resultType="map">
         <include refid="pagingPrefix" />
-            SELECT BF.FAVORITE_NO, B.BOOK_TITLE, B.AUTHOR, B.PUBLISHER, B.ISBN
+            SELECT FAVORITE_NO, BOOK_TITLE, AUTHOR, PUBLISHER, ISBN
             FROM BOOK_FAVORITES BF, BOOKS B, USERS U
             WHERE BF.BOOK_NO = B.BOOK_NO
             AND BF.USER_NO = U.USER_NO
             AND BF.USER_NO = #{userNo}
+            <include refid="bookSearchCondition" />
             ORDER BY FAVORITE_NO DESC
         <include refid="pagingSuffix" />
     </select>
@@ -384,6 +495,10 @@
             FROM BOOK_REQUESTS BR, USERS U
             WHERE BR.USER_NO = U.USER_NO
             AND BR.USER_NO = #{userNo}
+            <include refid="bookReqSearchCondition" />
+	        <include refid="periodCondition">
+	            <property name="dateColumn" value="REQ_BOOK_DATE"/>
+	        </include>
             ORDER BY REQ_BOOK_DATE DESC
         <include refid="pagingSuffix" />
     </select>
@@ -399,12 +514,16 @@
     
     <select id="resList" parameterType="map" resultType="map">
         <include refid="pagingPrefix" />
-            SELECT RR.R_RESERVE_NO, ROOM_NAME, TO_CHAR(END_TIME, 'YYYY.MM.DD') AS END_TIME, 
+            SELECT R_RESERVE_NO, ROOM_NAME, TO_CHAR(END_TIME, 'YYYY.MM.DD') AS END_TIME, 
                    SEAT_NUMBER, (END_TIME - START_TIME) * 24 AS RESTIME 
             FROM READING_RESERVATIONS RR, READING_SEATS RS, READING_ROOMS RRO
             WHERE RR.SEAT_NO = RS.SEAT_NO
             AND RS.ROOM_NO = RRO.ROOM_NO
             AND RR.USER_NO = #{userNo}
+            <include refid="roomSearchCondition" />
+	        <include refid="periodCondition">
+	            <property name="dateColumn" value="END_TIME"/>
+	        </include>
             ORDER BY END_TIME DESC
         <include refid="pagingSuffix" />
     </select>
@@ -416,15 +535,19 @@
         AND RE.USER_NO = U.USER_NO
         AND RE.USER_NO = #{userNo}
     </select>
-    
+   
     <select id="eventReqList" parameterType="map" resultType="map">
         <include refid="pagingPrefix" />
-            SELECT RE.REQ_EV_NO, EV_TITLE, ACTIVITY_TYPE, TO_CHAR(EV_DATE, 'YYYY.MM.DD') AS EV_DATE, 
+            SELECT REQ_EV_NO, EE.EV_TITLE, RE.ACTIVITY_TYPE, TO_CHAR(EV_DATE, 'YYYY.MM.DD') AS EV_DATE, 
                    TO_CHAR(REQ_EV_DATE, 'YYYY.MM.DD') AS REQ_EV_DATE, REQ_EV_STATUS
             FROM REQUEST_EVENT RE, EDU_EVENT EE, USERS U
             WHERE RE.EV_NO = EE.EV_NO
             AND RE.USER_NO = U.USER_NO
             AND RE.USER_NO = #{userNo}
+            <include refid="eventSearchCondition" />
+	        <include refid="periodCondition">
+	            <property name="dateColumn" value="REQ_EV_DATE"/>
+	        </include>
             ORDER BY REQ_EV_DATE DESC
         <include refid="pagingSuffix" />
     </select>
@@ -440,11 +563,15 @@
     
     <select id="bookReportList" parameterType="map" resultType="map">
         <include refid="pagingPrefix" />
-            SELECT BB.BOARD_NO, BB.TITLE, BBC.CODE_NAME, TO_CHAR(WRITTEN_DATE, 'YYYY.MM.DD') AS WRITTEN_DATE 
+            SELECT BOARD_NO, BB.TITLE, BBC.CODE_NAME, TO_CHAR(WRITTEN_DATE, 'YYYY.MM.DD') AS WRITTEN_DATE 
             FROM BOOK_BOARD BB, BOOK_BOARD_CODE BBC, USERS U
             WHERE BB.CODE_NO = BBC.CODE_NO
             AND BB.USER_NO = U.USER_NO
             AND BB.USER_NO = #{userNo}
+            <include refid="reportSearchCondition" />
+	        <include refid="periodCondition">
+	            <property name="dateColumn" value="WRITTEN_DATE"/>
+	        </include>
             ORDER BY WRITTEN_DATE DESC
         <include refid="pagingSuffix" />
     </select>
