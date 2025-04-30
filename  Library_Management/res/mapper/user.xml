@@ -211,6 +211,11 @@
         )
     </insert>
     
+    <insert id="notiMessage" parameterType="map">
+    	INSERT INTO NOTI
+    	VALUES ((SELECT NVL(MAX(NOTI_NO),0)+1 FROM NOTI),#{notiType},#{message},SYSDATE,#{userNo})
+    </insert>
+    
     <select id="verifyEmailCode" parameterType="map" resultType="int">
         SELECT COUNT(*)
         FROM EMAIL_PASS

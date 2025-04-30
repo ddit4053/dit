@@ -305,4 +305,12 @@ public class UserDaoImpl extends MybatisDao implements IUserDao{
 		return selectList("user.bookReportList",pagingParams);
 	}
 
+	@Override
+	public boolean notiMessage(Map<String, Object> params) {
+		
+		int notiMessage = insert("user.notiMessage", params);
+		
+		return notiMessage > 0;
+	}
+
 }

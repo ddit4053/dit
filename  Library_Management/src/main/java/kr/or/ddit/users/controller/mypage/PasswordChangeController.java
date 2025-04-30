@@ -1,6 +1,8 @@
 package kr.or.ddit.users.controller.mypage;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -106,6 +108,13 @@ public class PasswordChangeController extends HttpServlet {
             boolean isChanged = userService.changePassword(sessionUser.getUserNo(), newPassword);
             
             if (isChanged) {
+            	
+            	Map<String, Object> notiParams = new HashMap<>();
+                notiParams.put("notiType", "CHANGE_PASSWORD");
+                notiParams.put("message", "비밀번호 변경을 완료하였습니다.");
+                notiParams.put("userNo", sessionUser.getUserNo());
+                userService.notiMessage(notiParams);
+                
                 req.setAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
             } else {
                 req.setAttribute("errorMessage", "비밀번호 변경에 실패했습니다. 다시 시도해주세요.");

@@ -1,6 +1,8 @@
 package kr.or.ddit.users.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import jakarta.servlet.ServletContext;
@@ -92,6 +94,17 @@ public class UserFindController extends HttpServlet {
             boolean isCodeSaved = userService.saveEmailVerificationCode(email, verificationCode, "FIND_ID");
             
             if (isCodeSaved) {
+            	
+            	UsersVo user = userService.findUserByEmail(email);
+                
+                if (user != null) {
+                    Map<String, Object> notiParams = new HashMap<>();
+                    notiParams.put("notiType", "FIND_ID");
+                    notiParams.put("message", "아이디 찾기를 수행하였습니다.");
+                    notiParams.put("userNo", user.getUserNo());
+                    userService.notiMessage(notiParams);
+                }
+            	
             	boolean isEmailSent = EmailSender.sendVerificationCode(email, verificationCode, "FIND_ID");
                 
                 if (isEmailSent) {
@@ -158,6 +171,12 @@ public class UserFindController extends HttpServlet {
             boolean isCodeSaved = userService.saveEmailVerificationCode(email, verificationCode, "RESET_PASSWORD");
             
             if (isCodeSaved) {
+            	
+            	Map<String, Object> notiParams = new HashMap<>();
+                notiParams.put("notiType", "RESET_PASSWORD");
+                notiParams.put("message", "비밀번호 찾기를 수행하였습니다.");
+                notiParams.put("userNo", user.getUserNo());
+                userService.notiMessage(notiParams);
                
             	boolean isEmailSent = EmailSender.sendVerificationCode(email, verificationCode, "RESET_PASSWORD");
                 
@@ -294,6 +313,13 @@ public class UserFindController extends HttpServlet {
             System.out.println("비밀번호 재설정 결과: " + isPasswordReset);
             
             if (isPasswordReset) {
+            	
+            	Map<String, Object> notiParams = new HashMap<>();
+                notiParams.put("notiType", "RESET_PASSWORD");
+                notiParams.put("message", "비밀번호 재설정을 완료하였습니다.");
+                notiParams.put("userNo", userNo);
+                userService.notiMessage(notiParams);
+            	
                 System.out.println("비밀번호 재설정 성공, 로그인 페이지로 포워딩");
                 req.setAttribute("status", "password-reset-success");
                 req.setAttribute("message", "비밀번호가 성공적으로 재설정되었습니다. 새 비밀번호로 로그인하세요.");

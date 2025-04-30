@@ -20,7 +20,7 @@
             로그인 페이지로 이동하여 새로운 <br> 비밀번호로 로그인할 수 있습니다.
         </p>
         <span id="btnspan">
-        	<a href="${pageContext.request.contextPath}/user/main.do" class="btn" id="btn1">로그인 페이지로 이동</a>	
+        	<a href="${pageContext.request.contextPath}/user/login.do" class="btn" id="btn1">로그인 페이지로 이동</a>	
         </span>
     </div>
 </body>

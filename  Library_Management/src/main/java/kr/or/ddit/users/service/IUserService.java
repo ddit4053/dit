@@ -93,5 +93,7 @@ public interface IUserService {
 	public boolean requestLoanExtension(Map<String, Object> params);
 	
 	public boolean deleteFavorite(Map<String, Object> params);
+	
+	public boolean notiMessage(Map<String, Object> params);
 
 }
