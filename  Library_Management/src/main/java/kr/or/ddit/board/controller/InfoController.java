@@ -15,7 +15,7 @@ public class InfoController extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// contentPage 설정
-		req.setAttribute("contentPage", "/WEB-INF/view/users/info/notice-list.jsp");
+		req.setAttribute("contentPage", "/WEB-INF/view/users/guide/facilities.jsp");
 		
 		ServletContext ctx = req.getServletContext();
 		ctx.getRequestDispatcher("/WEB-INF/view/users/info/info.jsp").forward(req, resp);

@@ -116,32 +116,5 @@
         </div>
     </div>
     
-    <div class="guide-map-section">
-        <h3 class="sub-title">찾아오시는 길</h3>
-        <div class="map-container">
-            <!-- 여기에 지도 이미지 또는 API가 들어갑니다 -->
-            <div class="map-placeholder">
-                <div class="placeholder-text">지도 이미지</div>
-            </div>
-        </div>
-        
-        <div class="address-info">
-            <div class="info-item">
-                <strong>주소:</strong> 대전광역시 중구 오류동 123
-            </div>
-            <div class="info-item">
-                <strong>전화번호:</strong> 042-123-4567
-            </div>
-            <div class="info-item">
-                <strong>이메일:</strong> library@example.com
-            </div>
-            <div class="info-item">
-                <strong>대중교통:</strong> 
-                <ul>
-                    <li>지하철 1호선 오룡역 3번 출구에서 도보 10분</li>
-                    <li>버스 147, 463, 342번 이용, 도서관앞 하차</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    
 </div>
