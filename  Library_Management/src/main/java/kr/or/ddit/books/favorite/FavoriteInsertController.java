@@ -43,4 +43,29 @@ public class FavoriteInsertController extends HttpServlet{
 		resp.getWriter().write(result);
 		
 	}
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String userNoStr = req.getParameter("userNo");
+		int userNo = Integer.parseInt(userNoStr);
+		
+		String bookNoStr = req.getParameter("bookNo");
+		int bookNo = Integer.parseInt(bookNoStr);
+		
+		BookFavoritesVo favorVo = new BookFavoritesVo();
+		
+		favorVo.setBookNo(bookNo);
+		favorVo.setUserNo(userNo);
+		
+		String result="";
+		int count = favoriteService.favoriteCheck(favorVo); // 이미 등록된게 있는지 확인
+
+	    if (count == 0) {
+	        result = "notexists"; // 없음
+	    } else {
+	        result = "exists"; // 이미 있음
+	    }
+	    
+	    resp.setContentType("text/plain;charset=UTF-8");
+		resp.getWriter().write(result);
+	}
 }

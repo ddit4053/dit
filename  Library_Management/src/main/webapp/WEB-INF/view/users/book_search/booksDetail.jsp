@@ -267,6 +267,7 @@
             return;
         }
     	
+    	
      	$.ajax({
     		url: "detail/favoriteInsert",
     		type: "get",
@@ -277,8 +278,16 @@
     		success : function(res){
     			if (res === "insert") {
                     alert("관심 도서 등록 완료!");
+                    $('#BookFavorite')
+                    .text("관심 도서 취소")
+                    .css("background-color", "red")
+                    .data("favorited", true);
                 } else if (res === "delete") {
                     alert("관심 도서가 삭제되었습니다.");
+                    $('#BookFavorite')
+                    .text("관심 도서 추가")
+                    .css("background-color", "#4CAF50")
+                    .data("favorited", false);
                 } else {
                     alert("처리 실패");
                 }
@@ -299,7 +308,7 @@
   		  }
    	  
    	  $.ajax({
-   		    url: "detail/loanInsert", // 실제 처리 경로에 맞게 수정 필요
+   		    url: "detail/loanInsert", 
    		    type: "post",
    		    data: {
    		      userNo: userNo,
@@ -323,11 +332,47 @@
    		    }
    		  });
   		}
+   
+   function loadFavorite() {
+	   
+ 	const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'}
+   	const bookNo = $('#BookFavorite').val();
+	   
+   	//관심도서 체크후 있으면 버튼 변경
+   	$.ajax({
+   		url : "detail/favoriteInsert",
+   		type: 'post',
+   		data: {
+   			userNo : userNo,
+   			bookNo : bookNo
+   		},
+   		success : function(res){
+   			if (res === "exists") {
+                   $('#BookFavorite')
+                       .text("관심 도서 취소")
+                       .css("background-color", "red")
+                       .data("favorited", true);
+               } else {
+                   $('#BookFavorite')
+                       .text("관심 도서 추가")
+                       .css("background-color", "#4CAF50")
+                       .data("favorited", false);
+               }
+   		},
+   		error : function(xhr){
+   			alert(xhr.status);
+   		}
+   	})
+   }
     
 
     // 페이지 로딩시 리뷰 불러오기기
     $(document).ready(function() {
     loadReviewList();
+    if(${sessionScope.userNo != null}){
+    	
+    loadFavorite();
+    }
     });
   </script>
 </head>
