@@ -36,6 +36,10 @@
 	<mappers>
 <!-- 		<mapper resource="mapper/file.xml"/> -->
 
+  <mapper resource="kr/or/ddit/reading/mapper/ReservationMapper.xml" />
+
 	</mappers>
+	
+	
 
 </configuration>

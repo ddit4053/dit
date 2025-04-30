@@ -9,14 +9,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.or.ddit.reading.service.ReadingReservationService;
+import kr.or.ddit.reading.service.IReadingReservationService;
 import kr.or.ddit.reading.service.ReadingReservationServiceImpl;
 import kr.or.ddit.vo.ReadingReservationsVo;
 
 @WebServlet("/reservation.do")
 public class ReservationController extends HttpServlet {
 
-    private ReadingReservationService reservationService = new ReadingReservationServiceImpl();
+    private IReadingReservationService reservationService = new ReadingReservationServiceImpl();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -30,11 +30,12 @@ public class ReservationController extends HttpServlet {
             String reserveDateStr = request.getParameter("reserveDate");
             String startTimeStr = request.getParameter("startTime");
             String endTimeStr = request.getParameter("endTime");
+            String roomName = request.getParameter("roomName");
 
             if (seatNoStr == null || userNoStr == null || reserveDateStr == null ||
-                startTimeStr == null || endTimeStr == null ||
+                startTimeStr == null || endTimeStr == null || roomName == null ||
                 seatNoStr.isEmpty() || userNoStr.isEmpty() || reserveDateStr.isEmpty() ||
-                startTimeStr.isEmpty() || endTimeStr.isEmpty()) {
+                startTimeStr.isEmpty() || endTimeStr.isEmpty() || roomName.isEmpty()) {
 
                 response.setContentType("text/html;charset=UTF-8");
                 response.getWriter().write("<script>alert('필수 입력값이 누락되었습니다.'); history.back();</script>");
@@ -69,7 +70,8 @@ public class ReservationController extends HttpServlet {
             vo.setReserveDate(reserveDate);
             vo.setStartTime(startTime);
             vo.setEndTime(endTime);
-            vo.setRReserveStatus("예약완료");
+            vo.setRoomName(roomName);
+            vo.setrReserveStatus("예약완료");
 
             boolean success = reservationService.insertReservation(vo);
 

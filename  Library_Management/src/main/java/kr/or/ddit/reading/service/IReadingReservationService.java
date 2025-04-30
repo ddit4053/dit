@@ -1,10 +1,10 @@
 package kr.or.ddit.reading.service;
 
+import java.time.LocalDate;
 import java.util.List;
-
 import kr.or.ddit.vo.ReadingReservationsVo;
 
-public interface ReadingReservationService {
+public interface IReadingReservationService {
 
     boolean insertReservation(ReadingReservationsVo vo);
 
@@ -17,4 +17,9 @@ public interface ReadingReservationService {
     List<ReadingReservationsVo> selectByUserNo(int userNo);
 
     boolean isWithinOperatingHours(String startTime, String endTime);
+
+    List<ReadingReservationsVo> getAllReservations();
+
+    // 🔥 추가 (SeatList 눈금 채우기용)
+    List<ReadingReservationsVo> getReservationsByRoomAndDate(String roomName, LocalDate selectedDate);
 }

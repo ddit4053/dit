@@ -7,181 +7,127 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>좌석/실 예약 - HOME</title>
+    <title>책GPT 도서관 시스템 - 홈</title>
     <style>
-        /* ─────────── 상단 헤더 ─────────── */
-        .header {
-            background-color: #cf202f;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            height: 80px;
-        }
-        .header .logo {
-            display: flex;
-            align-items: center;
-        }
-        .header .logo img {
-            height: 40px;
-        }
-        .header .logo span {
-            color: white;
-            font-size: 20px;
-            margin-left: 8px;
-        }
-        .nav {
-            list-style: none;
-            display: flex;
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
             margin: 0;
-            padding: 0;
+            background-color: #fdf8f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        .nav-item {
-            margin: 0 8px;
-            border-radius: 4px;
-            transition: background .2s;
+        .header {
+            background-color: #5d4037;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            height: 70px;
         }
-        .nav-item a {
-            display: block;
-            padding: 12px 16px;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
+        .header .title {
+            color: #fff;
+            font-size: 24px;
             font-weight: bold;
         }
-        .nav-item.active,
-        .nav-item:hover {
-            background-color: white;
+        .header .nav {
+            display: flex;
+            gap: 15px;
         }
-        .nav-item.active a,
-        .nav-item:hover a {
-            color: #cf202f;
+        .header .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background 0.2s;
         }
-        .header .close img {
-            width: 24px;
-            cursor: pointer;
+        .header .nav a:hover {
+            background: #795548;
         }
 
-        /* ─────────── 배너 영역 ─────────── */
         .banner {
-            position: relative;
-            background-image: url('${ctx}/resources/images/banner_bg.jpg');
-            background-size: cover;
-            background-position: center;
+            background-color: #8d6e63;
             text-align: center;
+            padding: 60px 20px;
             color: white;
-            padding: 100px 20px;
         }
-        .banner h1 {
+        .banner h2 {
+            font-size: 36px;
             margin: 0;
-            font-size: 48px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-            line-height: 1.2;
         }
 
-        /* ─────────── 메뉴 버튼 ─────────── */
         .menu {
             display: flex;
             justify-content: center;
             gap: 60px;
-            margin-top: -60px; /* 배너 아래로 살짝 겹치도록 */
+            margin: 60px auto 100px;
         }
         .menu a {
-            width: 200px;
-            height: 180px;
-            background: linear-gradient(to bottom, #fafafa, #e0e0e0);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 220px;
+            height: 200px;
+            background: #efebe9;
+            border-radius: 10px;
             text-decoration: none;
-            color: #333;
-            font-size: 18px;
+            color: #4e342e;
             font-weight: bold;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            transition: transform .2s;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            transition: transform 0.2s;
         }
         .menu a:hover {
-            transform: translateY(-4px);
+            transform: translateY(-5px);
         }
         .menu a img {
-            width: 56px;
-            margin-bottom: 12px;
+            width: 200px;
+            margin-bottom: 20px;
         }
 
-        /* ─────────── 환영 문구 ─────────── */
-        .welcome {
-            text-align: center;
-            color: white;
-            font-size: 20px;
-            margin: 40px 0;
-        }
-
-        /* ─────────── 푸터 ─────────── */
         footer {
             text-align: center;
-            color: #ddd;
-            font-size: 14px;
-            padding: 12px 0;
-            background-color: rgba(0,0,0,0.5);
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            padding: 30px 0 40px;
+            background: #5d4037;
+            color: white;
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
-    <!-- 상단 헤더 -->
-    <div class="header">
-        <div class="logo">
-            <img src="${ctx}/resources/images/logo_sejong.png" alt="국립세종도서관 로고">
-            <span>좌석/실 예약</span>
-        </div>
-        <ul class="nav">
-            <li class="nav-item"><a href="${ctx}/ReadingMain.do">HOME</a></li>
-            <li class="nav-item"><a href="${ctx}/seatList.do?roomName=디지털열람실">디지털열람석</a></li>
-            <li class="nav-item"><a href="${ctx}/seatList.do?roomName=미디어열람실">미디어열람석</a></li>
-            <li class="nav-item"><a href="${ctx}/myReservation.do">MY예약현황</a></li>
-        </ul>
-        <div class="close">
-            <img src="${ctx}/resources/images/close_icon.png" id="closeBtn" alt="닫기">
-        </div>
+<div class="header">
+    <div class="title">책GPT 도서관 시스템</div>
+    <div class="nav">
+        <a href="${ctx}/readingMain.do">HOME</a>
+        <a href="${ctx}/seatList.do?roomName=일반열람실">일반열람실</a>
+        <a href="${ctx}/seatList.do?roomName=미디어열람실">미디어열람실</a>
+        <a href="${ctx}/myReservation.do">MY예약현황</a>
     </div>
+</div>
 
-    <!-- 배너 -->
-    <div class="banner">
-        <h1>책GPT<br>BOOKING SYSTEM</h1>
-    </div>
+<div class="banner">
+    <h2>열람실 예약 시스템입니다.</h2>
+</div>
 
-    <!-- 메인 메뉴 -->
-    <div class="menu">
-        <a href="${ctx}/seatList.do?roomName=디지털열람실">
-            <img src="${ctx}/resources/images/icon_digital.png" alt="디지털 열람석">
-            디지털 열람석
-        </a>
-        <a href="${ctx}/seatList.do?roomName=미디어열람실">
-            <img src="${ctx}/resources/images/icon_media.png" alt="미디어 열람석">
-            미디어 열람석
-        </a>
-        <a href="${ctx}/myReservation.do">
-            <img src="${ctx}/resources/images/icon_my.png" alt="My 예약현황">
-            My 예약현황
-        </a>
-    </div>
+<div class="menu">
+    <a href="${ctx}/seatList.do?roomName=일반열람실">
+        <img src="${ctx}/resource/img/일반 열람실.png" alt="일	반 열람실">
+        일반 열람실
+    </a>
+    <a href="${ctx}/seatList.do?roomName=미디어열람실">
+        <img src="${ctx}/resource/img/미디어열람실.png" alt="미디어 열람실">
+        미디어 열람실(공사중)
+    </a>
+    <a href="${ctx}/myReservation.do">
+        
+        My 예약현황
+    </a>
+</div>
 
-    <!-- 환영 문구 (이름 마스킹 예시) -->
-    <c:set var="name" value="${sessionScope.loginUser.name}" />
-    <c:set var="first" value="${fn:substring(name,0,1)}" />
-    <c:set var="masked" value="${first}*${fn:substring(name,2,fn:length(name))}" />
-    <div class="welcome">${masked} 님 환영합니다.</div>
-
-    <footer>© 책GPT. All rights reserved.</footer>
-
-    <script>
-        // JSP 안에서 컨텍스트 패스를 JS에서도 쓰기 위해
-        const ctx = '${ctx}';
-    </script>
-    <script src="${ctx}/resources/js/users/reading_room/reading.js"></script>
+<footer>
+    © 책GPT 도서관 시스템. All rights reserved.
+</footer>
 </body>
 </html>

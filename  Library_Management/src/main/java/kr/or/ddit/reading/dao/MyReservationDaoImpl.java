@@ -3,17 +3,13 @@ package kr.or.ddit.reading.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Time;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.ddit.util.DBUtil;
 import kr.or.ddit.vo.ReadingReservationsVo;
 
-public class MyReservationDaoImpl implements MyReservationDao {
+public class MyReservationDaoImpl implements IMyReservationDao {
 
     @Override
     public List<ReadingReservationsVo> getReservationsByUser(int userNo) {
@@ -28,14 +24,14 @@ public class MyReservationDaoImpl implements MyReservationDao {
 
             while (rs.next()) {
                 ReadingReservationsVo vo = new ReadingReservationsVo();
-                vo.setRReserveNo(rs.getInt("r_reserve_no"));
+                vo.setrReserveNo(rs.getInt("r_reserve_no"));
                 vo.setUserNo(rs.getInt("user_no"));
                 vo.setSeatNo(rs.getInt("seat_no"));
-                vo.setReserveDate(rs.getDate("reserve_date").toLocalDate());   // Date -> LocalDate
-                vo.setStartTime(rs.getTime("start_time").toLocalTime());        // Time -> LocalTime
-                vo.setEndTime(rs.getTime("end_time").toLocalTime());            // Time -> LocalTime
-                vo.setRReserveStatus(rs.getString("r_reserve_status"));
-                vo.setRoomName(rs.getString("room_name"));                     // roomName 추가
+                vo.setReserveDate(rs.getDate("reserve_date").toLocalDate());
+                vo.setStartTime(rs.getTime("start_time").toLocalTime());
+                vo.setEndTime(rs.getTime("end_time").toLocalTime());
+                vo.setrReserveStatus(rs.getString("r_reserve_status"));
+                vo.setRoomName(rs.getString("room_name")); // roomName까지 저장
                 list.add(vo);
             }
 
@@ -44,5 +40,24 @@ public class MyReservationDaoImpl implements MyReservationDao {
         }
 
         return list;
+    }
+
+    @Override
+    public int updateReservationStatus(int rReserveNo) {
+        int cnt = 0;
+        String sql = "UPDATE reading_reservations SET r_reserve_status = '취소완료' WHERE r_reserve_no = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, rReserveNo);
+
+            cnt = ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return cnt;
     }
 }

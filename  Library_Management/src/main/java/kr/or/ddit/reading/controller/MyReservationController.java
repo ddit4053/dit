@@ -8,38 +8,29 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import kr.or.ddit.reading.service.ReadingReservationService;
+import kr.or.ddit.reading.service.IReadingReservationService;
 import kr.or.ddit.reading.service.ReadingReservationServiceImpl;
 import kr.or.ddit.vo.ReadingReservationsVo;
-import kr.or.ddit.vo.UsertsVo;
 
 @WebServlet("/myReservation.do")
 public class MyReservationController extends HttpServlet {
 
-    private ReadingReservationService reservationService = new ReadingReservationServiceImpl();
+    private IReadingReservationService reservationService = new ReadingReservationServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 로그인된 사용자 세션에서 userNo 추출
-        HttpSession session = request.getSession();
-        UsertsVo loginUser = (UsertsVo) session.getAttribute("loginok");
+        // ✅ 임시로 userNo = 1로 고정
+        int userNo = 1;
 
-        if (loginUser == null) {
-            // 로그인 정보 없으면 로그인 페이지나 홈으로 리다이렉트
-            response.sendRedirect(request.getContextPath() + "/readingMain.jsp");
-            return;
-        }
+        // 예약 목록 가져오기
+        List<ReadingReservationsVo> reservations = reservationService.getReservationsByUser(userNo);
 
-        int userNo = loginUser.getUserNo();
+        // JSP에 예약 목록 넘기기
+        request.setAttribute("reservations", reservations);
 
-        // 예약 내역 조회
-        List<ReadingReservationsVo> myReservations = reservationService.selectByUserNo(userNo);
-
-        // JSP로 전달
-        request.setAttribute("myReservations", myReservations);
+        // JSP로 이동
         request.getRequestDispatcher("/WEB-INF/view/users/reading_room/myReservation.jsp").forward(request, response);
     }
 }
