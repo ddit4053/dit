@@ -21,17 +21,34 @@ import kr.or.ddit.vo.PagingVo;
 public abstract class AbstractPagingController extends HttpServlet {
     
     protected IUserService userService = UserServiceImpl.getInstance();
+    protected HttpServletRequest currentRequest;
+    protected HttpServletResponse currentResponse;
     
-    // 자식
+    // 자식 
     protected abstract int getTotalCount(int userNo);
     protected abstract List<Map<String, Object>> getDataList(Map<String, Object> pagingParams);
     protected abstract String getContentPage();
     protected abstract String getResultAttributeName();
     
-    // 공통
+    
+    protected HttpServletRequest getRequest() {
+        return currentRequest;
+    }
+    
+    // 공통 
     protected void processPaging(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.currentRequest = req;
+        this.currentResponse = resp;
+        
         HttpSession session = req.getSession();
-        int userNo = (int)session.getAttribute("userNo");
+        
+        Integer userNoObj = (Integer)session.getAttribute("userNo");
+        if (userNoObj == null) {
+           
+            resp.sendRedirect(req.getContextPath() + "/login.do");
+            return;
+        }
+        int userNo = userNoObj.intValue();
         
         int currentPage = 1; 
         String pageStr = req.getParameter("page");
@@ -50,10 +67,25 @@ public abstract class AbstractPagingController extends HttpServlet {
         pagingVo.setPageBlockSize(5); 
         pagingVo.calculatePaging();
         
+        
         Map<String, Object> pagingParams = new HashMap<>();
         pagingParams.put("userNo", userNo);
         pagingParams.put("start", pagingVo.getStartRow());
         pagingParams.put("end", pagingVo.getEndRow());
+        
+        
+        String searchType = req.getParameter("searchType");
+        String searchKeyword = req.getParameter("searchKeyword");
+        if (searchType != null && searchKeyword != null && !searchKeyword.isEmpty()) {
+            pagingParams.put("searchType", searchType);
+            pagingParams.put("searchKeyword", searchKeyword);
+        }
+        
+        
+        String periodType = req.getParameter("periodType");
+        if (periodType != null && !periodType.isEmpty()) {
+            pagingParams.put("periodType", periodType);
+        }
         
         List<Map<String, Object>> dataList = getDataList(pagingParams);
         
