@@ -31,7 +31,7 @@
                         row.append($('<td>').addClass('title').attr('title', report.TITLE).text(report.TITLE));
                         row.append($('<td>').addClass('title').attr('title', report.CODE_NAME).text(report.CODE_NAME));
                         row.append($('<td>').text(report.WRITTEN_DATE));
-                        row.append($('<td>').html('<input type="button" value="게시글이동" class="extension-btn" onclick="moveToBoard(' + report.BOARD_NO +','+ report.CODE_NAME + ')">'));
+                        row.append($('<td>').html('<input type="button" value="게시글이동" class="extension-btn" onclick="moveToBoard(' + report.BOARD_NO + ',\'' + report.CODE_NAME + '\')">'));
                         tableBody.append(row);
                     });
                 } else { 
