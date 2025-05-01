@@ -40,7 +40,7 @@ const menuStructure = {
         {
           title: "도서 검색",
           url: "/books/search",
-          subMenus: [{ title: "카테고리 검색", url: "/books/categoryList" }],
+          subMenus: [{ title: "카테고리 검색", url: "/books/search/searchCategory" }],
         },
         { title: "신착 도서", url: "/books/new" },
         { title: "관심 도서", url: "/books/favor" },
