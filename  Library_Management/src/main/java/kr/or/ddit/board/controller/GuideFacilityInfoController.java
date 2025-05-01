@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * 책GPT도서관 시설 소개 페이지 컨트롤러
  * facilityinfo URL 패턴을 사용하여 충돌 방지
  */
-@WebServlet("/board/guide/intro")
+@WebServlet("/about/intro")
 public class GuideFacilityInfoController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,7 @@ public class GuideFacilityInfoController extends HttpServlet {
             throws ServletException, IOException {
         
         // 시설 소개 페이지로 포워딩
-        request.setAttribute("contentPage", "/WEB-INF/view/users/guide/facilityIntroduce.jsp");
-        request.getRequestDispatcher("/WEB-INF/view/admin/board/board.jsp").forward(request, response);
+        request.setAttribute("contentPage", "facilityIntroduce.jsp");
+        request.getRequestDispatcher("/WEB-INF/view/users/about/about.jsp").forward(request, response);
     }
 }

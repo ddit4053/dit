@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * 책GPT도서관 인사말 페이지 컨트롤러
  */
-@WebServlet("/board/guide/greetings")
+@WebServlet("/about/greetings")
 public class GuideGreetingController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -18,7 +18,7 @@ public class GuideGreetingController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        request.setAttribute("contentPage", "/WEB-INF/view/users/guide/greeting.jsp");
-        request.getRequestDispatcher("/WEB-INF/view/admin/board/board.jsp").forward(request, response);
+        request.setAttribute("contentPage", "greeting.jsp");
+        request.getRequestDispatcher("/WEB-INF/view/users/about/about.jsp").forward(request, response);
     }
 }

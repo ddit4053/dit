@@ -60,8 +60,9 @@ const menuStructure = {
       url: "/about/",
       subMenus: [
         { title: "인사말", url: "/about/greetings" },
-        { title: "시설 소개", url: "/about/facilities" },
+        { title: "시설 소개", url: "/about/intro" },
         { title: "오시는 길", url: "/about/location" },
+        { title: "편의시설", url: "/about/facilities" },
       ],
     },
     {
