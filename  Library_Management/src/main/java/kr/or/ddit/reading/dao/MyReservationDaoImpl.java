@@ -9,7 +9,7 @@ import java.util.List;
 import kr.or.ddit.util.DBUtil;
 import kr.or.ddit.vo.ReadingReservationsVo;
 
-public class MyReservationDaoImpl implements MyReservationDao {
+public class MyReservationDaoImpl implements IMyReservationDao {
 
     @Override
     public List<ReadingReservationsVo> getReservationsByUser(int userNo) {
@@ -24,12 +24,14 @@ public class MyReservationDaoImpl implements MyReservationDao {
 
             while (rs.next()) {
                 ReadingReservationsVo vo = new ReadingReservationsVo();
-                vo.setRReserveNo(rs.getInt("r_reserve_no"));
-                vo.setStartTime(rs.getString("start_time"));
-                vo.setEndTime(rs.getString("end_time"));
-                vo.setRReserveStatus(rs.getString("r_reserve_status"));
-                vo.setSeatNo(rs.getInt("seat_no"));
+                vo.setrReserveNo(rs.getInt("r_reserve_no"));
                 vo.setUserNo(rs.getInt("user_no"));
+                vo.setSeatNo(rs.getInt("seat_no"));
+                vo.setReserveDate(rs.getDate("reserve_date").toLocalDate());
+                vo.setStartTime(rs.getTime("start_time").toLocalTime());
+                vo.setEndTime(rs.getTime("end_time").toLocalTime());
+                vo.setrReserveStatus(rs.getString("r_reserve_status"));
+                vo.setRoomName(rs.getString("room_name")); // roomName까지 저장
                 list.add(vo);
             }
 
@@ -38,5 +40,24 @@ public class MyReservationDaoImpl implements MyReservationDao {
         }
 
         return list;
+    }
+
+    @Override
+    public int updateReservationStatus(int rReserveNo) {
+        int cnt = 0;
+        String sql = "UPDATE reading_reservations SET r_reserve_status = '취소완료' WHERE r_reserve_no = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, rReserveNo);
+
+            cnt = ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return cnt;
     }
 }

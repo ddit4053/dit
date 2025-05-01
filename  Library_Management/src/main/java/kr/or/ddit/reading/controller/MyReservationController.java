@@ -8,16 +8,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import kr.or.ddit.reading.service.ReadingReservationService;
+import kr.or.ddit.reading.service.IReadingReservationService;
 import kr.or.ddit.reading.service.ReadingReservationServiceImpl;
 import kr.or.ddit.vo.ReadingReservationsVo;
-import kr.or.ddit.vo.UsertsVo;
 
 @WebServlet("/myReservation.do")
 public class MyReservationController extends HttpServlet {
 
-    private ReadingReservationService reservationService = new ReadingReservationServiceImpl();
+    private IReadingReservationService reservationService = new ReadingReservationServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,11 +33,13 @@ public class MyReservationController extends HttpServlet {
 
         int userNo = loginUser.getUserNo();
 
-        // 예약 내역 조회
-        List<ReadingReservationsVo> myReservations = reservationService.selectByUserNo(userNo);
+        // 예약 목록 가져오기
+        List<ReadingReservationsVo> reservations = reservationService.getReservationsByUser(userNo);
 
-        // JSP로 전달
-        request.setAttribute("myReservations", myReservations);
+        // JSP에 예약 목록 넘기기
+        request.setAttribute("reservations", reservations);
+
+        // JSP로 이동
         request.getRequestDispatcher("/WEB-INF/view/users/reading_room/myReservation.jsp").forward(request, response);
     }
 }

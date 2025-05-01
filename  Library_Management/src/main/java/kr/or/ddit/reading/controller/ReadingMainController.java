@@ -18,3 +18,6 @@ public class ReadingMainController extends HttpServlet {
                .forward(request, response);
     }
 }
+
+
+//로그인 안하면 막아놓는 기능 추가 
