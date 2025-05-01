@@ -15,7 +15,7 @@
         h2 { color: #cf202f; }
         table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-        th { background: #cf202f; color: white; }
+        th { background: #8d6e63; color: white; }
         .cancel-btn {
             background: #cc0033;
             color: white;
@@ -30,30 +30,21 @@
     </style>
 </head>
 <body>
-<header style="background: #cc0033; color: white; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center;">
-    <h1 style="margin: 0; font-size: 22px;">${pageTitle}</h1>
-    <div class="nav-buttons" style="display: flex; gap: 10px;">
-        <a href="${ctx}/readingMain.do" 
-           style="padding: 8px 16px; font-weight: bold; border: 2px solid #fff; border-radius: 5px; 
-                  text-decoration: none;
-                  ${currentPage eq 'home' ? 'background:white; color:#cc0033;' : 'color:white;'}">
-           HOME
-        </a>
-        
-        <a href="${ctx}/seatList.do?roomName=일반열람실" 
-           style="padding: 8px 16px; font-weight: bold; border: 2px solid #fff; border-radius: 5px; 
-                  text-decoration: none;
-                  ${currentPage eq 'seat' ? 'background:white; color:#cc0033;' : 'color:white;'}">
-           일반열람실
-        </a>
+<header style="background: #5d4037; color: white; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center;">
+  <h1 style="margin: 0; font-size: 22px;">${pageTitle}</h1>
+  <div class="nav-buttons" style="display: flex; gap: 10px;">
+    <a href="${ctx}/readingMain.do"
+       style="padding: 8px 16px; font-weight: bold; border: 2px solid #fff; border-radius: 5px; text-decoration: none;
+       ${currentPage eq 'home' ? 'background:white; color:#5d4037;' : 'color:white;'}">HOME</a>
 
-               <a href="${ctx}/myReservation.do" 
-           style="padding: 8px 16px; font-weight: bold; border: 2px solid #fff; border-radius: 5px;
-                  text-decoration: none;
-                  ${currentPage eq 'my' ? 'background:white; color:#cc0033;' : 'color:white;'}">
-           MY예약현황
-        </a>
-    </div>
+    <a href="${ctx}/seatList.do?roomName=일반열람실"
+       style="padding: 8px 16px; font-weight: bold; border: 2px solid #fff; border-radius: 5px; text-decoration: none;
+       ${currentPage eq 'seat' ? 'background:white; color:#5d4037;' : 'color:white;'}">일반열람실</a>
+
+    <a href="${ctx}/myReservation.do"
+       style="padding: 8px 16px; font-weight: bold; border: 2px solid #fff; border-radius: 5px; text-decoration: none;
+       ${currentPage eq 'my' ? 'background:white; color:#5d4037;' : 'color:white;'}">MY예약현황</a>
+  </div>
 </header>
 
  

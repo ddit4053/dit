@@ -12,10 +12,10 @@
   <title>${pageTitle}</title>
   <style>
     body { font-family: 'Noto Sans KR', sans-serif; margin: 0; background: #f9f9f9; }
-    .menu-tabs { display: flex; width: 100%; margin: 0; padding: 0; background: #cc0033; list-style: none; }
+    .menu-tabs { display: flex; width: 100%; margin: 0; padding: 0; background: #5d4037; list-style: none; }
     .menu-tabs li { flex: 1; text-align: center; }
     .menu-tabs a { display: block; padding: 15px 0; color: white; text-decoration: none; font-weight: bold; }
-    .menu-tabs a.active, .menu-tabs a:hover { background: #a00028; }
+    .menu-tabs a.active, .menu-tabs a:hover { background: #795548; }
     .container { padding: 20px; }
     .date-search { display: flex; align-items: center; margin-bottom: 20px; padding: 15px; background: white; border: 1px solid #ddd; border-radius: 4px; }
     .date-search label { margin-right: 10px; font-weight: bold; }

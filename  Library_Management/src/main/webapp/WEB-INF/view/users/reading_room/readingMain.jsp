@@ -49,11 +49,11 @@
         .banner {
             background-color: #8d6e63;
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             color: white;
         }
         .banner h2 {
-            font-size: 36px;
+            font-size: 50px;
             margin: 0;
         }
 
@@ -65,13 +65,14 @@
         }
         .menu a {
             text-align: center;
-            width: 220px;
-            height: 200px;
+            width: 280px;
+            height: 260px;
             background: #efebe9;
             border-radius: 10px;
             text-decoration: none;
             color: #4e342e;
             font-weight: bold;
+            font-size: 25px; 
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -83,7 +84,7 @@
             transform: translateY(-5px);
         }
         .menu a img {
-            width: 200px;
+            width: 260px;
             margin-bottom: 20px;
         }
 
@@ -108,7 +109,7 @@
 </div>
 
 <div class="banner">
-    <h2>열람실 예약 시스템입니다.</h2>
+    <h2>열람실 예약 시스템에 오신 것을 환영합니다.</h2>
 </div>
 
 <div class="menu">
