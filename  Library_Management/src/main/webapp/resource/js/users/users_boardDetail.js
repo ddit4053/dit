@@ -322,11 +322,11 @@ function toggleReplyForm(cmNo) {
 
 /**
  * 답글 등록 처리
- * @param {Number} parentCmNo - 부모 댓글 번호
+ * @param {Number} cmNo2 - 부모 댓글 번호
  * @param {Number} boardNo - 게시글 번호
  */
-async function submitReply(parentCmNo, boardNo) {
-  const replyForm = document.getElementById(`reply-form-${parentCmNo}`);
+async function submitReply(cmNo2, boardNo) {
+  const replyForm = document.getElementById(`reply-form-${cmNo2}`);
   const replyContent = replyForm.querySelector("textarea").value;
 
   if (!replyContent.trim()) {
@@ -342,7 +342,7 @@ async function submitReply(parentCmNo, boardNo) {
       },
       body: JSON.stringify({
         boardNo,
-        parentCmNo, // 서버에서 예상하는 파라미터명으로 수정
+        cmNo2,
         cmContent: replyContent,
       }),
     });

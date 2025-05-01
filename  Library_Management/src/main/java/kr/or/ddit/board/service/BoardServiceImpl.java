@@ -151,6 +151,12 @@ public class BoardServiceImpl implements IBoardService {
 		return commentsDao.insertComments(comment);
 	}
 	
+	// 대댓글 작성
+	@Override
+	public int insertReplyComment(CommentsVo comment) {
+		return commentsDao.insertReplyComment(comment);
+	}
+	
 	// 댓글 수정
 	@Override
 	public int updateComment(CommentsVo comment) {
@@ -179,6 +185,8 @@ public class BoardServiceImpl implements IBoardService {
 		}
 		return 0;
 	}
+	
+	
     
 
 }
