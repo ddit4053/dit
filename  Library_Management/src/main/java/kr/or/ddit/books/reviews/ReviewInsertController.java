@@ -38,7 +38,8 @@ public class ReviewInsertController extends HttpServlet {
 		reviewsVo.setRating(rating);
 		reviewsVo.setRevContent(revContent);
 		reviewsVo.setBookNo(bookNo);
-		reviewsVo.setUserNo(Integer.parseInt((String) session.getAttribute("userNo"))); // 일단 그냥 넣은 데이터
+		int userNo = (int) session.getAttribute("userNo");
+		reviewsVo.setUserNo(userNo); // 일단 그냥 넣은 데이터
 		
 		
 		
