@@ -32,7 +32,11 @@ public interface IBoardService {
     int getTotalBoardCount(Map<String, Object> params);
     
     
-    // 댓글 조회
+    // 단일 댓글 조회
+    CommentsVo selectComment(int cmNo);
+    
+    
+    // 댓글 목록 조회
     List<CommentsVo> selectCommentsList(int boardNo);
     
     // 댓글 작성

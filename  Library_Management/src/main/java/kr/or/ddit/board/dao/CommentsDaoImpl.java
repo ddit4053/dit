@@ -55,7 +55,7 @@ public class CommentsDaoImpl extends MybatisDao implements ICommentsDao {
 	// 특정 댓글 조회 (삭제 업데이트용)
 	@Override
 	public CommentsVo selectComment(int cmNo) {
-		return selectOne("comments.getSelectCommnet",cmNo);
+		return selectOne("comments.selectCommnet",cmNo);
 	}
 		
 	// 댓글 수 조회

@@ -45,8 +45,6 @@ public class BoardCrudController extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // BoardFrontController에서 이미 list 및 detail 페이지 라우팅을 처리하고 있으므로,
-        // 해당 서블릿에서는 필요한 경우에만 구현합니다.
         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
     
@@ -247,6 +245,7 @@ public class BoardCrudController extends HttpServlet {
             
             int boardNo = Integer.parseInt(boardNoStr);
             int codeNo = Integer.parseInt(codeNoStr);
+            // 기존에 첨부한 파일 그룹넘버가 있을 경우 가져옴
             int fileGroupNum = fileGroupNumStr != null && !fileGroupNumStr.trim().isEmpty() ? 
                     Integer.parseInt(fileGroupNumStr) : 0;
             

@@ -40,7 +40,7 @@ async function loadAttachedFiles() {
   if (!fileList) return;
 
   const fileGroupNum = fileList.dataset.fileGroup;
-  if (!fileGroupNum || fileGroupNum <= 0) return;
+  if (!fileGroupNum || fileGroupNum <= 0) return; // 첨부된 파일이 없는 경우 AJAX 요청하지 않음
 
   try {
     // 첨부파일 목록 AJAX

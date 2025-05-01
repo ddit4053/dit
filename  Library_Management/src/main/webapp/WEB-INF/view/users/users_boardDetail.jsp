@@ -142,4 +142,4 @@
             </form>
         </div>
     </div>
-    <script src="${pageContext.request.contextPath}/resource/js/users/user_boardDetail.js"></script>
+    <script src="${pageContext.request.contextPath}/resource/js/users/users_boardDetail.js"></script>

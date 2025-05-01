@@ -1,10 +1,8 @@
 package kr.or.ddit.board.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -18,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
+import kr.or.ddit.util.RequestDataChange;
 import kr.or.ddit.vo.CommentsVo;
 import kr.or.ddit.vo.UsersVo;
 
@@ -84,20 +83,58 @@ public class CommentsController extends HttpServlet {
     }
     
     /**
-     * 댓글 등록 처리
+     * 사용자 정보 및 권한 확인을 위한 공통 메서드
+     * @param req HTTP 요청
+     * @param cmNo 댓글 번호 (권한 확인이 필요한 경우, 0이면 단순 로그인 확인만)
+     * @param actionName 수행할 작업 이름 (예: "삭제", "수정")
+     * @return 로그인한 사용자 정보
+     * @throws IllegalStateException 로그인이 되어있지 않거나 권한이 없는 경우
+     * @throws IllegalArgumentException 요청된 댓글이 존재하지 않는 경우
+     */
+    private UsersVo checkUserAuthority(HttpServletRequest req, int cmNo, String actionName) 
+            throws IllegalStateException, IllegalArgumentException {
+        // 세션에서 사용자 정보 확인
+        HttpSession session = req.getSession();
+        UsersVo loginUser = (UsersVo) session.getAttribute("user");
+        
+        if (loginUser == null) {
+            throw new IllegalStateException("로그인이 필요한 기능입니다.");
+        }
+        
+        // 댓글 번호가 0이면 단순 로그인 확인만 수행
+        if (cmNo == 0) {
+            return loginUser;
+        }
+        
+        // 댓글 정보 조회
+        CommentsVo comment = boardService.selectComment(cmNo);
+        
+        if (comment == null) {
+            throw new IllegalArgumentException("존재하지 않는 댓글입니다.");
+        }
+        
+        // 관리자가 아니고 작성자도 아닌 경우 권한 없음
+        boolean isAdmin = "ADMIN".equals(loginUser.getRole());
+        if (!isAdmin && comment.getUserNo() != loginUser.getUserNo()) {
+            throw new IllegalStateException(actionName + " 권한이 없습니다.");
+        }
+        
+        return loginUser;
+    }
+    
+    /**
+     * 댓글 등록 처리 - RequestDataChange 활용
      */
     private void writeComment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // JSON 요청 본문 읽기
-        JsonObject requestData = readJsonRequest(req);
-        
         try {
-            // 세션에서 사용자 정보 확인
-            HttpSession session = req.getSession();
-            UsersVo loginUser = (UsersVo) session.getAttribute("user");
+            // 사용자 권한 확인 (단순 로그인 확인)
+            UsersVo loginUser = checkUserAuthority(req, 0, null);
             
-            if (loginUser == null) {
-                throw new IllegalStateException("로그인이 필요한 기능입니다.");
-            }
+            // RequestDataChange를 사용해 JSON 데이터 추출
+            String jsonData = RequestDataChange.dataChange(req);
+            
+            // Gson으로 CommentsVo 객체로 변환
+            JsonObject requestData = gson.fromJson(jsonData, JsonObject.class);
             
             // 파라미터 검증
             if (!requestData.has("boardNo") || !requestData.has("cmContent")) {
@@ -107,7 +144,7 @@ public class CommentsController extends HttpServlet {
             // 댓글 정보 생성
             CommentsVo comment = new CommentsVo();
             comment.setBoardNo(requestData.get("boardNo").getAsInt());
-            comment.setUserNo(requestData.get("userNo").getAsInt());
+            comment.setUserNo(loginUser.getUserNo());
             comment.setCmContent(requestData.get("cmContent").getAsString());
             
             if (comment.getCmContent().trim().isEmpty()) {
@@ -141,14 +178,17 @@ public class CommentsController extends HttpServlet {
     }
     
     /**
-     * 댓글 삭제 처리
+     * 댓글 삭제 처리 - RequestDataChange 활용
      */
     private void deleteComment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            // POST 요청인 경우 JSON 본문에서 파라미터 추출
             int cmNo;
+            
+            // POST 요청인 경우 JSON 본문에서 파라미터 추출
             if ("POST".equalsIgnoreCase(req.getMethod())) {
-                JsonObject requestData = readJsonRequest(req);
+                String jsonData = RequestDataChange.dataChange(req);
+                JsonObject requestData = gson.fromJson(jsonData, JsonObject.class);
+                
                 if (!requestData.has("cmNo")) {
                     throw new IllegalArgumentException("댓글 번호가 제공되지 않았습니다.");
                 }
@@ -162,28 +202,8 @@ public class CommentsController extends HttpServlet {
                 cmNo = Integer.parseInt(cmNoStr);
             }
             
-            // 세션에서 사용자 정보 확인 (권한 체크)
-            HttpSession session = req.getSession();
-            UsersVo loginUser = (UsersVo) session.getAttribute("user");
-            
-            if (loginUser == null) {
-                throw new IllegalStateException("로그인이 필요한 기능입니다.");
-            }
-            
-            // 댓글 정보 조회 - boardService에서 댓글을 직접 조회할 메서드가 없으므로 
-            // CommentsDaoImpl의 selectComment 메서드를 간접적으로 호출하는 방식으로 구현
-            // boardService.selectCommentsList 메서드로 해당 댓글 정보를 찾음
-            CommentsVo comment = findCommentByCmNo(cmNo);
-            
-            if (comment == null) {
-                throw new IllegalArgumentException("존재하지 않는 댓글입니다.");
-            }
-            
-            // 관리자가 아니고 작성자도 아닌 경우 권한 없음
-            boolean isAdmin = "ADMIN".equals(loginUser.getRole());
-            if (!isAdmin && comment.getUserNo() != loginUser.getUserNo()) {
-                throw new IllegalStateException("삭제 권한이 없습니다.");
-            }
+            // 사용자 권한 확인
+            checkUserAuthority(req, cmNo, "삭제");
             
             // 댓글 삭제
             int result = boardService.deleteComment(cmNo);
@@ -201,20 +221,15 @@ public class CommentsController extends HttpServlet {
     }
     
     /**
-     * 댓글 수정 처리
+     * 댓글 수정 처리 - RequestDataChange 활용
      */
     private void updateComment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // JSON 요청 본문 읽기
-        JsonObject requestData = readJsonRequest(req);
-        
         try {
-            // 세션에서 사용자 정보 확인
-            HttpSession session = req.getSession();
-            UsersVo loginUser = (UsersVo) session.getAttribute("user");
+            // RequestDataChange를 사용해 JSON 데이터 추출
+            String jsonData = RequestDataChange.dataChange(req);
             
-            if (loginUser == null) {
-                throw new IllegalStateException("로그인이 필요한 기능입니다.");
-            }
+            // Gson으로 JSON 객체로 변환
+            JsonObject requestData = gson.fromJson(jsonData, JsonObject.class);
             
             // 파라미터 검증
             if (!requestData.has("cmNo") || !requestData.has("cmContent")) {
@@ -228,18 +243,11 @@ public class CommentsController extends HttpServlet {
                 throw new IllegalArgumentException("댓글 내용을 입력해주세요.");
             }
             
+            // 사용자 권한 확인
+            checkUserAuthority(req, cmNo, "수정");
+            
             // 댓글 정보 조회
-            CommentsVo comment = findCommentByCmNo(cmNo);
-            
-            if (comment == null) {
-                throw new IllegalArgumentException("존재하지 않는 댓글입니다.");
-            }
-            
-            // 관리자가 아니고 작성자도 아닌 경우 권한 없음
-            boolean isAdmin = "ADMIN".equals(loginUser.getRole());
-            if (!isAdmin && comment.getUserNo() != loginUser.getUserNo()) {
-                throw new IllegalStateException("수정 권한이 없습니다.");
-            }
+            CommentsVo comment = boardService.selectComment(cmNo);
             
             // 댓글 업데이트
             comment.setCmContent(cmContent);
@@ -258,20 +266,18 @@ public class CommentsController extends HttpServlet {
     }
     
     /**
-     * 답글 등록 처리
+     * 답글 등록 처리 - RequestDataChange 활용
      */
     private void writeReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // JSON 요청 본문 읽기
-        JsonObject requestData = readJsonRequest(req);
-        
         try {
-            // 세션에서 사용자 정보 확인
-            HttpSession session = req.getSession();
-            UsersVo loginUser = (UsersVo) session.getAttribute("user");
+            // 사용자 권한 확인 (단순 로그인 확인)
+            UsersVo loginUser = checkUserAuthority(req, 0, null);
             
-            if (loginUser == null) {
-                throw new IllegalStateException("로그인이 필요한 기능입니다.");
-            }
+            // RequestDataChange를 사용해 JSON 데이터 추출
+            String jsonData = RequestDataChange.dataChange(req);
+            
+            // Gson으로 JSON 객체로 변환
+            JsonObject requestData = gson.fromJson(jsonData, JsonObject.class);
             
             // 파라미터 검증
             if (!requestData.has("boardNo") || !requestData.has("parentCmNo") || !requestData.has("cmContent")) {
@@ -284,6 +290,12 @@ public class CommentsController extends HttpServlet {
             
             if (cmContent.trim().isEmpty()) {
                 throw new IllegalArgumentException("답글 내용을 입력해주세요.");
+            }
+            
+            // 부모 댓글이 존재하는지 확인
+            CommentsVo parentComment = boardService.selectComment(parentCmNo);
+            if (parentComment == null) {
+                throw new IllegalArgumentException("답글을 달 원본 댓글이 존재하지 않습니다.");
             }
             
             // 답글 정보 생성
@@ -317,61 +329,6 @@ public class CommentsController extends HttpServlet {
             e.printStackTrace();
             sendErrorResponse(resp, e.getMessage());
         }
-    }
-    
-    /**
-     * 댓글 번호로 댓글 찾기
-     * @param cmNo 댓글 번호
-     * @return 찾은 댓글, 없으면 null
-     */
-    private CommentsVo findCommentByCmNo(int cmNo) {
-        // 모든 게시글의 댓글을 검색하는 대신, commentDao.selectComment(cmNo)를 사용할 수 있으면 좋겠지만,
-        // 현재 구조에서는 다음과 같이 구현합니다.
-        
-        // boardService의 selectCommentsList 메서드로 게시글별 댓글을 조회할 수 있으므로
-        // 일단 댓글을 조회하여 해당 댓글을 찾습니다.
-        
-        // CommentsDaoImpl의 selectComment 메서드가 있으므로, 그 메서드를 통해 직접 조회할 수 있는지 확인 필요
-        try {
-            // 이 접근법은 비효율적이지만, 데이터베이스 구조와 서비스 계층을 변경하지 않고 구현하는 방법입니다.
-            for (int i = 0; i < 100; i++) { // 최대 100개의 게시글 확인 (실제로는 더 효율적인 방법 필요)
-                List<CommentsVo> comments = boardService.selectCommentsList(i);
-                if (comments == null || comments.isEmpty()) continue;
-                
-                // 1차 댓글 확인
-                for (CommentsVo comment : comments) {
-                    if (comment.getCmNo() == cmNo) {
-                        return comment;
-                    }
-                    
-                    // 대댓글 확인
-                    if (comment.getCm2List() != null) {
-                        for (CommentsVo reply : comment.getCm2List()) {
-                            if (reply.getCmNo() == cmNo) {
-                                return reply;
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return null;
-    }
-    
-    /**
-     * JSON 요청 본문 읽기
-     */
-    private JsonObject readJsonRequest(HttpServletRequest req) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader reader = req.getReader();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
-        }
-        return gson.fromJson(sb.toString(), JsonObject.class);
     }
     
     /**

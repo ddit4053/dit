@@ -133,7 +133,13 @@ public class BoardServiceImpl implements IBoardService {
     
     
     
-    // 댓글 조회
+    // 단일 댓글 조회
+    @Override
+    public CommentsVo selectComment(int cmNo) {
+    	return commentsDao.selectComment(cmNo);
+    }
+    
+    // 댓글 목록 조회
 	@Override
 	public List<CommentsVo> selectCommentsList(int boardNo) {
 		return commentsDao.selectCommentsList(boardNo);
