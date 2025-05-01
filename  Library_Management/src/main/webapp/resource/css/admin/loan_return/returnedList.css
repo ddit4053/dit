@@ -1,0 +1,68 @@
+@charset "UTF-8";
+/* 전체 테이블 */
+.returned-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.9rem;
+}
+.returned-table th,
+.returned-table td {
+  border: 1px solid #ccc;           /* 연한 회색 테두리 */
+  padding: 0.5em 0.75em;
+  text-align: center;
+}
+.returned-table th {
+  background-color: #e0f2f1;        /* 연한 티얼 배경 */
+  color: #004d40;                   /* 진한 티얼 글자 */
+  font-weight: bold;
+}
+
+/* 짝수행 배경 */
+.returned-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+/* 마우스오버 */
+.returned-table tr:hover {
+  background-color: #b2dfdb;        /* 연한 티얼 호버 */
+}
+
+/* 상태별 배지 */
+.status {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  border-radius: 0.25em;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.status-normal {
+  background-color: #d4edda;        /* 연한 그린 */
+  color: #155724;                   /* 진한 그린 */
+}
+.status-warning {
+  background-color: #fff3cd;        /* 연한 옐로우 */
+  color: #856404;                   /* 진한 옐로우 브라운 */
+}
+.status-overdue {
+  background-color: #f8d7da;        /* 연한 레드 */
+  color: #721c24;                   /* 진한 레드 */
+}
+
+/* 버튼 (예: “반납 처리” 버튼) */
+.returned-table button {
+  margin: 0 2px;
+  padding: 0.3em 0.8em;
+  border: 1px solid #004d40;
+  background: #fff;
+  color: #004d40;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.returned-table button:hover {
+  background: #b2dfdb;              /* 호버 시 연한 티얼 */
+}
+.returned-table button:disabled {
+  border-color: #ccc;
+  color: #aaa;
+  cursor: not-allowed;
+}

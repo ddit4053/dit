@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.ddit.vo.BookLoansVo;
+import kr.or.ddit.vo.PagingVo;
 
 public interface IReturnBookDao {
 	
@@ -26,4 +27,20 @@ public interface IReturnBookDao {
 	//5) ban_users 테이블 기준 정지자 자동 복귀
 	public int restoreBanned();
 	
+	public List<Map<String, Object>> selectReturnedList();
+	
+	//6) 예약 처리를 위한 프로시저 불러오기
+	public int getBookNoByLoanNo(int loanNo);
+	
+    public void procReserveAndLoan(int bookNo);
+    
+    // 페이징 처리를 위해
+    // 전체건수 조회
+    int countReturnList();
+    //페이징된 목록 조회
+    List<Map<String,Object>> returnListPaged(PagingVo paging);
+
+	public int countReturnedList();
+
+	public List<Map<String, Object>> returnedListPaged(PagingVo paging);
 }

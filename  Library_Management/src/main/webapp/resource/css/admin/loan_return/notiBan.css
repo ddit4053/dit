@@ -1,0 +1,114 @@
+@charset "UTF-8";
+/* notiBan.css — 딥티얼 + 베이지 통일 스킨 */
+
+/* — 전체 베이스 — */
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #f4f1ee;    /* 은은한 베이지 */
+  margin: 0;
+  padding: 20px;
+  color: #3c2f2f;               /* 다크 브라운 텍스트 */
+}
+
+/* — 페이지 타이틀 — */
+h2 {
+  color: #004D40;               /* 딥티얼 다크 */
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+/* — alert 메시지 — */
+.alert {
+  background-color: #e8f5e9;    /* 연한 그린 (성공) */
+  border: 1px solid #c8e6c9;
+  color: #2e7d32;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+/* — 섹션 박스 — */
+section {
+  background: #ffffff;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+section h3 {
+  margin-top: 0;
+  font-size: 1.2em;
+  color: #00695C;               /* 딥티얼 포인트 */
+}
+
+/* — 버튼 — */
+button {
+  margin: 0 4px;
+  padding: 0.5em 1em;
+  border: 1px solid #00695C;
+  background: #00695C;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color .2s;
+}
+button:hover {
+  background-color: #004D40;
+}
+button:disabled {
+  background: #ccc;
+  border-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* — 구분선 — */
+hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 30px 0;
+}
+
+/* — 테이블 — */
+.policy-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.policy-table th,
+.policy-table td {
+  padding: 10px 12px;
+  border: 1px solid #e0d7cc;
+  text-align: left;
+}
+.policy-table th {
+  background-color: #00695C;  /* 헤더 딥티얼 */
+  color: #fff;
+}
+.policy-table tr:nth-child(even) {
+  background-color: #fcf8f5;
+}
+.policy-table tr:hover {
+  background-color: #eef7f4;
+}
+
+/* — 반응형 (mobile) — */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  section {
+    padding: 10px;
+  }
+  .policy-table th,
+  .policy-table td {
+    padding: 8px;
+  }
+  button {
+    padding: 0.4em 0.8em;
+    margin: 2px 0;
+    width: 100%;
+  }
+}

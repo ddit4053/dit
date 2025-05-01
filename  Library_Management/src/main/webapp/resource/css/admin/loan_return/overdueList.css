@@ -1,51 +1,73 @@
 @charset "UTF-8";
-/* overdueList.css */
 
-/* 1) 테이블 기본 */
+/* — 본문 & 공통 폰트/배경 — */
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #f4f1ee;
+  color: #3c2f2f;
+  margin: 20px;
+}
+
+/* — 공통 버튼 스타일 — */
+button {
+  display: inline-block;
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color .2s;
+}
+button.btn-primary {
+  background-color: #a4673c;
+  color: #fff;
+}
+button.btn-primary:hover:not(:disabled) {
+  background-color: #8b5e3c;
+}
+button:disabled {
+  background-color: #d3c4b2;
+  color: #7a6a5a;
+  cursor: not-allowed;
+}
+
+/* — 공통 alert 스타일 — */
+.alert {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.alert-info {
+  background-color: #fff3e0;
+  border-color: #ffe0b2;
+  color: #6d4c41;
+}
+
+/* — 연체자 목록 테이블 — */
 .policy-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1rem 0;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  margin-top: 1em;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
-
-/* 2) 헤더 스타일 */
-.policy-table thead th {
-  background-color: #337ab7;  /* Bootstrap의 .table-primary 계열 */
-  color: #fff;
-  font-weight: bold;
+.policy-table th,
+.policy-table td {
+  padding: 0.75em;
+  border: 1px solid #d8c3a5;
   text-align: center;
-  padding: 10px;
-  border: 1px solid #ddd;
 }
-
-/* 3) 바디 행 스타일 */
+.policy-table thead th {
+  background-color: #8b5e3c;
+  color: #faf0e6;
+  font-weight: bold;
+}
 .policy-table tbody tr:nth-child(odd) {
-  background-color: #f9f9f9;
+  background-color: #ffffff;
+}
+.policy-table tbody tr:nth-child(even) {
+  background-color: #fcf8f5;
 }
 .policy-table tbody tr:hover {
-  background-color: #e8f4fd;
-}
-
-/* 4) 셀 스타일 */
-.policy-table td {
-  padding: 8px;
-  text-align: center;
-  border: 1px solid #ddd;
-  vertical-align: middle;
-}
-
-/* 5) 버튼 스타일 */
-.btn-warning {
-  background-color: #d9534f;   /* 붉은 계열 “경고” 버튼 */
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 12px;
-  font-size: 0.9em;
-  cursor: pointer;
-}
-.btn-warning:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  background-color: #efe6dd;
 }

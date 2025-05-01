@@ -15,6 +15,81 @@
 	    <result property="realBook" column="realBook"/>
 	    <result property="policyNo" column="policyNo"/>
 	</resultMap>
+	
+	<!-- 0) 전체 건수 조회 -->
+	<select id="countReturnList" resultType="int">
+	  SELECT COUNT(*)
+	    FROM book_loans a
+	    JOIN real_book r ON a.real_book = r.real_book
+	    JOIN books      b ON r.book_no   = b.book_no
+	    JOIN users      u ON a.user_no   = u.user_no
+	
+	</select>
+	
+	<!-- 1) 페이징된 목록 조회 -->
+	<select id="returnListPaged" parameterType="PagingVo" resultType="map">
+	  SELECT * FROM (
+	    SELECT row_.*, ROWNUM rn
+	      FROM (
+	        SELECT 
+	          a.loan_no   AS "loanNo",
+	          u.name      AS "name",
+	          b.book_title AS "bookTitle",
+	          TO_CHAR(a.loan_date, 'YYYY-MM-DD') AS "loanDate",
+	          TO_CHAR(a.due_date,  'YYYY-MM-DD') AS "dueDate",
+	          CASE WHEN a.return_date IS NOT NULL
+	               THEN TO_CHAR(a.return_date,'YYYY-MM-DD')
+	               ELSE ''
+	          END AS "returnDate"
+	        FROM book_loans a
+	        JOIN users      u ON a.user_no   = u.user_no
+	        JOIN real_book  r ON a.real_book = r.real_book
+	        JOIN books      b ON r.book_no   = b.book_no
+	        ORDER BY a.return_date DESC
+	      ) row_
+	    WHERE ROWNUM &lt;= #{endRow}
+	  )
+	  WHERE rn >= #{startRow}
+	</select>
+	
+	<!-- 1) 반납 완료 목록 전체 건수 -->
+	<select id="countReturnedList" resultType="int">
+	  SELECT COUNT(*)
+	    FROM book_loans a
+	   WHERE a.return_date IS NOT NULL
+	</select>
+	
+	<!-- 2) 반납 완료 페이징 조회 -->
+	<select id="returnedListPaged" parameterType="PagingVo" resultType="map">
+	  SELECT * FROM (
+	    SELECT row_.*, ROWNUM rn
+	      FROM (
+	        SELECT 
+	          a.loan_no    AS "loanNo",
+	          u.name       AS "name",
+	          b.book_title AS "bookTitle",
+	          TO_CHAR(a.loan_date,   'YYYY-MM-DD') AS "loanDate",
+	          TO_CHAR(a.return_date, 'YYYY-MM-DD') AS "returnDate",
+	          CASE
+	            WHEN TRUNC(a.return_date) &lt;= TRUNC(a.due_date) THEN '정상반납'
+	            WHEN TRUNC(a.return_date) &lt;= TRUNC(a.due_date) + p.days THEN '지연반납('
+	                 || (TRUNC(a.return_date)-TRUNC(a.due_date)) || '일)'
+	            ELSE '연체반납('
+	                 || (TRUNC(a.return_date)-(TRUNC(a.due_date)+p.days)) || '일)'
+	          END AS "statusText"
+	        FROM book_loans a
+	        JOIN users          u ON a.user_no   = u.user_no
+	        JOIN real_book      r ON a.real_book = r.real_book
+	        JOIN books          b ON r.book_no   = b.book_no
+	        JOIN overdue_policy p ON a.policy_no = p.policy_no
+	        WHERE a.return_date IS NOT NULL
+	        ORDER BY a.return_date DESC
+	      ) row_
+	     WHERE ROWNUM &lt;= #{endRow}
+	  )
+	  WHERE rn >= #{startRow}
+	</select>
+	
 
 
 	<select id="returnListMap" resultType="map">
@@ -37,6 +112,7 @@
 	    JOIN USERS u ON a.user_no = u.user_no
 	    JOIN REAL_BOOK bl ON a.real_book = bl.real_book
 	    JOIN BOOKS b ON bl.book_no = b.book_no
+	   ORDER BY 9 DESC
 	</select>
 	
 	
@@ -76,7 +152,7 @@
 		    TRUNC(L.RETURN_DATE) - TRUNC(L.LOAN_DATE) AS PENALTY_DAYS
 		  FROM BOOK_LOANS L
 		  JOIN OVERDUE_POLICY P ON L.POLICY_NO = P.POLICY_NO
-		  WHERE TRUNC(L.RETURN_DATE) > TRUNC(L.DUE_DATE) + P.DAYS
+		  WHERE TRUNC(L.RETURN_DATE) &gt; TRUNC(L.DUE_DATE) + P.DAYS
 		    AND L.LOAN_NO = #{loanNo}
 		) SRC
 		ON (B.LOAN_NO = SRC.LOAN_NO)
@@ -86,6 +162,22 @@
 		    RELEASE_DATE = TRUNC(SYSDATE) + SRC.PENALTY_DAYS
 		    WHERE B.RELEASE_DATE IS NULL
     </update>
+    
+    
+    
+  <!-- 1) loanNo 로부터 book_no 조회 -->
+  <select id="getBookNoByLoanNo" resultType="int">
+    SELECT r.book_no
+      FROM BOOK_LOANS l
+      JOIN REAL_BOOK r ON l.real_book = r.real_book
+     WHERE l.loan_no = #{loanNo}
+  </select>
+
+  <!-- 2) PROC_RESERVE_AND_LOAN 프로시저 호출 -->
+  <update id="procReserveAndLoan" statementType="CALLABLE">
+    { CALL PROC_RESERVE_AND_LOAN( #{bookNo, mode=IN, jdbcType=INTEGER} ) }
+  </update>
+    
 	
 	
 	<!-- 반납후 사용자 상태변화 -->
@@ -215,8 +307,8 @@
     <update id="lostBookBan">
     	UPDATE BAN_USERS BU
 	   SET 
-	       BU.BAN_DAYS = 60,
-	       BU.RELEASE_DATE = TRUNC(SYSDATE) + 60,
+	       BU.BAN_DAYS = 30000,
+	       BU.RELEASE_DATE = TRUNC(SYSDATE) + 30000,
 	       BU.BAN_NOTE     = '분실'
 	 WHERE EXISTS (
 	     SELECT 1
@@ -226,6 +318,39 @@
 	        AND TRUNC(SYSDATE) &gt; TRUNC(B.DUE_DATE) + 60
 	 )
     </update>
+    
+    
+	<select id="selectReturnedList" resultType="map">
+	  SELECT 
+	    a.loan_no    AS "loanNo",
+	    u.name       AS "name",
+	    b.book_title AS "bookTitle",
+	    p.days       AS "days",
+	    TO_CHAR(a.loan_date,   'YYYY-MM-DD') AS "loanDate",
+	    TO_CHAR(a.return_date, 'YYYY-MM-DD') AS "returnDate",
+	    -- 날짜 차이 계산
+	    TRUNC(a.return_date) - TRUNC(a.due_date)           AS "delayDays",
+	    TRUNC(a.return_date) - TRUNC(a.due_date) - p.days       AS "overDays",
+	    -- 상태와 메시지 합치기
+	    CASE
+	      WHEN TRUNC(a.return_date) &lt;= TRUNC(a.due_date)
+	        THEN '정상반납'
+	      WHEN TRUNC(a.return_date) &lt;= TRUNC(a.due_date) + p.days
+	        THEN '지연반납('
+	             || (TRUNC(a.return_date) - TRUNC(a.due_date))
+	             || '일)'
+	      ELSE    '연체반납('
+	             || (TRUNC(a.return_date) - (TRUNC(a.due_date) + p.days))
+	             || '일)'
+	    END AS "statusText"
+	  FROM book_loans a
+	  JOIN users     u ON a.user_no   = u.user_no
+	  JOIN real_book r ON a.real_book = r.real_book
+	  JOIN books     b ON r.book_no   = b.book_no
+	  JOIN overdue_policy p ON a.policy_no=p.policy_no
+	  WHERE a.return_date IS NOT NULL
+	  ORDER BY a.return_date DESC
+	</select>
     
     
 	

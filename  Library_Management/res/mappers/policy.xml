@@ -26,6 +26,7 @@
 			    IS_ACTIVE AS "isActive", 
 			    NOTE AS "note"
 		   FROM OVERDUE_POLICY
+		  ORDER BY 1
 	</select>
 	
 	<!-- 연체기준목록 추가 -->

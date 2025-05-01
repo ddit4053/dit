@@ -31,6 +31,7 @@
 	    JOIN BOOKS b ON R.BOOK_NO=b.BOOK_NO
 	   WHERE bl.RETURN_DATE IS NULL
 	     AND SYSDATE &gt; bl.DUE_DATE
+	   ORDER BY 7 DESC  
 	  </select>
 		
 		<!-- 대출번호로 사용자 연락처 조회 -->
@@ -54,8 +55,61 @@
 		      (NOTI_SEQ.NEXTVAL, 'OVERDUE_WARNING', #{message}, SYSDATE, #{userNo})
 		  </insert>
 	
+	 <!-- 1) 반납예정 하루 전 건수 -->
+	  <select id="countDueNotifications" resultType="int">
+	    SELECT COUNT(1)
+	      FROM book_loans
+	     WHERE return_date IS NULL
+	       AND TRUNC(due_date) = TRUNC(SYSDATE) + 1
+	  </select>
 	
+	  <!-- 2) 연체 하루 전 건수 -->
+	  <select id="countOverdueNotifications" resultType="int">
+	    SELECT COUNT(1)
+		  FROM book_loans a
+		  JOIN overdue_policy p ON a.policy_no = p.policy_no
+		  WHERE a.return_date IS NULL
+		    AND TRUNC(a.due_date) + p.days = TRUNC(SYSDATE) + 1
+	  </select>
 	
+	  <!-- 3) 반납예정 하루 전 상세 목록 -->
+	  <select id="listDueNotifications" resultType="map">
+	    SELECT 
+	      a.loan_no    AS "loanNo",
+	      u.name       AS "userName",
+	      u.user_no     AS "userNo",
+	      u.email       AS "email", 
+	      b.book_title AS "bookTitle",
+	      TO_CHAR(a.loan_date,'YYYY-MM-DD') AS "loanDate",
+	      TO_CHAR(a.due_date,'YYYY-MM-DD') AS "dueDate"
+	    FROM book_loans a
+	    JOIN users     u ON a.user_no   = u.user_no
+	    JOIN real_book r ON a.real_book = r.real_book
+	    JOIN books     b ON r.book_no   = b.book_no
+	    WHERE a.return_date IS NULL
+	      AND TRUNC(a.due_date) = TRUNC(SYSDATE) + 1
+	    ORDER BY a.due_date
+	  </select>
+	
+	  <!-- 4) 연체예정  하루 전 상세 목록 -->
+	  <select id="listOverdueNotifications" resultType="map">
+	    SELECT 
+	      a.loan_no     AS "loanNo",
+	      u.name        AS "userName",
+	      u.user_no     AS "userNo",
+	      u.email       AS "email", 
+	      b.book_title  AS "bookTitle",
+	      TO_CHAR(a.loan_date,'YYYY-MM-DD') AS "loanDate",
+	      TO_CHAR(TRUNC(a.due_date) + p.days, 'YYYY-MM-DD') AS "overdueDays"
+	    FROM book_loans a
+	    JOIN users      u ON a.user_no   = u.user_no
+	    JOIN real_book  r ON a.real_book = r.real_book
+	    JOIN books      b ON r.book_no   = b.book_no
+	    JOIN overdue_policy p ON a.policy_no=p.policy_no
+	    WHERE a.return_date IS NULL
+	      AND TRUNC(a.due_date) + p.days  = TRUNC(SYSDATE) +1
+	    ORDER BY 5 DESC
+	  </select>
 	
 	
 </mapper>

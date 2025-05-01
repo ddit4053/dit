@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import kr.or.ddit.util.MybatisUtil;
 import kr.or.ddit.util.MybatisUtil;
 import kr.or.ddit.vo.BookLoansVo;
+import kr.or.ddit.vo.PagingVo;
 
 public class ReturnBookDaoImpl implements IReturnBookDao {
 	
@@ -145,5 +146,80 @@ public class ReturnBookDaoImpl implements IReturnBookDao {
 		}
 		return list;
 	}
+	
+	
 
+	@Override
+	public List<Map<String, Object>> selectReturnedList() {
+		SqlSession sql = MybatisUtil.getInstance();
+		List<Map<String, Object>> list =null;
+		
+		try {
+			list = sql.selectList("return.selectReturnedList");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(sql != null) {
+				sql.commit();
+				sql.close();
+			}
+		}
+		return list;
+	}
+
+
+
+	@Override
+	public int getBookNoByLoanNo(int loanNo) {
+		try (SqlSession sql = MybatisUtil.getInstance()) {
+            return sql.selectOne("return.getBookNoByLoanNo", loanNo);
+        }
+	}
+
+
+
+	@Override
+	public void procReserveAndLoan(int bookNo) {
+		 try (SqlSession sql = MybatisUtil.getInstance()) {
+	            sql.update("return.procReserveAndLoan", bookNo);
+	            sql.commit();
+	        }
+	}
+
+
+
+	@Override
+	  public int countReturnList() {
+	    try ( SqlSession sql = MybatisUtil.getInstance() ) {
+	      return sql.selectOne("return.countReturnList");
+	    }
+	  }
+
+	  @Override
+	  public List<Map<String,Object>> returnListPaged(PagingVo paging) {
+	    try ( SqlSession sql = MybatisUtil.getInstance() ) {
+	      return sql.selectList("return.returnListPaged", paging);
+	    }
+	  }
+
+
+
+	@Override
+	public int countReturnedList() {
+		try ( SqlSession sql = MybatisUtil.getInstance() ) {
+		      return sql.selectOne("return.countReturnedList");
+		    }
+	}
+
+
+
+	@Override
+	public List<Map<String, Object>> returnedListPaged(PagingVo paging) {
+		 try ( SqlSession sql = MybatisUtil.getInstance() ) {
+		      return sql.selectList("return.returnedListPaged", paging);
+		    }
+	}
+	
+	
 }

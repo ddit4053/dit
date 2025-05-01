@@ -47,11 +47,13 @@
 	</environments>
 	<mappers>
 <!-- 		<mapper resource="mapper/file.xml"/> -->
-		<mapper resource="mappers/returnBook.xml"/>
 		<mapper resource="mappers/cart.xml"/>
 		<mapper resource="mappers/policy.xml"/>
 		<mapper resource="mappers/loanExtension.xml"/>
 		<mapper resource="mappers/notiBan.xml"/>
+		<mapper resource="mappers/returnBook.xml"/>
+		<mapper resource="mappers/damageBook.xml"/>
+		<mapper resource="mappers/banuser.xml"/>
 	</mappers>
 
 </configuration>

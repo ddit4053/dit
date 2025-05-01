@@ -12,45 +12,85 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.or.ddit.admin.service.IReturnBookService;
 import kr.or.ddit.admin.service.ReturnBookServiceImpl;
 
-@WebServlet({"/admin/loans/returns","/admin/loans/return"})
-public class ReturnBookController extends HttpServlet{
-	
-	private final IReturnBookService service = ReturnBookServiceImpl.getService();
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		//1) 반납 대상 대출 목록 조회
-		
-		List<Map<String, Object>> list = service.returnListMap();
-		req.setAttribute("list", list);
-		 // 2) 템플릿에 출력할 제목/브레드크럼
-        req.setAttribute("pageTitle", "반납 도서 목록");
-        req.setAttribute("breadcrumbTitle", "반납 도서 목록");
+@WebServlet({ 
+    "/admin/loans/management",            // 대출/반납 관리 → 반납 처리 화면
+    "/admin/loans/management/list",       // 사이드바: 대출 도서 목록
+    "/admin/loans/returns",               // 사이드바: 반납 도서 목록
+    "/admin/loans/return",                // 반납 처리 액션 (POST)
+    "/admin/loans"                        
+})
+public class ReturnBookController extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
-        // 3) 본 화면 JSP 경로
-        req.setAttribute("contentPage", "/WEB-INF/view/admin/loan_return/returnBook.jsp");
+    private final IReturnBookService service = ReturnBookServiceImpl.getService();
 
-        // 4) 공통 레이아웃(= loans.jsp) 으로 포워드
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        // 1) 요청 경로 분기
+        String path = req.getServletPath();
+
+        // 2) 공통: 'page' 파라미터 읽기 (없으면 1)
+        int page = 1;
+        String p = req.getParameter("page");
+        if (p != null) {
+            try {
+                page = Integer.parseInt(p);
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+
+        if ("/admin/loans/management".equals(path) 
+         || "/admin/loans/management/list".equals(path)) {
+            // ■ 반납 처리 화면 (페이징)
+            Map<String, Object> data = service.getReturnListPaged(page);
+            req.setAttribute("list",   data.get("list"));
+            req.setAttribute("paging", data.get("paging"));
+            req.setAttribute("pageTitle",      "반납 처리");
+            req.setAttribute("breadcrumbTitle","반납 처리");
+            req.setAttribute("contentPage",    "/WEB-INF/view/admin/loan_return/returnBook.jsp");
+
+        } else if ("/admin/loans/returns".equals(path)) {
+            // ■ 반납 완료 목록 (페이징)
+            Map<String, Object> data = service.getReturnedListPaged(page);
+            req.setAttribute("list",   data.get("list"));
+            req.setAttribute("paging", data.get("paging"));
+            req.setAttribute("pageTitle",      "반납 완료 목록");
+            req.setAttribute("breadcrumbTitle","반납 완료 목록");
+            req.setAttribute("contentPage",    "/WEB-INF/view/admin/loan_return/returnedList.jsp");
+
+        } else {
+            // 기타 경로인 경우, 기본을 반납 처리 화면으로
+            Map<String, Object> data = service.getReturnListPaged(page);
+            req.setAttribute("list",   data.get("list"));
+            req.setAttribute("paging", data.get("paging"));
+            req.setAttribute("pageTitle",      "반납 처리");
+            req.setAttribute("breadcrumbTitle","반납 처리");
+            req.setAttribute("contentPage",    "/WEB-INF/view/admin/loan_return/returnBook.jsp");
+        }
+
+        // 3) 공통 레이아웃으로 포워드
         req.getRequestDispatcher("/WEB-INF/view/admin/loan_return/loans.jsp")
            .forward(req, resp);
-	}
-	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		int loanNo      =Integer.parseInt(req.getParameter("loanNo"));
-	
-		
-		//2) 반납처리
-		boolean ok = service.returnLoan(loanNo);
-		
-		if(ok) {
-			req.getSession().setAttribute("msg", "반납처리 완료");
-		}else {
-			req.getSession().setAttribute("msg", "반납처리 실패");
-		}
-		
-		resp.sendRedirect(req.getContextPath()+ "/admin/loans/returns");
-	}
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        // 반납 처리 액션
+        req.setCharacterEncoding("UTF-8");
+        int loanNo = Integer.parseInt(req.getParameter("loanNo"));
+
+        boolean ok = service.returnLoan(loanNo);
+
+        if (ok) {
+            req.getSession().setAttribute("msg", "반납처리 완료");
+        } else {
+            req.getSession().setAttribute("msg", "반납처리 실패");
+        }
+        // 완료 후 반납 완료 목록 페이지로 리다이렉트
+        resp.sendRedirect(req.getContextPath() + "/admin/loans/returns");
+    }
 }

@@ -4,8 +4,8 @@ import com.google.gson.GsonBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import kr.or.ddit.admin.service.IReturnService;
-import kr.or.ddit.admin.service.ReturnServiceImpl;
+import kr.or.ddit.admin.service.IReturnBookService;
+import kr.or.ddit.admin.service.ReturnBookServiceImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Map;
 })
 public class CalendarController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private final IReturnService svc = ReturnServiceImpl.getService();
+    private final IReturnBookService svc = ReturnBookServiceImpl.getService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

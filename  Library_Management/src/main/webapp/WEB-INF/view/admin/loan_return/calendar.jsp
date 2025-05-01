@@ -11,7 +11,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>반납 예정일 캘린더(ADM04)</title>
+  <title>반납 예정일 캘린더</title>
 
   <!-- 1) FullCalendar v5 CSS -->
   <link
@@ -25,7 +25,7 @@
         href="${pageContext.request.contextPath}/resource/css/admin/loan_return/calendar.css"/>
 </head>
 <body>
-  <h2 style="text-align:center;">📚 반납 예정일 확인 캘린더(ADM04)</h2>
+  <h2 style="text-align:center;">📚 반납 예정일 확인 캘린더</h2>
   <div id="calendar"></div>
 
   <div style="text-align:center; margin-top:20px;">

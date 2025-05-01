@@ -142,14 +142,7 @@ const menuStructure = {
           subMenus: [
             { title: "연체 목록", url: "/admin/loans/overdue/list" },
             { title: "연체 기준 설정", url: "/admin/loans/overdue/settings" },
-            {
-              title: "대출 정지 대상자 목록",
-              url: "/admin/loans/overdue/suspended",
-            },
-            {
-              title: "대출 정지 기준 설정",
-              url: "/admin/loans/overdue/suspended-settings",
-            },
+			{ title: "대출 정지 대상자 목록",  url: "/admin/loans/overdue/suspended"}, 
           ],
         },
         {

@@ -1,5 +1,6 @@
 package kr.or.ddit.admin.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import kr.or.ddit.admin.dao.IReturnBookDao;
 import kr.or.ddit.admin.dao.ReturnBookDaoImpl;
 import kr.or.ddit.vo.BookLoansVo;
+import kr.or.ddit.vo.PagingVo;
 
 public class ReturnBookServiceImpl implements IReturnBookService {
 	
@@ -42,6 +44,10 @@ public class ReturnBookServiceImpl implements IReturnBookService {
 			 // 2) 책 상태 변경
 			dao.updateReturnBook(vo);
 			
+			//-— 여기서 예약 처리 프로시저 호출 — 
+            int bookNo = dao.getBookNoByLoanNo(loanNo);
+            dao.procReserveAndLoan(bookNo);
+			
 			// 3) 지연반납자 상태변경
 			
 			dao.restoreDelayed();
@@ -66,5 +72,42 @@ public class ReturnBookServiceImpl implements IReturnBookService {
 		// TODO Auto-generated method stub
 		return dao.returnListMap();
 	}
+
+
+	 /** 반납 처리 화면용 페이징 리스트 + 메타 */
+	@Override
+	public List<Map<String, Object>> selectReturnedList() {
+		// TODO Auto-generated method stub
+		return dao.selectReturnedList();
+	}
+
+
+
+	@Override
+	public Map<String, Object> getReturnListPaged(int currentPage) {
+		
+		int totalCount = dao.countReturnList();
+		    PagingVo paging = new PagingVo(currentPage, 10, totalCount);
+
+		    List<Map<String,Object>> list = dao.returnListPaged(paging);
+
+		    Map<String,Object> result = new HashMap<>();
+		    result.put("list",   list);
+		    result.put("paging", paging);
+		    return result;
+	}
+	
+	public Map<String,Object> getReturnedListPaged(int currentPage) {
+	    int totalCount = dao.countReturnedList();
+	    PagingVo paging = new PagingVo(currentPage, 10, totalCount);
+
+	    List<Map<String,Object>> list = dao.returnedListPaged(paging);
+
+	    Map<String,Object> result = new HashMap<>();
+	    result.put("list",   list);
+	    result.put("paging", paging);
+	    return result;
+	}
+
 
 }
