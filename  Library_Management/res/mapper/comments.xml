@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="comments">
+	
+	 <!-- 댓글 목록 조회 (계층형) -->
+    <select id="selectCommentList" parameterType="int" resultType="CommentsVo">
+        SELECT C.CM_NO,
+               C.CM_CONTENT,
+               C.CM_WRITTEN_DATE,
+               C.CM_NO2,
+               C.USER_NO,
+               C.BOARD_NO,
+               C.DELYN,
+               U.NAME AS CM_WRITER
+          FROM COMMENTS C
+          JOIN USERS U ON (C.USER_NO = U.USER_NO)
+         WHERE C.BOARD_NO = #{boardNo}
+           AND C.DELYN = 'N'
+           AND C.CM_NO2 IS NULL  <!-- 최상위 댓글만 조회 -->
+         ORDER BY C.CM_WRITTEN_DATE DESC
+    </select>
+    
+    <!-- 대댓글 조회 -->
+    <select id="selectCm2List" parameterType="int" resultType="CommentsVo">
+        SELECT C.CM_NO,
+               C.CM_CONTENT,
+               C.CM_WRITTEN_DATE,
+               C.CM_NO2,
+               C.USER_NO,
+               C.BOARD_NO,
+               C.DELYN,
+               U.NAME AS CM_WRITER
+          FROM COMMENTS C
+          JOIN USERS U ON (C.USER_NO = U.USER_NO)
+         WHERE C.CM_NO2 = #{cmNo}
+           AND C.DELYN = 'N'
+         ORDER BY C.CM_WRITTEN_DATE ASC
+    </select>
+	
+	<!-- 댓글 등록 -->
+    <insert id="insertComments" parameterType="CommentsVo">
+        <selectKey keyProperty="cmNo" resultType="int" order="BEFORE">
+            SELECT COMMENTS_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO COMMENTS (CM_NO,
+                            CM_CONTENT,
+                            CM_WRITTEN_DATE,
+                            CM_NO2,
+                            USER_NO,
+                            BOARD_NO,
+                            DELYN)
+        VALUES (#{cmNo},
+                #{cmContent},
+                SYSDATE,
+                #{cmNo2, jdbcType=INTEGER}, <!-- nullable 필드이므로 jdbcType 명시 -->
+                #{userNo},
+                #{boardNo},
+                'N')
+    </insert>
+    
+    <!-- 댓글 수정 -->
+    <update id="updateComments" parameterType="CommentsVo">
+        UPDATE COMMENTS
+           SET CM_CONTENT = #{cmContent}
+         WHERE CM_NO = #{cmNo}
+    </update>
+              
+		
+	<!-- 댓글 삭제 (논리적 삭제) -->
+	<update id="deleteComment" parameterType="int">
+	    UPDATE COMMENTS
+	       SET DELYN = 'Y',
+	           CM_CONTENT = CASE 
+	               <!-- 대댓글이 있는 부모 댓글의 경우 -->
+	               WHEN CM_NO2 IS NULL AND EXISTS (
+	                   SELECT 1 
+	                     FROM COMMENTS c2 
+	                    WHERE c2.CM_NO2 = COMMENTS.CM_NO 
+	                      AND c2.DELYN = 'N'
+	               )
+	               THEN '삭제된 댓글입니다'
+	               <!-- 그 외 모든 경우 (일반 댓글, 대댓글) -->
+	               ELSE '삭제된 댓글입니다'
+	           END
+	     WHERE CM_NO = #{cmNo}
+	</update>
+	
+	<!-- 단일 댓글 조회 -->
+	<select id="selectComment" parameterType="int" resultType="CommentsVo">
+	    SELECT C.CM_NO,
+	           C.CM_CONTENT,
+	           C.CM_WRITTEN_DATE,
+	           C.CM_NO2,
+	           C.USER_NO,
+	           C.BOARD_NO,
+	           C.DELYN,
+	           U.NAME AS CM_WRITER
+	      FROM COMMENTS C
+	      JOIN USERS U ON (C.USER_NO = U.USER_NO)
+	     WHERE C.CM_NO = #{cmNo}
+	</select>
+		
+	
+	<!-- 댓글 수 조회 -->
+	<select id="getCommentCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM COMMENTS
+		 WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	<!-- 댓글 수 업데이트 (필요한 경우) -->
+	<update id="updateCommentCount" parameterType="map">
+		UPDATE BOOK_BOARD
+		   SET COMMENTS_COUNT = #{commentsCount}
+	     WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	
+		
+	
+	
+
+
+</mapper>

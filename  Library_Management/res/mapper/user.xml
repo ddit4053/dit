@@ -573,7 +573,7 @@
         WHERE BB.CODE_NO = BBC.CODE_NO
         AND BB.USER_NO = U.USER_NO
         AND BB.USER_NO = #{userNo}
-        AND CODE_NAME LIKE '독후감'||'%'
+<!--         AND CODE_NAME LIKE '독후감'||'%' -->
     </select>
     
     <select id="bookReportList" parameterType="map" resultType="map">

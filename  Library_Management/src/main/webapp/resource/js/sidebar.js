@@ -2,35 +2,6 @@
 const menuStructure = {
   // 회원 메뉴
   member: [
-	{
-	  title: "마이페이지",
-	  url: "/user/mypage",
-	  subMenus: [
-	    { title: "회원정보 수정", 
-		  url: "/user/mypage/updateInfo.do", 
-		  subMenus: [
-			{ title: "회원정보 수정", url: "/user/mypage/updateInfo.do" },
-			{ title: "비밀번호 변경", url: "/user/mypage/changePassword.do" },
-			{ title: "회원탈퇴", url: "/user/mypage/quitUser.do" },	    
-		  ],	
-		},
-		{ title: "알림 내역", url: "/user/mypage/notiList.do" },
-	    { title: "예약 현황", 
-		  url: "/user/mypage/bookResList.do", 
-		  subMenus: [
-			{ title: "도서 예약현황", url: "/user/mypage/bookResList.do" },
-			{ title: "열람실 예약현황", url: "/user/mypage/roomResList.do" },
-		  ],	
-		},
-		{ title: "도서 대출현황", url: "/user/mypage/bookLoansList.do" },
-		{ title: "도서 대출이력", url: "/user/mypage/loansList.do" },
-		{ title: "관심도서", url: "/user/mypage/bookFavoritesList.do" },
-		{ title: "신규도서 신청현황", url: "/user/mypage/bookReqList.do" },
-		{ title: "열람실 이용내역", url: "/user/mypage/resList.do" },
-		{ title: "교육/행사 신청내역", url: "/user/mypage/eventReqList.do" },
-		{ title: "게시글 작성내역", url: "/user/mypage/bookReportList.do" },
-	  ],
-	},
     {
       title: "마이페이지",
       url: "/user/mypage",
@@ -64,9 +35,13 @@ const menuStructure = {
 
     {
       title: "자료검색",
-      url: "/books",
+      url: "/books/",
       subMenus: [
-        { title: "도서 검색", url: "/books/search" },
+        {
+          title: "도서 검색",
+          url: "/books/search",
+          subMenus: [{ title: "카테고리 검색", url: "/books/search/category" }],
+        },
         { title: "신착 도서", url: "/books/new" },
         { title: "관심 도서", url: "/books/favor" },
         { title: "추천 도서", url: "/books/recommend" },
@@ -74,80 +49,44 @@ const menuStructure = {
     },
     {
       title: "열람실",
-      url: "/reading",
+      url: "/reading/",
       subMenus: [
-        { title: "열람실 현황", url: "/reading/room-status" },
-        { title: "열람실 예약", url: "/reading/room-booking" },
+        { title: "열람실 현황", url: "/reading/status" },
+        { title: "열람실 예약", url: "/reading/booking" },
       ],
     },
     {
       title: "도서관 소개",
-      url: "/board/guide",
+      url: "/about/",
       subMenus: [
-        { title: "인사말", url: "/board/guide/greetings" },
-        { title: "시설 소개", url: "/board/guide/intro" },
-        { title: "편의 시설", url: "/board/guide/facilities" },
-        { title: "오시는 길", url: "/board/guide/path" },
+        { title: "인사말", url: "/about/greetings" },
+        { title: "시설 소개", url: "/about/facilities" },
+        { title: "오시는 길", url: "/about/location" },
       ],
     },
     {
       title: "커뮤니티",
-      url: "/board/community",
+      url: "/community/",
       subMenus: [
         {
           title: "독후감 게시판",
-          url: "/board/community/review",
-          subMenus: [
-            { title: "독후감 게시판", url: "/board/community/review/list" },
-            { title: "나의 독후감", url: "/board/community/review/my" },
-          ],
+          url: "/community/reviews",
         },
         {
           title: "토론 게시판",
-          url: "/board/community/discussion",
-          subMenus: [
-            { title: "토론 게시판", url: "/board/community/discussion/list" },
-            { title: "참여중인 토론", url: "/board/community/discussion/my" },
-          ],
+          url: "/community/discussions",
         },
-        { title: "회원 도서 추천 게시판", url: "/board/community/recommend" },
+        { title: "회원 도서 추천 게시판", url: "/community/recommendations" },
       ],
     },
     {
       title: "이용안내",
-      url: "/board/info",
+      url: "/support/",
       subMenus: [
-        { title: "공지사항", url: "/board/info/notice" },
-        { title: "교육/행사", url: "/board/info/event" },
-        {
-          title: "시설 이용 안내",
-          url: "/board/info/facility",
-          subMenus: [
-            { title: "도서 대출/반납 안내", url: "/board/info/facility/loan" },
-            {
-              title: "열람실 이용 안내",
-              url: "/board/info/facility/reading-room",
-            },
-          ],
-        },
-        {
-          title: "자주 묻는 질문",
-          url: "/board/info/faq",
-          subMenus: [
-            { title: "도서 FAQ", url: "/board/info/faq/books" },
-            { title: "반납/대출 FAQ", url: "/board/info/faq/loans" },
-            { title: "열람실 FAQ", url: "/board/info/faq/reading-room" },
-            { title: "사이트 이용 FAQ", url: "/board/info/faq/site" },
-          ],
-        },
-        {
-          title: "1:1 문의",
-          url: "/board/info/qa",
-          subMenus: [
-            { title: "1:1 문의 작성", url: "/board/info/qa/write" },
-            { title: "1:1 문의 내역", url: "/board/info/qa/list" },
-          ],
-        },
+        { title: "공지사항", url: "/support/notices" },
+        { title: "교육/행사", url: "/support/events" },
+        { title: "자주 묻는 질문", url: "/support/faq" },
+        { title: "1:1 문의", url: "/support/qa" },
       ],
     },
   ],
@@ -218,6 +157,10 @@ const menuStructure = {
           subMenus: [
             { title: "대출 예약 통계", url: "/admin/loans/stats/reservation" },
             { title: "누적 대출 통계", url: "/admin/loans/stats/cumulative" },
+            {
+              title: "대출/반납/연체 월별 통계",
+              url: "/admin/loans/stats/chart",
+            },
             { title: "예정 반납일 캘린더", url: "/admin/loans/stats/calendar" },
           ],
         },
@@ -226,9 +169,7 @@ const menuStructure = {
     {
       title: "열람실 관리",
       url: "/admin/reading",
-      subMenus: [
-        { title: "열람실 이용 내역", url: "/admin/reading/room-history" },
-      ],
+      subMenus: [{ title: "열람실 이용 내역", url: "/admin/reading" }],
     },
     {
       title: "게시판 관리",
@@ -236,109 +177,39 @@ const menuStructure = {
       subMenus: [
         {
           title: "커뮤니티 게시판",
-          url: "/admin/board/community",
           subMenus: [
             {
               title: "독후감 게시판 관리",
-              url: "/admin/board/community/review",
-              subMenus: [
-                {
-                  title: "게시글 목록",
-                  url: "/admin/board/community/review/list",
-                },
-                {
-                  title: "삭제된 게시글",
-                  url: "/admin/board/community/review/deleted",
-                },
-              ],
+              url: "/admin/community/reviews",
             },
             {
               title: "토론 게시판 관리",
-              url: "/admin/board/community/discussion",
-              subMenus: [
-                {
-                  title: "게시글 목록",
-                  url: "/admin/board/community/discussion/list",
-                },
-                {
-                  title: "삭제된 게시글",
-                  url: "/admin/board/community/discussion/deleted",
-                },
-              ],
+              url: "/admin/community/discussions",
             },
             {
               title: "추천도서 게시판 관리",
-              url: "/admin/board/community/recommend",
-              subMenus: [
-                {
-                  title: "게시글 목록",
-                  url: "/admin/board/community/recommend/list",
-                },
-                {
-                  title: "삭제된 게시글",
-                  url: "/admin/board/community/recommend/deleted",
-                },
-              ],
+              url: "/admin/community/recommendations",
             },
           ],
         },
         {
           title: "이용안내 게시판",
-          url: "/admin/board/info",
           subMenus: [
             {
               title: "공지사항 게시판 관리",
-              url: "/admin/board/info/notice",
-              subMenus: [
-                { title: "게시글 목록", url: "/admin/board/info/notice/list" },
-                {
-                  title: "삭제된 게시글",
-                  url: "/admin/board/info/notice/deleted",
-                },
-              ],
+              url: "/admin/support/notices",
             },
             {
               title: "교육/행사 관리",
-              url: "/admin/board/info/edu-event",
-              subMenus: [
-                {
-                  title: "게시글 목록",
-                  url: "/admin/board/info/edu-event/list",
-                },
-                {
-                  title: "삭제된 게시글",
-                  url: "/admin/board/info/edu-event/deleted",
-                },
-              ],
+              url: "/admin/support/events",
             },
             {
-              title: "FAQ 관리",
-              url: "/admin/board/info/faq",
-              subMenus: [
-                { title: "게시글 목록", url: "/admin/board/info/faq/list" },
-                {
-                  title: "삭제된 게시글",
-                  url: "/admin/board/info/faq/deleted",
-                },
-              ],
+              title: "자주 묻는 질문 관리",
+              url: "/admin/support/faq",
             },
             {
               title: "1:1문의 관리",
-              url: "/admin/board/info/qa",
-              subMenus: [
-                { title: "신규 문의", url: "/admin/board/info/qa/new" },
-                { title: "완료 문의", url: "/admin/board/info/qa/completed" },
-              ],
-            },
-          ],
-        },
-        {
-          title: "게시판 통합 관리",
-          url: "/admin/board/settings",
-          subMenus: [
-            {
-              title: "상단 공지 기준 설정",
-              url: "/admin/board/settings/notice-criteria",
+              url: "/admin/support/qa",
             },
           ],
         },
@@ -636,4 +507,10 @@ function createSidebarMenu() {
 }
 
 // DOM이 로드되면 사이드바 메뉴 생성
-document.addEventListener("DOMContentLoaded", createSidebarMenu);
+document.addEventListener("DOMContentLoaded", function () {
+  try {
+    createSidebarMenu();
+  } catch (e) {
+    console.log("사이드바 메뉴 초기화 중 오류 발생: ", e);
+  }
+});
