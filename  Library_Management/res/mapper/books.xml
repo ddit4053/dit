@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="books">
+
+<!-- 	
+<sql id="dynamicCondition">
+   	 where rownum &lt;= 5
+      <choose>
+         <when test="searchType == 'book_title' and keyword != null and keyword != ''">
+            and book_title like '%' || #{keyword} || '%'
+         </when>
+         <when test="searchType == 'author' and keyword != null and keyword != ''">
+            and author like '%' || #{keyword} || '%'
+         </when>
+         필요한 컬럼 조건 추가
+      </choose>
+   
+</sql> -->
+
+
+<sql id="dynamicCondition">
+   <where>
+      <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
+         ${searchType} like '%' || #{keyword} || '%'
+         <if test="pubdate != null and pubdate != ''">
+            and pubdate between '20'||#{pubdate}||'-01-01' and '20'||#{pubdate}||'-12-31'
+         </if>
+         <if test="categoryId != null">
+            AND CATEGORY_NO IN (
+                SELECT CATEGORY_NO 
+                FROM BOOK_CATEGORIES
+                START WITH CATEGORY_NO = #{categoryId}
+                CONNECT BY PRIOR CATEGORY_NO = PARENT_ID
+            )
+         </if>
+      </if>
+   </where>
+</sql>
+
+	<insert id="insertBooks" parameterType="BooksVo">
+		insert into books
+		values(SEQ_BOOKS.NEXTVAL,#{bookTitle},#{isbn},#{pubdate},#{cover},
+		'보유',#{author},#{publisher},#{categoryNo},sysdate)
+	</insert>
+
+	<!-- 모든책 검색 -->
+	<select id="listBooks" resultType="BooksVo" parameterType="Map">
+           SELECT * FROM books
+           where BOOK_STATUS ='보유'
+           ORDER BY book_no 
+	</select>
+	
+	<!-- 삭제책 검색 -->
+	<select id="getDeletedBooks" resultType="BooksVo">
+		SELECT * FROM books
+           where BOOK_STATUS ='삭제'
+           ORDER BY book_no 
+	</select>
+
+	
+	<!-- 책 검색 리스트 -->
+	<select id="searchBookList" resultType="BooksVo" parameterType="Map">
+		   SELECT * FROM (
+	        SELECT b.*, ROWNUM rn
+	        FROM (
+	            SELECT * FROM books
+	            <include refid="dynamicCondition"/>
+	            ORDER BY book_no DESC
+	        ) b
+	        WHERE ROWNUM &lt;= #{offset} + #{limit}
+	    )
+	    WHERE rn &gt; #{offset}
+	</select>
+	
+	<!-- 책카운트갯수 -->
+		<select id="countSearchBook" resultType="int" parameterType="Map">
+	    SELECT COUNT(*)
+	    FROM books
+	    <include refid="dynamicCondition"/>
+	</select>
+	
+	<!-- 책 상세페이지 -->
+	<select id="booksDetail" parameterType="BooksVo" resultType="BooksVo">
+		select BOOK_NO,BOOK_TITLE, ISBN, PUBDATE, COVER, AUTHOR, PUBLISHER, CATEGORY_NO
+		from books
+		where book_no = #{bookNo}
+	</select>
+	
+	<!-- 메인검색 리스트 -->
+	<select id="mainSearchBookList" parameterType="Map" resultType="BooksVo">
+
+		
+	   SELECT * FROM (
+	        SELECT b.*, ROWNUM rn
+	        FROM (
+	            		SELECT *
+						FROM books
+						WHERE book_title LIKE '%' || #{query} || '%'
+						   OR author LIKE '%' || #{query} || '%'
+						   OR publisher LIKE '%' || #{query} || '%'
+						ORDER BY book_no DESC
+	        ) b
+	        WHERE ROWNUM &lt;= #{offset} + #{limit}
+	    )
+	    WHERE rn &gt; #{offset}
+	    
+	</select>
+	
+	<!-- 메인검색갯수 -->
+	<select id="countMainSearchBook" parameterType="Map" resultType="int">
+	    SELECT COUNT(*)
+	    FROM books
+	    WHERE book_title LIKE '%' || #{query} || '%'
+	       OR author LIKE '%' || #{query} || '%'
+	       OR publisher LIKE '%' || #{query} || '%'
+	</select>
+	
+	<!-- isbn 리스트 (책 등록시 중복방지) -->
+	<select id="bookIsbnList" resultType="BooksVo">
+		select ISBN
+		from books
+	</select>
+	
+	
+   <resultMap id="realBookListMap" type="hashMap">
+        <result property="realBook" column="REAL_BOOK"/>
+        <result property="bookNo" column="BOOK_NO"/>
+        <result property="realBookStatus" column="REAL_BOOK_STATUS"/>
+        <result property="cover" column="COVER"/>
+        <result property="bookTitle" column="BOOK_TITLE"/>
+    </resultMap>
+	
+	<!-- 실제책 리스트 -->
+	<select id="realBookList" resultMap="realBookListMap" parameterType="int">
+		 SELECT R.*, B.COVER as cover, B.BOOK_TITLE as BOOK_TITLE
+		    FROM REAL_BOOK R
+		    JOIN BOOKS B ON R.BOOK_NO = B.BOOK_NO
+		    WHERE R.BOOK_NO = #{bookNo}
+	</select>
+	
+	<!--  관리자 도서 삭제(상태 삭제처리) -->
+	<update id="bookDelete" parameterType="int">
+	    UPDATE BOOKS
+	    SET BOOK_STATUS = '삭제'
+	    WHERE BOOK_NO = #{bookNo}
+	</update>
+	
+	<select id="canDeleteBook" parameterType="int" resultType="int">
+	    SELECT COUNT(*)
+	    FROM REAL_BOOK
+	    WHERE BOOK_NO = #{bookNo}
+	    AND REAL_BOOK_STATUS = '대여중'
+	</select>
+	
+	
+	<!-- 신착도서리스트 -->
+		<select id="newBookList" resultType="BooksVo">
+		SELECT *
+			FROM (
+			    SELECT *
+			    FROM BOOKS
+			    ORDER BY INSERT_DATE DESC
+			)
+			WHERE ROWNUM &lt;= 30
+		</select>
+</mapper>
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bookFavorites">
+	<insert id="farvoriteInsert" parameterType="BookFavoritesVo">
+		insert into BOOK_FAVORITES
+		values(seq_bookfacorites.nextval,#{userNo},#{bookNo})
+	</insert>
+	
+	<select id="favoriteCheck" parameterType="BookFavoritesVo" resultType="int">
+		select count(*)
+		from BOOK_FAVORITES
+		where user_no = #{userNo}
+		and	  book_no = #{bookNo}
+	</select>
+	
+	<delete id="farvoriteDelete" parameterType="BookFavoritesVo">
+		delete BOOK_FAVORITES
+		where user_no = #{userNo}
+		and	  book_no = #{bookNo}
+	</delete>
+</mapper>

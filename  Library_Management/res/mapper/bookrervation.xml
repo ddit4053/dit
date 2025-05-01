@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bookrervation">
+	<select id="reservationcheck" parameterType="int" resultType="int">
+		    select count(*)
+		    from REAL_BOOK
+		    where BOOK_NO = #{value}
+		    and   REAL_BOOK_STATUS ='대여가능'
+	</select>
+	
+	<insert id="reservationInsert" parameterType="BookReservationsVo">
+		INSERT INTO BOOK_RESERVATIONS (RESERVE_NO, RESERVE_DATE,  BOOK_NO, USER_NO) 
+		VALUES (SEQ_BOOK_RESERVATIONS.NEXTVAL, SYSDATE,#{bookNo}, #{userNo})
+	</insert>
+	
+	<!-- 이미 신청한 예약이 있는지 확인 -->
+	<select id="isAlreadyReserved" resultType="int" parameterType="BookReservationsVo">
+	    SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+	    FROM BOOK_RESERVATIONS
+	    WHERE BOOK_NO = #{bookNo}
+	      AND USER_NO = #{userNo}
+	      AND RESERVE_STATUS = '대기'
+	</select>
+	
+	<select id="reserveList" parameterType="BookReservationsVo" resultType="BookReservationsVo"> 
+			select *
+			from BOOK_RESERVATIONS
+			where book_no = #{bookNo}
+	</select>
+</mapper>

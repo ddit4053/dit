@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bookCategorie">
+<select id="getCategoryListByParent" parameterType="Integer" resultType="BookCategoriesVo">
+    SELECT CATEGORY_NO, CATEGORY_NAME, PARENT_ID
+    FROM BOOK_CATEGORIES
+    <where>
+        <choose>
+            <when test="parentId != null">
+                PARENT_ID = #{parentId}
+            </when>
+            <otherwise>
+                PARENT_ID IS NULL
+            </otherwise>
+        </choose>
+    </where>
+</select>
+
+</mapper>

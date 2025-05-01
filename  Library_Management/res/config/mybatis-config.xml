@@ -15,10 +15,16 @@
 	                        데이터베이스 연결을 초기화하고 사용자를 인증하는 과정이 없기 때문에 속도가 빠르다.
 	 -->
 		<typeAliases>
+				<typeAlias type="kr.or.ddit.vo.BooksVo" alias="BooksVo" />
+				<typeAlias type="kr.or.ddit.vo.ReviewsVo" alias="ReviewsVo"/>
+				<typeAlias type="kr.or.ddit.vo.BookFavoritesVo" alias="BookFavoritesVo"/>
+				<typeAlias type="kr.or.ddit.vo.BookCategoriesVo" alias="BookCategoriesVo"/>
+				<typeAlias type="kr.or.ddit.vo.BookLoansVo" alias="BookLoansVo"/>
+				<typeAlias type="kr.or.ddit.vo.BookReservationsVo" alias="BookReservationsVo"/>
+				<typeAlias type="kr.or.ddit.vo.RealBookVo" alias="RealBookVo"/>
 			<typeAlias type="kr.or.ddit.vo.BookBoardVo" alias="BookBoardVo"/>
 			<typeAlias type="kr.or.ddit.vo.CommentsVo" alias="CommentsVo"/>
 			<typeAlias type="kr.or.ddit.vo.UsersVo" alias="UsersVo"/>
-			<typeAlias type="kr.or.ddit.vo.BooksVo" alias="BooksVo"/>
 			<typeAlias type="kr.or.ddit.vo.EduEventVo" alias="EduEventVo"/>
 			<typeAlias type="kr.or.ddit.vo.FileGroupVo" alias="FileGroupVo"/>
 			<typeAlias type="kr.or.ddit.vo.File_StorageVo" alias="File_StorageVo"/>
@@ -43,6 +49,12 @@
 	</environments>
 	<mappers>
 <!-- 		<mapper resource="mapper/file.xml"/> -->
+			<mapper resource="mapper/books.xml"/>
+			<mapper resource="mapper/reviews.xml"/>
+			<mapper resource="mapper/bookFavorites.xml"/>
+			<mapper resource="mapper/bookCategorie.xml"/>
+			<mapper resource="mapper/bookLoans.xml"/>
+			<mapper resource="mapper/bookrervation.xml"/>
 	<mapper resource="mapper/board.xml"/>
 	<mapper resource="mapper/comments.xml"/>
 	<mapper resource="mapper/user.xml"/>

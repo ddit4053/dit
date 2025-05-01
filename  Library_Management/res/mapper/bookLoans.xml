@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bookLoan">
+	<insert id="loanInsert" parameterType="Map">
+		insert into BOOK_LOANS
+		values(seq_book_loan.nextval,sysdate,sysdate+7,null,#{userNo},
+		        (SELECT REAL_BOOK
+		        FROM REAL_BOOK
+		        WHERE BOOK_NO = #{bookNo}
+		          AND REAL_BOOK_STATUS = '대여가능'
+		        ORDER BY REAL_BOOK
+		        FETCH FIRST 1 ROWS ONLY),
+		        (select POLICY_NO
+		        from OVERDUE_POLICY
+		        where IS_ACTIVE ='Y')
+		)
+	</insert>
+	
+	<update id="realbookUpdate" parameterType="Map">
+		update REAL_BOOK
+		set REAL_BOOK_STATUS = '대여중'
+		where real_book =  (SELECT REAL_BOOK
+		        FROM REAL_BOOK
+		        WHERE BOOK_NO = #{bookNo}
+		          AND REAL_BOOK_STATUS = '대여가능'
+		        ORDER BY REAL_BOOK
+		        FETCH FIRST 1 ROWS ONLY)
+	</update>
+	
+	<select id="getUserStatus" parameterType="int" resultType="String"> 
+		select STATUS
+		from users
+		where USER_NO=#{userNo}
+	</select>
+	
+	<select id="checkAlreadyLoaned" parameterType="Map" resultType="boolean">
+			SELECT COUNT(*)
+			FROM BOOK_LOANS
+			WHERE USER_NO = #{userNo}
+			  AND REAL_BOOK IN (
+			        SELECT REAL_BOOK
+			        FROM REAL_BOOK
+			        WHERE BOOK_NO = #{bookNo}
+			  )
+			  AND RETURN_DATE IS NULL
+
+	</select>
+</mapper>
