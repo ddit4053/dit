@@ -116,6 +116,12 @@ public class BooksServiceImp implements IBooksService{
 		return booksDao.getDeletedBooks();
 	}
 
+	@Override
+	public List<BooksVo> newBookList() {
+		// TODO Auto-generated method stub
+		return booksDao.newBookList();
+	}
+
 	
 	
 

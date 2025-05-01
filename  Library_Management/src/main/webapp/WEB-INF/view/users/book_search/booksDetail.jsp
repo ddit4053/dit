@@ -7,130 +7,130 @@
 <head>
   <meta charset="UTF-8">
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f4f9;
-      margin: 0;
-      padding: 20px;
-    }
+		body {
+		  font-family: 'Arial', sans-serif;
+		  background-color: #f4f4f9;
+		  margin: 0;
+		  padding: 20px;
+		}
+		
+		.container {
+		  max-width: 1000px;
+		  margin: 0 auto;
+		  background-color: #fff;
+		  padding: 20px;
+		  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+		  border-radius: 8px;
+		}
+		
+		.book-detail {
+		  display: flex;
+		  flex-direction: row;
+		  justify-content: flex-start; /* 왼쪽 정렬 */
+		  align-items: flex-start; /* 상단 정렬 */
+		  gap: 20px; /* 책 표지와 정보 사이 간격 */
+		}
+		
+		.book-cover {
+		  flex-shrink: 0; /* 이미지 크기가 줄어들지 않도록 */
+		  max-width: 150px; /* 책 표지의 최대 크기 */
+		  height: auto;
+		}
+		
+		.book-cover img {
+		  width: 100%;
+		  height: auto;
+		  border-radius: 8px;
+		  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+		}
+		
+		.book-info {
+		  flex: 1;
+		  padding-left: 30px;
+		  max-width: 600px; /* 책 정보 영역의 최대 너비 */
+		}
+		
+		.book-info h2 {
+		  font-size: 24px;
+		  color: #333;
+		  margin-bottom: 10px;
+		}
+		
+		.book-info p {
+		  font-size: 16px;
+		  color: #555;
+		  margin-bottom: 10px;
+		}
+		
+		.book-info strong {
+		  color: #333;
+		}
+		
+		.button {
+		  display: inline-block;
+		  padding: 10px 20px;
+		  background-color: #4CAF50;
+		  color: white;
+		  text-decoration: none;
+		  border-radius: 5px;
+		  margin-top: 20px;
+		  font-size: 16px;
+		}
+		
+		.button:hover {
+		  background-color: #45a049;
+		}
+		
+		.back-link {
+		  margin-top: 20px;
+		  text-align: right;
+		}
+		
+		.back-link a {
+		  text-decoration: none;
+		  color: #4CAF50;
+		  font-size: 16px;
+		}
+		
+		.back-link a:hover {
+		  text-decoration: underline;
+		}
+		
+		.subtitle {
+		  font-size: 16px;
+		  color: gray;
+		}
+		
+		.reserve-table {
+		  width: 100%;
+		  border-collapse: collapse;
+		  margin-top: 10px;
+		  background-color: #f9f9f9;
+		  font-size: 14px;
+		}
+		
+		.reserve-table th {
+		  color: white;
+		  border: 1px solid #ccc;
+		  padding: 10px;
+		  text-align: center;
+		}
+		
+		.reserve-table td {
+		  border: 1px solid #ccc;
+		  padding: 10px;
+		  text-align: center;
+		}
+		
+		.reserve-table th {
+		  background-color: #8d6e63;
+		  font-weight: bold;
+		}
+		
+		.reserve-table tr:hover {
+		  background-color: #f1f1f1;
+		}
 
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      border-radius: 8px;
-    }
-
-    .book-detail {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .book-cover {
-      display: inline-block;
-      max-width: 100%;
-      height: auto;
-      margin-right: 20px;
-    }
-
-    .book-cover img {
-      width: auto;
-      height: auto;
-      max-width: 100%;
-      max-height: 500px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .book-info {
-      flex: 1;
-      padding-left: 30px;
-      max-width: 600px;
-    }
-
-    .book-info h2 {
-      font-size: 24px;
-      color: #333;
-      margin-bottom: 10px;
-    }
-
-    .book-info p {
-      font-size: 16px;
-      color: #555;
-      margin-bottom: 10px;
-    }
-
-    .book-info strong {
-      color: #333;
-    }
-
-    .button {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 20px;
-      font-size: 16px;
-    }
-
-    .button:hover {
-      background-color: #45a049;
-    }
-
-    .back-link {
-      margin-top: 20px;
-      text-align: right;
-    }
-
-    .back-link a {
-      text-decoration: none;
-      color: #4CAF50;
-      font-size: 16px;
-    }
-
-    .back-link a:hover {
-      text-decoration: underline;
-    }
-
-    .subtitle {
-      font-size: 16px;
-      color: gray;
-    }
-    
-      .reserve-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    background-color: #f9f9f9;
-    font-size: 14px;
-  }
-
-  .reserve-table th {
-  	color: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-  }
-  .reserve-table td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-  }
-
-  .reserve-table th {
-    background-color:   #8d6e63;
-    font-weight: bold;
-  }
-
-  .reserve-table tr:hover {
-    background-color: #f1f1f1;
-  }
   </style>
   <script>
   	const loggedInUserNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'};
@@ -589,7 +589,7 @@
             </select><br><br>
             
             <label for="reviewContent">리뷰내용</label><br>
-            <textarea name="reviewContent" id="reviewContent" rows="4" cols="30" required></textarea>
+            <textarea name="reviewContent" id="reviewContent" rows="4" cols="30" required style="width: 482px; height: 80px; resize: none"></textarea>
             <input type="hidden" name="bookNo" id="bookNo" value="${bookDetail.bookNo}">
             <!-- <input type="hidden" name="userId" id="userId" value="${user.userId}"> 로그인 구현시 보여줌 -->
 			    <button type="button" onclick="insertReview()" id="reviewBtn">등록</button>         

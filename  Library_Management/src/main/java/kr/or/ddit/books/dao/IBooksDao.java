@@ -32,4 +32,6 @@ public interface IBooksDao {
 
 	public List<BooksVo> getDeletedBooks();
 
+	public List<BooksVo> newBookList();
+
 }

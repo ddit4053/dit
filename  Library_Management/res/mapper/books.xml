@@ -151,5 +151,17 @@
 	    WHERE BOOK_NO = #{bookNo}
 	    AND REAL_BOOK_STATUS = '대여중'
 	</select>
+	
+	
+	<!-- 신착도서리스트 -->
+		<select id="newBookList" resultType="BooksVo">
+		SELECT *
+			FROM (
+			    SELECT *
+			    FROM BOOKS
+			    ORDER BY INSERT_DATE DESC
+			)
+			WHERE ROWNUM &lt;= 30
+		</select>
 </mapper>
 

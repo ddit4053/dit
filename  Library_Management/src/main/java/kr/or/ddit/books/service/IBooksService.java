@@ -29,5 +29,7 @@ public interface IBooksService {
 	public boolean deleteBook(int bookNo);
 
 	public List<BooksVo> getDeletedBooks();
+
+	public List<BooksVo> newBookList();
 	
 }
