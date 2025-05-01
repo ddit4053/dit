@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>비밀번호 변경</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/user/mypage/updateInfo.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
