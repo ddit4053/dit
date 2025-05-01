@@ -65,7 +65,8 @@
 		SET END_DATE= SYSDATE,
 			IS_ACTIVE = 'N'
 		WHERE POLICY_NO= #{policyNo}
-		   AND IS_ACTIVE  &lt;&gt; 'Y'
+		  AND IS_ACTIVE &lt;&gt; 'Y'
+		   
 	</update>
 	
 	

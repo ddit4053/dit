@@ -91,8 +91,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		    title: "도서관 소개",
 		    items: [
 		      { name: "인사말", url: "/about/greetings" },
-		      { name: "시설 소개", url: "/about/facilities" },
+		      { name: "시설 소개", url: "/about/intro" },
 		      { name: "오시는 길", url: "/about/location" },
+		      { name: "편의시설", url: "/about/facilities" }
 		    ],
 		  },
 		  {
