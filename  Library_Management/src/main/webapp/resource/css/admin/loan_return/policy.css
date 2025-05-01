@@ -1,0 +1,102 @@
+@charset "UTF-8";
+/* — 전체 베이스 — */
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #f4f1ee;   /* 연한 베이지 */
+  color: #3c2f2f;              /* 짙은 브라운 텍스트 */
+  margin: 0;
+  padding: 20px;
+}
+/* — 제목 & 메시지 — */
+h2 {
+  color: #5a3e2b;
+  margin-bottom: 12px;
+}
+.alert-box {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  background: #fff3e0;
+  border: 1px solid #ffe0b2;
+  color: #6d4c41;
+  border-radius: 4px;
+}
+/* — 카드 컨테이너 — */
+.section-card {
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+/* — 신규 기준 추가 폼 — */
+form fieldset {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+}
+form legend {
+  font-weight: bold;
+}
+form label {
+  margin-right: 12px;
+  font-size: 0.9em;
+}
+form input[type="number"] {
+  width: 60px;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+form input[type="checkbox"] {
+  margin-left: 8px;
+  margin-right: 4px;
+}
+/* — 공통 버튼 — */
+.btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background 0.2s;
+}
+.btn-add    { background: #a4673c; color: #fff; }
+.btn-apply  { background: #8b5e3c; color: #fff; }
+.btn-edit   { background: #007bff; color: #fff; }
+.btn-delete { background: #dc3545; color: #fff; }
+.btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+/* — 정책 테이블 — */
+table.policy-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.policy-table th,
+.policy-table td {
+  border: 1px solid #e0d7cc;
+  padding: 10px;
+  text-align: center;
+}
+.policy-table th {
+  background-color: #8b5e3c;  /* 헤더 카푸치노 */
+  color: #faf0e6;
+}
+.policy-table tr:nth-child(even) {
+  background-color: #fcf8f5;
+}
+.policy-table tr:hover {
+  background-color: #efe6dd;
+}
+/* 현재 적용중 강조 */
+.policy-table tr.active {
+  background-color: #d1ecf1;
+}
+/* 첫 열 너비 고정 */
+.policy-table td:first-child {
+  width: 40px;
+}

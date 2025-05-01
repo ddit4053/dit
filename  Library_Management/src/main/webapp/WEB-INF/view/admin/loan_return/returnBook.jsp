@@ -1,0 +1,87 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
+
+
+  <meta charset="UTF-8">
+  <title>반납 처리</title>
+  <link rel="stylesheet"
+        href="${pageContext.request.contextPath}/resource/css/admin/loan_return/returnBook.css"/>
+
+  <h2>반납 처리 화면</h2>
+
+  <c:if test="${not empty sessionScope.msg}">
+    <div class="alert">${sessionScope.msg}</div>
+    <c:remove var="msg" scope="session"/>
+  </c:if>
+
+  <%
+    String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+  %>
+
+  <table class="policy-table">
+    <thead>
+      <tr>
+        <th>대출 번호</th>
+        <th>도서명</th>
+        <th>사용자명</th>
+        <th>대출일</th>
+        <th>반납예정일</th>
+        <th>반납일</th>
+        <th>처리</th>
+      </tr>
+    </thead>
+    <tbody>
+      <c:forEach var="v" items="${list}">
+        <tr>
+          <td>${v.loanNo}</td>
+          <td>${v.bookTitle}</td>
+          <td>${v.name}</td>
+          <td>${v.loanDate}</td>
+          <td>${v.dueDate}</td>
+          <td>${v.returnDate}</td>
+          <td>
+            <c:choose>
+              <c:when test="${empty v.returnDate}">
+                <form action="${pageContext.request.contextPath}/admin/loans/return"
+                      method="post" style="display:inline">
+                  <input type="hidden" name="loanNo" value="${v.loanNo}"/>
+                  <button type="submit">반납 처리</button>
+                </form>
+              </c:when>
+              <c:otherwise>
+                <button type="button" disabled>반납완료</button>
+              </c:otherwise>
+            </c:choose>
+          </td>
+        </tr>
+      </c:forEach>
+      <c:if test="${empty list}">
+        <tr><td colspan="6">처리할 대출 내역이 없습니다.</td></tr>
+      </c:if>
+    </tbody>
+  </table>
+	
+	<c:if test="${paging.totalPages > 1}">
+	  <nav class="pagination">
+	    <c:if test="${paging.currentPage > 1}">
+      <a href="?page=1">«</a>
+	      <a href="?page=${paging.currentPage - 1}"> 이전</a>
+	    </c:if>
+	    <c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="p">
+	      <c:choose>
+	        <c:when test="${p == paging.currentPage}">
+	          <span class="current">${p}</span>
+	        </c:when>
+	        <c:otherwise>
+	          <a href="?page=${p}">${p}</a>
+	        </c:otherwise>
+	      </c:choose>
+	    </c:forEach>
+	    <c:if test="${paging.currentPage < paging.totalPages}">
+	      <a href="?page=${paging.currentPage + 1}">다음 </a>
+      <a href="?page=${paging.totalPages}">»</a>
+	    </c:if>
+	  </nav>
+	</c:if>

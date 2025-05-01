@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="banUser">
+
+		
+
+	<resultMap id="banMap" type="BanUsersVo">
+	    <result property="banNo" column="banNo"/>
+	    <result property="banDate" column="banDate"/>
+	    <result property="banDays" column="banDays"/>
+	    <result property="releaseDate" column="releaseDate"/>
+	    <result property="policyNo" column="policyNo"/>
+	    <result property="loanNo" column="loanNo"/>
+	    <result property="userNo" column="userNo"/>
+	    <result property="banNote" column="banNote"/>
+	</resultMap>
+
+	<select id="selectBanMap" resultType="map">
+	    SELECT ba.BAN_NO AS "banNo",
+		       u.NAME AS "name",
+		       b.BOOK_TITLE AS "bookTitle",
+		       TO_CHAR(l.loan_date, 'YYYY-MM-DD') AS "loanDate",
+	           TO_CHAR(l.RETURN_date, 'YYYY-MM-DD') AS "returnDate",
+		       TO_CHAR(ba.BAN_DATE, 'YYYY-MM-DD') AS "banDate", 
+		       ba.BAN_DAYS AS "banDays", 
+		       TO_CHAR(ba.RELEASE_DATE, 'YYYY-MM-DD') AS "releaseDate", 
+		       ba.POLICY_NO AS "policyNo", 
+		       ba.LOAN_NO AS "loanNo", 
+		       ba.USER_NO AS "userNo", 
+		       ba.BAN_NOTE AS "banNote"
+		FROM BAN_USERS ba
+		JOIN USERS u ON ba.USER_NO=u.USER_NO
+		JOIN BOOK_LOANS l ON ba.LOAN_NO=l.LOAN_NO
+		JOIN REAL_BOOK r ON l.REAL_BOOK=r.REAL_BOOK
+		JOIN BOOKS b ON b.BOOK_NO=r.BOOK_NO 
+	   ORDER BY 8
+	  </select>
+		
+	
+	
+	
+</mapper>

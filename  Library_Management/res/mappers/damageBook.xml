@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="damage">
+
+		
+
+	<resultMap id="damageMap" type="DamagedLostBookVo">
+	    <result property="lostNo" column="lostNo"/>
+	    <result property="reportDate" column="reportDate"/>
+	    <result property="lostStatus" column="lostStatus"/>
+	    <result property="description" column="description"/>
+	    <result property="processed" column="processed"/>
+	    <result property="processedDate" column="processedDate"/>
+	    <result property="userNo" column="userNo"/>
+	    <result property="realBook" column="realBook"/>
+	</resultMap>
+
+	<!-- 60일 이상 연체의 경우 도서는 분실처리 한다 -->
+	<update id="damageAutoInsert">
+		INSERT INTO DAMAGED_LOST_BOOK
+			             (LOST_NO, 
+			             REPORT_DATE, 
+			             LOST_STATUS, 
+			             DESCRIPTION, 
+			             PROCESSED, 
+			             PROCESSED_DATE, 
+			             USER_NO, 
+			             REAL_BOOK)
+			SELECT SEQ_DAMAGED_LOST_BOOK.nextval, 
+			       SYSDATE, 
+			       B.BAN_NOTE, 
+			       '60일 이상 연체로 분실처리', 
+			       'Y', 
+			       SYSDATE, 
+			       L.USER_NO, 
+			       L.REAL_BOOK
+			  FROM BOOK_LOANS L
+			  JOIN BAN_USERS B ON L.USER_NO=B.USER_NO
+			 WHERE B.BAN_NOTE='분실'
+  			   AND TRUNC(SYSDATE) > TRUNC(L.DUE_DATE) + 60
+			   AND TRUNC(L.RETURN_DATE) IS NULL
+			   AND NOT EXISTS(
+			    SELECT 1
+			      FROM DAMAGED_LOST_BOOK D
+			     WHERE D.USER_NO=L.USER_NO
+                   AND D.REAL_BOOK=L.REAL_BOOK
+			   )
+	</update>
+	
+	<insert id="damageInsert" parameterType="DamagedLostBookVo">
+		INSERT INTO DAMAGED_LOST_BOOK
+			             (LOST_NO, 
+			             REPORT_DATE, 
+			             LOST_STATUS, 
+			             DESCRIPTION, 
+			             PROCESSED, 
+			             PROCESSED_DATE, 
+			             USER_NO, 
+			             REAL_BOOK
+			             )
+			   VALUES(
+			   			SEQ_DAMAGED_LOST_BOOK.nextval,
+			   			SYSDATE,
+			   			#{lostStatus},
+      					#{description},
+			   			'Y',
+			   			SYSDATE,
+			   			#{userNo},
+      					#{realBook}
+			   		)          
+	</insert>
+	
+	<select id="damageBookList" resultType="Map">
+		SELECT D.LOST_NO AS "lostNo",
+	       B.BOOK_TITLE AS "bookTitle", 
+	       D.LOST_STATUS AS "lostStatus",
+	       D.REPORT_DATE AS "reportDate",
+	       D.DESCRIPTION AS "description",
+	       D.PROCESSED_DATE AS "processedDate",
+	       D.USER_NO AS "userNo",
+	       R.REAL_BOOK AS "realBook"
+	  FROM DAMAGED_LOST_BOOK D
+	  JOIN REAL_BOOK R ON D.REAL_BOOK=R.REAL_BOOK
+	  JOIN BOOKS B ON R.BOOK_NO= B.BOOK_NO
+	</select>
+	
+	 <update id="updateDamage">
+  	    MERGE INTO REAL_BOOK R
+		USING DAMAGED_LOST_BOOK D
+		   ON (R.REAL_BOOK = D.REAL_BOOK)
+		 WHEN MATCHED THEN
+	   UPDATE SET R.REAL_BOOK_STATUS = D.LOST_STATUS
+	  </update>
+	
+	<!-- 0) 전체 건수 조회 -->
+	<select id="countdamageList" resultType="int">
+	  SELECT COUNT(*)
+	    FROM DAMAGED_LOST_BOOK D
+	  JOIN REAL_BOOK R ON D.REAL_BOOK=R.REAL_BOOK
+	  JOIN BOOKS B ON R.BOOK_NO= B.BOOK_NO
+	</select>
+	
+	<!-- 1) 페이징된 목록 조회 -->
+	<select id="countdamageListPaged" parameterType="PagingVo" resultType="map">
+	  SELECT * FROM (
+	    SELECT row_.*, ROWNUM rn
+	      FROM (
+	        SELECT D.LOST_NO AS "lostNo",
+	       B.BOOK_TITLE AS "bookTitle", 
+	       D.LOST_STATUS AS "lostStatus",
+	       D.REPORT_DATE AS "reportDate",
+	       D.DESCRIPTION AS "description",
+	       D.PROCESSED_DATE AS "processedDate",
+	       D.USER_NO AS "userNo",
+	       R.REAL_BOOK AS "realBook"
+	  FROM DAMAGED_LOST_BOOK D
+	  JOIN REAL_BOOK R ON D.REAL_BOOK=R.REAL_BOOK
+	  JOIN BOOKS B ON R.BOOK_NO= B.BOOK_NO
+	      ) row_
+	    WHERE ROWNUM &lt;= #{endRow}
+	  )
+	  WHERE rn &gt;= #{startRow}
+	</select>
+	
+</mapper>

@@ -1,0 +1,137 @@
+@charset "UTF-8";
+
+/* damageBook.css */
+
+/* 페이지 배경 & 기본 폰트 */
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #faf8f2;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+/* 페이지 타이틀 */
+h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 3px solid #00695C;
+  padding-bottom: 0.5rem;
+  color: #004D40;
+}
+
+/* 성공/실패 메시지 */
+.alert {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: #e8f5e9;
+  border-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+/* ── 등록 폼 ── */
+.damage-form {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.damage-form h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #00695C;
+}
+.damage-form div {
+  margin-bottom: 0.75rem;
+}
+.damage-form label {
+  display: inline-block;
+  width: 120px;
+  font-weight: bold;
+  color: #555;
+}
+.damage-form input,
+.damage-form select {
+  padding: 0.4rem 0.6rem;
+  width: 220px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1rem;
+}
+.damage-form button {
+  padding: 0.5rem 1.2rem;
+  background-color: #00695C;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color .2s;
+  min-width: 100px;
+}
+.damage-form button:hover {
+  background-color: #004D40;
+}
+
+/* ── 목록 테이블 ── */
+.damage-list h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #00695C;
+}
+.damage-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.damage-list th,
+.damage-list td {
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem;
+  text-align: left;
+}
+.damage-list th {
+  background-color: #00695C;
+  color: #fff;
+  font-weight: normal;
+}
+.damage-list tbody tr:nth-child(odd) {
+  background-color: #f7f7f7;
+}
+.damage-list tbody tr:hover {
+  background-color: #eef7f4;
+}
+.damage-list button {
+  background-color: #00695C;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.damage-list button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* ── 반응형 폼 ── */
+@media (max-width: 768px) {
+  .damage-form label,
+  .damage-form input,
+  .damage-form select,
+  .damage-form button {
+    display: block;
+    width: 100%;
+  }
+  .damage-form label {
+    margin-bottom: 4px;
+  }
+}
