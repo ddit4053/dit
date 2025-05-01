@@ -25,7 +25,6 @@
 			<typeAlias type="kr.or.ddit.vo.Noti" alias="Noti"/>
 			<typeAlias type="kr.or.ddit.vo.OverduePolicyVo" alias="OverduePolicyVo"/>
 			<typeAlias type="kr.or.ddit.vo.RealBookVo" alias="RealBookVo"/>
-			<typeAlias type="kr.or.ddit.vo.RecommendBookVo" alias="RecommendBookVo"/>
 			<typeAlias type="kr.or.ddit.vo.UsersVo" alias="UsersVo"/>
 			<typeAlias type="kr.or.ddit.vo.PagingVo" alias="PagingVo"/>
 		</typeAliases>
