@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>신착 도서 리스트</title>
 <style>
-  body {
+ body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     margin: 0;
@@ -22,48 +22,80 @@
   }
 
   .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
   }
 
   .book-card {
     display: flex;
     background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    padding: 15px;
-    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
     align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .book-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
   }
 
   .book-card img {
-    width: 100px;
+    width: 150px;
     height: auto;
-    margin-right: 20px;
-    border-radius: 5px;
+    margin-right: 30px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+
+  .book-card img:hover {
+    transform: scale(1.05);
   }
 
   .book-info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    width: 100%;
   }
 
-  .book-info h2 {
-    margin: 0 0 10px 0;
+  .book-info h3 {
+    margin: 0 0 15px 0;
+    font-size: 22px;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  .book-info .subtitle {
     font-size: 18px;
-    color: #222;
+    color: #888;
+    font-style: italic;
   }
 
   .book-info p {
-    margin: 4px 0;
+    margin: 6px 0;
     color: #555;
+    font-size: 16px;
   }
-  
-   .subtitle {
-      font-size: 16px;
-      color: gray;
-    }
+
+  .book-info p strong {
+    color: #222;
+  }
 </style>
+<script type="text/javascript">
+		//const contextPath = "${pageContext.request.contextPath}";
+		
+		console.log(contextPath);
+			$(function() {
+			  $('.book-card').on('click', function() {
+			    const bookno = $(this).data('bookno');
+			    console.log(bookno);
+			    location.href = `\${contextPath}/books/detail?bookNo=\${bookno}`;
+			  });
+		});
+</script>
 </head>
 <body>
 	 <header>
