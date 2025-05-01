@@ -32,6 +32,37 @@ const menuStructure = {
 	  ],
 	},
     {
+      title: "마이페이지",
+      url: "/user/mypage",
+      subMenus: [
+        {
+          title: "회원정보 수정",
+          url: "/user/mypage/updateInfo.do",
+          subMenus: [
+            { title: "회원정보 수정", url: "/user/mypage/bookResList.do" },
+            { title: "비밀번호 변경", url: "/user/mypage/changePassword.do" },
+            { title: "회원탈퇴", url: "/user/mypage/quitUser.do" },
+          ],
+        },
+        {
+          title: "예약 현황",
+          url: "/user/mypage/bookResList.do",
+          subMenus: [
+            { title: "도서 예약현황", url: "/user/mypage/bookResList.do" },
+            { title: "열람실 예약현황", url: "/user/mypage/roomResList.do" },
+          ],
+        },
+        { title: "도서 대출현황", url: "/user/mypage/bookLoansList.do" },
+        { title: "도서 대출이력", url: "/user/mypage/loansList.do" },
+        { title: "관심도서", url: "/user/mypage/bookFavoritesList.do" },
+        { title: "신규도서 신청현황", url: "/user/mypage/bookReqList.do" },
+        { title: "열람실 이용내역", url: "/user/mypage/resList.do" },
+        { title: "교육/행사 신청내역", url: "/user/mypage/eventReqList.do" },
+        { title: "독후감 작성내역", url: "/user/mypage/bookReportList.do" },
+      ],
+    },
+
+    {
       title: "자료검색",
       url: "/books",
       subMenus: [
@@ -168,10 +199,6 @@ const menuStructure = {
             {
               title: "대출 정지 대상자 목록",
               url: "/admin/loans/overdue/suspended",
-            },
-            {
-              title: "대출 정지 기준 설정",
-              url: "/admin/loans/overdue/suspended-settings",
             },
           ],
         },
