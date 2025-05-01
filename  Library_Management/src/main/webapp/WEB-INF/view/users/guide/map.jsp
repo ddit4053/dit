@@ -15,7 +15,7 @@
 
     <div class="address-info" style="margin-top: 30px; line-height: 1.8;">
       <div class="info-item">
-        <strong>📍 주소:</strong> 대전광역시 중구 오류동 123
+        <strong>📍 주소:</strong> 대전광역시 중구 계룡로 846
       </div>
       <div class="info-item">
         <strong>📞 전화번호:</strong> 042-123-4567
@@ -39,13 +39,13 @@
 <script>
   const container = document.getElementById('map');
   const options = {
-    center: new kakao.maps.LatLng(36.321655, 127.419708), // 오류동 근처 좌표
+    center: new kakao.maps.LatLng(36.325002, 127.408975), // 오류동 근처 좌표
     level: 4
   };
 
   const map = new kakao.maps.Map(container, options);
 
-  const markerPosition = new kakao.maps.LatLng(36.321655, 127.419708);
+  const markerPosition = new kakao.maps.LatLng(36.325002, 127.408975);
   const marker = new kakao.maps.Marker({ position: markerPosition });
   marker.setMap(map);
 </script>
