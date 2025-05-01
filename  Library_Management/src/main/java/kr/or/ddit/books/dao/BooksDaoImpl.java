@@ -79,6 +79,24 @@ public class BooksDaoImpl extends MybatisDao implements IBooksDao {
 		return selectList("books.realBookList",bookNo);
 	}
 
+	@Override
+	public void bookDelete(int bookNo) {
+		// TODO Auto-generated method stub
+		update("books.bookDelete", bookNo);
+	}
+
+	@Override
+	public int canDeleteBook(int bookNo) {
+		// TODO Auto-generated method stub
+		return selectOne("books.canDeleteBook",bookNo);
+	}
+
+	@Override
+	public List<BooksVo> getDeletedBooks() {
+		// TODO Auto-generated method stub
+		return selectList("books.getDeletedBooks");
+	}
+
 
 	
 }

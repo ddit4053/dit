@@ -95,6 +95,28 @@ public class BooksServiceImp implements IBooksService{
 	}
 
 
+
+	@Override
+	public boolean deleteBook(int bookNo) {
+		int count = booksDao.canDeleteBook(bookNo); //대여중인 책이 있는지 확인
+		
+	   if (count > 0) {
+	        // 하나라도 대여중인 경우 삭제 불가
+	        return false;
+	    }
+	   
+	   	booksDao.bookDelete(bookNo);
+		
+		return true;
+	}
+
+	@Override
+	public List<BooksVo> getDeletedBooks() {
+		// TODO Auto-generated method stub
+		return booksDao.getDeletedBooks();
+	}
+
+	
 	
 
 }

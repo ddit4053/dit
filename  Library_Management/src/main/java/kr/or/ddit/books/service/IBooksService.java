@@ -26,6 +26,8 @@ public interface IBooksService {
 
 	public List<Map<String, Object>> realBookList(int bookNo);
 
+	public boolean deleteBook(int bookNo);
 
+	public List<BooksVo> getDeletedBooks();
 	
 }

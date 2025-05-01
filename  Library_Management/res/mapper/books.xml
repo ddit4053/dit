@@ -46,8 +46,17 @@
 	<!-- 모든책 검색 -->
 	<select id="listBooks" resultType="BooksVo" parameterType="Map">
            SELECT * FROM books
+           where BOOK_STATUS ='보유'
            ORDER BY book_no 
 	</select>
+	
+	<!-- 삭제책 검색 -->
+	<select id="getDeletedBooks" resultType="BooksVo">
+		SELECT * FROM books
+           where BOOK_STATUS ='삭제'
+           ORDER BY book_no 
+	</select>
+
 	
 	<!-- 책 검색 리스트 -->
 	<select id="searchBookList" resultType="BooksVo" parameterType="Map">
@@ -127,6 +136,20 @@
 		    FROM REAL_BOOK R
 		    JOIN BOOKS B ON R.BOOK_NO = B.BOOK_NO
 		    WHERE R.BOOK_NO = #{bookNo}
+	</select>
+	
+	<!--  관리자 도서 삭제(상태 삭제처리) -->
+	<update id="bookDelete" parameterType="int">
+	    UPDATE BOOKS
+	    SET BOOK_STATUS = '삭제'
+	    WHERE BOOK_NO = #{bookNo}
+	</update>
+	
+	<select id="canDeleteBook" parameterType="int" resultType="int">
+	    SELECT COUNT(*)
+	    FROM REAL_BOOK
+	    WHERE BOOK_NO = #{bookNo}
+	    AND REAL_BOOK_STATUS = '대여중'
 	</select>
 </mapper>
 

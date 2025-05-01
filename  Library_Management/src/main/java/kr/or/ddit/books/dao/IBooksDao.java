@@ -26,4 +26,10 @@ public interface IBooksDao {
 
 	public List<Map<String, Object>> realBookList(int bookNo);
 
+	public void bookDelete(int bookNo);
+	
+	public int canDeleteBook(int bookNo);
+
+	public List<BooksVo> getDeletedBooks();
+
 }

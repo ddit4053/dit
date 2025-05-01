@@ -1,4 +1,4 @@
-package kr.or.ddit.books.controller.admin;
+package kr.or.ddit.books.admin;
 
 import java.io.IOException;
 import java.util.List;
