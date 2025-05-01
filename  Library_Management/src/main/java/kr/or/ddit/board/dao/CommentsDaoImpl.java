@@ -36,14 +36,20 @@ public class CommentsDaoImpl extends MybatisDao implements ICommentsDao {
 	
 	// 댓글 작성
 	@Override
-	public int insertComments(CommentsVo comments) {
-		return insert("comments.insertComments", comments);
+	public int insertComments(CommentsVo comment) {
+		return insert("comments.insertComments", comment);
+	}
+	
+	// 대댓글 작성
+	@Override
+	public int insertReplyComment(CommentsVo comment) {
+		return insert("comments.insertReplyComment", comment);
 	}
 	
 	// 댓글 수정
 	@Override
-	public int updateComments(CommentsVo comments) {
-		return update("comments.updateComments", comments);
+	public int updateComments(CommentsVo comment) {
+		return update("comments.updateComments", comment);
 	}
 	
 	// 댓글 삭제 (논리삭제)
@@ -55,7 +61,7 @@ public class CommentsDaoImpl extends MybatisDao implements ICommentsDao {
 	// 특정 댓글 조회 (삭제 업데이트용)
 	@Override
 	public CommentsVo selectComment(int cmNo) {
-		return selectOne("comments.selectCommnet",cmNo);
+		return selectOne("comments.selectComment",cmNo);
 	}
 		
 	// 댓글 수 조회
@@ -73,5 +79,7 @@ public class CommentsDaoImpl extends MybatisDao implements ICommentsDao {
 				);
 		return update("comments.updateCommentCount", params);
 	}
+
+	
 
 }

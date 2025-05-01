@@ -37,26 +37,47 @@
          ORDER BY C.CM_WRITTEN_DATE ASC
     </select>
 	
-	<!-- 댓글 등록 -->
+	<!-- 일반 댓글 등록 -->
     <insert id="insertComments" parameterType="CommentsVo">
         <selectKey keyProperty="cmNo" resultType="int" order="BEFORE">
             SELECT COMMENTS_SEQ.NEXTVAL FROM DUAL
         </selectKey>
         INSERT INTO COMMENTS (CM_NO,
-                            CM_CONTENT,
-                            CM_WRITTEN_DATE,
-                            CM_NO2,
-                            USER_NO,
-                            BOARD_NO,
-                            DELYN)
+                              CM_CONTENT,
+                              CM_WRITTEN_DATE,
+                              CM_NO2,
+                              USER_NO,
+                              BOARD_NO,
+                              DELYN)
         VALUES (#{cmNo},
                 #{cmContent},
                 SYSDATE,
-                #{cmNo2, jdbcType=INTEGER}, <!-- nullable 필드이므로 jdbcType 명시 -->
+                NULL,
                 #{userNo},
                 #{boardNo},
                 'N')
     </insert>
+    
+    <!-- 대댓글 등록 -->
+    <insert id="insertReplyComment" parameterType="CommentsVo">
+    <selectKey keyProperty="cmNo" resultType="int" order="BEFORE">
+        SELECT COMMENTS_SEQ.NEXTVAL FROM DUAL
+    </selectKey>
+    INSERT INTO COMMENTS (CM_NO,
+    					  CM_CONTENT,
+    					  CM_WRITTEN_DATE,
+        				  CM_NO2,
+        				  USER_NO,
+        				  BOARD_NO,
+        				  DELYN)
+    VALUES (#{cmNo},
+    	    #{cmContent},
+    	    SYSDATE,
+            #{cmNo2},
+            #{userNo},
+            #{boardNo},
+            'N')
+	</insert>
     
     <!-- 댓글 수정 -->
     <update id="updateComments" parameterType="CommentsVo">
