@@ -25,4 +25,23 @@
 		)
 
 	</insert>
+	
+	<select id="getPagedRequestBooks" parameterType="Map" resultType="BookRequestsVo">
+		    SELECT * 
+		    FROM (
+		        SELECT a.*, ROWNUM rnum
+		        FROM (
+		            SELECT *
+		            FROM BOOK_REQUESTS
+		            ORDER BY REQ_BOOK_DATE DESC
+		        ) a
+		        WHERE ROWNUM &lt;= #{offset} + #{pageSize}
+		    )
+		    WHERE rnum &gt; #{offset}
+	</select>
+	
+	<select id="getTotalRequestCount" resultType="int">
+		select count(*)
+		from BOOK_REQUESTS
+	</select>
 </mapper>
