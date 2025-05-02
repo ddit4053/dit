@@ -9,9 +9,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/board.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/editor.css">
 
-<%-- 페이지 모드 확인 (작성 또는 수정) --%>
-<c:set var="isEditMode" value="${not empty post}" />
-
 <main class="main-content">
     <div class="container">
         <!-- 페이지 헤더 및 경로 표시 -->
@@ -19,33 +16,14 @@
             <nav class="breadcrumb" aria-label="breadcrumb">
                 <a href="${pageContext.request.contextPath}/main.do">홈</a> > 
                 <span>${breadcrumbTitle}</span> > 
-                <span>${isEditMode ? '수정하기' : '작성하기'}</span>
             </nav>
         </header>
         
         <div class="content-layout">
             <section class="main-content-area">
-                <!-- 에디터 모드 정보 -->
-                <input type="hidden" id="editorMode" value="${isEditMode ? 'edit' : 'write'}">
-                
-                <!-- 수정 모드 정보 -->
-                <c:if test="${isEditMode}">
-                    <input type="hidden" id="postNo" value="${post.boardNo}">
-                    <c:if test="${post.fileGroupNum > 0}">
-                        <input type="hidden" id="fileGroupNum" value="${post.fileGroupNum}">
-                    </c:if>
-                </c:if>
                 
                 <!-- 에디터 상단 영역 -->
                 <div class="editor-top">
-                    <!-- 게시판 선택 -->
-                    <div class="board-selecter">
-                        <select class="board-code" id="boardCode" aria-label="게시판 선택">
-                            <c:forEach var="item" items="${codeList}">
-                                <option value="${item.codeNo}" ${isEditMode && post.codeNo eq item.codeNo ? 'selected' : ''}>${item.codeName}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
                     
                     <!-- 제목 입력 영역 -->
                     <div class="textarea-row">
@@ -55,7 +33,7 @@
                             style="height: 48px;" 
                             id="titleInput"
                             aria-label="게시글 제목"
-                        >${isEditMode ? post.title : ''}</textarea>
+                        ></textarea>
                     </div>
                 </div>
                 
@@ -91,26 +69,26 @@
                             class="content-input" 
                             id="contentInput"
                             aria-label="게시글 내용"
-                        >${isEditMode ? post.content : ''}</textarea>
+                        ></textarea>
                     </div>
                     
                     <!-- 에디터 버튼 영역 -->
                     <div class="editor-buttons">
-                        <button type="button" class="preview-toggle-button">미리보기</button>
                         <div class="right-buttons">
                             <button type="button" class="cancel-button">취소</button>
-                            <button type="button" class="save-button">${isEditMode ? '수정완료' : '등록하기'}</button>
+                            <button type="button" class="save-button">등록하기</button>
                         </div>
                     </div>
-                    
-                    <!-- 미리보기 영역 -->
-                    <div class="preview-content" style="display: none;" aria-live="polite"></div>
                 </div>
             </section>
         </div>
     </div>
 </main>
 
+
+<script>
+    const contextPath = '${pageContext.request.contextPath}';
+</script>
 <!-- 스크립트 로드 -->
 <script src="${pageContext.request.contextPath}/resource/js/breadcrumb.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>

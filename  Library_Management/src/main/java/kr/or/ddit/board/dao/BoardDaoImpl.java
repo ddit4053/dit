@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.ddit.util.MybatisDao;
+import kr.or.ddit.vo.BookBoardCodeVo;
 import kr.or.ddit.vo.BookBoardVo;
 
 public class BoardDaoImpl extends MybatisDao implements IBoardDao {
@@ -27,6 +28,11 @@ public class BoardDaoImpl extends MybatisDao implements IBoardDao {
         // 모든 검색 조건, 정렬, 페이징을 파라미터로 받아 처리
         // 일반 게시글, 작성자별 게시글, 정렬된 게시글 모두 처리 가능
         return selectList("board.selectBoardList", params);
+    }
+    
+    @Override
+    public List<BookBoardCodeVo> selectCodeList() {
+    	return selectList("board.selectCodeList");
     }
     
     // 게시글 상세 조회

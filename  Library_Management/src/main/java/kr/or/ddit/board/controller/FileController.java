@@ -72,7 +72,9 @@ public class FileController extends HttpServlet {
                 uploadFile(req, resp);
             } else if (pathInfo.equals("/delete")) {
                 deleteFile(req, resp);
-            } else {
+            } else if (pathInfo.equals("/createGroup")) {
+            	createFileGroup(req,resp);            	
+        	}else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         } catch (Exception e) {

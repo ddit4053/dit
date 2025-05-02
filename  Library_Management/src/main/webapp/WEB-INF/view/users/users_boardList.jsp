@@ -64,7 +64,7 @@
 	                <input type="text" name="searchKeyword" class="search-input" placeholder="검색어를 입력하세요">
 	                <button type="button" class="search-btn" onclick="searchBoard()">검색</button>
             	</form>
-            	<!-- 통합 글쓰기 에디터 진입 -->
+            	<!-- 글쓰기 에디터 진입 -->
             	<div class="board-editor">
             	<button type="button" class="go-to-editor">글쓰기</button>
             	</div>

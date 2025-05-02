@@ -234,7 +234,7 @@ public class BoardCrudController extends HttpServlet {
             board.setCodeNo(codeNo);
             board.setFileGroupNum(fileGroupNum);
             
-            // 게시글 저장
+            // 게시글 인서트 성공 여부
             int boardNo = boardService.insertBoard(board);
             
             // 파일 업로드 처리 (첨부파일이 있을 경우)

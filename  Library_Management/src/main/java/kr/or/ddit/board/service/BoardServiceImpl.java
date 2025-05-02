@@ -8,6 +8,7 @@ import kr.or.ddit.board.dao.BoardDaoImpl;
 import kr.or.ddit.board.dao.CommentsDaoImpl;
 import kr.or.ddit.board.dao.IBoardDao;
 import kr.or.ddit.board.dao.ICommentsDao;
+import kr.or.ddit.vo.BookBoardCodeVo;
 import kr.or.ddit.vo.BookBoardVo;
 import kr.or.ddit.vo.CommentsVo;
 import kr.or.ddit.vo.PagingVo;
@@ -86,6 +87,12 @@ public class BoardServiceImpl implements IBoardService {
         return result;
     }
     
+    // 게시판 목록 조회
+    @Override
+	public List<BookBoardCodeVo> getCodeList() {
+		return boardDao.selectCodeList();
+	}
+    
     // 게시글 상세 조회
     @Override
     public BookBoardVo selectBoardDetail(int boardNo) {
@@ -115,7 +122,8 @@ public class BoardServiceImpl implements IBoardService {
     public int getTotalBoardCount(Map<String, Object> params) {
         return boardDao.getTotalBoardCount(params);
     }
-
+    
+    // 게시글 등록
     @Override
     public int insertBoard(BookBoardVo board) {
         return boardDao.insertBoard(board);
@@ -175,6 +183,8 @@ public class BoardServiceImpl implements IBoardService {
 		}
 		return 0;
 	}
+
+	
 	
 	
     

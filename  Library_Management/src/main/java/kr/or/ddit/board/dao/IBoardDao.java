@@ -3,12 +3,16 @@ package kr.or.ddit.board.dao;
 import java.util.List;
 import java.util.Map;
 
+import kr.or.ddit.vo.BookBoardCodeVo;
 import kr.or.ddit.vo.BookBoardVo;
 
 public interface IBoardDao {
 	
 	// 통합된 게시글 목록 조회
     List<BookBoardVo> selectBoardList(Map<String, Object> params);
+    
+    // 게시판 목록 조회
+    List<BookBoardCodeVo> selectCodeList();
     
     // 게시글 상세 조회
     BookBoardVo selectBoardDetail(int boardNo);

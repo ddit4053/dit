@@ -6,14 +6,27 @@ document.addEventListener("DOMContentLoaded", function () {
   const writeButton = document.querySelector(".go-to-editor");
   if (writeButton) {
     writeButton.addEventListener("click", function() {
-      // 단순히 글쓰기 페이지로 이동
-      window.location.href = contextPath + "/board/write";
+		const codeNo = getBoardCodeNo(); // 현재 게시판 타입에 맞는 codeNo 가져오기
+		window.location.href = contextPath + "/insert?codeNo=" + codeNo;
     });
   } else {
     console.error("글쓰기 버튼을 찾을 수 없습니다.");
   }
 });
 
+// codeNo를 반환하는 함수 추가
+function getBoardCodeNo() {
+  const boardType = getCurrentBoardType();
+  switch(boardType) {
+    case "reviews": return 1;
+    case "discussions": return 2;
+    case "recommendations": return 3;
+    case "notices": return 4;
+    case "events": return 5;
+    case "qa": return 6;
+    default: return 1; // 기본값
+  }
+}
 
 const currentPath = window.location.pathname;
 function getCurrentBoardType() {
