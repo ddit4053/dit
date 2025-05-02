@@ -10,7 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
+import kr.or.ddit.books.service.BooksServiceImp;
+import kr.or.ddit.books.service.IBooksService;
 import kr.or.ddit.vo.BookBoardVo;
+import kr.or.ddit.vo.BooksVo;
 import kr.or.ddit.vo.UsersVo;
 
 @WebServlet(urlPatterns = {
@@ -69,6 +72,15 @@ public class BoardViewController extends HttpServlet {
                 forwardPage = "/WEB-INF/view/users/users_board.jsp";
                 req.setAttribute("board", board);
                 req.setAttribute("isAuthor", isAuthor);
+                
+//                // 도서 정보 조회 (게시글에 도서 번호가 있는 경우)
+//                if (board != null && board.getBookNo() > 0) {
+//                    IBooksService bookService = BooksServiceImp.getInsatance();
+//                    BooksVo booksVo = new BooksVo();
+//                    booksVo.setBookNo(board.getBookNo());
+//                    BooksVo bookInfo = bookService.booksD
+//                    req.setAttribute("bookInfo", bookInfo);
+//                }
                 
                 // 이전 페이지 정보 저장 (목록으로 돌아가기 용)
     			String prevPage = req.getHeader("referer");

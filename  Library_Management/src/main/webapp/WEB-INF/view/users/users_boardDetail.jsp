@@ -39,10 +39,10 @@
         <!-- 작성자만 보이는 버튼 영역 -->
         <c:if test="${isAuthor}">
             <div class="board-actions">
-                <button class="btn btn-update" onclick="location.href='${pageContext.request.contextPath}/Update?boardNo=${board.boardNo}'">
+                <button class="btn-update" onclick="location.href='${pageContext.request.contextPath}/board/update?boardNo=${board.boardNo}'">
                     수정
                 </button>
-                <button class="btn btn-delete" onclick="deleteBoard(${board.boardNo})">
+                <button class="btn-delete" onclick="deleteBoard(${board.boardNo})">
                     삭제
                 </button>
             </div>
@@ -60,7 +60,7 @@
 		        		<input type="hidden" name="boardNo" value="${board.boardNo}">
 		        		<input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
 		        		<textarea name="cmContent" placeholder="댓글을 작성하세요..." required></textarea>
-		        		<button type="submit" class="btn btn-comment">댓글 등록</button>
+		        		<button type="submit" class="btn-comment">댓글 등록</button>
 		    		</form>
 		        </div>
 	        </c:if>
@@ -93,7 +93,7 @@
 	                        <div class="reply-form" id="reply-form-${comment.cmNo}" style="display: none;">
 	                            <form onsubmit="submitReply(${comment.cmNo}, ${board.boardNo}); return false;">
 	                                <textarea placeholder="답글을 작성하세요..." required></textarea>
-	                                <button type="submit" class="btn btn-reply-submit">답글 등록</button>
+	                                <button type="submit" class="btn-reply-submit">답글 등록</button>
 	                            </form>
 	                        </div>
 	                    </c:if>
@@ -138,7 +138,7 @@
             <form id="commentEditForm">
                 <input type="hidden" id="editCommentId" name="cmNo">
                 <textarea id="editCommentContent" name="cmContent" required></textarea>
-                <button type="submit" class="btn btn-update">수정하기</button>
+                <button type="submit" class="btn-update">수정하기</button>
             </form>
         </div>
     </div>

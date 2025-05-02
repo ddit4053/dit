@@ -391,8 +391,17 @@ async function deleteBoard(boardNo) {
 
     if (data.success) {
       alert("게시글이 삭제되었습니다.");
-      // 게시글 목록 페이지로 이동
-      window.location.href = `${contextPath}/board/list`;
+	  //이전 페이지로 이동 후 새로고침
+	  if(document.referrer) {
+	  	window.location.replace(document.referrer);		  
+	  } else {
+		// referrer가 없는 경우 브라우저 히스토리의 이전 페이지로 이동
+		window.history.back();
+		
+		setTimeout( () => {
+			window.location.reload();
+		}, 100);
+	  }
     } else {
       alert(
         "게시글 삭제에 실패했습니다: " + (data.message || "알 수 없는 오류")

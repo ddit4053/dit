@@ -1,7 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
   loadBoardList(1);
   setupOptionListeners();
+  
+  // 글쓰기 버튼 이벤트 리스너
+  const writeButton = document.querySelector(".go-to-editor");
+  if (writeButton) {
+    writeButton.addEventListener("click", function() {
+      // 단순히 글쓰기 페이지로 이동
+      window.location.href = contextPath + "/board/write";
+    });
+  } else {
+    console.error("글쓰기 버튼을 찾을 수 없습니다.");
+  }
 });
+
 
 const currentPath = window.location.pathname;
 function getCurrentBoardType() {
@@ -244,7 +256,4 @@ function searchBoard() {
   }
 }*/
 
-// 글쓰기 버튼 이벤트
-document.querySelector(".go-to-editor").addEventListener("click", function () {
-  window.location.href = contextPath + "/board/write";
-});
+

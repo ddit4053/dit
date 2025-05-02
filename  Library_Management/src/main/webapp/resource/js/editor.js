@@ -2,7 +2,7 @@
  * 게시판 에디터 JavaScript
  * 작성 및 수정 모드 통합 구현
  */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   // 에디터 모드 확인 (작성 또는 수정)
   const editorMode = document.getElementById("editorMode").value;
   const isEditMode = editorMode === "edit";
@@ -37,12 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // 초기 로드 시 높이 조절 (수정 모드에서 제목이 이미 있을 때)
     if (isEditMode && titleInput.value) {
       titleInput.style.height = "auto";
-      titleInput.style.height = titleInput.scrollHeight + "px";
+      titleInput.style.height = `${titleInput.scrollHeight}px`;
     }
 
     titleInput.addEventListener("input", function () {
       this.style.height = "auto";
-      this.style.height = this.scrollHeight + "px";
+      this.style.height = `${this.scrollHeight}px`;
     });
   }
 
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (previewToggleButton && previewContent) {
     let previewMode = false;
 
-    previewToggleButton.addEventListener("click", function () {
+    previewToggleButton.addEventListener("click", () => {
       previewMode = !previewMode;
 
       if (previewMode) {
@@ -73,19 +73,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 취소 버튼 이벤트
   if (cancelButton) {
-    cancelButton.addEventListener("click", function () {
+    cancelButton.addEventListener("click", () => {
       if (
         confirm("작성 중인 내용이 저장되지 않을 수 있습니다. 취소하시겠습니까?")
       ) {
-        // 게시판 목록 페이지로 이동
-        window.location.href = "/board/list.do";
+        // 이전 페이지로 이동
+        if (document.referrer) {
+          window.location.replace(document.referrer);
+        } else {
+          // referrer가 없는 경우 브라우저 히스토리의 이전 페이지로 이동
+          window.history.back();
+          // 약간의 지연 후 페이지 새로고침 (이전 페이지 로드 시간 고려)
+          setTimeout(() => {
+            window.location.reload();
+          }, 100);
+        }
       }
     });
   }
 
   // 이미지 업로드 버튼 이벤트
   if (imageBtn) {
-    imageBtn.addEventListener("click", function () {
+    imageBtn.addEventListener("click", () => {
       const fileInput = document.createElement("input");
       fileInput.type = "file";
       fileInput.accept = "image/*";
@@ -100,36 +109,62 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // 이미지 업로드 함수
-  function uploadImage(file) {
+  const uploadImage = (file) => {
     const formData = new FormData();
-    formData.append("image", file);
+    formData.append("file", file); // 컨트롤러가 "file"으로 파일을 기대함
+    formData.append("referenceType", "BOARD");
 
-    // 수정 모드일 경우 게시글 번호도 함께 전송
+    // 게시글 번호(referenceId) 추가
     if (isEditMode) {
       const postNo = document.getElementById("postNo").value;
-      formData.append("postNo", postNo);
+      formData.append("referenceId", postNo);
+    } else {
+      // 작성 모드에서는 임시 ID 사용
+      formData.append("referenceId", "0");
     }
 
-    fetch("/api/upload-image", {
+    // Context Path 가져오기
+    const contextPath = window.contextPath || "";
+
+    fetch(`${contextPath}/file/upload`, {
       method: "POST",
       body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.url) {
-          // 이미지 마크다운 형식으로 삽입
-          insertToEditor(`![${file.name}](${data.url})\n`);
+        if (data.success && data.files && data.files.length > 0) {
+          // 업로드된 이미지 마크다운 형식으로 삽입
+          const fileUrl = `${contextPath}/file/download?fileNo=${data.files[0].fileNo}`;
+          insertToEditor(`![${file.name}](${fileUrl})\n`);
+
+          // 파일 그룹 번호가 있으면 저장
+          if (data.fileGroupNum) {
+            storeFileGroupNum(data.fileGroupNum);
+          }
         }
       })
       .catch((error) => {
         console.error("이미지 업로드 오류:", error);
         alert("이미지 업로드에 실패했습니다.");
       });
-  }
+  };
+
+  // 파일 그룹 번호 저장 함수
+  const storeFileGroupNum = (fileGroupNum) => {
+    // 숨겨진 input 필드가 없으면 생성
+    let fileGroupInput = document.getElementById("fileGroupNum");
+    if (!fileGroupInput) {
+      fileGroupInput = document.createElement("input");
+      fileGroupInput.type = "hidden";
+      fileGroupInput.id = "fileGroupNum";
+      document.querySelector(".editor-content").appendChild(fileGroupInput);
+    }
+    fileGroupInput.value = fileGroupNum;
+  };
 
   // URL 삽입 버튼 이벤트
   if (urlBtn) {
-    urlBtn.addEventListener("click", function () {
+    urlBtn.addEventListener("click", () => {
       const url = prompt("링크 URL을 입력하세요:");
       if (!url) return;
 
@@ -140,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 파일 업로드 버튼 이벤트
   if (fileBtn) {
-    fileBtn.addEventListener("click", function () {
+    fileBtn.addEventListener("click", () => {
       const fileInput = document.createElement("input");
       fileInput.type = "file";
       fileInput.click();
@@ -154,36 +189,48 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // 파일 업로드 함수
-  function uploadFile(file) {
+  const uploadFile = (file) => {
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("referenceType", "BOARD");
 
-    // 수정 모드일 경우 게시글 번호도 함께 전송
+    // 게시글 번호(referenceId) 추가
     if (isEditMode) {
       const postNo = document.getElementById("postNo").value;
-      formData.append("postNo", postNo);
+      formData.append("referenceId", postNo);
+    } else {
+      formData.append("referenceId", "0");
     }
 
-    fetch("/api/upload-file", {
+    // Context Path 가져오기
+    const contextPath = window.contextPath || "";
+
+    fetch(`${contextPath}/file/upload`, {
       method: "POST",
       body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.url) {
+        if (data.success && data.files && data.files.length > 0) {
           // 파일 링크 삽입
-          insertToEditor(`[${file.name} 다운로드](${data.url})`);
+          const fileUrl = `${contextPath}/file/download?fileNo=${data.files[0].fileNo}`;
+          insertToEditor(`[${file.name} 다운로드](${fileUrl})`);
+
+          // 파일 그룹 번호가 있으면 저장
+          if (data.fileGroupNum) {
+            storeFileGroupNum(data.fileGroupNum);
+          }
         }
       })
       .catch((error) => {
         console.error("파일 업로드 오류:", error);
         alert("파일 업로드에 실패했습니다.");
       });
-  }
+  };
 
   // 코드 블록 삽입 버튼 이벤트
   if (codeBtn) {
-    codeBtn.addEventListener("click", function () {
+    codeBtn.addEventListener("click", () => {
       const language = prompt(
         "코드 언어를 입력하세요 (예: javascript, python, java 등):",
         "javascript"
@@ -197,30 +244,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // H1 텍스트 포맷 버튼 이벤트
-  if (h1Btn) {
-    h1Btn.addEventListener("click", function () {
-      insertHeadingFormat(1);
-    });
-  }
-
-  // H2 텍스트 포맷 버튼 이벤트
-  if (h2Btn) {
-    h2Btn.addEventListener("click", function () {
-      insertHeadingFormat(2);
-    });
-  }
-
-  // H3 텍스트 포맷 버튼 이벤트
-  if (h3Btn) {
-    h3Btn.addEventListener("click", function () {
-      insertHeadingFormat(3);
-    });
-  }
+  // 헤딩 포맷 이벤트 등록
+  if (h1Btn) h1Btn.addEventListener("click", () => insertHeadingFormat(1));
+  if (h2Btn) h2Btn.addEventListener("click", () => insertHeadingFormat(2));
+  if (h3Btn) h3Btn.addEventListener("click", () => insertHeadingFormat(3));
 
   // 번호 목록 버튼 이벤트
   if (olBtn) {
-    olBtn.addEventListener("click", function () {
+    olBtn.addEventListener("click", () => {
       const selectedText = getSelectedText();
       if (selectedText) {
         const lines = selectedText.split("\n");
@@ -239,7 +270,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 글머리 기호 목록 버튼 이벤트
   if (ulBtn) {
-    ulBtn.addEventListener("click", function () {
+    ulBtn.addEventListener("click", () => {
       const selectedText = getSelectedText();
       if (selectedText) {
         const lines = selectedText.split("\n");
@@ -256,29 +287,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 굵게 버튼 이벤트
-  if (boldBtn) {
-    boldBtn.addEventListener("click", function () {
-      formatText("**", "**");
-    });
-  }
-
-  // 기울임 버튼 이벤트
-  if (italicBtn) {
-    italicBtn.addEventListener("click", function () {
-      formatText("*", "*");
-    });
-  }
-
-  // 취소선 버튼 이벤트
-  if (strikeBtn) {
-    strikeBtn.addEventListener("click", function () {
-      formatText("~~", "~~");
-    });
-  }
+  // 텍스트 서식 이벤트 등록
+  if (boldBtn) boldBtn.addEventListener("click", () => formatText("**", "**"));
+  if (italicBtn)
+    italicBtn.addEventListener("click", () => formatText("*", "*"));
+  if (strikeBtn)
+    strikeBtn.addEventListener("click", () => formatText("~~", "~~"));
 
   // 제목 포맷 삽입 함수
-  function insertHeadingFormat(level) {
+  const insertHeadingFormat = (level) => {
     const prefix = "#".repeat(level) + " ";
     const selectedText = getSelectedText();
 
@@ -287,12 +304,12 @@ document.addEventListener("DOMContentLoaded", function () {
       replaceSelectedText(`${prefix}${selectedText}`);
     } else {
       // 선택된 텍스트가 없으면 제목 형식만 삽입
-      insertToEditor(`${prefix}`);
+      insertToEditor(prefix);
     }
-  }
+  };
 
   // 텍스트 포맷 함수
-  function formatText(prefix, suffix) {
+  const formatText = (prefix, suffix) => {
     const selectedText = getSelectedText();
 
     if (selectedText) {
@@ -307,19 +324,19 @@ document.addEventListener("DOMContentLoaded", function () {
       contentInput.setSelectionRange(newCursorPos, endTextPos);
       contentInput.focus();
     }
-  }
+  };
 
   // 선택된 텍스트 가져오기
-  function getSelectedText() {
+  const getSelectedText = () => {
     if (!contentInput) return "";
     return contentInput.value.substring(
       contentInput.selectionStart,
       contentInput.selectionEnd
     );
-  }
+  };
 
   // 선택된 텍스트 교체하기
-  function replaceSelectedText(newText) {
+  const replaceSelectedText = (newText) => {
     if (!contentInput) return;
 
     const start = contentInput.selectionStart;
@@ -329,10 +346,10 @@ document.addEventListener("DOMContentLoaded", function () {
     contentInput.value =
       text.substring(0, start) + newText + text.substring(end);
     contentInput.focus();
-  }
+  };
 
   // 에디터에 텍스트 삽입하기
-  function insertToEditor(text) {
+  const insertToEditor = (text) => {
     if (!contentInput) return;
 
     const cursorPos = contentInput.selectionStart;
@@ -345,13 +362,74 @@ document.addEventListener("DOMContentLoaded", function () {
     // 커서 위치 조정
     const newCursorPos = cursorPos + text.length;
     contentInput.setSelectionRange(newCursorPos, newCursorPos);
-  }
+  };
+
+  // 현재 URL에서 게시판 유형 파악하는 함수
+  const getBoardType = () => {
+    const currentURL = window.location.pathname;
+    const contextPath = window.contextPath || "";
+
+    // 게시판 URL 패턴 매핑
+    const boardPatterns = [
+      { pattern: "/community/reviews", apiPath: "/api/community/reviews" },
+      {
+        pattern: "/community/discussions",
+        apiPath: "/api/community/discussions",
+      },
+      {
+        pattern: "/community/recommendations",
+        apiPath: "/api/community/recommendations",
+      },
+      { pattern: "/support/notices", apiPath: "/api/support/notices" },
+      { pattern: "/support/events", apiPath: "/api/support/events" },
+      { pattern: "/support/qa", apiPath: "/api/support/qa" },
+      {
+        pattern: "/admin/community/reviews",
+        apiPath: "/api/admin/community/reviews",
+      },
+      {
+        pattern: "/admin/community/discussions",
+        apiPath: "/api/admin/community/discussions",
+      },
+      {
+        pattern: "/admin/community/recommendations",
+        apiPath: "/api/admin/community/recommendations",
+      },
+      {
+        pattern: "/admin/support/notices",
+        apiPath: "/api/admin/support/notices",
+      },
+      {
+        pattern: "/admin/support/events",
+        apiPath: "/api/admin/support/events",
+      },
+      { pattern: "/admin/support/qa", apiPath: "/api/admin/support/qa" },
+    ];
+
+    // 현재 URL과 게시판 패턴 매칭
+    for (const board of boardPatterns) {
+      if (currentURL.includes(board.pattern)) {
+        return {
+          apiPath: board.apiPath,
+          viewPath: board.pattern,
+        };
+      }
+    }
+
+    // 기본값 반환
+    return {
+      apiPath: "/board", // 기본 API 경로
+      viewPath: "/board/view", // 기본 조회 경로
+    };
+  };
 
   // 글 저장 및 제출 함수
-  function savePost() {
-    const boardCode = boardSelect ? boardSelect.value : "";
+  const savePost = () => {
+    const codeNo = boardSelect ? boardSelect.value : "";
     const title = titleInput ? titleInput.value.trim() : "";
     const content = contentInput ? contentInput.value.trim() : "";
+    const fileGroupInput = document.getElementById("fileGroupNum");
+    const fileGroupNum = fileGroupInput ? fileGroupInput.value : "0";
 
     // 유효성 검사
     if (!title) {
@@ -366,26 +444,35 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // 저장할 데이터 준비
-    const postData = {
-      boardCode: boardCode,
-      title: title,
-      content: content,
-    };
+    // 폼 데이터 준비
+    const formData = new FormData();
+    formData.append("codeNo", codeNo);
+    formData.append("title", title);
+    formData.append("content", content);
+
+    if (fileGroupNum && fileGroupNum !== "0") {
+      formData.append("fileGroupNum", fileGroupNum);
+    }
 
     // 수정 모드일 경우 게시글 번호 추가
     if (isEditMode) {
       const postNo = document.getElementById("postNo").value;
-      postData.postNo = postNo;
+      formData.append("boardNo", postNo);
     }
 
+    // 현재 게시판에 맞는 API 경로 가져오기
+    const boardInfo = getBoardType();
+    const contextPath = window.contextPath || "";
+    const apiUrl =
+      contextPath +
+      (isEditMode
+        ? `${boardInfo.apiPath}/update`
+        : `${boardInfo.apiPath}/write`);
+
     // 서버에 데이터 전송
-    fetch(isEditMode ? "/api/update-post" : "/api/save-post", {
+    fetch(apiUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
@@ -395,9 +482,13 @@ document.addEventListener("DOMContentLoaded", function () {
               ? "글이 성공적으로 수정되었습니다."
               : "글이 성공적으로 등록되었습니다."
           );
+
           // 성공 후 리디렉션 처리
-          window.location.href =
-            data.redirectUrl || "/board/view?postNo=" + data.postNo;
+          const boardNo = data.boardNo || data.postNo;
+          const redirectUrl =
+            data.redirectUrl ||
+            `${contextPath}${boardInfo.viewPath}?boardNo=${boardNo}`;
+          window.location.href = redirectUrl;
         } else {
           alert(
             data.message ||
@@ -415,7 +506,7 @@ document.addEventListener("DOMContentLoaded", function () {
             : "글 등록 중 오류가 발생했습니다."
         );
       });
-  }
+  };
 
   // 저장 버튼 클릭 이벤트
   if (saveButton) {
@@ -423,12 +514,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // 자동 저장 기능 (선택 사항)
-  function setupAutoSave() {
+  const setupAutoSave = () => {
     const AUTOSAVE_INTERVAL = 30000; // 30초마다 자동 저장
     let autoSaveTimer;
     let lastSavedContent = contentInput.value;
 
-    function autoSave() {
+    const autoSave = () => {
       const currentContent = contentInput.value;
 
       // 내용이 변경된 경우에만 자동 저장
@@ -437,7 +528,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 로컬 스토리지에 저장
         const autoSaveData = {
-          boardCode: boardSelect.value,
+          codeNo: boardSelect.value,
           title: titleInput.value,
           content: currentContent,
           timestamp: new Date().getTime(),
@@ -446,13 +537,13 @@ document.addEventListener("DOMContentLoaded", function () {
         // 수정 모드일 경우 게시글 번호도 저장
         if (isEditMode) {
           const postNo = document.getElementById("postNo").value;
-          autoSaveData.postNo = postNo;
+          autoSaveData.boardNo = postNo;
         }
 
         localStorage.setItem("editorAutoSave", JSON.stringify(autoSaveData));
         lastSavedContent = currentContent;
       }
-    }
+    };
 
     // 자동 저장 시작
     autoSaveTimer = setInterval(autoSave, AUTOSAVE_INTERVAL);
@@ -472,13 +563,13 @@ document.addEventListener("DOMContentLoaded", function () {
           if (
             confirm("이전에 작성 중이던 내용이 있습니다. 복원하시겠습니까?")
           ) {
-            boardSelect.value = parsedData.boardCode;
+            boardSelect.value = parsedData.codeNo;
             titleInput.value = parsedData.title;
             contentInput.value = parsedData.content;
 
             // 제목 높이 조절
             titleInput.style.height = "auto";
-            titleInput.style.height = titleInput.scrollHeight + "px";
+            titleInput.style.height = `${titleInput.scrollHeight}px`;
           } else {
             // 복원하지 않을 경우 저장된 데이터 삭제
             localStorage.removeItem("editorAutoSave");
@@ -492,8 +583,10 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.removeItem("editorAutoSave");
       }
     }
-  }
+
+    return { stop: () => clearInterval(autoSaveTimer) };
+  };
 
   // 자동 저장 기능 활성화 (선택 사항)
-  // setupAutoSave();
+  // const autoSave = setupAutoSave();
 });

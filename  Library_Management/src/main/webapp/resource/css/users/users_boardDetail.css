@@ -46,7 +46,7 @@
 }
 
 .date::before {
-	content: "\f133"; /* 캘린더 아이콘 */
+  content: "\f133"; /* 캘린더 아이콘 */
 }
 
 .views::before {
@@ -146,16 +146,72 @@
   border-top: 1px solid var(--border-color);
 }
 
-.btn-update {
+/* 게시글 삭제 버튼 - 게시글 상세 페이지에서 사용되는 크고 빨간 삭제 버튼 */
+.board-actions .btn-update {
   background-color: var(--secondary-color);
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.btn-delete {
+.board-actions .btn-delete {
   background-color: #c62828; /* 삭제 버튼은 빨간색 */
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
 }
 
-.btn:hover {
+.board-actions .btn-update:hover,
+.board-actions .btn-delete:hover {
   opacity: 0.9;
+}
+
+.board-actions .btn-delete:hover {
+  background-color: #b71c1c; /* 더 진한 빨간색으로 변경 */
+}
+
+/* 댓글 액션 버튼 - 작은 아웃라인 스타일 버튼 */
+.comment-actions .btn-edit,
+.comment-actions .btn-delete,
+.comment-actions .btn-reply,
+.reply-actions .btn-edit,
+.reply-actions .btn-delete,
+.reply-actions .btn-reply {
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.comment-actions .btn-edit:hover,
+.reply-actions .btn-edit:hover {
+  background-color: var(--secondary-color);
+  color: white;
+  border-color: var(--secondary-color);
+}
+
+.comment-actions .btn-delete:hover,
+.reply-actions .btn-delete:hover {
+  background-color: #c62828;
+  color: white;
+  border-color: #c62828;
+}
+
+.comment-actions .btn-reply:hover,
+.reply-actions .btn-reply:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
 }
 
 /* 댓글 영역 */
@@ -205,6 +261,17 @@
 .btn-comment {
   align-self: flex-end;
   background-color: var(--secondary-color);
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 14px;
+}
+
+.btn-comment:hover {
+  background-color: var(--primary-color);
 }
 
 /* 댓글 목록 */
@@ -250,37 +317,6 @@
   justify-content: flex-end;
   margin-bottom: 15px;
 }
-
-.btn-edit,
-.btn-delete,
-.btn-reply {
-  font-size: 12px;
-  padding: 4px 8px;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-edit:hover {
-  background-color: var(--secondary-color);
-  color: white;
-  border-color: var(--secondary-color);
-}
-
-.btn-delete:hover {
-  background-color: #c62828;
-  color: white;
-  border-color: #c62828;
-}
-
-.btn-reply:hover {
-  background-color: var(--primary-color);
-  color: white;
-  border-color: var(--primary-color);
-}
-
 
 /* 답글 영역 */
 .reply-form {
