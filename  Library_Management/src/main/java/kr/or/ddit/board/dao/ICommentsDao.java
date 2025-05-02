@@ -27,9 +27,4 @@ public interface ICommentsDao {
 	// 댓글 수 조회
 	int getCommentCount(int boardNo);
 	
-	// 댓글 수 업데이트
-	int updateCommentCount(int boardNo, int commentCount);
-	
-	
-	
 }

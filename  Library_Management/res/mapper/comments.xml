@@ -129,18 +129,5 @@
 		  FROM COMMENTS
 		 WHERE BOARD_NO = #{boardNo}
 	</select>
-	
-	<!-- 댓글 수 업데이트 (필요한 경우) -->
-	<update id="updateCommentCount" parameterType="map">
-		UPDATE BOOK_BOARD
-		   SET COMMENTS_COUNT = #{commentsCount}
-	     WHERE BOARD_NO = #{boardNo}
-	</update>
-	
-	
-		
-	
-	
-
 
 </mapper>

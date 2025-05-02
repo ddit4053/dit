@@ -163,13 +163,6 @@ public class BoardServiceImpl implements IBoardService {
 		return commentsDao.updateComments(comment);
 	}
 	
-	// 댓글 수 업데이트
-    @Override
-    public int updateCommentCount(int boardNo) {
-        int commentCount = commentsDao.getCommentCount(boardNo);
-        return commentsDao.updateCommentCount(boardNo, commentCount);
-    }
-
 	// 댓글 삭제
 	@Override
 	public int deleteComment(int cmNo) {
@@ -178,9 +171,6 @@ public class BoardServiceImpl implements IBoardService {
 		if(comment != null) {
 			int result = commentsDao.deleteComments(cmNo);
 			
-			if(result > 0) {
-				updateCommentCount(comment.getBoardNo());
-			}
 			return result;
 		}
 		return 0;

@@ -51,7 +51,4 @@ public interface IBoardService {
     
     // 댓글 삭제
     int deleteComment(int cmNo);
-    
-    // 댓글 수 업데이트
-    int updateCommentCount(int boardNo);
 }
