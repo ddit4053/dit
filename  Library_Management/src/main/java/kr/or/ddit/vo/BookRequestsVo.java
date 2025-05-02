@@ -12,5 +12,6 @@ public class BookRequestsVo {
 	private String reqBookComment;
 	private String reqBookDate;
 	private String reqBookStatus;
+	private String reqIsbn;
 	private int userNo;
 }

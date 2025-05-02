@@ -88,7 +88,7 @@
 		//const contextPath = "${pageContext.request.contextPath}";
 		
 		console.log(contextPath);
-			$(function() {
+		$(function() {
 			  $('.book-card').on('click', function() {
 			    const bookno = $(this).data('bookno');
 			    console.log(bookno);

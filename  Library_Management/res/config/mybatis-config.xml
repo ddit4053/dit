@@ -36,6 +36,7 @@
 			<typeAlias type="kr.or.ddit.vo.FileGroupVo" alias="FileGroupVo"/>
 			<typeAlias type="kr.or.ddit.vo.File_StorageVo" alias="File_StorageVo"/>
 			<typeAlias type="kr.or.ddit.vo.BookBoardCodeVo" alias="BookBoardCodeVo"/>
+			<typeAlias type="kr.or.ddit.vo.BookRequestsVo" alias="BookRequestsVo"/>
 
 		</typeAliases>
 	
@@ -73,6 +74,7 @@
 		<mapper resource="mapper/comments.xml"/>
 		<mapper resource="mapper/user.xml"/>
 		<mapper resource="mapper/file.xml"/>
+		<mapper resource="mapper/bookRequset.xml"/>
 
 	</mappers>
 

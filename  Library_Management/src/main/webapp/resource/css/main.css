@@ -220,13 +220,18 @@
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .book-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s;
+  width: 70%;
+  height: 70%;
+  object-fit: cover;  /* 이미지 비율 유지하면서 부모 요소에 맞게 크기 조정 */
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .book-cover:hover img {
@@ -244,6 +249,29 @@
   color: var(--light-text);
   font-size: 14px;
 }
+
+.book-slider-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 0 20px;
+}
+
+.book-slider-controls button {
+    background-color: #8d6e63;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.book-slider-controls button:hover {
+    background-color: #d7ccc8;
+}
+
 
 /* 공지사항 및 이벤트 섹션 */
 .notice-section {

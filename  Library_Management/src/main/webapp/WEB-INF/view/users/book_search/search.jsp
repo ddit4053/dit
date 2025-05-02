@@ -3,10 +3,18 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/book_search/search.css">
-
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/book_search/request.css">
+<c:if test="${not empty requestSuccess}">
+    <script>
+        alert("도서 신청이 완료되었습니다.");
+    </script>
+</c:if>
 <div class="search-container">
     <div class="search-box">
-        <h2 class="search-title">도서 자료 검색</h2>
+	    <div class="search-header">
+	        <h2 class="search-title">도서 자료 검색</h2>
+	        <button type="button" class="request-book-button" onclick="openRequestModal()">원하는 책이 없으신가요?</button>
+	    </div>
         <div class="search-description">원하시는 도서를 검색하여 찾아보세요.</div>
         
         <form class="search-form" action="${pageContext.request.contextPath}/books/search/result" method="get">
@@ -185,5 +193,55 @@
     </div>
 </div>
 
+<!-- 신청 폼 모달 -->
+<div id="requestModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeRequestModal()">&times;</span>
+        <h3>도서 신청하기</h3>
+        <form action="${pageContext.request.contextPath}/books/bookRequest" method="post">
+            <label>도서 제목</label>
+            <input type="text" name="title" required>
+
+            <label>저자</label>
+            <input type="text" name="author" required>
+
+            <label>출판사</label>
+            <input type="text" name="publisher" required>
+
+            <label>ISBN</label>
+            <input type="text" name="isbn" required>
+
+            <label>기타 요청 사항</label>
+            <textarea name="notes" rows="3"></textarea>
+			
+            <button type="submit" class="submit-button">신청하기</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openRequestModal() {
+    	const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'}
+    	
+    	if (userNo == null) {
+            alert("로그인 후 이용할 수 있습니다.");
+            return;
+        }
+        document.getElementById("requestModal").style.display = "block";
+    }
+
+    function closeRequestModal() {
+        document.getElementById("requestModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById("requestModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
 <!-- Font Awesome CDN 추가 -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>

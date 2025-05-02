@@ -97,50 +97,68 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  // 신착 도서 데이터 가져오기
-  const fetchNewBooks = () => {
-    const container = document.getElementById("newBooksContainer");
-
-    fetchData(`${getContextPath()}/api/books/new`, function (err, data) {
-      if (err) {
-        container.innerHTML =
-          '<div class="error">도서 정보를 불러오는데 실패했습니다.</div>';
-        return;
-      }
-
-      if (data.length === 0) {
-        container.innerHTML =
-          '<div class="no-data">신착 도서가 없습니다.</div>';
-        return;
-      }
-
-      container.innerHTML = "";
-
-      data.forEach((book) => {
-        const bookItem = document.createElement("div");
-        bookItem.className = "book-item";
-
-        bookItem.innerHTML = `
-                    <div class="book-cover">
-                        <img src="${
-                          book.imageUrl ||
-                          `${getContextPath()}/resources/images/no-cover.jpg`
-                        }" alt="${book.title}">
-                    </div>
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-author">${book.authorName}</div>
-                `;
-
-        bookItem.addEventListener("click", function () {
-          window.location.href = `${getContextPath()}/books/detail?id=${
-            book.bookId
-          }`;
-        });
-
-        container.appendChild(bookItem);
-      });
-    });
-  };
+  // 신착 도서 데이터 가져오기(페이징)
+	  let allBooks = [];
+	  let currentIndex = 0;
+	  const booksPerPage = 5;
+	
+	  function renderBooks() {
+	      const container = document.getElementById("newBooksContainer");
+	      container.innerHTML = "";
+	
+	      const booksToShow = allBooks.slice(currentIndex, currentIndex + booksPerPage);
+	      booksToShow.forEach((book) => {
+	          const bookItem = document.createElement("div");
+	          bookItem.className = "book-item";
+	
+	          bookItem.innerHTML = `
+	              <div class="book-cover">
+	                  <img src="${book.cover}" alt="${book.title}">
+	              </div>
+	              <div class="book-title">${book.title}</div>
+	              <div class="book-author">${book.author}</div>
+	          `;
+	
+	          bookItem.addEventListener("click", function () {
+	              window.location.href = `${getContextPath()}/books/detail?bookNo=${book.bookNo}`;
+	          });
+	
+	          container.appendChild(bookItem);
+	      });
+	  }
+	//신착도서 불러오기
+	  function fetchNewBooks() {
+	      fetchData(`${getContextPath()}/api/books/new`, function (err, data) {
+	          const container = document.getElementById("newBooksContainer");
+	
+	          if (err || !data || data.length === 0) {
+	              container.innerHTML = '<div class="error">신착 도서가 없습니다.</div>';
+	              return;
+	          }
+	
+	          allBooks = data;
+	          currentIndex = 0;
+	          renderBooks();
+	      });
+	  }
+	
+	  //신착도서 페이징
+	  document.getElementById("prevBtn").addEventListener("click", () => {
+	      if (currentIndex >= booksPerPage) {
+	          currentIndex -= booksPerPage;
+	          renderBooks();
+	      }
+	  });
+	
+	  //신착도서 페이징
+	  document.getElementById("nextBtn").addEventListener("click", () => {
+	      if (currentIndex + booksPerPage < allBooks.length) {
+	          currentIndex += booksPerPage;
+	          renderBooks();
+	      }
+	  });
+	  
+	  
 
   // 추천 도서 데이터 가져오기
   const fetchRecommendedBooks = () => {
