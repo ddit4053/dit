@@ -65,6 +65,11 @@
             <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
             <div class="loading">도서 정보를 불러오는 중...</div>
         </div>
+
+		<div class="book-slider-controls">
+		    <button id="prevBtn">이전</button>
+		    <button id="nextBtn">다음</button>
+		</div>
     </section>
 
     <!-- 추천 도서 섹션 -->
