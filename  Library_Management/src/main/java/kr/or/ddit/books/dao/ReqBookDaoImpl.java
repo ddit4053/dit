@@ -18,9 +18,8 @@ public class ReqBookDaoImpl extends MybatisDao implements IReqBookDao {
 	}
 
 	@Override
-	public void reqBookInsert(BookRequestsVo vo) {
-		// TODO Auto-generated method stub
-		insert("bookRequset.reqBookInsert", vo);
+	public int reqBookInsert(BookRequestsVo vo) {
+		return insert("bookRequset.reqBookInsert", vo);
 	}
 
 	

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bookRequset">
 
-	<insert id="reqBookInsert" parameterType="BookRequestsVo">
+	<insert id="reqBookInsert" parameterType="BookRequestsVo" >
 		INSERT INTO BOOK_REQUESTS (
 		    REQ_BOOK_NO,
 		    REQ_BOOK_TITLE,

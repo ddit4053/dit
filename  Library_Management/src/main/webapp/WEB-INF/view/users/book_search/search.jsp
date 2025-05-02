@@ -9,6 +9,12 @@
         alert("도서 신청이 완료되었습니다.");
     </script>
 </c:if>
+
+<c:if test="${requestSuccess == false}">
+    <script>
+        alert("도서 신청에 실패하였습니다. 다시 시도해주세요.");
+    </script>
+</c:if>
 <div class="search-container">
     <div class="search-box">
 	    <div class="search-header">

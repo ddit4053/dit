@@ -37,9 +37,15 @@ public class ReqBookController extends HttpServlet{
 	    vo.setUserNo(userNo);
 	    
 	    
-	    reqBookService.reqBookInsert(vo);
+	    int reqBook = reqBookService.reqBookInsert(vo);
+	    
+	    if(reqBook >0) {
+	    	req.setAttribute("requestSuccess", true);
+	    }
+	    else {
+	    	req.setAttribute("requestSuccess", false);
+	    }
 	    req.setAttribute("contentPage", "search.jsp");
-	    req.setAttribute("requestSuccess", true);
 	    
 	    ServletContext ctx = req.getServletContext();
 	    ctx.getRequestDispatcher("/WEB-INF/view/users/book_search/books.jsp").forward(req, resp);

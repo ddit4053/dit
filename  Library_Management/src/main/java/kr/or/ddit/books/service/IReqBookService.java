@@ -4,6 +4,6 @@ import kr.or.ddit.vo.BookRequestsVo;
 
 public interface IReqBookService {
 
-	public void reqBookInsert(BookRequestsVo vo);
+	public int reqBookInsert(BookRequestsVo vo);
 
 }

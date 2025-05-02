@@ -20,9 +20,9 @@ public class ReqBookServiceImpl implements IReqBookService {
 	}
 
 	@Override
-	public void reqBookInsert(BookRequestsVo vo) {
+	public int reqBookInsert(BookRequestsVo vo) {
 		
-		reqBookDao.reqBookInsert(vo);
+		return reqBookDao.reqBookInsert(vo);
 	}
 
 	
