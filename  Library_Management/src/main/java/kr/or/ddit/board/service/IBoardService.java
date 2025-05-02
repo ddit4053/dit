@@ -39,8 +39,12 @@ public interface IBoardService {
     // 댓글 목록 조회
     List<CommentsVo> selectCommentsList(int boardNo);
     
-    // 댓글 작성
+    // 기본 댓글 작성
     int insertComment(CommentsVo comment);
+    
+    // 대댓글 작성
+    int insertReplyComment(CommentsVo comment);
+    
     
     // 댓글 수정
     int updateComment(CommentsVo comment);

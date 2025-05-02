@@ -16,7 +16,6 @@ import kr.or.ddit.vo.UsersVo;
 @WebServlet(urlPatterns = {
         "/community/*",
         "/support/*",
-        "/about/*"
 })
 // 게시판 화면 라우팅
 public class BoardViewController extends HttpServlet {
@@ -148,28 +147,7 @@ public class BoardViewController extends HttpServlet {
                     }
             }
                     
-        } else if ("/about".equals(servletPath)) {
-            switch (pathInfo) {
-                case "/greetings":
-                    contentPage = "/WEB-INF/view/users/about/facilities.jsp";
-                    forwardPage = "/WEB-INF/view/users/about/about.jsp";
-                    break;
-                    
-                case "/facilities":
-                    contentPage = "/WEB-INF/view/users/about/facilities.jsp";
-                    forwardPage = "/WEB-INF/view/users/about/about.jsp";
-                    break;
-                    
-                case "/location":
-                    contentPage = "/WEB-INF/view/users/about/facilities.jsp";
-                    forwardPage = "/WEB-INF/view/users/about/about.jsp";
-                    break;
-            
-                default:
-                    resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-                    return;
-            }
-        }
+        } 
         
         if(contentPage != null) {
             // contentPage 설정
