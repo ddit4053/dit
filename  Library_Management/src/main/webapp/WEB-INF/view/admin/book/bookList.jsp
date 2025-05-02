@@ -8,6 +8,12 @@
 <title>알라딘 도서 리스트</title>
 <script src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
 <style>
+
+	.main-content-area {
+	    width: 100%;
+	    //padding: 10px;
+	    //box-sizing: border-box;
+	}
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #f5f5f5;
@@ -22,7 +28,8 @@
     }
     
     .table-container {
-        max-width: 100%;
+        width: 100%;
+        border-radius: 10px;
         overflow-x: auto; /* 가로 스크롤 방지 또는 자동 처리 */
     }
 
@@ -95,6 +102,33 @@
 	th:nth-child(9), td:nth-child(9) { width: 8%; }   /* 카테고리 */
 	th:nth-child(10), td:nth-child(10) { width: 10%; } /* 등록일 */
 	th:nth-child(11), td:nth-child(11) { width: 8%; }  /* 버튼 */
+	
+	/* 구체적인 선택자로 영역을 제한 */
+	.table-container .pagination {
+	    text-align: center;
+	    margin-top: 30px;
+	}
+	
+	.table-container .page-btn {
+	    display: inline-block;
+	    margin: 0 5px;
+	    padding: 8px 14px;
+	    background-color: #eee;
+	    border-radius: 6px;
+	    text-decoration: none;
+	    color: #333;
+	    transition: background-color 0.3s;
+	}
+	
+	.table-container .page-btn:hover {
+	    background-color: #ccc;
+	}
+	
+	.table-container .page-btn.active {
+	    background-color: #8d6e63;
+	    color: white;
+	    font-weight: bold;
+	}
 </style>
 <script type="text/javascript">
 		$(document).ready(function() {
@@ -108,50 +142,70 @@
 		    });
 		});
 
-	    // 비동기로 도서 리스트를 불러오는 함수
-	    function loadBooks(type) {
-	        $.ajax({
-	            url: "${pageContext.request.contextPath}/admin/books/listall", // 데이터 불러올 서블릿 경로
-	            type: "GET",
-	            data: { type: type }, // 'available' 또는 'deleted' 값을 서버에 전달
-	            success: function(response) {
-	            	
-	                // 테이블 내용 비우기
-	                $("tbody").empty();
+		// select box 변경 시 데이터 로드
+		$("#listSelector").change(function () {
+		    const optionValue = $(this).val();
+		    loadBooks(optionValue, 1); // 페이지 1로 초기화
+		});
 
-	                // 응답 데이터로 테이블 업데이트
-	                const books = response;
-	                books.forEach(function(book) {
-	                	
-	                	const title = book.title.split('-')[0];
-	                	
-	                    const row = `
-	                        <tr class="bookList" data-bookno="\${book.bookNo}">
-	                            <td>\${book.bookNo}</td>
-	                            <td>\${title}</td>
-	                            <td>\${book.isbn}</td>
-	                            <td>\${book.pubDate}</td>
-	                            <td><img src="\${book.cover}" alt="cover" width="60px"/></td>
-	                            <td>\${book.bookStatus}</td>
-	                            <td>\${book.author}</td>
-	                            <td>\${book.publisher}</td>
-	                            <td>\${book.categoryId}</td>
-	                            <td>\${book.insertDate}</td>
-	                            <td><button onclick="bookDelete(event, \${book.bookNo})">삭제</button></td>
-	                        </tr>
-	                    `;
-	                    $("tbody").append(row);
-	                });
-	                $("tr.bookList").click(function() {
-	                    const bookNo = $(this).data("bookno"); // 클릭된 tr에서 bookNo 가져오기
-	                    window.location.href = "${pageContext.request.contextPath}/admin/books/detailList?bookNo=" + bookNo;
-	                });
-	            },
-	            error: function(xhr, status, error) {
-	                alert("데이터를 불러오는 중 오류가 발생했습니다.");
-	            }
-	        });
-	    }
+		// 페이지 이동 시 호출될 함수
+		function goToPage(pageNumber) {
+		    const type = $("#listSelector").val();
+		    loadBooks(type, pageNumber);
+		}
+
+		// 도서 로드 함수 (페이지 추가)
+		function loadBooks(type, page = 1) {
+		    $.ajax({
+		        url: "${pageContext.request.contextPath}/admin/books/listall",
+		        type: "GET",
+		        data: { type: type, page: page }, // ✅ 페이지 전달
+		        success: function(response) {
+		            const books = response.books;
+		            const totalPages = response.totalPages;
+
+		            $("tbody").empty();
+		            books.forEach(function(book) {
+		                const title = book.title.split('-')[0];
+		                const row = `
+		                    <tr class="bookList" data-bookno="\${book.bookNo}">
+		                        <td>\${book.bookNo}</td>
+		                        <td>\${title}</td>
+		                        <td>\${book.isbn}</td>
+		                        <td>\${book.pubDate}</td>
+		                        <td><img src="\${book.cover}" alt="cover" width="60px"/></td>
+		                        <td>\${book.bookStatus}</td>
+		                        <td>\${book.author}</td>
+		                        <td>\${book.publisher}</td>
+		                        <td>\${book.categoryId}</td>
+		                        <td>\${book.insertDate}</td>
+		                        <td><button onclick="bookDelete(event, \${book.bookNo})">삭제</button></td>
+		                    </tr>
+		                `;
+		                $("tbody").append(row);
+		            });
+
+		            // ✅ 페이징 처리
+		            let paginationHtml = "";
+		            for (let i = 1; i <= totalPages; i++) {
+		                if (i === page) {
+		                    paginationHtml += `<button class="page-btn active" onclick="goToPage(\${i})">\${i}</button>`;
+		                } else {
+		                    paginationHtml += `<button class="page-btn" onclick="goToPage(\${i})">\${i}</button>`;
+		                }
+		            }
+		            $(".pagination").html(paginationHtml);
+
+		            $("tr.bookList").click(function () {
+		                const bookNo = $(this).data("bookno");
+		                window.location.href = "${pageContext.request.contextPath}/admin/books/detailList?bookNo=" + bookNo;
+		            });
+		        },
+		        error: function () {
+		            alert("데이터를 불러오는 중 오류가 발생했습니다.");
+		        }
+		    });
+		}
 
 
 	
@@ -215,6 +269,7 @@
 	            <!-- Ajax로 로드된 도서 리스트가 여기에 동적으로 추가됩니다. -->
 	        </tbody>
 	    </table>
+	      <div class="pagination"></div> <!-- ✅ 추가 -->
 	</div>
 </body>
 </html>

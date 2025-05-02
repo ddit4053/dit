@@ -763,7 +763,7 @@ body {
 	    <textarea name="editRevContent" id="editRevContent" rows="4" cols="30" required
 	              style="width: 482px; height: 80px; resize: none"></textarea><br><br>
 	    
-	    <button onclick="updateReview()" class="btn btn-submit">수정 완료</button>
+	    <button onclick="updateReview()" class="btn btn-edit">수정 완료</button>
 	    <button onclick="closeModal()" class="btn btn-delete">취소</button>
 	</div>
 

@@ -83,7 +83,7 @@
   .book-info p strong {
     color: #222;
   }
-    .pagination {
+  .pagination {
       text-align: center;
       margin-top: 30px;
   }
