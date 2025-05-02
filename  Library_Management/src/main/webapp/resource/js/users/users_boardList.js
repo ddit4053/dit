@@ -220,5 +220,5 @@ function formatDate(dateStr) {
 
 // 글쓰기 버튼 이벤트
 document.querySelector(".go-to-editor").addEventListener("click", function () {
-  window.location.href = contextPath + "/board/textEditor";
+  window.location.href = contextPath + "/board/write";
 });

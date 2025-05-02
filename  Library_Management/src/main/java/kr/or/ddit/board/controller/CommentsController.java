@@ -266,7 +266,7 @@ public class CommentsController extends HttpServlet {
     }
     
     /**
-     * 답글 등록 처리 - RequestDataChange 활용
+     * 대댓글 등록
      */
     private void writeReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -280,20 +280,20 @@ public class CommentsController extends HttpServlet {
             JsonObject requestData = gson.fromJson(jsonData, JsonObject.class);
             
             // 파라미터 검증
-            if (!requestData.has("boardNo") || !requestData.has("parentCmNo") || !requestData.has("cmContent")) {
+            if (!requestData.has("boardNo") || !requestData.has("cmNo2") || !requestData.has("cmContent")) {
                 throw new IllegalArgumentException("필수 파라미터가 누락되었습니다.");
             }
             
             int boardNo = requestData.get("boardNo").getAsInt();
-            int parentCmNo = requestData.get("parentCmNo").getAsInt();
+            int cmNo2 = requestData.get("cmNo2").getAsInt();
             String cmContent = requestData.get("cmContent").getAsString();
             
             if (cmContent.trim().isEmpty()) {
                 throw new IllegalArgumentException("답글 내용을 입력해주세요.");
             }
             
-            // 부모 댓글이 존재하는지 확인
-            CommentsVo parentComment = boardService.selectComment(parentCmNo);
+            // 부모 댓글(cmNo2)이 존재하는지 확인
+            CommentsVo parentComment = boardService.selectComment(cmNo2);
             if (parentComment == null) {
                 throw new IllegalArgumentException("답글을 달 원본 댓글이 존재하지 않습니다.");
             }
@@ -301,12 +301,12 @@ public class CommentsController extends HttpServlet {
             // 답글 정보 생성
             CommentsVo reply = new CommentsVo();
             reply.setBoardNo(boardNo);
-            reply.setCmNo2(parentCmNo);  // 부모 댓글 번호 설정
+            reply.setCmNo2(cmNo2);  // 부모 댓글 번호 설정
             reply.setUserNo(loginUser.getUserNo());
             reply.setCmContent(cmContent);
             
             // 답글 저장
-            int result = boardService.insertComment(reply);
+            int result = boardService.insertReplyComment(reply);
             
             // 댓글 수 업데이트
             if (result > 0) {
