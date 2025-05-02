@@ -15,6 +15,22 @@
             padding: 20px;
         }
         
+        .header-info {
+            background: #5d4037;
+            color: white;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-info {
+            font-size: 14px;
+        }
+        
+        /* 기존 스타일 유지 */
         .popup-container {
             max-width: 500px;
             margin: 0 auto;
@@ -24,6 +40,7 @@
             padding: 30px;
         }
         
+        /* 나머지 스타일 유지 */
         h2 {
             margin-top: 0;
             margin-bottom: 25px;
@@ -224,6 +241,26 @@
 </head>
 
 <body>
+    <!-- 로그인 정보 표시 추가 - name 속성 사용 -->
+    <div class="header-info">
+        <div class="title">좌석 예약</div>
+        <div class="user-info">
+            <c:choose>
+                <c:when test="${not empty loginMember or not empty loginok or not empty user}">
+                    <c:choose>
+                        <c:when test="${not empty loginMember}">${loginMember.name}</c:when>
+                        <c:when test="${not empty loginok}">${loginok.name}</c:when>
+                        <c:when test="${not empty user}">${user.name}</c:when>
+                    </c:choose>
+                    님 환영합니다!
+                </c:when>
+                <c:otherwise>
+                    로그인 필요
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
+
     <div class="popup-container">
         <h2>좌석 예약</h2>
         

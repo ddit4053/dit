@@ -11,9 +11,17 @@ import kr.or.ddit.vo.ReadingReservationsVo;
 public class ReadingReservationServiceImpl implements IReadingReservationService {
 
     private IReadingReservationDao reservationDao;
-
-    public ReadingReservationServiceImpl() {
-        reservationDao = new ReadingReservationDaoImpl();
+    
+    // 싱글톤 패턴 적용
+    private static ReadingReservationServiceImpl instance = new ReadingReservationServiceImpl();
+    
+    private ReadingReservationServiceImpl() {
+        // ReadingReservationDaoImpl의 getInstance() 메소드를 통해 싱글톤 객체 참조
+        reservationDao = ReadingReservationDaoImpl.getInstance();
+    }
+    
+    public static ReadingReservationServiceImpl getInstance() {
+        return instance;
     }
 
     @Override

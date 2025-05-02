@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>책GPT 도서관 시스템 - 홈</title>
+    <title>책GPT 도서관 시스템 - 열람실</title>
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
@@ -44,6 +44,28 @@
         }
         .header .nav a:hover {
             background: #795548;
+        }
+        
+        /* 로그인 정보 스타일 추가 */
+        .user-info {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            margin-left: 20px;
+        }
+        .user-info span {
+            margin-right: 10px;
+        }
+        .user-info a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            background: #795548;
+            transition: background 0.2s;
+        }
+        .user-info a:hover {
+            background: #8d6e63;
         }
 
         .banner {
@@ -100,11 +122,34 @@
 <body>
 <div class="header">
     <div class="title">책GPT 도서관 시스템</div>
-    <div class="nav">
-        <a href="${ctx}/readingMain.do">HOME</a>
-        <a href="${ctx}/seatList.do?roomName=일반열람실">일반열람실</a>
-        <a href="${ctx}/seatList.do?roomName=미디어열람실">미디어열람실</a>
-        <a href="${ctx}/myReservation.do">MY예약현황</a>
+    <div style="display: flex; align-items: center;">
+        <div class="nav">
+            <a href="${ctx}/index.jsp">HOME</a>
+            <a href="${ctx}/seatList.do?roomName=일반열람실">일반열람실</a>
+            <a href="${ctx}/seatList.do?roomName=미디어열람실">미디어열람실</a>
+            <a href="${ctx}/myReservation.do">MY예약현황</a>
+        </div>
+        
+        <!-- 로그인 정보 표시 부분 수정 - name 속성 사용 -->
+        <div class="user-info">
+            <c:choose>
+                <c:when test="${not empty loginMember or not empty loginok or not empty user}">
+                    <span>
+                        <c:choose>
+                            <c:when test="${not empty loginMember}">${loginMember.name}</c:when>
+                            <c:when test="${not empty loginok}">${loginok.name}</c:when>
+                            <c:when test="${not empty user}">${user.name}</c:when>
+                        </c:choose>
+                        님 환영합니다!
+                    </span>
+                    <a href="${ctx}/user/logout.do">로그아웃</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${ctx}/user/login.do?redirect=${pageContext.request.requestURI}">로그인</a>
+                    <a href="${ctx}/user/join.do">회원가입</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
 </div>
 
@@ -114,7 +159,7 @@
 
 <div class="menu">
     <a href="${ctx}/seatList.do?roomName=일반열람실">
-        <img src="${ctx}/resource/img/일반 열람실.png" alt="일	반 열람실">
+        <img src="${ctx}/resource/img/일반 열람실.png" alt="일반 열람실">
         일반 열람실
     </a>
     <a href="${ctx}/seatList.do?roomName=미디어열람실">
@@ -122,7 +167,7 @@
         미디어 열람실(공사중)
     </a>
     <a href="${ctx}/myReservation.do">
-        
+    
         My 예약현황
     </a>
 </div>

@@ -1,5 +1,4 @@
 package kr.or.ddit.reading.controller;
-
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,20 +10,16 @@ import kr.or.ddit.reading.service.MyReservationServiceImpl;
 
 @WebServlet("/cancelReservation.do")
 public class CancelReservationController extends HttpServlet {
-
     private static final long serialVersionUID = 1L;
-    private final IMyReservationService service = new MyReservationServiceImpl();
-
+    // 여기를 수정 - new 연산자 대신 getInstance() 메소드 사용
+    private final IMyReservationService service = MyReservationServiceImpl.getInstance();
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         request.setCharacterEncoding("UTF-8");
-
         int rReserveNo = Integer.parseInt(request.getParameter("rReserveNo"));
-
         int result = service.cancelReservation(rReserveNo);
-
         if(result > 0) {
             response.setStatus(HttpServletResponse.SC_OK); // 성공
         } else {

@@ -51,8 +51,8 @@ const menuStructure = {
       title: "열람실",
       url: "/reading/",
       subMenus: [
-        { title: "열람실 현황", url: "/reading/status" },
-        { title: "열람실 예약", url: "/reading/booking" },
+        { title: "열람실 현황", url: "/readingMain.do" },
+        { title: "열람실 예약", url: "/readingMain.do" },
       ],
     },
     {
