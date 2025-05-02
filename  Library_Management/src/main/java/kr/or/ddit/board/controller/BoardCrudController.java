@@ -9,8 +9,6 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,6 +20,7 @@ import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.FileServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.board.service.IFileService;
+import kr.or.ddit.vo.BookBoardCodeVo;
 import kr.or.ddit.vo.BookBoardVo;
 import kr.or.ddit.vo.File_StorageVo;
 import kr.or.ddit.vo.UsersVo;
@@ -45,7 +44,65 @@ public class BoardCrudController extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        String pathInfo = req.getPathInfo();
+        
+        if (pathInfo == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        // 로그인 검사 - 세션에서 사용자 정보를 확인
+        HttpSession session = req.getSession();
+        UsersVo loginUser = (UsersVo) session.getAttribute("user");
+        
+        if (loginUser == null) {
+        	// 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+        	resp.sendRedirect(req.getContextPath() + "/user/login.do");
+        	return;
+        }
+        
+        List<BookBoardCodeVo> codeList = boardService.getCodeList(); 
+        
+        if (pathInfo.equals("/write")) {
+	        // 글쓰기 페이지로 이동
+        	
+        	req.setAttribute("codeList", codeList);
+        	req.setAttribute("breadcrumbTitle", "게시판");
+        	
+	        req.getRequestDispatcher("/WEB-INF/view/editor.jsp").forward(req, resp);
+	        
+        } else if (pathInfo.equals("/update")) {
+        	// 글 수정 페이지로 이동
+            String boardNoStr = req.getParameter("boardNo");
+            if (boardNoStr == null || boardNoStr.isEmpty()) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "게시글 번호가 필요합니다.");
+                return;
+            }
+            
+            int boardNo = Integer.parseInt(boardNoStr);
+            BookBoardVo post = boardService.selectBoardDetail(boardNo);
+            
+            if (post == null) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "존재하지 않는 게시글입니다.");
+                return;
+            }
+            
+            // 작성자 본인 또는 관리자만 수정 가능
+            boolean isAdmin = "ADMIN".equals(loginUser.getRole());
+            if (!isAdmin && post.getUserNo() != loginUser.getUserNo()) {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN, "수정 권한이 없습니다.");
+                return;
+            }
+            req.setAttribute("codeList", codeList);
+            req.setAttribute("post", post);
+            req.setAttribute("breadcrumbTitle", "게시판");
+            
+            req.getRequestDispatcher("/WEB-INF/view/editor.jsp").forward(req, resp);
+        } else {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+        
+    	
     }
     
     @Override
