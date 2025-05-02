@@ -105,9 +105,13 @@ function displayBoardList(boardList) {
   const tbody = document.getElementById("boardTableBody");
   tbody.innerHTML = "";
   const boardType = getCurrentBoardType();
+  
+  console.log("서버에서 받은 게시글 목록:", boardList); // 전체 데이터 로깅
 
   if (boardList && boardList.length > 0) {
     boardList.forEach((board) => {
+		console.log("게시글 날짜 데이터:", board.writtenDate); // 각 게시글의 날짜 데이터 로깅	
+		
       const tr = document.createElement("tr");
 
       // 공지사항인 경우 클래스 추가
@@ -128,7 +132,7 @@ function displayBoardList(boardList) {
             }</a>
             </td>
             <td>${board.writer}</td>
-            <td>${formatDate(board.writtenDate)}</td>
+            <td>${board.writtenDate}</td>
             <td>${board.views}</td>
         `;
       tbody.appendChild(tr);
@@ -209,14 +213,36 @@ function searchBoard() {
 }
 
 // 날짜 포맷 함수
-function formatDate(dateStr) {
-  const date = new Date(dateStr);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-}
+/*function formatDate(dateStr) {
+  console.log("원본 날짜 문자열:", dateStr); // 원본 문자열 로깅
+  
+  // 날짜 문자열이 없거나 유효하지 않은 경우 처리
+  if (!dateStr || dateStr === "null" || dateStr === "undefined") {
+    return "-";
+  }
+  
+  // 서버에서 이미 포맷팅된 날짜가 왔다면 그대로 반환
+  if (typeof dateStr === 'string' && dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    return dateStr;
+  }
+  
+  try {
+	  const date = new Date(dateStr);
+	  
+	  // 유효한 날짜인지 확인
+      if (isNaN(date.getTime())) {
+        console.log("유효하지 않은 날짜:", dateStr);
+        return dateStr; // 원본 반환
+      }
+	  const year = date.getFullYear();
+	  const month = String(date.getMonth() + 1).padStart(2, "0");
+	  const day = String(date.getDate()).padStart(2, "0");
+	  return `${year}-${month}-${day}`;
+  } catch (e) {
+	console.error("날짜 변환 오류:", e);
+	return dateStr; // 오류 시 원본 반환
+  }
+}*/
 
 // 글쓰기 버튼 이벤트
 document.querySelector(".go-to-editor").addEventListener("click", function () {

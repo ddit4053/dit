@@ -72,37 +72,37 @@
 	            </c:if>
 	            
 	            <c:forEach items="${board.comments}" var="comment">
-	            	<div class="comment" id="comment-${comment.cmNo}">
+	            	<div class="comment ${comment.delYn eq 'Y' ? 'deleted-comment' : ''}" id="comment-${comment.cmNo}">
 	            		<div class="comment-info">
 	            			<span class="comment-writer">${comment.cmWriter}</span>
 	                        <span class="comment-date">${comment.cmWrittenDate}</span>
 	                    </div>
 	                    <div class="comment-content">${comment.cmContent}</div>
 	                   
-	                    <!-- 댓글 작성자와 로그인 사용자가 같은 경우에만 수정/삭제 버튼 표시 -->
-	                    <c:if test="${sessionScope.user.userNo == comment.userNo}">
+	                    <!-- 댓글이 삭제되지 않았고, 작성자와 로그인 사용자가 같은 경우에만 수정/삭제 버튼 표시 -->
+	                    <c:if test="${comment.delYn ne 'Y' && sessionScope.user.userNo == comment.userNo}">
 	                        <div class="comment-actions">
 	                            <button class="btn-edit" onclick="showEditForm(${comment.cmNo}, '${comment.cmContent}')">수정</button>
 	                            <button class="btn-delete" onclick="deleteComment(${comment.cmNo})">삭제</button>
 	                        </div>
 	                    </c:if>
 	                    
-	                    <!-- 댓글에 대한 답글 입력 폼 토글 버튼 (로그인한 경우만) -->
-                        <c:if test="${not empty sessionScope.user}">
-                            <button class="btn-reply" onclick="toggleReplyForm(${comment.cmNo})">답글</button>
-                            <div class="reply-form" id="reply-form-${comment.cmNo}" style="display: none;">
-                                <form onsubmit="submitReply(${comment.cmNo}, ${board.boardNo}); return false;">
-                                    <textarea placeholder="답글을 작성하세요..." required></textarea>
-                                    <button type="submit" class="btn btn-reply-submit">답글 등록</button>
-                                </form>
-                            </div>
-                        </c:if>
+	                    <!-- 댓글에 대한 답글 입력 폼 토글 버튼 (로그인한 경우만, 삭제된 댓글에는 답글 달지 못하게) -->
+	                    <c:if test="${not empty sessionScope.user && comment.delYn ne 'Y'}">
+	                        <button class="btn-reply" onclick="toggleReplyForm(${comment.cmNo})">답글</button>
+	                        <div class="reply-form" id="reply-form-${comment.cmNo}" style="display: none;">
+	                            <form onsubmit="submitReply(${comment.cmNo}, ${board.boardNo}); return false;">
+	                                <textarea placeholder="답글을 작성하세요..." required></textarea>
+	                                <button type="submit" class="btn btn-reply-submit">답글 등록</button>
+	                            </form>
+	                        </div>
+	                    </c:if>
                         
                         <!-- 대댓글 목록 -->
                         <c:if test="${not empty comment.cm2List}">
                         	<div class="replies">
                         		<c:forEach items="${comment.cm2List}" var="reply">
-                        			<div class="reply" id="comment-${reply.cmNo}">
+                        			<div class="reply ${reply.delYn eq 'Y' ? 'deleted-reply' : ''}" id="comment-${reply.cmNo}">
                         				<div class="reply-info">
                                             <span class="reply-icon">↪</span>
                                             <span class="reply-writer">${reply.cmWriter}</span>
@@ -113,13 +113,13 @@
                                         </div>
                                         <div class="reply-content">${reply.cmContent}</div>
                                         
-                                        <!-- 답글 작성자와 로그인 사용자가 같은 경우에만 수정/삭제 버튼 표시 -->
-                                        <c:if test="${sessionScope.user.userNo == reply.userNo}">
-                                            <div class="reply-actions">
-                                                <button class="btn-edit" onclick="showEditForm(${reply.cmNo}, '${reply.cmContent}')">수정</button>
-                                                <button class="btn-delete" onclick="deleteComment(${reply.cmNo})">삭제</button>
-                                            </div>
-                                        </c:if>
+                                        <!-- 답글이 삭제되지 않았고, 작성자와 로그인 사용자가 같은 경우에만 수정/삭제 버튼 표시 -->
+	                                    <c:if test="${reply.delYn ne 'Y' && sessionScope.user.userNo == reply.userNo}">
+	                                        <div class="reply-actions">
+	                                            <button class="btn-edit" onclick="showEditForm(${reply.cmNo}, '${reply.cmContent}')">수정</button>
+	                                            <button class="btn-delete" onclick="deleteComment(${reply.cmNo})">삭제</button>
+	                                        </div>
+	                                    </c:if>
                                     </div>
                                 </c:forEach>
                             </div>

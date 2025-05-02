@@ -15,7 +15,7 @@
           FROM COMMENTS C
           JOIN USERS U ON (C.USER_NO = U.USER_NO)
          WHERE C.BOARD_NO = #{boardNo}
-           AND C.DELYN = 'N'
+        <!--    AND C.DELYN = 'N' -->
            AND C.CM_NO2 IS NULL  <!-- 최상위 댓글만 조회 -->
          ORDER BY C.CM_WRITTEN_DATE DESC
     </select>
@@ -33,7 +33,7 @@
           FROM COMMENTS C
           JOIN USERS U ON (C.USER_NO = U.USER_NO)
          WHERE C.CM_NO2 = #{cmNo}
-           AND C.DELYN = 'N'
+           <!-- AND C.DELYN = 'N' -->
          ORDER BY C.CM_WRITTEN_DATE ASC
     </select>
 	
@@ -91,8 +91,9 @@
 	<update id="deleteComment" parameterType="int">
 	    UPDATE COMMENTS
 	       SET DELYN = 'Y',
-	           CM_CONTENT = CASE 
-	               <!-- 대댓글이 있는 부모 댓글의 경우 -->
+	       	   CM_CONTENT = '삭제된 댓글입니다'
+	           <!-- CM_CONTENT = CASE 
+	               대댓글이 있는 부모 댓글의 경우
 	               WHEN CM_NO2 IS NULL AND EXISTS (
 	                   SELECT 1 
 	                     FROM COMMENTS c2 
@@ -100,9 +101,9 @@
 	                      AND c2.DELYN = 'N'
 	               )
 	               THEN '삭제된 댓글입니다'
-	               <!-- 그 외 모든 경우 (일반 댓글, 대댓글) -->
+	               그 외 모든 경우 (일반 댓글, 대댓글)
 	               ELSE '삭제된 댓글입니다'
-	           END
+	           END -->
 	     WHERE CM_NO = #{cmNo}
 	</update>
 	
