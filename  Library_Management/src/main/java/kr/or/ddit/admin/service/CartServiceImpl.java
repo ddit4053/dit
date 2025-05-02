@@ -52,4 +52,11 @@ public class CartServiceImpl implements ICartService {
 		return dao.categoryStats();
 	}
 
+
+	@Override
+	public List<Map<String, Object>> loansUserStats() {
+		// TODO Auto-generated method stub
+		return dao.loansUserStats();
+	}
+
 }

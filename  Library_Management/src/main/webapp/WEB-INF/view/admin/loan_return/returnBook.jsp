@@ -76,11 +76,14 @@
 	
 	<c:if test="${paging.totalPages > 1}">
 	  <nav class="pagination">
-	    <c:if test="${paging.currentPage > 1}">
+	    
+	    <!-- 처음 / 이전 블록 -->
+	    <c:if test="${paging.startPage > 1}">
 	      <a href="?page=1&size=${paging.pageSize}">«</a>
-	      <a href="?page=${paging.currentPage - 1}&size=${paging.pageSize}">이전</a>
+	      <a href="?page=${paging.startPage - paging.pageBlockSize}&size=${paging.pageSize}">◁</a>
 	    </c:if>
 	
+	    <!-- 숫자 페이지 -->
 	    <c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="p">
 	      <c:choose>
 	        <c:when test="${p == paging.currentPage}">
@@ -91,10 +94,12 @@
 	        </c:otherwise>
 	      </c:choose>
 	    </c:forEach>
-	    
-	    <c:if test="${paging.currentPage < paging.totalPages}">
-	      <a href="?page=${paging.currentPage + 1}&size=${paging.pageSize}">다음</a>
+	
+	    <!-- 다음 블록 / 마지막 -->
+	    <c:if test="${paging.endPage < paging.totalPages}">
+	      <a href="?page=${paging.startPage + paging.pageBlockSize}&size=${paging.pageSize}">▷</a>
 	      <a href="?page=${paging.totalPages}&size=${paging.pageSize}">»</a>
 	    </c:if>
+	
 	  </nav>
 	</c:if>

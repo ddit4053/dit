@@ -67,7 +67,7 @@ public class NotiBanServiceImpl implements INotiBanService {
 	        // ── ② 메일 제목 / 본문 구성 ──
 	        String subject = "[도서관] 내일 반납 예정 알림";
 	        String body = String.format(
-	            "%s님, 책 \"%s\"의 반납 예정일이 내일(%s) 입니다.",
+	            "%s님, 도서 \"%s\"의 반납 예정일이 내일(%s) 입니다. 내일이 지나면  도서대출연장이 제한됩니다.",
 	            userName, bookTitle, dueDate
 	        );
 	        
@@ -106,7 +106,7 @@ public class NotiBanServiceImpl implements INotiBanService {
 	        // ── ② 메일 제목 / 본문 구성 ──
 	        String subject = "[도서관] 연체 예정 알림";
 	        String body = String.format(
-	            "%s님, 책 \"%s\"의 연체 예정일이 내일(%s) 입니다. 하루 지나면 연체자로 전환됩니다.",
+	            "%s님, 도서 \"%s\"의 연체 예정일이 내일(%s)까지입니다. 내일이 지나면 연체자로 지정되어 도서대출이 제한됩니다.",
 	            userName, bookTitle, warnDate
 	        );
 	        

@@ -29,13 +29,16 @@ public class ChartController extends HttpServlet {
     	// 1) 차트용 데이터 조회
         List<Map<String,Object>> monthly = service.cartListMap();
         List<Map<String,Object>> overall = service.getOverallStatsMap();
+        List<Map<String,Object>> laonsUser = service.loansUserStats();
         // ▶ JSP(chart2.jsp) 에서 바로 사용할 수 있도록 List 자체를 속성으로 올려준다
         req.setAttribute("monthlyStats", monthly);
         req.setAttribute("overallStats", overall);
+        req.setAttribute("lonsUserStats", laonsUser);
         
         Gson gson = new GsonBuilder().create();
         req.setAttribute("monthlyJson", gson.toJson(monthly));
         req.setAttribute("overallJson", gson.toJson(overall));
+        req.setAttribute("laonsUserJson", gson.toJson(laonsUser));
 
      // 2) 레이아웃 속성 세팅
         req.setAttribute("pageTitle",       "대출/반납 통계");
