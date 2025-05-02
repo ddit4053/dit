@@ -86,7 +86,7 @@ public class DamageBookDaoImpl implements IDamageBookDao {
 	@Override
 	public int countdamageList() {
 		 try ( SqlSession sql = MybatisUtil.getInstance() ) {
-		      return sql.selectOne("damage.countReturnedList");
+		      return sql.selectOne("damage.countdamageList");
 		    }
 	}
 

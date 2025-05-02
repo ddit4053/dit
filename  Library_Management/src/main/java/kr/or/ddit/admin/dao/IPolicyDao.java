@@ -17,11 +17,14 @@ public interface IPolicyDao {
 
 	//선택한 연체기준목록 선택
 	public int activateOne(int policyNo);
+	
+	//선택한 연체기준목록 선택
+	public int applyCurrentPolicy();
 
-	//선택한 연체기준목록 삭제(영구 비활성화)
+	//연체기준목록 삭제(영구 비활성화)
 	public int policyDelete(int policyNo);
 
-	//선택한 연체기준목록 수정
+	//연체기준목록 수정
 	public int policyUpdate(OverduePolicyVo vo);
 	
 	public OverduePolicyVo selectOne(int policyNo);

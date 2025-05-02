@@ -84,10 +84,10 @@ public class ReturnBookServiceImpl implements IReturnBookService {
 
 
 	@Override
-	public Map<String, Object> getReturnListPaged(int currentPage) {
+	public Map<String, Object> getReturnListPaged(int currentPage, int pageSize) {
 		
 		int totalCount = dao.countReturnList();
-		    PagingVo paging = new PagingVo(currentPage, 10, totalCount);
+		    PagingVo paging = new PagingVo(currentPage, pageSize, totalCount);
 
 		    List<Map<String,Object>> list = dao.returnListPaged(paging);
 
@@ -97,9 +97,9 @@ public class ReturnBookServiceImpl implements IReturnBookService {
 		    return result;
 	}
 	
-	public Map<String,Object> getReturnedListPaged(int currentPage) {
+	public Map<String,Object> getReturnedListPaged(int currentPage, int pageSize) {
 	    int totalCount = dao.countReturnedList();
-	    PagingVo paging = new PagingVo(currentPage, 10, totalCount);
+	    PagingVo paging = new PagingVo(currentPage, pageSize, totalCount);
 
 	    List<Map<String,Object>> list = dao.returnedListPaged(paging);
 

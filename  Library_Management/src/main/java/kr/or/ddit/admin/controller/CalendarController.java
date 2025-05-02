@@ -38,7 +38,6 @@ public class CalendarController extends HttpServlet {
         /* 2) 레이아웃 정보 */
         req.setAttribute("pageTitle",       "예정 반납일 캘린더");
         req.setAttribute("breadcrumbTitle", "예정 반납일 캘린더");
-        req.setAttribute("activeTab",       "calendar");
         req.setAttribute("contentPage",
                 "/WEB-INF/view/admin/loan_return/calendar.jsp");
 

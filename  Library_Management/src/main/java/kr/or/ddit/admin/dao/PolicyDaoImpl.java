@@ -168,4 +168,25 @@ public class PolicyDaoImpl implements IPolicyDao {
 		return list;
 	}
 
+	@Override
+	public int applyCurrentPolicy() {
+		
+		SqlSession sql = MybatisUtil.getInstance();
+		int PNo = 0;
+		
+		try {
+			PNo = sql.update("policy.applyCurrentPolicy");
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(sql != null) {
+				sql.commit();
+				sql.close();
+			}
+		}
+		
+		return PNo;
+	}
+
 }

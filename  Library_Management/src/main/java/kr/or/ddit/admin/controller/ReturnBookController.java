@@ -33,19 +33,29 @@ public class ReturnBookController extends HttpServlet {
 
         // 2) 공통: 'page' 파라미터 읽기 (없으면 1)
         int page = 1;
+        int size = 10; // 기본 페이지 사이즈
         String p = req.getParameter("page");
-        if (p != null) {
-            try {
-                page = Integer.parseInt(p);
-            } catch (NumberFormatException e) {
-                page = 1;
-            }
-        }
+String s = req.getParameter("size");
+    	
+    	if(p != null) {
+    		try {
+				page = Integer.parseInt(p);
+			} catch (NumberFormatException e) {
+				page =1;
+			}
+    	}
+    	if(s != null) {
+    		try {
+    			size = Integer.parseInt(s);
+    		} catch (NumberFormatException e) {
+    			size =1;
+    		}
+    	}
 
         if ("/admin/loans/management".equals(path) 
          || "/admin/loans/management/list".equals(path)) {
             // ■ 반납 처리 화면 (페이징)
-            Map<String, Object> data = service.getReturnListPaged(page);
+            Map<String, Object> data = service.getReturnListPaged(page,size);
             req.setAttribute("list",   data.get("list"));
             req.setAttribute("paging", data.get("paging"));
             req.setAttribute("pageTitle",      "반납 처리");
@@ -54,7 +64,7 @@ public class ReturnBookController extends HttpServlet {
 
         } else if ("/admin/loans/returns".equals(path)) {
             // ■ 반납 완료 목록 (페이징)
-            Map<String, Object> data = service.getReturnedListPaged(page);
+            Map<String, Object> data = service.getReturnedListPaged(page,size);
             req.setAttribute("list",   data.get("list"));
             req.setAttribute("paging", data.get("paging"));
             req.setAttribute("pageTitle",      "반납 완료 목록");
@@ -63,7 +73,7 @@ public class ReturnBookController extends HttpServlet {
 
         } else {
             // 기타 경로인 경우, 기본을 반납 처리 화면으로
-            Map<String, Object> data = service.getReturnListPaged(page);
+            Map<String, Object> data = service.getReturnListPaged(page,size);
             req.setAttribute("list",   data.get("list"));
             req.setAttribute("paging", data.get("paging"));
             req.setAttribute("pageTitle",      "반납 처리");

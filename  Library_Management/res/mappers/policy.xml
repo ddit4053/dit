@@ -59,6 +59,16 @@
 	</update>
 	
 	
+	<update id="applyCurrentPolicy">
+	    UPDATE BOOK_LOANS
+	    SET POLICY_NO = (
+	      SELECT POLICY_NO
+	      FROM OVERDUE_POLICY
+	      WHERE IS_ACTIVE = 'Y'
+	    	)
+	</update>
+	
+	
 	<!-- 연체기준 삭제(영구 비활성화)  -->
 	<update id="policyDelete" parameterType="int">
 		UPDATE OVERDUE_POLICY

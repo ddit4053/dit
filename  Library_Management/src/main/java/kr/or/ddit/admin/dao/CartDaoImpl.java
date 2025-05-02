@@ -71,4 +71,52 @@ public class CartDaoImpl implements ICartDao {
 		return list;
 	}
 
+
+
+	@Override
+	public List<Map<String, Object>> popularBooks() {
+
+		SqlSession sql = MybatisUtil.getInstance();
+		List<Map<String, Object>> list = null;
+		
+		try {
+			list = sql.selectList("cart.popularBooks");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(sql != null) {
+				sql.commit();
+				sql.close();
+			}
+		}
+		
+		
+		return list;
+	}
+
+
+
+	@Override
+	public List<Map<String, Object>> categoryStats() {
+
+		SqlSession sql = MybatisUtil.getInstance();
+		List<Map<String, Object>> list = null;
+		
+		try {
+			list = sql.selectList("cart.categoryStats");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(sql != null) {
+				sql.commit();
+				sql.close();
+			}
+		}
+		
+		
+		return list;
+	}
+
 }

@@ -156,8 +156,6 @@ const menuStructure = {
           title: "대출/반납 통계",
           url: "/admin/loans/stats",
           subMenus: [
-            { title: "대출 예약 통계", url: "/admin/loans/stats/reservation" },
-            { title: "누적 대출 통계", url: "/admin/loans/stats/cumulative" },
             {
               title: "대출/반납/연체 월별 통계",
               url: "/admin/loans/stats/chart",

@@ -38,4 +38,18 @@ public class CartServiceImpl implements ICartService {
 		return dao.getOverallStatsMap();
 	}
 
+
+	@Override
+	public List<Map<String, Object>> popularBooks() {
+		// TODO Auto-generated method stub
+		return dao.popularBooks();
+	}
+
+
+	@Override
+	public List<Map<String, Object>> categoryStats() {
+		// TODO Auto-generated method stub
+		return dao.categoryStats();
+	}
+
 }

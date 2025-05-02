@@ -11,7 +11,7 @@ public interface IReturnBookService {
 	
 	public boolean returnLoan(int loanNo);
 	
-	 public Map<String,Object> getReturnListPaged(int currentPage);
+	 public Map<String,Object> getReturnListPaged(int currentPage, int pageSize);
 	 
-	 public Map<String,Object> getReturnedListPaged(int currentPage);
+	 public Map<String,Object> getReturnedListPaged(int currentPage, int pageSize);
 }

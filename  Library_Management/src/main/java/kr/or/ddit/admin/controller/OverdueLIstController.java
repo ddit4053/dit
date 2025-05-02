@@ -39,7 +39,6 @@ public class OverdueLIstController extends HttpServlet{
         // 1-3) 레이아웃용 속성 세팅 (loans.jsp를 쓰신다면 그쪽에 맞게 경로 변경)
         req.setAttribute("pageTitle",       "연체자 목록");
         req.setAttribute("breadcrumbTitle", "대출/반납 관리 > 연체/정지 > 연체자 목록");
-        req.setAttribute("activeTab",       "overdue");  // loans.jsp 에서 탭 하이라이트용
         req.setAttribute("contentPage",     "/WEB-INF/view/admin/loan_return/overdueList.jsp");
 
         // 1-4) 공통 레이아웃으로 forward

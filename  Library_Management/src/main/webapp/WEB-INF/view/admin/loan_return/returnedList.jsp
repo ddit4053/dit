@@ -8,6 +8,20 @@
 
 <h2>반납 완료 목록</h2>  
 
+<!-- 페이지 사이즈 선택 폼 -->
+	<div style="text-align: right; margin-bottom: 0.5em;">
+	  <form method="get" id="pageSizeForm" style="display: inline;">
+	    <label>표시 개수:
+	      <select name="size" onchange="this.form.submit()">
+	        <option value="5" ${paging.pageSize == 5 ? 'selected' : ''}>5개</option>
+	        <option value="10" ${paging.pageSize == 10 ? 'selected' : ''}>10개</option>
+	        <option value="20" ${paging.pageSize == 20 ? 'selected' : ''}>20개</option>
+	      </select>
+	    </label>
+	    <input type="hidden" name="page" value="${paging.currentPage}" />
+	  </form>
+	</div>
+
 <table class="returned-table">  
   <thead>  
     <tr>  
@@ -35,25 +49,27 @@
 </table>  
 
 <c:if test="${paging.totalPages > 1}">
-  <nav class="pagination">
-    <c:if test="${paging.currentPage > 1}">
-      <a href="?page=1">«</a>
-      <a href="?page=${paging.currentPage - 1}"> 이전</a>
-    </c:if>
-    <c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="p">
-      <c:choose>
-        <c:when test="${p == paging.currentPage}">
-          <span class="current">${p}</span>
-        </c:when>
-        <c:otherwise>
-          <a href="?page=${p}">${p}</a>
-        </c:otherwise>
-      </c:choose>
-    </c:forEach>
-    <c:if test="${paging.currentPage < paging.totalPages}">
-      <a href="?page=${paging.currentPage + 1}">다음 </a>
-      <a href="?page=${paging.totalPages}">»</a>
-    </c:if>
-  </nav>
+	<nav class="pagination">
+		<c:if test="${paging.currentPage > 1}">
+			<a href="?page=1&size=${paging.pageSize}">«</a>
+			<a href="?page=${paging.currentPage - 1}&size=${paging.pageSize}">이전</a>
+		</c:if>
+	
+		<c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="p">
+			<c:choose>
+				<c:when test="${p == paging.currentPage}">
+					<span class="current">${p}</span>
+				</c:when>
+				<c:otherwise>
+					<a href="?page=${p}&size=${paging.pageSize}">${p}</a>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		    
+		<c:if test="${paging.currentPage < paging.totalPages}">
+			<a href="?page=${paging.currentPage + 1}&size=${paging.pageSize}">다음</a>
+			<a href="?page=${paging.totalPages}&size=${paging.pageSize}">»</a>
+		</c:if>
+	</nav>
 </c:if>
 

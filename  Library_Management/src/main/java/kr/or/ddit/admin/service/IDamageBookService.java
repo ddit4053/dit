@@ -13,5 +13,5 @@ public interface IDamageBookService {
 	
 	public int updateDamage();
 	
-	public List<Map<String, Object>> getDamageListPaged(int page);
+	public Map<String, Object> getDamageListPaged(int currentPage, int pageSize);
 }

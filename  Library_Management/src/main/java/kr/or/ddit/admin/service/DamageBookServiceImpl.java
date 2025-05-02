@@ -1,11 +1,13 @@
 package kr.or.ddit.admin.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import kr.or.ddit.admin.dao.DamageBookDaoImpl;
 import kr.or.ddit.admin.dao.IDamageBookDao;
 import kr.or.ddit.vo.DamagedLostBookVo;
+import kr.or.ddit.vo.PagingVo;
 
 public class DamageBookServiceImpl implements IDamageBookService {
 	
@@ -47,9 +49,19 @@ public class DamageBookServiceImpl implements IDamageBookService {
 
 
 	@Override
-	public List<Map<String, Object>> getDamageListPaged(int page) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Object> getDamageListPaged(int currentPage, int pageSize) {
+
+		int totalCount = dao.countdamageList();
+		PagingVo paging = new PagingVo(currentPage, pageSize, totalCount);
+		
+		List<Map<String, Object>> list = dao.countdamageListPaged(paging);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("list", list);
+	    result.put("paging", paging);
+		
+		
+		return result;
 	}
 
 }
