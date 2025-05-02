@@ -346,10 +346,14 @@
    		    success: function(res) {
    		      if (res === "success") {
    		        alert("대출 신청이 완료되었습니다.");
+   				$('#BookLoan')
+			    .text("대출중");
    		      } else if (res === "notAvailable") {
    		        alert("대여 가능한 도서가 없습니다.");
    		      } else if (res === "alreadyLoaned") {
    		    	alert("이미 대출중인 도서입니다.");
+   		    	$('#BookLoan')
+			    .text("대출중");
    		      } else if (res === "suspended") {
    		    	alert("정지 상태에선 대출할 수 없습니다.");
    		      } else {

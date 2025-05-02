@@ -34,4 +34,6 @@ public interface IBooksDao {
 
 	public List<BooksVo> newBookList();
 
+	public List<BooksVo> getNewBooksByPage(int startRow, int endRow);
+
 }

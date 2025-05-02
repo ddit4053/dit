@@ -1,5 +1,6 @@
 package kr.or.ddit.books.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -101,6 +102,16 @@ public class BooksDaoImpl extends MybatisDao implements IBooksDao {
 	public List<BooksVo> newBookList() {
 		// TODO Auto-generated method stub
 		return selectList("books.newBookList");
+	}
+
+	@Override
+	public List<BooksVo> getNewBooksByPage(int startRow, int endRow) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+		return selectList("books.getNewBooksByPage",map);
 	}
 
 

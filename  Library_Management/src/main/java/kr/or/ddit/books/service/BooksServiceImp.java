@@ -122,6 +122,16 @@ public class BooksServiceImp implements IBooksService{
 		return booksDao.newBookList();
 	}
 
+
+	@Override
+	public List<BooksVo> getNewBooksByPage(int page, int pageSize) {
+        // 시작 행 번호와 끝 행 번호 계산
+        int startRow = (page - 1) * pageSize + 1;
+        int endRow = page * pageSize;
+        
+		return booksDao.getNewBooksByPage(startRow, endRow);
+	}
+
 	
 	
 

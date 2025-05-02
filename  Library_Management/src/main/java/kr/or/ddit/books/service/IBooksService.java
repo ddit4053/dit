@@ -31,5 +31,7 @@ public interface IBooksService {
 	public List<BooksVo> getDeletedBooks();
 
 	public List<BooksVo> newBookList();
+
+	public List<BooksVo> getNewBooksByPage(int page, int pageSize);
 	
 }
