@@ -83,6 +83,31 @@
   .book-info p strong {
     color: #222;
   }
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+  }
+
+  .page-btn {
+      display: inline-block;
+      margin: 0 5px;
+      padding: 8px 14px;
+      background-color: #eee;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #333;
+      transition: background-color 0.3s;
+  }
+
+  .page-btn:hover {
+      background-color: #ccc;
+  }
+
+  .page-btn.active {
+      background-color: #8d6e63;
+      color: white;
+      font-weight: bold;
+  }
 </style>
 <script type="text/javascript">
 		//const contextPath = "${pageContext.request.contextPath}";
@@ -122,18 +147,15 @@
     </c:forEach>
 
 
-		<c:if test="${totalPages > 1}">
-  		<div class="pagination" style="text-align:center; margin-top:20px;">
-  
-  
+
+<c:if test="${totalPages > 1}">
+  <div class="pagination">
     <c:if test="${currentPage > 1}">
-      <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${currentPage - 1}">이전</a>
+      <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${currentPage - 1}" class="page-btn">이전</a>
     </c:if>
 
-  
     <c:set var="startPage" value="${currentPage - 3}" />
     <c:set var="endPage" value="${currentPage + 3}" />
-
     <c:if test="${startPage < 1}">
       <c:set var="startPage" value="1" />
     </c:if>
@@ -141,32 +163,20 @@
       <c:set var="endPage" value="${totalPages}" />
     </c:if>
 
-  
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
       <c:choose>
         <c:when test="${i == currentPage}">
-          <strong>[${i}]</strong>
+          <span class="page-btn active">${i}</span>
         </c:when>
         <c:otherwise>
-          <c:choose>
-            <c:when test="${not empty param.query}">
-  
-              <a href="${pageContext.request.contextPath}/books/search/result?query=${param.query}&page=${i}">[${i}]</a>
-            </c:when>
-            <c:otherwise>
-  
-              <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${i}">[${i}]</a>
-            </c:otherwise>
-          </c:choose>
+          <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${i}" class="page-btn">${i}</a>
         </c:otherwise>
       </c:choose>
     </c:forEach>
 
-  
     <c:if test="${currentPage < totalPages}">
-      <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${currentPage + 1}">다음</a>
+      <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${currentPage + 1}" class="page-btn">다음</a>
     </c:if>
-
   </div>
 </c:if>
 		

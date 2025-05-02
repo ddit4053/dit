@@ -1,138 +1,215 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<script src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<script
+	src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <style>
-		body {
-		  font-family: 'Arial', sans-serif;
-		  background-color: #f4f4f9;
-		  margin: 0;
-		  padding: 20px;
-		}
-		
-		.container {
-		  max-width: 1000px;
-		  margin: 0 auto;
-		  background-color: #fff;
-		  padding: 20px;
-		  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-		  border-radius: 8px;
-		}
-		
-		.book-detail {
-		  display: flex;
-		  flex-direction: row;
-		  justify-content: flex-start; /* 왼쪽 정렬 */
-		  align-items: flex-start; /* 상단 정렬 */
-		  gap: 20px; /* 책 표지와 정보 사이 간격 */
-		}
-		
-		.book-cover {
-		  flex-shrink: 0; /* 이미지 크기가 줄어들지 않도록 */
-		  max-width: 150px; /* 책 표지의 최대 크기 */
-		  height: auto;
-		}
-		
-		.book-cover img {
-		  width: 100%;
-		  height: auto;
-		  border-radius: 8px;
-		  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-		}
-		
-		.book-info {
-		  flex: 1;
-		  padding-left: 30px;
-		  max-width: 600px; /* 책 정보 영역의 최대 너비 */
-		}
-		
-		.book-info h2 {
-		  font-size: 24px;
-		  color: #333;
-		  margin-bottom: 10px;
-		}
-		
-		.book-info p {
-		  font-size: 16px;
-		  color: #555;
-		  margin-bottom: 10px;
-		}
-		
-		.book-info strong {
-		  color: #333;
-		}
-		
-		.button {
-		  display: inline-block;
-		  padding: 10px 20px;
-		  background-color: #4CAF50;
-		  color: white;
-		  text-decoration: none;
-		  border-radius: 5px;
-		  margin-top: 20px;
-		  font-size: 16px;
-		}
-		
-		.button:hover {
-		  background-color: #45a049;
-		}
-		
-		.back-link {
-		  margin-top: 20px;
-		  text-align: right;
-		}
-		
-		.back-link a {
-		  text-decoration: none;
-		  color: #4CAF50;
-		  font-size: 16px;
-		}
-		
-		.back-link a:hover {
-		  text-decoration: underline;
-		}
-		
-		.subtitle {
-		  font-size: 16px;
-		  color: gray;
-		}
-		
-		.reserve-table {
-		  width: 100%;
-		  border-collapse: collapse;
-		  margin-top: 10px;
-		  background-color: #f9f9f9;
-		  font-size: 14px;
-		}
-		
-		.reserve-table th {
-		  color: white;
-		  border: 1px solid #ccc;
-		  padding: 10px;
-		  text-align: center;
-		}
-		
-		.reserve-table td {
-		  border: 1px solid #ccc;
-		  padding: 10px;
-		  text-align: center;
-		}
-		
-		.reserve-table th {
-		  background-color: #8d6e63;
-		  font-weight: bold;
-		}
-		
-		.reserve-table tr:hover {
-		  background-color: #f1f1f1;
-		}
+<meta charset="UTF-8">
+<style>
+body {
+	font-family: 'Arial', sans-serif;
+	background-color: #f4f4f9;
+	margin: 0;
+	padding: 20px;
+}
 
-  </style>
-  <script>
+.container {
+	max-width: 1000px;
+	margin: 0 auto;
+	background-color: #fff;
+	padding: 20px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+}
+
+.book-detail {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start; /* 왼쪽 정렬 */
+	align-items: flex-start; /* 상단 정렬 */
+	gap: 20px; /* 책 표지와 정보 사이 간격 */
+}
+
+.book-cover {
+	flex-shrink: 0; /* 이미지 크기가 줄어들지 않도록 */
+	max-width: 150px; /* 책 표지의 최대 크기 */
+	height: auto;
+}
+
+.book-cover img {
+	width: 100%;
+	height: auto;
+	border-radius: 8px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-info {
+	flex: 1;
+	padding-left: 30px;
+	max-width: 600px; /* 책 정보 영역의 최대 너비 */
+}
+
+.book-info h2 {
+	font-size: 24px;
+	color: #333;
+	margin-bottom: 10px;
+}
+
+.book-info p {
+	font-size: 16px;
+	color: #555;
+	margin-bottom: 10px;
+}
+
+.book-info strong {
+	color: #333;
+}
+
+.button {
+	display: inline-block;
+	padding: 10px 20px;
+	background-color: #4CAF50;
+	color: white;
+	text-decoration: none;
+	border-radius: 5px;
+	margin-top: 20px;
+	font-size: 16px;
+}
+
+.button:hover {
+	background-color: #45a049;
+}
+
+.back-link {
+	margin-top: 20px;
+	text-align: right;
+}
+
+.back-link a {
+	text-decoration: none;
+	color: #4CAF50;
+	font-size: 16px;
+}
+
+.back-link a:hover {
+	text-decoration: underline;
+}
+
+.subtitle {
+	font-size: 16px;
+	color: gray;
+}
+
+.reserve-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+	background-color: #f9f9f9;
+	font-size: 14px;
+}
+
+.reserve-table th {
+	color: white;
+	border: 1px solid #ccc;
+	padding: 10px;
+	text-align: center;
+}
+
+.reserve-table td {
+	border: 1px solid #ccc;
+	padding: 10px;
+	text-align: center;
+}
+
+.reserve-table th {
+	background-color: #8d6e63;
+	font-weight: bold;
+}
+
+.reserve-table tr:hover {
+	background-color: #f1f1f1;
+}
+
+.favorite-btn {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 24px;
+	color: #ccc;
+}
+
+.favorite-btn.favorited i {
+	color: red;
+}
+
+.favorite-btn i {
+	pointer-events: none; /* 아이콘 클릭시 버튼 클릭되게 */
+}
+
+.rating {
+	display: flex;
+	justify-content: left;
+	gap: 10px;
+}
+
+.star {
+	font-size: 30px;
+	color: #ccc; /* 기본 색상 (빈 별) */
+	cursor: pointer;
+}
+
+.star.filled {
+	color: #ffcc00; /* 채워진 별 색상 */
+}
+
+.star:hover {
+	color: #ffcc00; /* hover 시 별 색상 */
+}
+
+.btn {
+   padding: 8px 16px;
+   font-size: 14px;
+   border: none;
+   border-radius: 6px;
+   cursor: pointer;
+   margin-right: 5px;
+   transition: background-color 0.2s ease;
+ }
+
+ .btn-submit {
+   background-color: #4CAF50; 
+   color: white;
+ }
+
+ .btn-submit:hover {
+   background-color: #45a049;
+ }
+
+ .btn-edit {
+   background-color: #8d6e63; 
+   color: white;
+ }
+
+ .btn-edit:hover {
+   background-color: #6d4c41;
+ }
+
+ .btn-delete {
+   background-color: #8d6e63; 
+   color: white;
+ }
+
+ .btn-delete:hover {
+   background-color: #6d4c41;
+ }
+</style>
+<script>
   	const loggedInUserNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'};
 
   
@@ -145,6 +222,7 @@
   	  const rating = $('#rating').val();
       const reviewContent = $('#reviewContent').val();
       const bookNo = $('#bookNo').val();
+      
       
       if (!rating || !reviewContent) {
 		alert("별점과 리뷰를 모두 작성해주세요")
@@ -165,11 +243,28 @@
           $('#rating').val('');
           $('#reviewContent').val('');
           loadReviewList();
+          resetReviewForm();
         },
         error: function(xhr) {
         }
       })
   	}
+  	
+
+
+  	function resetReviewForm() {
+  	  // 별점 값 초기화
+  	  document.getElementById('rating').value = '0';
+
+  	  // 별 색 초기화
+  	  const stars = document.querySelectorAll('.star');
+  	  stars.forEach(star => star.classList.remove('filled'));
+
+  	  // 텍스트 초기화
+  	  document.getElementById('reviewContent').value = '';
+  	}
+
+  	
   
     function loadReviewList(){
       const bookNo = $('#bookNo').val();
@@ -192,8 +287,8 @@
                 		  
                 		  if (loggedInUserNo !== null && loggedInUserNo === item.userNo) {
                 		    html += `
-                		    	 <button class="editReview" data-reviewno="\${item.revNo}">수정</button>
-                		        <button class="deleteReview" data-reviewno="\${item.revNo}">삭제</button>
+               		    	<button class="btn btn-edit editReview" data-reviewno="\${item.revNo}">수정</button>
+              		    	<button class="btn btn-delete deleteReview" data-reviewno="\${item.revNo}">삭제</button>
                 		    `;
                 		  }
                 		  
@@ -243,7 +338,7 @@
     //리뷰 수정
     function updateReview() {
     	  const reviewNo = $('#editReviewNo').val();
-    	  const rating = $('#editRating').val();
+    	  const rating = $('#rating').val();
     	  const revContent = $('#editRevContent').val();
     	  
     	  if (!rating || !revContent) {
@@ -295,7 +390,9 @@
             alert("로그인 후 이용할 수 있습니다.");
             return;
         }
-    	
+        const btn = $('#BookFavorite');
+        const icon = btn.find('i');
+
     	
      	$.ajax({
     		url: "detail/favoriteInsert",
@@ -308,15 +405,14 @@
     			if (res === "insert") {
                     alert("관심 도서 등록 완료!");
                     $('#BookFavorite')
-                    .text("관심 도서 취소")
-                    .css("background-color", "red")
-                    .data("favorited", true);
+			        btn.addClass("favorited");
+			        icon.removeClass("fa-regular").addClass("fa-solid");
+                    //.data("favorited", true);
                 } else if (res === "delete") {
                     alert("관심 도서가 삭제되었습니다.");
-                    $('#BookFavorite')
-                    .text("관심 도서 추가")
-                    .css("background-color", "#4CAF50")
-                    .data("favorited", false);
+                    btn.removeClass("favorited");
+                    icon.removeClass("fa-solid").addClass("fa-regular");
+                    //.data("favorited", false);
                 } else {
                     alert("처리 실패");
                 }
@@ -371,6 +467,10 @@
  	const userNo = ${sessionScope.userNo != null ? sessionScope.userNo : 'null'}
    	const bookNo = $('#BookFavorite').val();
 	   
+   	
+   	const btn = $('#BookFavorite'); // 버튼 요소
+   	const icon = btn.find('i');     // 버튼 안의 <i> 아이콘 요소
+
    	//관심도서 체크후 있으면 버튼 변경
    	$.ajax({
    		url : "detail/favoriteInsert",
@@ -382,14 +482,12 @@
    		success : function(res){
    			if (res === "exists") {
                    $('#BookFavorite')
-                       .text("관심 도서 취소")
-                       .css("background-color", "red")
-                       .data("favorited", true);
+			        btn.addClass("favorited");
+			        icon.removeClass("fa-regular").addClass("fa-solid");
                } else {
                    $('#BookFavorite')
-                       .text("관심 도서 추가")
-                       .css("background-color", "#4CAF50")
-                       .data("favorited", false);
+                 	 btn.removeClass("favorited");
+                  	 icon.removeClass("fa-solid").addClass("fa-regular");
                }
    		},
    		error : function(xhr){
@@ -535,106 +633,139 @@
     	loadFavorite(); // 관심도서 체크하기
     }
     
+    //별 클릭주고 색채우기
+	  	const stars = document.querySelectorAll('.star');
+	
+	  	stars.forEach(star => {
+	  	  star.addEventListener('click', function() {
+	  	    // 선택된 별의 값 가져오기
+	  	    const rating = this.getAttribute('data-value');
+	  	    
+	  	  	document.getElementById('rating').value = rating;
+	  	    
+	  	    // 선택된 별까지만 색을 채우기
+	  	    stars.forEach(star => {
+	  	      if (star.getAttribute('data-value') <= rating) {
+	  	        star.classList.add('filled');
+	  	      } else {
+	  	        star.classList.remove('filled');
+	  	      }
+	  	    });
+	  	  });
+	  	});
     
     });
   </script>
 </head>
 <body>
 
-  <div class="container">
-    <!-- 책 상세 정보 영역 -->
-    <div class="book-detail">
-      <!-- 책 표지 -->
-      <div class="book-cover">
-        <img src="${bookDetail.cover}" alt="책 표지">
-      </div>
+	<div class="container">
+		<!-- 책 상세 정보 영역 -->
+		<div class="book-detail">
+			<!-- 책 표지 -->
+			<div class="book-cover">
+				<img src="${bookDetail.cover}" alt="책 표지">
+			</div>
 
-      <!-- 책 정보 -->
-      <div class="book-info">
-        <h2>
-          <c:out value="${fn:split(bookDetail.bookTitle, '-')[0]}"/> 
-          <span class="subtitle">
-            <c:out value="${fn:split(bookDetail.bookTitle, '-')[1]}"/>
-          </span>
-        </h2>
-        <p><strong>저자:</strong> ${bookDetail.author}</p>
-        <p><strong>출판사:</strong> ${bookDetail.publisher}</p>
-        <p><strong>출판일:</strong> ${bookDetail.pubdate}</p>
-        <p><strong>ISBN:</strong> ${bookDetail.isbn}</p>
-        <p><strong>카테고리 번호:</strong> ${bookDetail.categoryNo}</p>
-        
-        
-        <div style="margin-top: 20px; text-align: right;">
-          <button class="button" onclick="requestLoan()" value="${bookDetail.bookNo}" id="BookLoan">대출 신청</button>
-		  <button class="button" onclick="BookFavorite()" value="${bookDetail.bookNo}" id="BookFavorite"}>관심 도서 추가</button>
+			<!-- 책 정보 -->
+			<div class="book-info">
+				<h2>
+					<c:out value="${fn:split(bookDetail.bookTitle, '-')[0]}" />
+					<span class="subtitle"> <c:out
+							value="${fn:split(bookDetail.bookTitle, '-')[1]}" />
+					</span>
+				</h2>
+				<p>
+					<strong>저자:</strong> ${bookDetail.author}
+				</p>
+				<p>
+					<strong>출판사:</strong> ${bookDetail.publisher}
+				</p>
+				<p>
+					<strong>출판일:</strong> ${bookDetail.pubdate}
+				</p>
+				<p>
+					<strong>ISBN:</strong> ${bookDetail.isbn}
+				</p>
+				<p>
+					<strong>카테고리 번호:</strong> ${bookDetail.categoryNo}
+				</p>
+
+
+				<div style="margin-top: 20px; text-align: right;">
+					<button id="BookFavorite" class="favorite-btn"
+						value="${bookDetail.bookNo}" onclick="BookFavorite()">
+						<i class="fa-regular fa-heart"></i>
+					</button>
+					<button class="button" onclick="requestLoan()"
+						value="${bookDetail.bookNo}" id="BookLoan">대출 신청</button>
+				</div>
+				<!-- 책 상세 설명을 위한 링크 -->
+
+
+				<div id="reserveTableContainer"
+					style="display: flex; flex-direction: row-reverse; gap: 10px"></div>
+				<div class="back-link">
+					<a href="javascript:history.back()">목록으로 돌아가기</a> <br> <a
+						onclick="reserveList()" value="${bookDetail.bookNo}"
+						id="reserveList">예약리스트 확인</a>
+
+				</div>
+
+				<!-- 도서리뷰 등록 밑 출력 -->
+				<div class="book-review">
+					<h3>도서 리뷰 작성</h3>
+					<form id="reviewForm">
+						<div class="rating">
+							<span class="star" data-value="1">&#9733;</span>
+							<span class="star" data-value="2">&#9733;</span>
+							<span class="star"data-value="3">&#9733;</span>
+							<span class="star" data-value="4">&#9733;</span>
+							<span class="star" data-value="5">&#9733;</span>
+						</div>
+						<br> <label for="reviewContent">리뷰내용</label><br>
+						<textarea name="reviewContent" id="reviewContent" rows="4"
+							cols="30" required
+							style="width: 482px; height: 80px; resize: none"></textarea>
+						<input type="hidden" name="bookNo" id="bookNo" value="${bookDetail.bookNo}"> 
+						<input type="hidden" id="rating" name="rating" value="0">
+						<button type="button" onclick="insertReview()" id="reviewBtn" class="btn btn-submit">등록</button>
+					</form>
+
+					<hr>
+
+					<!-- 등록된 리뷰 -->
+					<h3>등록된 리뷰</h3>
+					<div id="reviewList"></div>
+				</div>
+			</div>
 		</div>
-        <!-- 책 상세 설명을 위한 링크 -->
-       
-        	
-      	<div id="reserveTableContainer" style="display: flex; flex-direction: row-reverse; gap: 10px"></div>
-        <div class="back-link">
-          <a href="javascript:history.back()">목록으로 돌아가기</a> <br>
-          <a onclick="reserveList()" value="${bookDetail.bookNo}" id="reserveList">예약리스트 확인</a>
-          
-        </div>
-        
-        <!-- 도서리뷰 등록 밑 출력 -->
-        <div class="book-review">
-			    <h3>도서 리뷰 작성</h3>    
-          <form id="reviewForm">
-            <label for="rating">별점 (1~5):</label>
-            <select name="rating" id="rating" required>
-              <option value="">선텍</option>
-              <option value="1">1점</option>
-              <option value="2">2점</option>
-              <option value="3">3점</option>
-              <option value="4">4점</option>
-              <option value="5">5점</option>
-            </select><br><br>
-            
-            <label for="reviewContent">리뷰내용</label><br>
-            <textarea name="reviewContent" id="reviewContent" rows="4" cols="30" required style="width: 482px; height: 80px; resize: none"></textarea>
-            <input type="hidden" name="bookNo" id="bookNo" value="${bookDetail.bookNo}">
-            <!-- <input type="hidden" name="userId" id="userId" value="${user.userId}"> 로그인 구현시 보여줌 -->
-			    <button type="button" onclick="insertReview()" id="reviewBtn">등록</button>         
-          </form>    
-
-          <hr>
-
-          <!-- 등록된 리뷰 -->
-           <h3>등록된 리뷰</h3>
-           <div id="reviewList">
-
-           </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	</div>
 
 
-	<div id="editReviewModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
-    background:white; padding:20px; border:1px solid #ccc; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.2); z-index:9999;">
-    	
-    	<h3>리뷰 수정</h3>
-    	<input type="hidden" id="editReviewNo">
-    	
-    	<label for="editRating">별점 (1~5):</label>
-    	<select id="editRating">
-    		<option value="1">1점</option>
-    		<option value="2">2점</option>
-    		<option value="3">3점</option>
-    		<option value="4">4점</option>
-    		<option value="5">5점</option>
-    	
-    	</select><br><br>
-    	
-    	
-    	 <label for="editRevContent">리뷰내용</label><br>
-         <textarea name="editRevContent" id="editRevContent" rows="4" cols="30"></textarea><br><br>
-         
-            
-		    <button onclick="updateReview()">수정 완료</button>         
-		    <button onclick="closeModal()">취소</button>         
-    </div>
+	<div id="editReviewModal"
+	    style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); z-index: 9999;">
+	    
+	    <h3>리뷰 수정</h3>
+	    <input type="hidden" id="editReviewNo">
+	    
+	    <!-- 별점 선택 영역 -->
+	    <label for="editRating">별점 (1~5):</label>
+	    <div class="rating">
+	        <span class="star" data-value="1">&#9733;</span>
+	        <span class="star" data-value="2">&#9733;</span>
+	        <span class="star" data-value="3">&#9733;</span>
+	        <span class="star" data-value="4">&#9733;</span>
+	        <span class="star" data-value="5">&#9733;</span>
+	    </div><br><br>
+	    
+	    <label for="editRevContent">리뷰내용</label><br>
+	    <textarea name="editRevContent" id="editRevContent" rows="4" cols="30" required
+	              style="width: 482px; height: 80px; resize: none"></textarea><br><br>
+	    
+	    <button onclick="updateReview()" class="btn btn-submit">수정 완료</button>
+	    <button onclick="closeModal()" class="btn btn-delete">취소</button>
+	</div>
+
 </body>
 </html>

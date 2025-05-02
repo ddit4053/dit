@@ -18,6 +18,7 @@ public class ReviewUpdateController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String revNoStr = req.getParameter("revNo");
+		System.out.println("aaaaaa" +revNoStr);
 		int revNo = Integer.parseInt(revNoStr);
 		
 		String ratingStr = req.getParameter("rating");
