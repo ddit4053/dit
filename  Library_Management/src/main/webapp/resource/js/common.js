@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		    items: [
 		      { name: "도서 검색", url: "/books/search" },
 		      { name: "신착 도서", url: "/books/new" },
-		      { name: "관심 도서", url: "/books/favor" },
+		      { name: "관심 도서", url: "/user/mypage/bookFavoritesList.do" },
 		      { name: "추천 도서", url: "/books/recommend" },
 		    ],
 		  },

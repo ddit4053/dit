@@ -43,7 +43,7 @@ const menuStructure = {
           subMenus: [{ title: "카테고리 검색", url: "/books/search/searchCategory" }],
         },
         { title: "신착 도서", url: "/books/new" },
-        { title: "관심 도서", url: "/books/favor" },
+        { title: "관심 도서", url: "/user/mypage/bookFavoritesList.do" },
         { title: "추천 도서", url: "/books/recommend" },
       ],
     },
@@ -100,9 +100,7 @@ const menuStructure = {
       subMenus: [
         { title: "도서 목록", url: "/admin/books/list" },
         {
-          title: "신청 도서",
-          url: "/admin/books/requests",
-          subMenus: [{ title: "신청 목록", url: "/admin/books/requests/list" }],
+          title: "신청 도서", url: "/admin/books/requests"
         },
         {
           title: "분실/파손 도서",

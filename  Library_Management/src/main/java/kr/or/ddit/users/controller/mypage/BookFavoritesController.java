@@ -8,13 +8,23 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/user/mypage/bookFavoritesList.do")
 public class BookFavoritesController extends AbstractPagingController {
     
+	
+	
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processPaging(req, resp);
+    	HttpSession session = req.getSession(false); // 세션이 없으면 새로 생성하지 않음
+    	
+        if (session == null || session.getAttribute("userNo") == null) {
+            resp.sendRedirect(req.getContextPath() + "/user/login.do");
+            return;
+        }
+    	
+    	processPaging(req, resp);
     }
     
     @Override
