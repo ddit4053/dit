@@ -83,8 +83,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		  {
 		    title: "열람실",
 		    items: [
-		      { name: "열람실 현황", url: "/reading/status" },
-		      { name: "열람실 예약", url: "/reading/booking" },
+		      { name: "열람실 현황", url: "/readingMain.do" },
+		      { name: "열람실 예약", url: "/readingMain.do" },
 		    ],
 		  },
 		  {
