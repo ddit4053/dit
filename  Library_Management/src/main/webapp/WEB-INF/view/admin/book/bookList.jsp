@@ -186,15 +186,32 @@
 		            });
 
 		            // ✅ 페이징 처리
-		            let paginationHtml = "";
-		            for (let i = 1; i <= totalPages; i++) {
-		                if (i === page) {
-		                    paginationHtml += `<button class="page-btn active" onclick="goToPage(\${i})">\${i}</button>`;
-		                } else {
-		                    paginationHtml += `<button class="page-btn" onclick="goToPage(\${i})">\${i}</button>`;
-		                }
-		            }
-		            $(".pagination").html(paginationHtml);
+		           let paginationHtml = "";
+					const blockSize = 5; // 블록 당 페이지 수
+					const currentBlock = Math.floor((page - 1) / blockSize);
+					const startPage = currentBlock * blockSize + 1;
+					let endPage = startPage + blockSize - 1;
+					if (endPage > totalPages) endPage = totalPages;
+					
+					// 이전 블록
+					if (startPage > 1) {
+					    paginationHtml += `<button class="page-btn" onclick="goToPage(\${startPage - 1})">&laquo;</button>`;
+					}
+					
+					// 페이지 버튼
+					for (let i = startPage; i <= endPage; i++) {
+					    if (i === page) {
+					        paginationHtml += `<button class="page-btn active" onclick="goToPage(\${i})">\${i}</button>`;
+					    } else {
+					        paginationHtml += `<button class="page-btn" onclick="goToPage(\${i})">\${i}</button>`;
+					    }
+					}
+					
+					// 다음 블록
+					if (endPage < totalPages) {
+					    paginationHtml += `<button class="page-btn" onclick="goToPage(\${endPage + 1})">&raquo;</button>`;
+					}
+					$(".pagination").html(paginationHtml);
 
 		            $("tr.bookList").click(function () {
 		                const bookNo = $(this).data("bookno");
