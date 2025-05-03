@@ -45,6 +45,11 @@ public class FileServiceImpl implements IFileService{
 	public File_StorageVo getFileByNo(int fileNo) {
 		return fileDao.selectFileByNo(fileNo);
 	}
+	
+	@Override
+	public boolean updateFileReference(File_StorageVo file) {
+	    return fileDao.updateFileReference(file) > 0;
+	}
 
 	@Override
 	public boolean downloadFile(File_StorageVo fileInfo, OutputStream outputStream) {
@@ -74,38 +79,46 @@ public class FileServiceImpl implements IFileService{
 	public boolean insertFile(File_StorageVo file) {
 		return fileDao.insertFile(file) > 0; // DB insert 성공일 때만 true 반환
 	} 
-
+	
+	
 	@Override
 	public boolean deleteFile(int fileNo) {
-		// 실제 파일 삭제 처리
-		File_StorageVo fileInfo = fileDao.selectFileByNo(fileNo);
-		if (fileInfo != null) {
-			File file = new File(fileInfo.getFilePath() + File.separator + fileInfo.getSaveName());
-			if(file.exists()) {
-				file.delete();
-			}
-		}
-		
-		// DB에서 파일 정보 삭제
-		return fileDao.deleteFile(fileNo) > 0;
+	    // 논리적 삭제만 처리 - 실제 파일은 삭제하지 않음
+	    return fileDao.deleteFile(fileNo) > 0;
 	}
 
 	@Override
 	public boolean deleteFilesByGroupNum(int fileGroupNum) {
-		// 파일 그룹에 속한 모든 파일 정보 조회
-		List<File_StorageVo> fileList = fileDao.selectFilesByGroupNum(fileGroupNum);
-		
-		// 실제 파일 삭제
-		for (File_StorageVo fileInfo : fileList) {
-			File file = new File(fileInfo.getFilePath() + File.separator + fileInfo.getSaveName());
-			if (file.exists()) {
-				file.delete();
-			}
-		}
-		
-		// DB에서 파일 정보 삭제
-		return fileDao.deleteFilesByGroupNum(fileGroupNum) > 0;
+	    // 논리적 삭제만 처리 - 실제 파일은 삭제하지 않음
+	    return fileDao.deleteFilesByGroupNum(fileGroupNum) > 0;
 	}
+	
+	/**
+	 * 파일 그룹 논리적 삭제
+	 */
+	@Override
+	public boolean deleteFileGroup(int fileGroupNum) {
+	    return fileDao.deleteFileGroup(fileGroupNum) > 0;
+	}	
+	
+	// 물리적 파일 삭제 (배치 작업용)
+	@Override
+	public void purgeDeletedFiles(int daysOld) {
+	    // 삭제된 지 일정 기간이 지난 파일 정보 조회
+	    List<File_StorageVo> filesToPurge = fileDao.selectFilesToPurge(daysOld);
+	    
+	    // 실제 파일 삭제
+	    for (File_StorageVo fileInfo : filesToPurge) {
+	        File file = new File(fileInfo.getFilePath() + File.separator + fileInfo.getSaveName());
+	        if (file.exists()) {
+	            file.delete();
+	        }
+	    }
+	    
+	    // 파일 메타데이터 물리적 삭제
+	    fileDao.purgeDeletedFiles(daysOld);
+	}
+
 
 	@Override
 	public int createFileGroup() {
@@ -191,5 +204,15 @@ public class FileServiceImpl implements IFileService{
             fileList.add(file);
 		}
 		return fileList;
+	}
+	
+	// 미사용 파일 그룹 정리
+	@Override
+	public void cleanUnusedFileGroups() {
+	    List<Integer> unusedGroups = fileDao.findUnusedFileGroups();
+	    for (Integer groupNum : unusedGroups) {
+	        // 논리적 삭제로 변경
+	        fileDao.deleteFileGroup(groupNum);
+	    }
 	}
 }

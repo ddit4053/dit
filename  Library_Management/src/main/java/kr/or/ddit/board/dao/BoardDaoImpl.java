@@ -3,14 +3,19 @@ package kr.or.ddit.board.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import kr.or.ddit.util.MybatisDao;
 import kr.or.ddit.vo.BookBoardCodeVo;
 import kr.or.ddit.vo.BookBoardVo;
 
 public class BoardDaoImpl extends MybatisDao implements IBoardDao {
 	
+	// 로거 인스턴스 생성
+	private static final Logger logger = Logger.getLogger(BoardDaoImpl.class);
+	
 	private static BoardDaoImpl instance;
-
+	
 	private BoardDaoImpl() {
 
 	}
@@ -73,6 +78,22 @@ public class BoardDaoImpl extends MybatisDao implements IBoardDao {
     public int deleteBoard(int boardNo) {
         return update("board.deleteBoard", boardNo);
     }
+    
+    // 파일 그룹 번호 사용 여부 조회
+	@Override
+	public boolean isFileGroupInUse(int fileGroupNum) {
+		try {
+			return (boolean) selectOne("board.isFileGroupInUse", fileGroupNum );
+		} catch (Exception e) {
+			logger.error("파일 그룹 사용 여부 확인 중 오류 발생", e);
+			return false;
+		}
+	}
+	
+	@Override
+	public int updateBoardFileGroup(Map<String, Object> params) {
+	    return update("board.updateBoardFileGroup", params);
+	}
     
 
 }

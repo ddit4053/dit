@@ -22,11 +22,15 @@ public interface IBoardService {
     // 게시글 등록
     int insertBoard(BookBoardVo board);
     
+    // 파일 그룹 번호 수정
+    int updateBoardFileGroup(int boardNo, Integer fileGroupNum);
+    
     // 게시글 수정
     int updateBoard(BookBoardVo board);
     
     // 게시글 삭제
     int deleteBoard(int boardNo);
+    
     
     // 조회수 증가
     int updateViewCount(int boardNo);
@@ -34,6 +38,9 @@ public interface IBoardService {
     
     // 전체 게시글 수 조회
     int getTotalBoardCount(Map<String, Object> params);
+    
+    // 파일 그룹 번호 사용 여부 조회
+    boolean isFileGroupInUser(int fileGroupNum);
     
     
     // 단일 댓글 조회

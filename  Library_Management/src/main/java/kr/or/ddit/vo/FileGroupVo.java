@@ -5,4 +5,6 @@ import lombok.Data;
 @Data
 public class FileGroupVo {
 	private int fileGroupNum;
+	private String delYn;
+	private String deleteDate;
 }

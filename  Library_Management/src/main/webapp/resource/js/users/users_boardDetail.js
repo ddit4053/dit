@@ -375,7 +375,7 @@ async function deleteBoard(boardNo) {
   }
 
   try {
-    const response = await fetch(`${contextPath}/board/delete`, {
+    const response = await fetch(`${contextPath}/delete`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

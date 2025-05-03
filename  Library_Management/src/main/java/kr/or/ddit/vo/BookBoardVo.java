@@ -14,7 +14,7 @@ public class BookBoardVo {
 	private int views;
 	private int userNo;
 	private int codeNo;
-	private int fileGroupNum;
+	private Integer fileGroupNum;
 	private String delYn;
 	
 	private String writer; // 작성자명

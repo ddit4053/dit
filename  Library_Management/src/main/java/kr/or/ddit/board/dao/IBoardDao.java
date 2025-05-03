@@ -20,6 +20,10 @@ public interface IBoardDao {
     // 공지사항 목록 조회
     List<BookBoardVo> selectNoticeList();
     
+    // 파일 그룹 번호 사용 여부 조회
+    boolean isFileGroupInUse(int fileGroupNum);
+    
+    int updateBoardFileGroup(Map<String, Object> params);
     
     // 게시글 등록
     int insertBoard(BookBoardVo board);

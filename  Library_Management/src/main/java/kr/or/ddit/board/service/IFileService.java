@@ -27,6 +27,10 @@ public interface IFileService {
      */
     File_StorageVo getFileByNo(int fileNo);
     
+    // 파일 referId 업데이트
+    boolean updateFileReference(File_StorageVo file);
+    
+    
     /**
      * 파일 다운로드 처리
      * @param file 파일 정보
@@ -43,24 +47,35 @@ public interface IFileService {
     boolean insertFile(File_StorageVo file);
     
     /**
-     * 파일 삭제
+     * 파일 논리 삭제
      * @param fileNo 파일 번호
      * @return 성공 여부
      */
     boolean deleteFile(int fileNo);
     
     /**
-     * 파일 그룹에 속한 모든 파일 삭제
+     * 파일 그룹에 속한 모든 파일 논리 삭제
      * @param fileGroupNum 파일 그룹 번호
      * @return 성공 여부
      */
     boolean deleteFilesByGroupNum(int fileGroupNum);
     
     /**
+     * 파일 그룹 논리적 삭제
+     */
+    boolean deleteFileGroup(int fileGroupNum);
+    
+    /**
      * 새 파일 그룹 생성
      * @return 생성된 파일 그룹 번호
      */
     int createFileGroup();
+    
+    // 미사용 파일 그룹 정리
+    public void cleanUnusedFileGroups();
+    
+    // 물리적 파일 삭제 (배치 작업용)
+    void purgeDeletedFiles(int daysOld);
     
     /**
      * 파일 업로드 처리

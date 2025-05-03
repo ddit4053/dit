@@ -188,7 +188,7 @@
 	<!-- 게시글 삭제 (논리적 삭제) -->
 	<update id="deleteBoard" parameterType="int">
 		UPDATE BOOK_BOARD
-		   SET DELYN = 'Y' 
+		   SET DELYN = 'Y',
 		 WHERE BOARD_NO = #{boardNo}
 	</update>
 			
@@ -230,6 +230,21 @@
 			AND B.CODE_NO = #{codeNo}
 		</if>
 	</select>
-
-
+	
+	<!-- 파일 그룹 번호가 사용 중인지 확인 -->
+	<select id="isFileGroupInUse" parameterType="int" resultType="boolean">
+    SELECT CASE WHEN
+    		    COUNT(*) > 0
+    		    THEN 1 ELSE 0
+    		    END
+      FROM BOOK_BOARD
+     WHERE FILE_GROUP_NUM = #{fileGroupNum}
+       AND DELYN = 'N'
+	</select>
+	
+	<update id="updateBoardFileGroup" parameterType="map">
+	    UPDATE BOOK_BOARD
+	       SET FILE_GROUP_NUM = #{fileGroupNum, jdbcType=NUMERIC}
+	     WHERE BOARD_NO = #{boardNo}
+	</update>	
 </mapper>

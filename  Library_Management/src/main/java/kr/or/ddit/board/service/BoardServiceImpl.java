@@ -128,6 +128,15 @@ public class BoardServiceImpl implements IBoardService {
     public int insertBoard(BookBoardVo board) {
         return boardDao.insertBoard(board);
     }
+    
+    // 파일 첨부 없이 게시글 등록 시 파일 그룹 번호 수정
+    @Override
+    public int updateBoardFileGroup(int boardNo, Integer fileGroupNum) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("boardNo", boardNo);
+        params.put("fileGroupNum", fileGroupNum);
+        return boardDao.updateBoardFileGroup(params);
+    }
 
     @Override
     public int updateBoard(BookBoardVo board) {
@@ -139,6 +148,12 @@ public class BoardServiceImpl implements IBoardService {
         return boardDao.deleteBoard(boardNo);
     }
     
+    
+    // 파일 그룹 번호 사용 여부 조회
+ 	@Override
+ 	public boolean isFileGroupInUser(int fileGroupNum) {
+ 		return boardDao.isFileGroupInUse(fileGroupNum);
+ 	}
     
     
     // 단일 댓글 조회
@@ -183,10 +198,5 @@ public class BoardServiceImpl implements IBoardService {
 		}
 		return 0;
 	}
-
-	
-	
-	
-    
 
 }
