@@ -181,7 +181,7 @@
 		   SET TITLE = #{title},
 			   CONTENT = #{content},
 		       CODE_NO = #{codeNo},
-		       FILE_GROUP_NUM = #{fileGroupNum}
+		       FILE_GROUP_NUM = #{fileGroupNum, jdbcType=INTEGER}
 		 WHERE BOARD_NO = #{boardNo}
 	</update>
 	

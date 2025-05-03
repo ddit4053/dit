@@ -25,12 +25,12 @@ import kr.or.ddit.vo.BookBoardVo;
 import kr.or.ddit.vo.File_StorageVo;
 import kr.or.ddit.vo.UsersVo;
 
-@WebServlet("/insert")
+@WebServlet("/update")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,      // 1MB
         maxFileSize = 1024 * 1024 * 10,       // 10MB
         maxRequestSize = 1024 * 1024 * 50)    // 50MB
-public class BoardInsertController extends HttpServlet{
+public class BoardUpdateController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private IBoardService boardService = BoardServiceImpl.getInstance();
     private IFileService fileService = FileServiceImpl.getInstance();
@@ -42,25 +42,34 @@ public class BoardInsertController extends HttpServlet{
             // 로그인 확인
             UsersVo loginUser = checkUserAuthority(req);
             
-            // 게시판 코드 목록 조회
-            List<BookBoardCodeVo> codeList = boardService.getCodeList(); 
-            
-            // codeNo 파라미터 받기
-            String codeNoStr = req.getParameter("codeNo");
-            int codeNo = 1; // 기본값: 독후감 게시판
-            
-            try {
-                if (codeNoStr != null && !codeNoStr.trim().isEmpty()) {
-                    codeNo = Integer.parseInt(codeNoStr);
-                }
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("잘못된 게시판 번호입니다.");
+            // 게시글 번호 파라미터 받기
+            String boardNoStr = req.getParameter("boardNo");
+            if (boardNoStr == null || boardNoStr.trim().isEmpty()) {
+                throw new IllegalArgumentException("게시글 번호가 필요합니다.");
             }
             
+            int boardNo = Integer.parseInt(boardNoStr);
+            
+            // 게시글 정보 조회
+            BookBoardVo board = boardService.selectBoardDetail(boardNo);
+            
+            if (board == null) {
+                throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
+            }
+            
+            // 작성자 확인 (본인 글만 수정 가능)
+            boolean isAdmin = "ADMIN".equals(loginUser.getRole());
+            if (!isAdmin && board.getUserNo() != loginUser.getUserNo()) {
+                throw new IllegalStateException("자신의 게시글만 수정할 수 있습니다.");
+            }
+            
+            // 게시판 코드 목록 조회
+            List<BookBoardCodeVo> codeList = boardService.getCodeList();
+            
             // 뷰로 전달할 데이터 설정
-            req.setAttribute("codeNo", codeNo);
+            req.setAttribute("board", board);
             req.setAttribute("codeList", codeList);
-            req.setAttribute("mode", "write");
+            req.setAttribute("mode", "update"); // 수정 모드 설정
             req.setAttribute("breadcrumbTitle", "게시판");
             
             // 에디터 페이지로 포워딩
@@ -69,6 +78,8 @@ public class BoardInsertController extends HttpServlet{
         } catch (IllegalStateException e) {
             // 로그인이 필요한 경우 로그인 페이지로 리다이렉트
             resp.sendRedirect(req.getContextPath() + "/user/login.do");
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "잘못된 게시글 번호입니다.");
         } catch (IllegalArgumentException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         } catch (Exception e) {
@@ -84,84 +95,101 @@ public class BoardInsertController extends HttpServlet{
             UsersVo loginUser = checkUserAuthority(req);
             
             // 요청 파라미터 수집
+            String boardNoStr = req.getParameter("boardNo");
             String title = req.getParameter("title");
             String content = req.getParameter("content");
             String codeNoStr = req.getParameter("codeNo");
             
             // 유효성 검사
-            if (title == null || title.trim().isEmpty() || 
+            if (boardNoStr == null || boardNoStr.trim().isEmpty() ||
+                title == null || title.trim().isEmpty() || 
                 content == null || content.trim().isEmpty() ||
                 codeNoStr == null || codeNoStr.trim().isEmpty()) {
                 throw new IllegalArgumentException("필수 항목이 누락되었습니다.");
             }
             
+            int boardNo = Integer.parseInt(boardNoStr);
             int codeNo = Integer.parseInt(codeNoStr);
             
-            // 게시글 정보 설정 (파일 그룹 번호는 나중에 설정)
+            // 게시글 정보 조회
+            BookBoardVo originalBoard = boardService.selectBoardDetail(boardNo);
+            
+            if (originalBoard == null) {
+                throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
+            }
+            
+            // 작성자 확인 (본인 글만 수정 가능)
+            if (originalBoard.getUserNo() != loginUser.getUserNo()) {
+                throw new IllegalStateException("자신의 게시글만 수정할 수 있습니다.");
+            }
+            
+            // 게시글 정보 업데이트
             BookBoardVo board = new BookBoardVo();
+            board.setBoardNo(boardNo);
             board.setTitle(title);
             board.setContent(content);
-            board.setUserNo(loginUser.getUserNo());
             board.setCodeNo(codeNo);
+            board.setUserNo(loginUser.getUserNo());
             
-            // 파일 업로드 처리
-            Integer fileGroupNum = null;
-            List<File_StorageVo> uploadedFiles = null;
+            // 기존 파일 그룹 번호 유지
+            board.setFileGroupNum(originalBoard.getFileGroupNum());
             
-            // 파일이 있는지 확인
-            boolean hasFiles = false;
+            // 파일 업로드 처리 (새 파일이 있는 경우)
+            boolean hasNewFiles = false;
             for (Part part : req.getParts()) {
                 String fileName = part.getSubmittedFileName();
                 if (fileName != null && !fileName.isEmpty()) {
-                    hasFiles = true;
+                    hasNewFiles = true;
                     break;
                 }
             }
             
-            // 파일이 있는 경우에만 파일 그룹 생성 및 업로드 처리
-            if (hasFiles) {
-                // 파일 그룹 생성
-                fileGroupNum = fileService.createFileGroup();
+            // 파일 처리
+            if (hasNewFiles) {
+                Integer fileGroupNum = board.getFileGroupNum();
                 
-                // 파일 그룹 번호 설정
-                board.setFileGroupNum(fileGroupNum);
-                
-                // 게시글 저장 (파일 그룹번호 설정 후)
-                int result = boardService.insertBoard(board);
-                
-                if (result > 0) {
-                    // 파일 업로드 (이제 게시글 번호가 생성됨)
-                    uploadedFiles = fileService.uploadFiles(req, "BOARD", board.getBoardNo());
-                    
-                    // 업로드된 파일이 없는 경우, 생성된 빈 파일 그룹 삭제 처리가 필요
-                    if (uploadedFiles.isEmpty()) {
-                        fileService.deleteFileGroup(fileGroupNum);
-                        // 게시글 FILE_GROUP_NUM을 null로 업데이트
-                        board.setFileGroupNum(null);
-                        boardService.updateBoardFileGroup(board.getBoardNo(), null);
-                    }
+                // 기존 파일 그룹이 없는 경우 새로 생성
+                if (fileGroupNum == null || fileGroupNum <= 0) {
+                    fileGroupNum = fileService.createFileGroup();
+                    board.setFileGroupNum(fileGroupNum);
                 } else {
-                    // 게시글 저장 실패 시 생성된 파일 그룹 삭제
-                    if (fileGroupNum != null) {
+                    // 기존 파일 삭제 (선택 사항: 모든 파일을 삭제하고 새로 업로드하거나, 기존 파일은 유지하고 추가만 할 수 있음)
+                    // fileService.deleteFilesByGroupNum(fileGroupNum);
+                }
+                
+                // 파일 업로드
+                List<File_StorageVo> uploadedFiles = fileService.uploadFiles(req, "BOARD", boardNo);
+                
+                // 업로드된 파일이 없는 경우 처리
+                if (uploadedFiles.isEmpty() && (originalBoard.getFileGroupNum() == null || originalBoard.getFileGroupNum() <= 0)) {
+                    // 새로 생성한 파일 그룹이 있으면 삭제
+                    if (fileGroupNum != null && fileGroupNum > 0 && fileGroupNum != originalBoard.getFileGroupNum()) {
                         fileService.deleteFileGroup(fileGroupNum);
                     }
-                    throw new RuntimeException("게시글 등록에 실패했습니다.");
+                    board.setFileGroupNum(null);
                 }
-            } else {
-                // 파일이 없는 경우 파일 그룹 번호 없이 게시글만 저장
-                board.setFileGroupNum(null);
-                int result = boardService.insertBoard(board);
-                
-                if (result <= 0) {
-                    throw new RuntimeException("게시글 등록에 실패했습니다.");
-                }
+            }
+            
+            // 게시글 정보 업데이트 전 확인
+            if (board.getFileGroupNum() == null) {
+                System.out.println("파일 그룹 번호가 null입니다.");
+                // null 대신 0을 사용하거나 다른 방식으로 처리
+                // board.setFileGroupNum(0);
+            }
+            
+            // 게시글 업데이트
+            boolean result = boardService.updateBoard(board) > 0;
+            
+            if (!result) {
+                throw new RuntimeException("게시글 수정에 실패했습니다.");
             }
             
             // 응답 생성
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
-            response.put("message", "게시글이 등록되었습니다.");
-            response.put("boardNo", board.getBoardNo());
+            response.put("message", "게시글이 수정되었습니다.");
+            response.put("boardNo", boardNo);
+            System.out.println("수정 요청 수신: boardNo=" + boardNo + ", codeNo=" + codeNo);
             
             sendJsonResponse(resp, response);
         } catch (NumberFormatException e) {
@@ -173,7 +201,7 @@ public class BoardInsertController extends HttpServlet{
             sendErrorResponse(resp, "서버 오류가 발생했습니다: " + e.getMessage());
         }
     }
-
+    
     // 사용자 로그인 확인 메서드
     private UsersVo checkUserAuthority(HttpServletRequest req) throws IllegalStateException {
         HttpSession session = req.getSession();
@@ -185,7 +213,7 @@ public class BoardInsertController extends HttpServlet{
         
         return loginUser;
     }
-
+    
     // JSON 응답 전송 메서드
     private void sendJsonResponse(HttpServletResponse resp, Map<String, Object> data) throws IOException {
         resp.setContentType("application/json");
@@ -195,7 +223,7 @@ public class BoardInsertController extends HttpServlet{
             out.print(gson.toJson(data));
         }
     }
-
+    
     // 에러 응답 전송 메서드
     private void sendErrorResponse(HttpServletResponse resp, String message) throws IOException {
         resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

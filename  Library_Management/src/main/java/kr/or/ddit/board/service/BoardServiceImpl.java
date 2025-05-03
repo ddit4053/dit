@@ -140,6 +140,7 @@ public class BoardServiceImpl implements IBoardService {
 
     @Override
     public int updateBoard(BookBoardVo board) {
+    	System.out.println("서비스 레이어 - 게시글 수정 요청: boardNo=" + board.getBoardNo() + ", codeNo=" + board.getCodeNo());
         return boardDao.updateBoard(board);
     }
 

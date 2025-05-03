@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/board.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/editor.css">
 
+
 <main class="main-content">
     <div class="container">
         <!-- 페이지 헤더 및 경로 표시 -->
@@ -24,17 +25,31 @@
                 
                 <!-- 에디터 상단 영역 -->
                 <div class="editor-top">
-                    
+                	<span class="boardNo">번호: ${board.boardNo}</span>
+                    <!-- 모드 및 게시글, 게시판 번호 정보 (hidden) -->
+				    <input type="hidden" id="editorMode" name="editorMode" value="${mode}">
+				    <input type="hidden" id="boardNo" name="boardNo" value="${board.boardNo}">
+				    <input type="hidden" id="originalCodeNo" value="${board.codeNo}">
+				    
                     <!-- 제목 입력 영역 -->
                     <div class="textarea-row">
                         <textarea 
                             placeholder="제목을 입력하세요." 
                             class="textarea-input" 
-                            style="height: 48px;" 
+                            style="height: 38px;" 
                             id="titleInput"
                             aria-label="게시글 제목"
-                        ></textarea>
+                        >${board.title}</textarea>
                     </div>
+                    
+                    <!-- 게시판 선택 드롭다운 (필요한 경우) -->
+					<div class="board-select">
+					    <select id="codeNoSelect" name="codeNo">
+					        <c:forEach items="${codeList}" var="code">
+					            <option value="${code.codeNo}" ${code.codeNo eq board.codeNo ? 'selected' : ''}>${code.codeName}</option>
+					        </c:forEach>
+					    </select>
+					</div>
                 </div>
                 
                 <!-- 에디터 메인 영역 -->
@@ -46,11 +61,11 @@
                             <button type="button" class="image-tool" aria-label="이미지 삽입">이미지</button>
                             <button type="button" class="url-tool" aria-label="링크 삽입">링크</button>
                             <button type="button" class="file-tool" aria-label="파일 삽입">파일</button>
-                            <button type="button" class="code-tool" aria-label="코드 블록 삽입">코드</button>
+                            <!-- <button type="button" class="code-tool" aria-label="코드 블록 삽입">코드</button> -->
                         </div>
                         
                         <!-- 텍스트 서식 도구 -->
-                        <div class="text-tool">
+                        <!-- <div class="text-tool">
                             <button type="button" class="h1Font" aria-label="제목 1">H1</button>
                             <button type="button" class="h2Font" aria-label="제목 2">H2</button>
                             <button type="button" class="h3Font" aria-label="제목 3">H3</button>
@@ -59,7 +74,7 @@
                             <button type="button" class="boldFont" aria-label="굵게">B</button>
                             <button type="button" class="italicFont" aria-label="기울임">I</button>
                             <button type="button" class="strikeFont" aria-label="취소선">S</button>
-                        </div>
+                        </div> -->
                     </div>
                     
                     <!-- 본문 에디터 -->
@@ -69,14 +84,19 @@
                             class="content-input" 
                             id="contentInput"
                             aria-label="게시글 내용"
-                        ></textarea>
+                        >${board.content}</textarea>
                     </div>
                     
                     <!-- 에디터 버튼 영역 -->
                     <div class="editor-buttons">
                         <div class="right-buttons">
                             <button type="button" class="cancel-button">취소</button>
-                            <button type="button" class="save-button">등록하기</button>
+                            <button type="button" class="save-button">
+                            <c:choose>
+				                <c:when test="${mode eq 'update'}">수정하기</c:when>
+				                <c:otherwise>등록하기</c:otherwise>
+				            </c:choose>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -92,6 +112,7 @@
 <!-- 스크립트 로드 -->
 <script src="${pageContext.request.contextPath}/resource/js/breadcrumb.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
-<script src="${pageContext.request.contextPath}/resource/js/editor.js"></script>
+<!-- 에디터 기능 관련 스크립트 -->
+<script src="${pageContext.request.contextPath}/resource/js/editor/editorAjax.js"></script>
 
 <jsp:include page="footer.jsp" />

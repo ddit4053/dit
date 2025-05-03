@@ -13,6 +13,7 @@
 	    <div class="board-header">
 	        <h3 class="board-title">${board.title}</h3>
 	        <div class="board-info">
+	            <span class="boardNo">번호: ${board.boardNo}</span>
 	            <span class="writer">작성자: ${board.writer}</span>
 	            <span class="date">작성일: ${board.writtenDate}</span>
 	            <span class="views">조회수: ${board.views}회</span>
@@ -39,7 +40,7 @@
         <!-- 작성자만 보이는 버튼 영역 -->
         <c:if test="${isAuthor}">
             <div class="board-actions">
-                <button class="btn-update" onclick="location.href='${pageContext.request.contextPath}/board/update?boardNo=${board.boardNo}'">
+                <button class="btn-update" onclick="updateBoard(${board.boardNo})">
                     수정
                 </button>
                 <button class="btn-delete" onclick="deleteBoard(${board.boardNo})">

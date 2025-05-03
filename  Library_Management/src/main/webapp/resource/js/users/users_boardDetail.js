@@ -1,3 +1,12 @@
+/**
+   * 게시글 수정 페이지로 이동
+   * @param {Number} boardNo - 게시글 번호
+   */
+  function updateBoard(boardNo) {
+    window.location.href = `${contextPath}/update?boardNo=${boardNo}&mode=update`;
+  }
+
+
 document.addEventListener("DOMContentLoaded", function () {
   // 컨텍스트 경로 가져오기
   const contextPath = document.getElementById("contextPath")?.value || "";
@@ -33,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
     commentEditForm.addEventListener("submit", updateComment);
   }
 });
+
+
 
 // 첨부 파일 목록 로드
 async function loadAttachedFiles() {
@@ -364,6 +375,21 @@ async function submitReply(cmNo2, boardNo) {
     alert("답글 등록 중 오류가 발생했습니다.");
   }
 }
+
+
+/**
+ * 게시글 수정 처리
+ * @param {Number} boardNo - 게시글 번호
+ */
+
+
+
+
+
+
+
+
+
 
 /**
  * 게시글 삭제 처리

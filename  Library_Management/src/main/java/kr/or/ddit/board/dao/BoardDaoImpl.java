@@ -71,6 +71,7 @@ public class BoardDaoImpl extends MybatisDao implements IBoardDao {
 
     @Override
     public int updateBoard(BookBoardVo board) {
+    	System.out.println("DAO 레이어 - 게시글 수정 전: boardNo=" + board.getBoardNo() + ", codeNo=" + board.getCodeNo());
         return update("board.updateBoard", board);
     }
 
