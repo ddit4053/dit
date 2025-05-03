@@ -25,8 +25,6 @@ public class ReservationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 기존 코드 유지
-        // ...
         request.setCharacterEncoding("UTF-8");
 
         try {
@@ -50,19 +48,67 @@ public class ReservationController extends HttpServlet {
                 return;
             }
             
-            // 사용자 번호는 세션에서 가져온 정보 사용
+            // 사용자 번호 가져오기
             int userNo = loginUser.getUserNo();
-            System.out.println("로그인 사용자 번호: " + userNo); // 디버깅용
             
-            // 나머지 코드 계속...
+            // 파라미터 값 가져오기
             String seatNoStr = request.getParameter("seatNo");
             String reserveDateStr = request.getParameter("reserveDate");
             String startTimeStr = request.getParameter("startTime");
             String endTimeStr = request.getParameter("endTime");
             String roomName = request.getParameter("roomName");
 
-            // 기존 나머지 코드 그대로 유지
-            // ...
+            // 파라미터 검증
+            if (seatNoStr == null || seatNoStr.isEmpty() ||
+                reserveDateStr == null || reserveDateStr.isEmpty() ||
+                startTimeStr == null || startTimeStr.isEmpty() ||
+                endTimeStr == null || endTimeStr.isEmpty()) {
+                response.setContentType("text/html;charset=UTF-8");
+                response.getWriter().write("<script>alert('필수 정보가 누락되었습니다.'); history.back();</script>");
+                return;
+            }
+
+            // 변환
+            int seatNo = Integer.parseInt(seatNoStr);
+            LocalDate reserveDate = LocalDate.parse(reserveDateStr);
+            LocalTime startTime = LocalTime.parse(startTimeStr, timeFormatter);
+            LocalTime endTime = LocalTime.parse(endTimeStr, timeFormatter);
+
+            // 운영 시간 확인
+            if (!reservationService.isWithinOperatingHours(startTimeStr, endTimeStr)) {
+                response.setContentType("text/html;charset=UTF-8");
+                response.getWriter().write("<script>alert('운영 시간 내에 예약해주세요. (09:00~18:00)'); history.back();</script>");
+                return;
+            }
+
+            // 좌석 예약 가능 여부 확인
+            if (!reservationService.isSeatAvailable(seatNo, startTimeStr, endTimeStr)) {
+                response.setContentType("text/html;charset=UTF-8");
+                response.getWriter().write("<script>alert('선택한 시간에 이미 예약된 좌석입니다.'); history.back();</script>");
+                return;
+            }
+
+            // 예약 객체 생성
+            ReadingReservationsVo reservation = new ReadingReservationsVo();
+            reservation.setUserNo(userNo);
+            reservation.setSeatNo(seatNo);
+            reservation.setReserveDate(reserveDate);
+            reservation.setStartTime(startTime);
+            reservation.setEndTime(endTime);
+            reservation.setrReserveStatus("예약완료");
+            reservation.setRoomName(roomName);
+
+            // 예약 처리
+            boolean success = reservationService.insertReservation(reservation);
+
+            if (success) {
+                response.setContentType("text/html;charset=UTF-8");
+                response.getWriter().write("<script>alert('예약이 완료되었습니다.'); window.close(); opener.location.reload();</script>");
+            } else {
+                response.setContentType("text/html;charset=UTF-8");
+                response.getWriter().write("<script>alert('예약에 실패했습니다. 다시 시도해주세요.'); history.back();</script>");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             response.setContentType("text/html;charset=UTF-8");

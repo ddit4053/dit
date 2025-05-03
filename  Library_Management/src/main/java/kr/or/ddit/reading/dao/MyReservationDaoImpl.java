@@ -71,44 +71,34 @@ public class MyReservationDaoImpl implements IMyReservationDao {
 
     @Override
     public int updateReservationStatus(int rReserveNo) {
-        // 새로운 DBUtil의 재시도 로직을 사용
-        boolean success = DBUtil.executeWithRetry(conn -> {
-            PreparedStatement ps = null;
-            int cnt = 0;
-            
-            try {
-                // SELECT FOR UPDATE로 먼저 락 획득
-                String checkSql = "SELECT r_reserve_no FROM reading_reservations WHERE r_reserve_no = ? FOR UPDATE NOWAIT";
-                ps = conn.prepareStatement(checkSql);
-                ps.setInt(1, rReserveNo);
-                
-                ResultSet rs = ps.executeQuery();
-                boolean exists = rs.next();
-                rs.close();
-                ps.close();
-                
-                if (!exists) {
-                    return false;
-                }
-                
-                // 이제 업데이트 진행
-                String updateSql = "UPDATE reading_reservations SET r_reserve_status = '취소완료' WHERE r_reserve_no = ?";
-                ps = conn.prepareStatement(updateSql);
-                ps.setInt(1, rReserveNo);
-                cnt = ps.executeUpdate();
-                
-                return cnt > 0;
-            } finally {
-                if (ps != null) {
-                    try {
-                        ps.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, 3); // 최대 3번 재시도
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int cnt = 0;
         
-        return success ? 1 : 0;
+        try {
+            conn = DBUtil.getConnection();
+            conn.setAutoCommit(false); // 트랜잭션 시작
+            
+            // 예약 상태 업데이트
+            String updateSql = "UPDATE reading_reservations SET r_reserve_status = '취소완료' WHERE r_reserve_no = ?";
+            ps = conn.prepareStatement(updateSql);
+            ps.setInt(1, rReserveNo);
+            cnt = ps.executeUpdate();
+            
+            conn.commit(); // 트랜잭션 커밋
+            
+        } catch (SQLException e) {
+            try {
+                if (conn != null) conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println("예약 취소 중 예외 발생: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeResources(conn, ps, null);
+        }
+        
+        return cnt;
     }
 }

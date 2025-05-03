@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-    <Resource 
-        name="jdbc/oracleDB" 
-        auth="Container" 
+    <Resource
+        name="jdbc/oracleDB"
+        auth="Container"
         type="javax.sql.DataSource"
         driverClassName="oracle.jdbc.driver.OracleDriver"
-        url="jdbc:oracle:thin:@112.220.114.131:1521:xe"
-        username="TEAM3_202502M"
-        password="JAVA"
+        url="jdbc:oracle:thin:@localhost:1521:xe"
+        username="C##PRACTICE"
+        password="java"
         maxTotal="20"
         maxIdle="10"
         minIdle="5"
@@ -17,8 +17,7 @@
         testWhileIdle="true"
         timeBetweenEvictionRunsMillis="30000"
         removeAbandonedTimeout="60"
-        removeAbandoned="true"
-        logAbandoned="true"
-        validationTimeout="30000"
-    />
+        removeAbandonedOnBorrow="true"
+        removeAbandonedOnMaintenance="true"
+        logAbandoned="true" />
 </Context>
