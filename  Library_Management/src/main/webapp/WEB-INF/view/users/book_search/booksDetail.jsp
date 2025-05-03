@@ -29,30 +29,25 @@ body {
 }
 
 .book-detail {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start; /* 왼쪽 정렬 */
-	align-items: flex-start; /* 상단 정렬 */
-	gap: 20px; /* 책 표지와 정보 사이 간격 */
+  display: flex;
+  gap: 20px;
 }
 
 .book-cover {
-	flex-shrink: 0; /* 이미지 크기가 줄어들지 않도록 */
-	max-width: 150px; /* 책 표지의 최대 크기 */
-	height: auto;
+  flex: 0 0 150px; /* 고정 너비 */
 }
 
 .book-cover img {
-	width: 100%;
-	height: auto;
-	border-radius: 8px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  height: auto;
+  object-fit: cover; /* 비율 유지하면서 자르기 */
+  display: block;
 }
 
 .book-info {
-	flex: 1;
-	padding-left: 30px;
-	max-width: 600px; /* 책 정보 영역의 최대 너비 */
+  flex: 1; /* 남은 공간 차지 */
+  min-width: 0; /* 줄어들 수 있도록 */
+  overflow-wrap: break-word;
 }
 
 .book-info h2 {
@@ -726,7 +721,7 @@ body {
 						<br> <label for="reviewContent">리뷰내용</label><br>
 						<textarea name="reviewContent" id="reviewContent" rows="4"
 							cols="30" required
-							style="width: 482px; height: 80px; resize: none"></textarea>
+							style="width: 400px; height: 80px; resize: none"></textarea>
 						<input type="hidden" name="bookNo" id="bookNo" value="${bookDetail.bookNo}"> 
 						<input type="hidden" id="rating" name="rating" value="0">
 						<button type="button" onclick="insertReview()" id="reviewBtn" class="btn btn-submit">등록</button>
@@ -761,7 +756,7 @@ body {
 	    
 	    <label for="editRevContent">리뷰내용</label><br>
 	    <textarea name="editRevContent" id="editRevContent" rows="4" cols="30" required
-	              style="width: 482px; height: 80px; resize: none"></textarea><br><br>
+	              style="width: 400px; height: 80px; resize: none"></textarea><br><br>
 	    
 	    <button onclick="updateReview()" class="btn btn-edit">수정 완료</button>
 	    <button onclick="closeModal()" class="btn btn-delete">취소</button>

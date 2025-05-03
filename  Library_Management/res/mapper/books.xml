@@ -40,7 +40,7 @@
 	<insert id="insertBooks" parameterType="BooksVo">
 		insert into books
 		values(SEQ_BOOKS.NEXTVAL,#{bookTitle},#{isbn},#{pubdate},#{cover},
-		'보유',#{author},#{publisher},#{categoryNo},sysdate)
+		'보유',#{author},#{publisher},10,sysdate)
 	</insert>
 
 	<!-- 모든책 검색 -->

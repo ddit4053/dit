@@ -34,7 +34,7 @@ public class BooksInsertController extends HttpServlet {
         int start = 1;
         int max =	10;
         int end = 1; // 50페이지까지 불러오고 싶다면 1페이지 부터 10권씩 50페이지까지
-        int CategoryId = 53562;
+        String title = "TCP/IP";
         
         Gson gson = new Gson();
         JsonArray allItems = new JsonArray();
@@ -42,10 +42,10 @@ public class BooksInsertController extends HttpServlet {
         StringBuilder allResults = new StringBuilder();
 
         do {
-            String apiUrl = "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=" + ttbKey +
-                            "&QueryType=ItemEditorChoice&MaxResults=" + max +
-                            "&start=" + start +
-                            "&Cover=Small&CategoryId="+CategoryId+"&SearchTarget=Book&output=JS&Version=20131101";
+            String apiUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?"
+    				+ "ttbkey="+ttbKey+"&Query="+title+"&QueryType=Title&MaxResults="+max+"&"
+    				+ "start="+start+"&SearchTarget=Book&output=JS&Version=20131101";;
+;
             //카테고리 아이디 1230으로 일단 가져오기
             
 
@@ -75,7 +75,7 @@ public class BooksInsertController extends HttpServlet {
             allResults.append(result); // 결과 누적
             start += 1;
             
-        } while (start < end); // 종료 조건 수정
+        } while (start <= end); // 종료 조건 수정
 
       //  List<BooksVo> isbnList  = booksService.bookIsbnList();
         
@@ -88,14 +88,16 @@ public class BooksInsertController extends HttpServlet {
 		List<BooksVo> bookList = gson.fromJson(items, listType);
 		
 		for (BooksVo booksVo : bookList) {
-		    if (booksVo.getCategoryNo() == CategoryId) {	// 내가 입력한 것과 같은 카테고리 값만 등록
+		    //if (booksVo.getCategoryNo() == CategoryId) {	// 내가 입력한 것과 같은 카테고리 값만 등록
 		        booksService.insertBooksIfNotExist(booksVo);
-		    }
+		    //}
 		}
 		//System.out.println(bookList);
-		
+//		
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(gson.toJson(responseJson));
         
     }
 }
+
+
