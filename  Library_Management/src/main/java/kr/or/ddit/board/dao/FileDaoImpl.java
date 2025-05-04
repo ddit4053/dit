@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.ddit.util.MybatisDao;
+import kr.or.ddit.vo.FileGroupVo;
 import kr.or.ddit.vo.File_StorageVo;
 
 public class FileDaoImpl extends MybatisDao implements IFileDao{
@@ -57,6 +58,16 @@ public class FileDaoImpl extends MybatisDao implements IFileDao{
 	@Override
 	public int createFileGroup(Map<String, Object> map) {
 		return insert("file.createFileGroup", map);
+	}
+
+	@Override
+	public int updateFileGroupCodeNo(FileGroupVo fileGroup) {
+		return update("file.updateFileGroupCodeNo", fileGroup);
+	}
+
+	@Override
+	public FileGroupVo selectFileGroup(int fileGroupNum) {
+		return selectOne("file.selectFileGroup", fileGroupNum);
 	}
 
 	

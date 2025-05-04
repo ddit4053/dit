@@ -22,6 +22,7 @@ import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.board.service.IFileService;
 import kr.or.ddit.vo.BookBoardCodeVo;
 import kr.or.ddit.vo.BookBoardVo;
+import kr.or.ddit.vo.FileGroupVo;
 import kr.or.ddit.vo.File_StorageVo;
 import kr.or.ddit.vo.UsersVo;
 
@@ -118,6 +119,7 @@ public class BoardUpdateController extends HttpServlet {
                 throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
             }
             
+            
             // 작성자 확인 (본인 글만 수정 가능)
             if (originalBoard.getUserNo() != loginUser.getUserNo()) {
                 throw new IllegalStateException("자신의 게시글만 수정할 수 있습니다.");
@@ -134,6 +136,8 @@ public class BoardUpdateController extends HttpServlet {
             // 파일그룹 번호는 게시글 번호와 동일하게 설정
             board.setFileGroupNum(boardNo);
             
+            
+            
             // 파일 업로드 처리 (새 파일이 있는 경우)
             boolean hasNewFiles = false;
             for (Part part : req.getParts()) {
@@ -149,6 +153,17 @@ public class BoardUpdateController extends HttpServlet {
                 // 파일 업로드 - 게시글 번호를 파일그룹 번호로 사용
                 List<File_StorageVo> uploadedFiles = fileService.uploadFiles(req, "BOARD", boardNo);
             }  
+            
+            if (originalBoard.getCodeNo() != codeNo){
+            	// 게시판 이동시 파일그룹의 코드 번호 수정
+                FileGroupVo fileGroup = fileService.selectFileGroup(boardNo);
+                fileGroup.setFileGroupNum(boardNo);
+                fileGroup.setCodeNo(codeNo);
+                boolean result = fileService.updateFileGroupCodeNo(fileGroup);
+                if (!result) {
+                	throw new RuntimeException("파일 게시판 이동 처리 실패");
+                }
+            }
             
             // 게시글 업데이트
             boolean result = boardService.updateBoard(board) > 0;

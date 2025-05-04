@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import kr.or.ddit.board.dao.FileDaoImpl;
 import kr.or.ddit.board.dao.IFileDao;
+import kr.or.ddit.vo.FileGroupVo;
 import kr.or.ddit.vo.File_StorageVo;
 import kr.or.ddit.vo.UsersVo;
 
@@ -190,6 +191,16 @@ public class FileServiceImpl implements IFileService{
             fileList.add(file);
 		}
 		return fileList;
+	}
+
+	@Override
+	public boolean updateFileGroupCodeNo(FileGroupVo fileGroup) {
+		return fileDao.updateFileGroupCodeNo(fileGroup) > 0;
+	}
+
+	@Override
+	public FileGroupVo selectFileGroup(int fileGroupNum) {
+		return fileDao.selectFileGroup(fileGroupNum);
 	}
 	
 }

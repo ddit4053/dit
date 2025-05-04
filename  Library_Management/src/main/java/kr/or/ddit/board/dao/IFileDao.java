@@ -3,6 +3,7 @@ package kr.or.ddit.board.dao;
 import java.util.List;
 import java.util.Map;
 
+import kr.or.ddit.vo.FileGroupVo;
 import kr.or.ddit.vo.File_StorageVo;
 
 /**
@@ -25,6 +26,10 @@ public interface IFileDao {
     File_StorageVo selectFileByNo(int fileNo);
     
     int updateFileReference(File_StorageVo file);
+    
+    FileGroupVo selectFileGroup(int fileGroupNum);
+    
+    int updateFileGroupCodeNo(FileGroupVo fileGroup);
     
     /**
      * 새 파일 등록

@@ -31,6 +31,11 @@ public interface IFileService {
     // 파일 referId 업데이트
     boolean updateFileReference(File_StorageVo file);
     
+    // 파일 그룹 번호로 파일그룹 조회
+    FileGroupVo selectFileGroup(int fileGroupNum);
+    
+    // 파일 그룹의 코드 넘버 업데이트
+    boolean updateFileGroupCodeNo(FileGroupVo fileGroup);
     
     /**
      * 파일 다운로드 처리

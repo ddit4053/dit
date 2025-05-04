@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="file">
 	 <!-- 파일 그룹 번호로 파일 목록 조회 -->
-    <select id="selectFilesByGroup" parameterType="FileGroupVo" resultType="File_StorageVo">
+    <select id="selectFilesByGroupNum" parameterType="int" resultType="File_StorageVo">
         SELECT * 
           FROM FILE_STORAGE
          WHERE FILE_GROUP_NUM = #{fileGroupNum}
@@ -33,7 +33,7 @@
 			        #{referenceId},
 			        #{userNo},
 			        #{fileGroupNum},
-			        'N',   <!-- DELYN 기본값 -->
+			        'N'   <!-- DELYN 기본값 -->
 			        )
     </insert>
     
@@ -49,12 +49,25 @@
 	       SET REFERENCE_ID = #{referenceId}
 	     WHERE FILE_NO = #{fileNo}
 	</update>
+	
+	<!-- 파일 그룹 번호로 코드번호 조회 -->
+	<select id="selectFileGroup" parameterType="int"  resultType = "FileGroupVo">
+		SELECT *
+		  FROM FILE_GROUP
+		 WHERE FILE_GROUP_NUM = #{fileGroupNum} 
+	</select>
+	
+	<!-- 게시판 이동 시 파일그룹의 코드넘버 업데이트  -->
+	<update id="updateFileGroupCodeNo" parameterType = "FileGroupVo">
+		UPDATE FILE_GROUP
+		   SET CODE_NO = #{codeNo}
+		 WHERE FILE_GROUP_NUM = #{fileGroupNum} 
+	</update>
    	
    	<!-- 단일 파일 논리적 삭제 -->
 	<update id="deleteFile" parameterType="int">
 	    UPDATE FILE_STORAGE
 	       SET DELYN = 'Y'
-	           DELETE_DATE = SYSDATE
 	     WHERE FILE_NO = #{fileNo}
 	</update>
     

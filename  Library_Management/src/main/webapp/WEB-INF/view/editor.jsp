@@ -76,8 +76,15 @@
                             <button type="button" class="strikeFont" aria-label="취소선">S</button>
                         </div> -->
                     </div>
+                    <div class="attachment">
+                    	 <!-- 첨부된 파일 목록 보여주고, 각 첨부파일 명 옆에 x버튼 클릭하여 등록 취소 가능 -->
+                    </div>
+                    
                     
                     <!-- 본문 에디터 -->
+                    <!-- 본문에 첨부한 이미지파일과 URL을 렌더링해야함.
+                    단, 렌더링 된 이미지나 URL을 조작하여 사이즈 조절 및 등록 취소가 가능해야함
+                    본문 텍스트 영역을 변경하거나 침범해서는 안 됨. -->
                     <div class="editor-content">
                         <textarea 
                             placeholder="내용을 입력하세요." 
@@ -114,5 +121,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
 <!-- 에디터 기능 관련 스크립트 -->
 <script src="${pageContext.request.contextPath}/resource/js/editor/editorAjax.js"></script>
+<script src="${pageContext.request.contextPath}/resource/js/editor/editorToolbox.js"></script>
+
 
 <jsp:include page="footer.jsp" />

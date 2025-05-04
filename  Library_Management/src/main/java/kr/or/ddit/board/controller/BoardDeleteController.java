@@ -70,7 +70,7 @@ public class BoardDeleteController extends HttpServlet{
               
                 if (board.getFileGroupNum() != null && board.getFileGroupNum() > 0) {
                     // 파일 스토리지 논리적 삭제
-                    fileService.deleteFilesByGroupNum(boardNo);
+                    fileService.deleteFilesByGroupNum(board.getFileGroupNum());
                 }
                 // 게시글 삭제 
                 result = boardService.deleteBoard(boardNo) > 0;
