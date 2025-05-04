@@ -153,7 +153,8 @@
 		    const type = $("#listSelector").val();
 		    loadBooks(type, pageNumber);
 		}
-
+		
+		
 		// 도서 로드 함수 (페이지 추가)
 		function loadBooks(type, page = 1) {
 		    $.ajax({
@@ -163,24 +164,27 @@
 		        success: function(response) {
 		            const books = response.books;
 		            const totalPages = response.totalPages;
+					const isDeletedList = (type === "deleted"); // 삭제 목록 여부 확인
 
 		            $("tbody").empty();
 		            books.forEach(function(book) {
 		                const title = book.title.split('-')[0];
 		                const row = `
 		                    <tr class="bookList" data-bookno="\${book.bookNo}">
-		                        <td>\${book.bookNo}</td>
-		                        <td>\${title}</td>
-		                        <td>\${book.isbn}</td>
-		                        <td>\${book.pubDate}</td>
-		                        <td><img src="\${book.cover}" alt="cover" width="60px"/></td>
-		                        <td>\${book.bookStatus}</td>
-		                        <td>\${book.author}</td>
-		                        <td>\${book.publisher}</td>
-		                        <td>\${book.categoryId}</td>
-		                        <td>\${book.insertDate}</td>
-		                        <td><button onclick="bookDelete(event, \${book.bookNo})">삭제</button></td>
-		                    </tr>
+			                    <td>\${book.bookNo}</td>
+			                    <td>\${title}</td>
+			                    <td>\${book.isbn}</td>
+			                    <td>\${book.pubDate}</td>
+			                    <td><img src="\${book.cover}" alt="cover" width="60px"/></td>
+			                    <td>\${book.bookStatus}</td>
+			                    <td>\${book.author}</td>
+			                    <td>\${book.publisher}</td>
+			                    <td>\${book.categoryId}</td>
+			                    <td>\${book.insertDate}</td>
+			                    <td>
+			                        \${isDeletedList ? '' : `<button onclick="bookDelete(event, \${book.bookNo})">삭제</button>`}
+			                    </td>
+	                		</tr>
 		                `;
 		                $("tbody").append(row);
 		            });

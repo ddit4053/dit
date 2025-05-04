@@ -114,6 +114,12 @@ public class BooksDaoImpl extends MybatisDao implements IBooksDao {
 		return selectList("books.getNewBooksByPage",map);
 	}
 
+	@Override
+	public int insertRealBook() {
+		// TODO Auto-generated method stub
+		return insert("books.insertRealBook",null);
+	}
+
 
 	
 }

@@ -33,5 +33,7 @@ public interface IBooksService {
 	public List<BooksVo> newBookList();
 
 	public List<BooksVo> getNewBooksByPage(int page, int pageSize);
+
+	public int insertRealBook();
 	
 }

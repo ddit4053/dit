@@ -36,4 +36,6 @@ public interface IBooksDao {
 
 	public List<BooksVo> getNewBooksByPage(int startRow, int endRow);
 
+	public int insertRealBook();
+
 }

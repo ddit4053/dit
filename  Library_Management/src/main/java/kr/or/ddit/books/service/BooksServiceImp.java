@@ -132,6 +132,12 @@ public class BooksServiceImp implements IBooksService{
 		return booksDao.getNewBooksByPage(startRow, endRow);
 	}
 
+	@Override
+	public int insertRealBook() {
+		// TODO Auto-generated method stub
+		return booksDao.insertRealBook();
+	}
+
 	
 	
 

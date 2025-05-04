@@ -44,4 +44,10 @@
 		select count(*)
 		from BOOK_REQUESTS
 	</select>
+	
+	<update id="updateSuccess" parameterType="String">
+		UPDATE BOOK_REQUESTS
+		SET	REQ_BOOK_STATUS = '승인'
+		WHERE	REQ_BOOK_NO = #{reqBookNo}
+	</update>
 </mapper>

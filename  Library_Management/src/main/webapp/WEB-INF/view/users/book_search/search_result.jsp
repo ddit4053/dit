@@ -169,13 +169,13 @@
           <span class="page-btn active">${i}</span>
         </c:when>
         <c:otherwise>
-          <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${i}" class="page-btn">${i}</a>
+          <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&query=${param.query}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${i}" class="page-btn">${i}</a>
         </c:otherwise>
       </c:choose>
     </c:forEach>
 
     <c:if test="${currentPage < totalPages}">
-      <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${currentPage + 1}" class="page-btn">다음</a>
+      <a href="${pageContext.request.contextPath}/books/search/result?searchType=${param.searchType}&keyword=${param.keyword}&query=${param.query}&year=${param.year}&selectedCategoryId=${param.selectedCategoryId}&page=${currentPage + 1}" class="page-btn">다음</a>
     </c:if>
   </div>
 </c:if>

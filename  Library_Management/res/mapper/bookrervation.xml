@@ -23,8 +23,15 @@
 	</select>
 	
 	<select id="reserveList" parameterType="BookReservationsVo" resultType="BookReservationsVo"> 
-			select *
-			from BOOK_RESERVATIONS
-			where book_no = #{bookNo}
+		SELECT
+		    br.*,
+		    u.NAME as name
+		FROM
+		    BOOK_RESERVATIONS br
+		JOIN
+		    USERS u ON br.USER_NO = u.USER_NO
+		WHERE
+		    br.BOOK_NO = #{bookNo}
+
 	</select>
 </mapper>

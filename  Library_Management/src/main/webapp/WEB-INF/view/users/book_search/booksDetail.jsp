@@ -2,8 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<script
-	src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
+<script src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -589,7 +588,6 @@ body {
 	   		    html += '<th>예약 일자</th>';
 	   		    html += '<th>상태</th>';
 	   		    html += '<th>사용자 이름</th>';
-	   		    html += '<th>책 제목</th>';
 	   		    html += '</tr>';
 
 	   		    if (res.length === 0) {
@@ -600,8 +598,7 @@ body {
 	   		            html += `<td>\${item.reserveNo}</td>`;
 	   		            html += `<td>\${item.reserveDate}</td>`;
 	   		            html += `<td>\${item.reserveStatus}</td>`;
-	   		            html += `<td>\${item.bookNo}</td>`;
-	   		            html += `<td>\${item.userNo}</td>`;
+	   		            html += `<td>\${item.name}</td>`;
 	   		            html += '</tr>';
 	   		        });
 
