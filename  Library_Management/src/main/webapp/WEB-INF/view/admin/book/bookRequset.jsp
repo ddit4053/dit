@@ -244,7 +244,8 @@ function rejectBook(reqBookNo) {
 	      if (data.success) {
 	        alert("신청이 거절되었습니다.");
 	        location.reload();
-	      },
+	      }
+      	},
 	    error: function(xhr, status, error) {
 	      console.error(xhr.status);
 	      alert("요청 중 오류가 발생했습니다.");
