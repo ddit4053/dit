@@ -107,4 +107,19 @@ public class BookAdminReqInsertController extends HttpServlet {
 		}
 	
 	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String reqBookNo = req.getParameter("reqBookNo");
+		JsonObject json = new JsonObject();
+		
+		int reject =0;
+		reject = reqBookService.updateReject(reqBookNo);
+		
+		if(reject >0) {
+			json.addProperty("success", true);
+		}
+		
+		 resp.getWriter().print(json.toString());
+	}
 }

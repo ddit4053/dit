@@ -104,7 +104,7 @@
 	  }
 	  
 	.approve-btn {
-	  padding: 10px 18px;
+	  padding: 14px 22px;
 	  background-color: #5d4037;
 	  color: white;
 	  border: none;
@@ -122,6 +122,33 @@
 	.approve-btn:active {
 	  background-color: #3e8e41;
 	}
+	.reject-btn {
+	  padding: 14px 22px;
+	  background-color: #a82828;
+	  color: white;
+	  border: none;
+	  border-radius: 6px;
+	  font-size: 14px;
+	  cursor: pointer;
+	  margin-left: 10px;
+	  transition: background-color 0.3s, transform 0.2s;
+	}
+	
+	.reject-btn:hover {
+	  background-color: #c94c4c;
+	  transform: translateY(-2px);
+	}
+	
+	.reject-btn:active {
+	  background-color: #5b0f1b;
+	}
+	
+	.action-buttons {
+	  display: flex;
+	  justify-content: flex-start;
+	  margin-top: 12px;
+	}
+		
   </style>
 </head>
 <body>
@@ -141,10 +168,12 @@
           
           
 		<input type="hidden" id="reqBookNo-${book.reqBookNo}" value="${book.reqBookNo}" />
-		<c:if test="${book.reqBookStatus eq '접수'}">
-  			<button type="button" class="approve-btn" onclick="approveBook(${book.reqBookNo},${book.reqIsbn})">신청 승인</button>
-		</c:if>
-
+		<div class="action-buttons">
+			<c:if test="${book.reqBookStatus eq '접수'}">
+	  			<button type="button" class="approve-btn" onclick="approveBook(${book.reqBookNo},${book.reqIsbn})">신청 승인</button>
+	  			<button type="button" class="reject-btn" onclick="rejectBook(${book.reqBookNo})">신청 거절</button>
+			</c:if>
+		</div>
 
         </div>
       </div>
@@ -175,8 +204,7 @@
 </html>
 <script>
 function approveBook(reqBookNo,reqIsbn) {
-	  console.log(reqBookNo);
-	  console.log(reqIsbn);
+
 	  if (!confirm("정말로 신청 도서를 승인하시겠습니까?")) {
 	    return;
 	  }
@@ -200,4 +228,28 @@ function approveBook(reqBookNo,reqIsbn) {
 	    }
 	  });
 	}
+	
+function rejectBook(reqBookNo) {
+
+	  if (!confirm("정말로 신청 도서를 거절하시겠습니까?")) {
+	    return;
+	  }
+
+	  $.ajax({
+	    url: "approveRequest.do",
+	    method: "post",
+	    data: { reqBookNo: reqBookNo },
+	    dataType: "json",
+	    success: function(data) {
+	      if (data.success) {
+	        alert("신청이 거절되었습니다.");
+	        location.reload();
+	      },
+	    error: function(xhr, status, error) {
+	      console.error(xhr.status);
+	      alert("요청 중 오류가 발생했습니다.");
+	    }
+	  });
+	}
+
 </script>

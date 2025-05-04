@@ -48,6 +48,12 @@ public class ReqBookDaoImpl extends MybatisDao implements IReqBookDao {
 		return update("bookRequset.updateSuccess", reqBookNo);
 	}
 
+	@Override
+	public int updateReject(String reqBookNo) {
+		// TODO Auto-generated method stub
+		return update("bookRequset.updateReject", reqBookNo);
+	}
+
 	
 
 }

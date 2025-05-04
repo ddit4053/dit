@@ -14,4 +14,6 @@ public interface IReqBookService {
 
 	public int updateSuccess(String reqBookNo);
 
+	public int updateReject(String reqBookNo);
+
 }

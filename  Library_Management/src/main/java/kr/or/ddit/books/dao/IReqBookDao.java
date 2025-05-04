@@ -14,4 +14,6 @@ public interface IReqBookDao {
 
 	public int updateSuccess(String reqBookNo);
 
+	public int updateReject(String reqBookNo);
+
 }
