@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import kr.or.ddit.util.MybatisUtil;
+import kr.or.ddit.vo.PagingVo;
 
 public class BanUserListDaoImpl implements IBanUserLIstDao {
 	
@@ -43,6 +44,20 @@ public class BanUserListDaoImpl implements IBanUserLIstDao {
 		
 		
 		return list;
+	}
+
+	@Override
+	public int countSelectBanList() {
+		 try ( SqlSession sql = MybatisUtil.getInstance() ) {
+		      return sql.selectOne("banUser.countSelectBanList");
+		    }
+	}
+
+	@Override
+	public List<Map<String, Object>> countSelectBanPaged(PagingVo vo) {
+		try ( SqlSession sql = MybatisUtil.getInstance() ) {
+		      return sql.selectList("banUser.countSelectBanPaged", vo);
+		    }
 	}
 
 }

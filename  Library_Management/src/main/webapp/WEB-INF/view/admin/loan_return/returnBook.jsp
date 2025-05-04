@@ -51,7 +51,16 @@
           <td>${v.name}</td>
           <td>${v.loanDate}</td>
           <td>${v.dueDate}</td>
-          <td>${v.returnDate}</td>
+          <td>
+			  <c:choose>
+			    <c:when test="${empty v.returnDate}">
+			      미반납
+			    </c:when>
+			    <c:otherwise>
+			      ${v.returnDate}
+			    </c:otherwise>
+			  </c:choose>
+		  </td>
           <td>
             <c:choose>
               <c:when test="${empty v.returnDate}">

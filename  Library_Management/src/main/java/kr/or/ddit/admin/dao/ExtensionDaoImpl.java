@@ -96,5 +96,12 @@ public class ExtensionDaoImpl implements IExtensionDao {
 		}
 		return list;
 	}
+	
+	public Map<String, Object> selectApprovalContact(int approvalNo) {
+	    try (SqlSession sql = MybatisUtil.getInstance()) {
+	        return sql.selectOne("extension.selectApprovalContact", approvalNo);
+	    }
+	}
+
 
 }

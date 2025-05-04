@@ -18,8 +18,34 @@ public class SuspendedUserControoler extends HttpServlet{
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<Map<String, Object>> list = service.selectBanMap();
-		req.setAttribute("list", list);
+		//List<Map<String, Object>> list = service.selectBanMap();
+		//req.setAttribute("list", list);
+		
+		int page = 1;
+        int size = 5; // 기본 페이지 사이즈
+        
+    	String p = req.getParameter("page");
+    	String s = req.getParameter("size");
+    	
+    	if(p != null) {
+    		try {
+				page = Integer.parseInt(p);
+			} catch (NumberFormatException e) {
+				page =1;
+			}
+    	}
+    	if(s != null) {
+    		try {
+    			size = Integer.parseInt(s);
+    		} catch (NumberFormatException e) {
+    			size =1;
+    		}
+    	}
+    	
+    	Map<String, Object> data = service.getSelectBanListPaged(page,size);
+    	req.setAttribute("list", data.get("list"));
+    	req.setAttribute("paging", data.get("paging"));
+    	
 		req.setAttribute("pageTitle",       "대출 정지 대상자 목록");
         req.setAttribute("breadcrumbTitle", "대출 정지 대상자 목록");
         

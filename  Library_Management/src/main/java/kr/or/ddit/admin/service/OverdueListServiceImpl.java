@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import kr.or.ddit.admin.controller.EmailSender;
 import kr.or.ddit.admin.dao.IOverdueListDao;
 import kr.or.ddit.admin.dao.OverdueListDaoImpl;
 import kr.or.ddit.vo.Noti;
+import kr.or.ddit.vo.PagingVo;
 
 public class OverdueListServiceImpl implements IOverdueListService {
 	
@@ -73,6 +75,21 @@ public class OverdueListServiceImpl implements IOverdueListService {
 		  int inserted = dao.insertWarningHistory(noti);
 
 		  return inserted>0;
+	}
+	@Override
+	public Map<String, Object> getBanUserListPaged(int currentPage, int pageSize) {
+		
+		int totalCount = dao.countBanUserList();
+		PagingVo paging = new PagingVo(currentPage, pageSize, totalCount);
+		
+		List<Map<String, Object>> list = dao.countBanUserPaged(paging);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("list", list);
+	    result.put("paging", paging);
+		
+		
+		return result;
 	}
 
 }
