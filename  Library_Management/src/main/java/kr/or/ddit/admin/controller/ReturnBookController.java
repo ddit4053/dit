@@ -34,8 +34,11 @@ public class ReturnBookController extends HttpServlet {
         // 2) 공통: 'page' 파라미터 읽기 (없으면 1)
         int page = 1;
         int size = 10; // 기본 페이지 사이즈
+        String stype = req.getParameter("stype");
+        String sword = req.getParameter("sword");
+        
         String p = req.getParameter("page");
-String s = req.getParameter("size");
+        String s = req.getParameter("size");
     	
     	if(p != null) {
     		try {
@@ -48,15 +51,16 @@ String s = req.getParameter("size");
     		try {
     			size = Integer.parseInt(s);
     		} catch (NumberFormatException e) {
-    			size =1;
+    			size =10;
     		}
     	}
 
         if ("/admin/loans/management".equals(path) 
          || "/admin/loans/management/list".equals(path)) {
             // ■ 반납 처리 화면 (페이징)
-            Map<String, Object> data = service.getReturnListPaged(page,size);
-            req.setAttribute("list",   data.get("list"));
+        	Map<String, Object> data = service.getReturnListPaged(page, size, stype, sword);
+        	
+        	req.setAttribute("list",   data.get("list"));
             req.setAttribute("paging", data.get("paging"));
             req.setAttribute("pageTitle",      "반납 처리");
             req.setAttribute("breadcrumbTitle","반납 처리");
@@ -73,7 +77,8 @@ String s = req.getParameter("size");
 
         } else {
             // 기타 경로인 경우, 기본을 반납 처리 화면으로
-            Map<String, Object> data = service.getReturnListPaged(page,size);
+        	Map<String, Object> data = service.getReturnListPaged(page, size, stype, sword);
+
             req.setAttribute("list",   data.get("list"));
             req.setAttribute("paging", data.get("paging"));
             req.setAttribute("pageTitle",      "반납 처리");

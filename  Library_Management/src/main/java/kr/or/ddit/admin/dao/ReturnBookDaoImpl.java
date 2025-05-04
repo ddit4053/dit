@@ -1,5 +1,6 @@
 package kr.or.ddit.admin.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -190,36 +191,32 @@ public class ReturnBookDaoImpl implements IReturnBookDao {
 
 
 	@Override
-	  public int countReturnList() {
-	    try ( SqlSession sql = MybatisUtil.getInstance() ) {
-	      return sql.selectOne("return.countReturnList");
-	    }
-	  }
+    public List<Map<String, Object>> returnListPagedWithSearch(Map<String, Object> param) {
+        try (SqlSession sql = MybatisUtil.getInstance()) {
+            return sql.selectList("return.returnListPaged", param);
+        }
+    }
 
-	  @Override
-	  public List<Map<String,Object>> returnListPaged(PagingVo paging) {
-	    try ( SqlSession sql = MybatisUtil.getInstance() ) {
-	      return sql.selectList("return.returnListPaged", paging);
-	    }
-	  }
+    @Override
+    public int countReturnListWithSearch(Map<String, Object> param) {
+        try (SqlSession sql = MybatisUtil.getInstance()) {
+            return sql.selectOne("return.countReturnList", param);
+        }
+    }
 
+    @Override
+    public int countReturnedList() {
+        try (SqlSession sql = MybatisUtil.getInstance()) {
+            return sql.selectOne("return.countReturnedList");
+        }
+    }
 
+    @Override
+    public List<Map<String, Object>> returnedListPaged(PagingVo paging) {
+        try (SqlSession sql = MybatisUtil.getInstance()) {
+            return sql.selectList("return.returnedListPaged", paging);
+        }
+    }
 
-	@Override
-	public int countReturnedList() {
-		try ( SqlSession sql = MybatisUtil.getInstance() ) {
-		      return sql.selectOne("return.countReturnedList");
-		    }
-	}
-
-
-
-	@Override
-	public List<Map<String, Object>> returnedListPaged(PagingVo paging) {
-		 try ( SqlSession sql = MybatisUtil.getInstance() ) {
-		      return sql.selectList("return.returnedListPaged", paging);
-		    }
-	}
-	
 	
 }

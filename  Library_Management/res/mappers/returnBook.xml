@@ -17,40 +17,66 @@
 	</resultMap>
 	
 	<!-- 0) 전체 건수 조회 -->
-	<select id="countReturnList" resultType="int">
+	<select id="countReturnList" parameterType="map" resultType="int">
 	  SELECT COUNT(*)
-	    FROM book_loans a
-	    JOIN real_book r ON a.real_book = r.real_book
-	    JOIN books      b ON r.book_no   = b.book_no
-	    JOIN users      u ON a.user_no   = u.user_no
-	
+	  FROM book_loans a
+	  JOIN users u ON a.user_no = u.user_no
+	  JOIN real_book r ON a.real_book = r.real_book
+	  JOIN books b ON r.book_no = b.book_no
+	  <where>
+	    <choose>
+	      <when test="stype == 'loanNo'">
+	        TO_CHAR(a.loan_no) LIKE '%' || #{sword} || '%'
+	      </when>
+	      <when test="stype == 'name'">
+	        u.name LIKE '%' || #{sword} || '%'
+	      </when>
+	      <when test="stype == 'bookTitle'">
+	        b.book_title LIKE '%' || #{sword} || '%'
+	      </when>
+	    </choose>
+	  </where>
 	</select>
+
 	
 	<!-- 1) 페이징된 목록 조회 -->
-	<select id="returnListPaged" parameterType="PagingVo" resultType="map">
+	<select id="returnListPaged" parameterType="map" resultType="map">
 	  SELECT * FROM (
 	    SELECT row_.*, ROWNUM rn
-	      FROM (
-	        SELECT 
-	          a.loan_no   AS "loanNo",
-	          u.name      AS "name",
-	          b.book_title AS "bookTitle",
-	          TO_CHAR(a.loan_date, 'YYYY-MM-DD') AS "loanDate",
-	          TO_CHAR(a.due_date,  'YYYY-MM-DD') AS "dueDate",
-	          CASE WHEN a.return_date IS NOT NULL
-	               THEN TO_CHAR(a.return_date,'YYYY-MM-DD')
-	               ELSE ''
-	          END AS "returnDate"
-	        FROM book_loans a
-	        JOIN users      u ON a.user_no   = u.user_no
-	        JOIN real_book  r ON a.real_book = r.real_book
-	        JOIN books      b ON r.book_no   = b.book_no
-	        ORDER BY a.return_date DESC
-	      ) row_
+	    FROM (
+	      SELECT 
+	        a.loan_no   AS "loanNo",
+	        u.name      AS "name",
+	        b.book_title AS "bookTitle",
+	        TO_CHAR(a.loan_date, 'YYYY-MM-DD') AS "loanDate",
+	        TO_CHAR(a.due_date,  'YYYY-MM-DD') AS "dueDate",
+	        CASE WHEN a.return_date IS NOT NULL 
+	             THEN TO_CHAR(a.return_date,'YYYY-MM-DD') 
+	             ELSE '' END AS "returnDate"
+	      FROM book_loans a
+	      JOIN users u ON a.user_no = u.user_no
+	      JOIN real_book r ON a.real_book = r.real_book
+	      JOIN books b ON r.book_no = b.book_no
+	      <where>
+	        <choose>
+	          <when test="stype == 'loanNo'">
+	            TO_CHAR(a.loan_no) LIKE '%' || #{sword} || '%'
+	          </when>
+	          <when test="stype == 'name'">
+	            u.name LIKE '%' || #{sword} || '%'
+	          </when>
+	          <when test="stype == 'bookTitle'">
+	            b.book_title LIKE '%' || #{sword} || '%'
+	          </when>
+	        </choose>
+	      </where>
+	      ORDER BY a.return_date DESC, a.loan_date DESC
+	    ) row_
 	    WHERE ROWNUM &lt;= #{endRow}
 	  )
-	  WHERE rn >= #{startRow}
+	  WHERE rn &gt;= #{startRow}
 	</select>
+
 	
 	<!-- 1) 반납 완료 목록 전체 건수 -->
 	<select id="countReturnedList" resultType="int">
@@ -83,7 +109,7 @@
 	        JOIN books          b ON r.book_no   = b.book_no
 	        JOIN overdue_policy p ON a.policy_no = p.policy_no
 	        WHERE a.return_date IS NOT NULL
-	        ORDER BY a.return_date DESC
+	        ORDER BY a.return_date DESC, a.loan_date DESC
 	      ) row_
 	     WHERE ROWNUM &lt;= #{endRow}
 	  )
@@ -112,7 +138,7 @@
 	    JOIN USERS u ON a.user_no = u.user_no
 	    JOIN REAL_BOOK bl ON a.real_book = bl.real_book
 	    JOIN BOOKS b ON bl.book_no = b.book_no
-	   ORDER BY 9 DESC
+	   ORDER BY 9 DESC, a.loan_date DESC
 	</select>
 	
 	

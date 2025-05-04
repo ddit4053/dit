@@ -11,7 +11,9 @@ public interface IReturnBookService {
 	
 	public boolean returnLoan(int loanNo);
 	
-	 public Map<String,Object> getReturnListPaged(int currentPage, int pageSize);
-	 
-	 public Map<String,Object> getReturnedListPaged(int currentPage, int pageSize);
+	 // 🔍 검색 포함 페이징 처리
+    Map<String, Object> getReturnListPaged(int currentPage, int pageSize, String stype, String sword);
+
+    // ✅ 반납 완료 목록 페이징 처리
+    Map<String, Object> getReturnedListPaged(int currentPage, int pageSize);
 }
