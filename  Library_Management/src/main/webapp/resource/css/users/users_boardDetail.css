@@ -74,6 +74,18 @@
   margin-bottom: 25px;
 }
 
+.file-size {
+  color: var(--light-text);
+  font-size: 12px;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+/* 파일 아이콘 스타일 */
+.file-icon {
+  margin-right: 8px;
+}
+
 .board-files h4 {
   font-size: 16px;
   color: var(--primary-color);

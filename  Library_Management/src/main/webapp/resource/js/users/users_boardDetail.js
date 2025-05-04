@@ -50,10 +50,20 @@ async function loadAttachedFiles() {
   const fileGroupNum = fileList.dataset.fileGroup;
   if (!fileGroupNum || fileGroupNum <= 0) return; // 첨부된 파일이 없는 경우 AJAX 요청하지 않음
 
+  const codeNo =
+    fileList.dataset.codeNo || document.getElementById("codeNo")?.value;
+
+  if (!codeNo) {
+    console.error("게시판 번호(codeNo)가 제공되지 않았습니다.");
+    fileList.innerHTML =
+      '<div class="error">파일 목록을 불러오는 중 오류가 발생하였습니다.</div>';
+    return;
+  }
+
   try {
     // 첨부파일 목록 AJAX
     const response = await fetch(
-      `${contextPath}/file/list?fileGroupNum=${fileGroupNum}`
+      `${contextPath}/file/list?fileGroupNum=${fileGroupNum}&codeNo=${codeNo}`
     );
 
     if (!response.ok) {
@@ -85,14 +95,14 @@ function renderFileList(files) {
     // 파일 아이콘 결정
     const fileIcon = getFileIcon(file.fileType);
 
+    // 파일 크기 포맷팅
+    const formattedSize = formatFileSize(file.fileSize);
+
     fileItems += `
         <div class="file-item">
             <span class="file-icon">${fileIcon}</span>
-            <span class="file-name">${file.orgName}</span>
-            <span class="file-size">${formatFileSize(file.fileSize)}</span>
-            <a href="${contextPath}/file/download?fileNo=${
-      file.fileNo
-    }" class="file-download">다운로드</a>
+            <span class="file-name">${file.orgName} (${formattedSize})</span>
+            <a href="${contextPath}/file/download?fileNo=${file.fileNo}" class="file-download">다운로드</a>
         </div>
     `;
   });

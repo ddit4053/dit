@@ -6,6 +6,7 @@
         SELECT * 
           FROM FILE_STORAGE
          WHERE FILE_GROUP_NUM = #{fileGroupNum}
+           AND DELYN ='N'
          ORDER BY FILE_NO ASC
     </select>
     

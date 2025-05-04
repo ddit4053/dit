@@ -30,7 +30,7 @@
 	    <c:if test="${board.fileGroupNum > 0}">
 	    	<div class="board-files">
 		    	<h4>첨부파일</h4>
-		    	<div class="file-list" id="fileList" data-file-group="${board.fileGroupNum}">
+		    	<div class="file-list" id="fileList" data-file-group="${board.fileGroupNum}" data-code-no="${board.codeNo}">
 		    		<!-- 파일 목록은 JavaScript로 로드 -->
 		            <div class="loading">파일 로딩 중...</div>
 		       </div>

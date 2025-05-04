@@ -378,3 +378,158 @@
 .remove-image:hover {
   background-color: rgba(0, 0, 0, 0.7);
 }
+
+/* 동영상 임베드 관련 css */
+/* 미리보기 영역 스타일 */
+.content-preview {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.content-preview h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: var(--secondary-color);
+}
+
+.content-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+/* 유튜브 임베드 스타일 */
+.responsive-embed {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 비율 */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  margin: 15px 0;
+}
+
+.responsive-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.youtube-embed {
+  margin: 15px 0;
+}
+
+/* 첨부 파일 영역 스타일 */
+.attachment {
+  padding: 10px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.attachment-item {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.file-info {
+  margin-right: 10px;
+}
+
+.delete-attachment {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 5px;
+}
+
+.delete-attachment:hover {
+  color: #f44336;
+}
+
+/* 마크다운 미리보기 스타일 */
+#previewContent {
+  line-height: 1.6;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+#previewContent h1, 
+#previewContent h2, 
+#previewContent h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+  color: var(--primary-color);
+}
+
+#previewContent p {
+  margin-bottom: 1em;
+}
+
+#previewContent a {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+#previewContent a:hover {
+  text-decoration: underline;
+}
+
+#previewContent blockquote {
+  border-left: 4px solid var(--secondary-color);
+  padding-left: 15px;
+  margin-left: 0;
+  color: #666;
+}
+
+#previewContent code {
+  background-color: #f0f0f0;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+#previewContent pre {
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+#previewContent pre code {
+  background: none;
+  padding: 0;
+}
+
+#previewContent ul, 
+#previewContent ol {
+  padding-left: 25px;
+  margin-bottom: 1em;
+}
+
+#previewContent table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+#previewContent th, 
+#previewContent td {
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+}
+
+#previewContent th {
+  background-color: #f0f0f0;
+}
