@@ -170,7 +170,7 @@
 				0,
 				#{userNo},
 				#{codeNo},
-				#{fileGroupNum, jdbcType=NUMERIC},
+				#{fileGroupNum, jdbcType=INTEGER},
 				'N'
 		        )
 	</insert>
@@ -188,7 +188,7 @@
 	<!-- 게시글 삭제 (논리적 삭제) -->
 	<update id="deleteBoard" parameterType="int">
 		UPDATE BOOK_BOARD
-		   SET DELYN = 'Y',
+		   SET DELYN = 'Y'
 		 WHERE BOARD_NO = #{boardNo}
 	</update>
 			

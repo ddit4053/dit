@@ -1,6 +1,7 @@
 package kr.or.ddit.board.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.or.ddit.util.MybatisDao;
 import kr.or.ddit.vo.File_StorageVo;
@@ -53,41 +54,9 @@ public class FileDaoImpl extends MybatisDao implements IFileDao{
 		return update("file.deleteFilesByGroupNum", fileGroupNum);
 	}
 	
-	// 논리적 삭제
 	@Override
-	public int deleteFileGroup(int fileGroupNum) {
-	    return update("file.deleteFileGroup", fileGroupNum);
-	}
-	
-	// 미사용 파일 그룹번호 조회
-	@Override
-	public List<Integer> findUnusedFileGroups() {
-	    return selectList("file.findUnusedFileGroups");
-	}	
-	
-	/**
-	 * 삭제된 지 일정 기간이 지난 파일 조회
-	 * @param daysOld 삭제 후 경과 일수
-	 * @return 삭제할 파일 목록
-	 */
-	@Override
-	public List<File_StorageVo> selectFilesToPurge(int daysOld) {
-	    return selectList("file.selectFilesToPurge", daysOld);
-	}
-
-	/**
-	 * 삭제된 지 일정 기간이 지난 파일 메타데이터 물리적 삭제
-	 * @param daysOld 삭제 후 경과 일수
-	 * @return 영향받은 행 수
-	 */
-	@Override
-	public int purgeDeletedFiles(int daysOld) {
-	    return delete("file.purgeDeletedFiles", daysOld);
-	}
-	
-	@Override
-	public int createFileGroup() {
-		return insert("file.createFileGroup", null);
+	public int createFileGroup(Map<String, Object> map) {
+		return insert("file.createFileGroup", map);
 	}
 
 	

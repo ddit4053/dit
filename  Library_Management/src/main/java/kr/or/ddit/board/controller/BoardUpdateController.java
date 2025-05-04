@@ -70,7 +70,7 @@ public class BoardUpdateController extends HttpServlet {
             req.setAttribute("board", board);
             req.setAttribute("codeList", codeList);
             req.setAttribute("mode", "update"); // 수정 모드 설정
-            req.setAttribute("breadcrumbTitle", "게시판");
+            req.setAttribute("breadcrumbTitle", "수정하기");
             
             // 에디터 페이지로 포워딩
             req.getRequestDispatcher("/WEB-INF/view/editor.jsp").forward(req, resp);
@@ -131,8 +131,8 @@ public class BoardUpdateController extends HttpServlet {
             board.setCodeNo(codeNo);
             board.setUserNo(loginUser.getUserNo());
             
-            // 기존 파일 그룹 번호 유지
-            board.setFileGroupNum(originalBoard.getFileGroupNum());
+            // 파일그룹 번호는 게시글 번호와 동일하게 설정
+            board.setFileGroupNum(boardNo);
             
             // 파일 업로드 처리 (새 파일이 있는 경우)
             boolean hasNewFiles = false;
@@ -146,36 +146,9 @@ public class BoardUpdateController extends HttpServlet {
             
             // 파일 처리
             if (hasNewFiles) {
-                Integer fileGroupNum = board.getFileGroupNum();
-                
-                // 기존 파일 그룹이 없는 경우 새로 생성
-                if (fileGroupNum == null || fileGroupNum <= 0) {
-                    fileGroupNum = fileService.createFileGroup();
-                    board.setFileGroupNum(fileGroupNum);
-                } else {
-                    // 기존 파일 삭제 (선택 사항: 모든 파일을 삭제하고 새로 업로드하거나, 기존 파일은 유지하고 추가만 할 수 있음)
-                    // fileService.deleteFilesByGroupNum(fileGroupNum);
-                }
-                
-                // 파일 업로드
+                // 파일 업로드 - 게시글 번호를 파일그룹 번호로 사용
                 List<File_StorageVo> uploadedFiles = fileService.uploadFiles(req, "BOARD", boardNo);
-                
-                // 업로드된 파일이 없는 경우 처리
-                if (uploadedFiles.isEmpty() && (originalBoard.getFileGroupNum() == null || originalBoard.getFileGroupNum() <= 0)) {
-                    // 새로 생성한 파일 그룹이 있으면 삭제
-                    if (fileGroupNum != null && fileGroupNum > 0 && fileGroupNum != originalBoard.getFileGroupNum()) {
-                        fileService.deleteFileGroup(fileGroupNum);
-                    }
-                    board.setFileGroupNum(null);
-                }
-            }
-            
-            // 게시글 정보 업데이트 전 확인
-            if (board.getFileGroupNum() == null) {
-                System.out.println("파일 그룹 번호가 null입니다.");
-                // null 대신 0을 사용하거나 다른 방식으로 처리
-                // board.setFileGroupNum(0);
-            }
+            }  
             
             // 게시글 업데이트
             boolean result = boardService.updateBoard(board) > 0;

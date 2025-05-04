@@ -1,6 +1,7 @@
 package kr.or.ddit.board.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.or.ddit.vo.File_StorageVo;
 
@@ -10,8 +11,8 @@ import kr.or.ddit.vo.File_StorageVo;
 public interface IFileDao {
     
     /**
-     * 파일 그룹 번호로 파일 목록 조회
-     * @param fileGroupNum 파일 그룹 번호
+     * 파일 그룹으로 파일 목록 조회
+     * @param fileGroup 파일 그룹 Vo
      * @return 파일 목록
      */
     List<File_StorageVo> selectFilesByGroupNum(int fileGroupNum);
@@ -50,34 +51,7 @@ public interface IFileDao {
      * 새 파일 그룹 생성
      * @return 생성된 파일 그룹 번호
      */
-    int createFileGroup();
+    int createFileGroup(Map<String, Object> map);
     
-    /**
-     * 미사용 파일 그룹 번호 목록 조회
-     * @return 미사용 파일 그룹 번호 목록
-     */
-    List<Integer> findUnusedFileGroups();
-    
-    
-    /**
-     * 파일 그룹 삭제
-     * @param fileGroupNum 삭제할 파일 그룹 번호
-     * @return 영향받은 행 수
-     */
-    int deleteFileGroup(int fileGroupNum);
-    
-    /**
-     * 삭제된 지 일정 기간이 지난 파일 조회
-     * @param daysOld 삭제 후 경과 일수
-     * @return 삭제할 파일 목록
-     */
-    List<File_StorageVo> selectFilesToPurge(int daysOld);
 
-    /**
-     * 삭제된 지 일정 기간이 지난 파일 메타데이터 물리적 삭제
-     * @param daysOld 삭제 후 경과 일수
-     * @return 영향받은 행 수
-     */
-    int purgeDeletedFiles(int daysOld);    
-    
 }

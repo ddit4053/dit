@@ -7,7 +7,9 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import jakarta.servlet.ServletException;
@@ -94,35 +96,19 @@ public class FileServiceImpl implements IFileService{
 	}
 	
 	/**
-	 * 파일 그룹 논리적 삭제
-	 */
+     * 게시글 번호와 동일한 파일그룹 번호를 생성하는 메서드
+     * @param fileGroupNum 게시글 번호와 일치할 파일그룹 번호
+     * @param codeNo 게시판 코드 번호
+     * @return 생성된 파일그룹 번호 (게시글 번호와 동일)
+     */	
 	@Override
-	public boolean deleteFileGroup(int fileGroupNum) {
-	    return fileDao.deleteFileGroup(fileGroupNum) > 0;
-	}	
-	
-	// 물리적 파일 삭제 (배치 작업용)
-	@Override
-	public void purgeDeletedFiles(int daysOld) {
-	    // 삭제된 지 일정 기간이 지난 파일 정보 조회
-	    List<File_StorageVo> filesToPurge = fileDao.selectFilesToPurge(daysOld);
-	    
-	    // 실제 파일 삭제
-	    for (File_StorageVo fileInfo : filesToPurge) {
-	        File file = new File(fileInfo.getFilePath() + File.separator + fileInfo.getSaveName());
-	        if (file.exists()) {
-	            file.delete();
-	        }
-	    }
-	    
-	    // 파일 메타데이터 물리적 삭제
-	    fileDao.purgeDeletedFiles(daysOld);
-	}
-
-
-	@Override
-	public int createFileGroup() {
-		return fileDao.createFileGroup();
+	public int createFileGroup(int fileGroupNum, int codeNo) {
+		// 게시글 번호와 동일한 파일 그룹 번호를 가진 파일 그룹 생성
+		Map<String, Object> map = new HashMap<>();
+		map.put("fileGroupNum", fileGroupNum);
+		map.put("codeNo", codeNo);
+		fileDao.createFileGroup(map);
+		return fileGroupNum;
 	}
 	
 	
@@ -140,7 +126,7 @@ public class FileServiceImpl implements IFileService{
 	public List<File_StorageVo> uploadFiles(HttpServletRequest req, String referenceType, int referenceId)
 			throws IOException, ServletException {
 		// 파일 저장 경로 설정 (날짜 기반 폴더 구조)
-		String rootPath = "D:/upload/"; // 실제 환경에 맞게 조정 필요
+		String rootPath = "E:/FileTest/"; // 실제 환경에 맞게 조정 필요
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		String folder = sdf.format(new Date());
 		
@@ -155,8 +141,8 @@ public class FileServiceImpl implements IFileService{
 		UsersVo loginUser = (UsersVo) session.getAttribute("user");
 		int userNo = loginUser != null ? loginUser.getUserNo() : 0;
 		
-		// 새 파일 그룹 생성
-		int fileGroupNum = createFileGroup();
+		// 게시글의 번호를 파일그룹 번호로 사용 (게시글 ID와 파일그룹 ID를 동일하게 유지)
+		int fileGroupNum = referenceId;
 		
 		List<File_StorageVo> fileList = new ArrayList<>();
 		
@@ -206,13 +192,4 @@ public class FileServiceImpl implements IFileService{
 		return fileList;
 	}
 	
-	// 미사용 파일 그룹 정리
-	@Override
-	public void cleanUnusedFileGroups() {
-	    List<Integer> unusedGroups = fileDao.findUnusedFileGroups();
-	    for (Integer groupNum : unusedGroups) {
-	        // 논리적 삭제로 변경
-	        fileDao.deleteFileGroup(groupNum);
-	    }
-	}
 }

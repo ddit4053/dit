@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.or.ddit.board.service.FileServiceImpl;
 import kr.or.ddit.board.service.IFileService;
+import kr.or.ddit.vo.FileGroupVo;
 import kr.or.ddit.vo.File_StorageVo;
 import kr.or.ddit.vo.UsersVo;
 
@@ -28,7 +29,6 @@ import kr.or.ddit.vo.UsersVo;
  * - /file/download: 파일 다운로드
  * - /file/upload: 파일 업로드
  * - /file/delete: 파일 삭제
- * - /file/createGroup: 파일 그룹 생성
  */
 @WebServlet("/file/*")
 @MultipartConfig(
@@ -102,9 +102,6 @@ public class FileController extends HttpServlet {
                 case "/delete":
                     deleteFile(req, resp);
                     break;
-                case "/createGroup":
-                    createFileGroup(req, resp);
-                    break;
                 default:
                     resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                     break;
@@ -139,7 +136,14 @@ public class FileController extends HttpServlet {
             throw new IllegalArgumentException("파일 그룹번호가 제공되지 않았습니다.");
         }
         
+        String codeNoStr = req.getParameter("codeNo");
+        if (codeNoStr == null || codeNoStr.trim().isEmpty()) {
+        		throw new IllegalArgumentException("게시판 번호가 제공되지 않았습니다.");
+        }
+        
         int fileGroupNum = Integer.parseInt(fileGroupNumStr);
+        int codeNo = Integer.parseInt(codeNoStr);
+        
         List<File_StorageVo> fileList = fileService.getFilesByGroupNum(fileGroupNum);
         
         Gson gson = new Gson();
@@ -294,7 +298,7 @@ public class FileController extends HttpServlet {
         if (session != null) {
             UsersVo user = (UsersVo) session.getAttribute("user");
             if (user != null) {
-                // 관리자는 모든 파일 삭제 가능 (isAdmin 메서드는 구현 필요)
+                // 관리자는 모든 파일 삭제 가능
                 if (isAdmin(user)) {
                     return;
                 }
@@ -311,28 +315,7 @@ public class FileController extends HttpServlet {
      * 관리자 권한 확인
      */
     private boolean isAdmin(UsersVo user) {
-        // 사용자의 역할이나 권한 수준에 따라 관리자 여부 결정
-        // 예: return "ADMIN".equals(user.getRole());
-        return false; // 실제 구현 필요
-    }
-    
-    /**
-     * 새 파일 그룹 생성
-     */
-    private void createFileGroup(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        
-        int fileGroupNum = fileService.createFileGroup();
-        
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", true);
-        response.put("fileGroupNum", fileGroupNum);
-        
-        Gson gson = new Gson();
-        try (PrintWriter out = resp.getWriter()) {
-            out.print(gson.toJson(response));
-        }
+        return "ADMIN".equals(user.getRole());
     }
     
     /**

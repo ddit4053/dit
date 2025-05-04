@@ -61,7 +61,7 @@ public class BoardInsertController extends HttpServlet{
             req.setAttribute("codeNo", codeNo);
             req.setAttribute("codeList", codeList);
             req.setAttribute("mode", "write");
-            req.setAttribute("breadcrumbTitle", "게시판");
+            req.setAttribute("breadcrumbTitle", "작성하기");
             
             // 에디터 페이지로 포워딩
             req.getRequestDispatcher("/WEB-INF/view/editor.jsp").forward(req, resp);
@@ -97,18 +97,31 @@ public class BoardInsertController extends HttpServlet{
             
             int codeNo = Integer.parseInt(codeNoStr);
             
-            // 게시글 정보 설정 (파일 그룹 번호는 나중에 설정)
+            // 게시글 정보 설정
             BookBoardVo board = new BookBoardVo();
             board.setTitle(title);
             board.setContent(content);
             board.setUserNo(loginUser.getUserNo());
             board.setCodeNo(codeNo);
             
-            // 파일 업로드 처리
-            Integer fileGroupNum = null;
-            List<File_StorageVo> uploadedFiles = null;
+            // 게시글 저장 (파일 그룹번호 없이)
+            board.setFileGroupNum(null);
+            int result = boardService.insertBoard(board);
             
-            // 파일이 있는지 확인
+            if (result <= 0) {
+            		throw new RuntimeException("게시글 등록 실패");
+            }
+            
+            // 게시글 저장 성공 후, 게시글 번호와 동일한 파일그룹번호 생성
+            int boardNo = board.getBoardNo();
+            int fileGroupNum = fileService.createFileGroup(boardNo, codeNo);
+            
+            // 게시글의 파일그룹번호 업데이트
+            board.setFileGroupNum(fileGroupNum);
+            boardService.updateBoardFileGroup(boardNo, fileGroupNum);
+            
+            
+            // 파일이 있는지 확인 및 업로드
             boolean hasFiles = false;
             for (Part part : req.getParts()) {
                 String fileName = part.getSubmittedFileName();
@@ -118,50 +131,17 @@ public class BoardInsertController extends HttpServlet{
                 }
             }
             
-            // 파일이 있는 경우에만 파일 그룹 생성 및 업로드 처리
+            // 파일이 있는 경우 업로드 처리
+            List<File_StorageVo> uploadedFiles = null;
             if (hasFiles) {
-                // 파일 그룹 생성
-                fileGroupNum = fileService.createFileGroup();
-                
-                // 파일 그룹 번호 설정
-                board.setFileGroupNum(fileGroupNum);
-                
-                // 게시글 저장 (파일 그룹번호 설정 후)
-                int result = boardService.insertBoard(board);
-                
-                if (result > 0) {
-                    // 파일 업로드 (이제 게시글 번호가 생성됨)
-                    uploadedFiles = fileService.uploadFiles(req, "BOARD", board.getBoardNo());
-                    
-                    // 업로드된 파일이 없는 경우, 생성된 빈 파일 그룹 삭제 처리가 필요
-                    if (uploadedFiles.isEmpty()) {
-                        fileService.deleteFileGroup(fileGroupNum);
-                        // 게시글 FILE_GROUP_NUM을 null로 업데이트
-                        board.setFileGroupNum(null);
-                        boardService.updateBoardFileGroup(board.getBoardNo(), null);
-                    }
-                } else {
-                    // 게시글 저장 실패 시 생성된 파일 그룹 삭제
-                    if (fileGroupNum != null) {
-                        fileService.deleteFileGroup(fileGroupNum);
-                    }
-                    throw new RuntimeException("게시글 등록에 실패했습니다.");
-                }
-            } else {
-                // 파일이 없는 경우 파일 그룹 번호 없이 게시글만 저장
-                board.setFileGroupNum(null);
-                int result = boardService.insertBoard(board);
-                
-                if (result <= 0) {
-                    throw new RuntimeException("게시글 등록에 실패했습니다.");
-                }
+            		uploadedFiles = fileService.uploadFiles(req, "BOARD", boardNo);
             }
             
             // 응답 생성
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "게시글이 등록되었습니다.");
-            response.put("boardNo", board.getBoardNo());
+            response.put("boardNo", boardNo);
             
             sendJsonResponse(resp, response);
         } catch (NumberFormatException e) {

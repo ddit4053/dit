@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.FileServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
@@ -29,14 +30,6 @@ public class BoardDeleteController extends HttpServlet{
     private Gson gson = new Gson();
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		String pathInfo = req.getPathInfo();
-        
-        if (pathInfo == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-
         try {
             // JSON 요청 본문 읽기
             JsonObject requestData = readJsonRequest(req);
@@ -73,16 +66,13 @@ public class BoardDeleteController extends HttpServlet{
             
             // 트랜잭션 시작 (서비스 레이어에서 처리하는 것이 좋지만, 여기서는 컨트롤러에서 함께 처리)
             try {
-                // 1. 파일 그룹 처리 (파일 그룹이 있는 경우)
-                if (board.getFileGroupNum() > 0) {
+            	    // 파일이 존재할 때만 파일 일괄 삭제
+              
+                if (board.getFileGroupNum() != null && board.getFileGroupNum() > 0) {
                     // 파일 스토리지 논리적 삭제
-                    fileService.deleteFilesByGroupNum(board.getFileGroupNum());
-                    
-                    // 파일 그룹 논리적 삭제
-                    fileService.deleteFileGroup(board.getFileGroupNum());
+                    fileService.deleteFilesByGroupNum(boardNo);
                 }
-                
-                // 2. 게시글 삭제
+                // 게시글 삭제 
                 result = boardService.deleteBoard(boardNo) > 0;
                 
             } catch (Exception e) {

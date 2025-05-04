@@ -1,11 +1,10 @@
 /**
-   * 게시글 수정 페이지로 이동
-   * @param {Number} boardNo - 게시글 번호
-   */
-  function updateBoard(boardNo) {
-    window.location.href = `${contextPath}/update?boardNo=${boardNo}&mode=update`;
-  }
-
+ * 게시글 수정 페이지로 이동
+ * @param {Number} boardNo - 게시글 번호
+ */
+function updateBoard(boardNo) {
+  window.location.href = `${contextPath}/update?boardNo=${boardNo}&mode=update`;
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   // 컨텍스트 경로 가져오기
@@ -42,8 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
     commentEditForm.addEventListener("submit", updateComment);
   }
 });
-
-
 
 // 첨부 파일 목록 로드
 async function loadAttachedFiles() {
@@ -376,21 +373,6 @@ async function submitReply(cmNo2, boardNo) {
   }
 }
 
-
-/**
- * 게시글 수정 처리
- * @param {Number} boardNo - 게시글 번호
- */
-
-
-
-
-
-
-
-
-
-
 /**
  * 게시글 삭제 처리
  * @param {Number} boardNo - 게시글 번호
@@ -417,17 +399,17 @@ async function deleteBoard(boardNo) {
 
     if (data.success) {
       alert("게시글이 삭제되었습니다.");
-	  //이전 페이지로 이동 후 새로고침
-	  if(document.referrer) {
-	  	window.location.replace(document.referrer);		  
-	  } else {
-		// referrer가 없는 경우 브라우저 히스토리의 이전 페이지로 이동
-		window.history.back();
-		
-		setTimeout( () => {
-			window.location.reload();
-		}, 100);
-	  }
+      //이전 페이지로 이동 후 새로고침
+      if (document.referrer) {
+        window.location.replace(document.referrer);
+      } else {
+        // referrer가 없는 경우 브라우저 히스토리의 이전 페이지로 이동
+        window.history.back();
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+      }
     } else {
       alert(
         "게시글 삭제에 실패했습니다: " + (data.message || "알 수 없는 오류")
