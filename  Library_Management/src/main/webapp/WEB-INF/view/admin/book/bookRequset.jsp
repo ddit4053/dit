@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<script src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,6 +102,26 @@
 	      color: white;
 	      font-weight: bold;
 	  }
+	  
+	.approve-btn {
+	  padding: 10px 18px;
+	  background-color: #5d4037;
+	  color: white;
+	  border: none;
+	  border-radius: 6px;
+	  font-size: 14px;
+	  cursor: pointer;
+	  transition: background-color 0.3s, transform 0.2s;
+	}
+	
+	.approve-btn:hover {
+	  background-color: #8d6e63;
+	  transform: translateY(-2px);
+	}
+	
+	.approve-btn:active {
+	  background-color: #3e8e41;
+	}
   </style>
 </head>
 <body>
@@ -116,6 +138,14 @@
           <p><strong>신청일:</strong>${book.reqBookDate}</p>
           <p><strong>상태:</strong> ${book.reqBookStatus}</p>
           <p><strong>요청사유:</strong> ${book.reqBookComment}</p>
+          
+          
+		<input type="hidden" id="reqBookNo-${book.reqBookNo}" value="${book.reqBookNo}" />
+		<c:if test="${book.reqBookStatus eq '접수'}">
+  			<button type="button" class="approve-btn" onclick="approveBook(${book.reqBookNo},${book.reqIsbn})">신청 승인</button>
+		</c:if>
+
+
         </div>
       </div>
     </c:forEach>
@@ -143,3 +173,31 @@
   </div>
 </body>
 </html>
+<script>
+function approveBook(reqBookNo,reqIsbn) {
+	  console.log(reqBookNo);
+	  console.log(reqIsbn);
+	  if (!confirm("정말로 신청 도서를 승인하시겠습니까?")) {
+	    return;
+	  }
+
+	  $.ajax({
+	    url: "approveRequest.do",
+	    method: "GET",
+	    data: { reqBookNo: reqBookNo , reqIsbn: reqIsbn},
+	    dataType: "json",
+	    success: function(data) {
+	      if (data.success) {
+	        alert("신청이 승인되었습니다.");
+	        location.reload(); // 또는 DOM 업데이트
+	      } else {
+	        alert("승인에 실패했습니다: " + data.message);
+	      }
+	    },
+	    error: function(xhr, status, error) {
+	      console.error(xhr.status);
+	      alert("요청 중 오류가 발생했습니다.");
+	    }
+	  });
+	}
+</script>

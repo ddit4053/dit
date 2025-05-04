@@ -10,4 +10,6 @@ public class BookReservationsVo {
 	private String reserveStatus;
 	private int bookNo;
 	private int userNo;
+	
+	private String name;
 }

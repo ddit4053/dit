@@ -12,4 +12,6 @@ public interface IReqBookDao {
 
 	public int getTotalRequestCount();
 
+	public int updateSuccess(String reqBookNo);
+
 }

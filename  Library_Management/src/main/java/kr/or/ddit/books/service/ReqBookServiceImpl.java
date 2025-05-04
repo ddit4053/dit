@@ -40,6 +40,12 @@ public class ReqBookServiceImpl implements IReqBookService {
 		return reqBookDao.getTotalRequestCount();
 	}
 
+	@Override
+	public int updateSuccess(String reqBookNo) {
+		// TODO Auto-generated method stub
+		return reqBookDao.updateSuccess(reqBookNo);
+	}
+
 	
 
 }

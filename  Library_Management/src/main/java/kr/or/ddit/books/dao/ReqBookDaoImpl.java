@@ -42,6 +42,12 @@ public class ReqBookDaoImpl extends MybatisDao implements IReqBookDao {
 		return selectOne("bookRequset.getTotalRequestCount");
 	}
 
+	@Override
+	public int updateSuccess(String reqBookNo) {
+		// TODO Auto-generated method stub
+		return update("bookRequset.updateSuccess", reqBookNo);
+	}
+
 	
 
 }
