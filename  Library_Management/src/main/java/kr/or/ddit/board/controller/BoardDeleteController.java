@@ -55,10 +55,19 @@ public class BoardDeleteController extends HttpServlet{
                 throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
             }
             
-            // 관리자가 아니고 작성자도 아닌 경우 권한 없음
+            // 권한 확인
             boolean isAdmin = "ADMIN".equals(loginUser.getRole());
-            if (!isAdmin && board.getUserNo() != loginUser.getUserNo()) {
-                throw new IllegalStateException("삭제 권한이 없습니다.");
+            
+            // 공지사항인 경우 관리자 권한 확인
+            if (board.getCodeNo() == 4) {
+                if (!isAdmin) {
+                    throw new IllegalStateException("공지사항은 관리자만 삭제할 수 있습니다.");
+                }
+            } else {
+                // 일반 게시판인 경우 작성자 확인 (본인 글만 삭제 가능)
+                if (board.getUserNo() != loginUser.getUserNo() && !isAdmin) {
+                    throw new IllegalStateException("자신의 게시글만 삭제할 수 있습니다.");
+                }
             }
             
             // 결과 플래그 초기화

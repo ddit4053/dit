@@ -42,11 +42,20 @@
                         >${board.title}</textarea>
                     </div>
                     
-                    <!-- 게시판 선택 드롭다운 (필요한 경우) -->
+                    <!-- 게시판 선택 드롭다운, 관리자만 공지사항 게시판으로 이동 가능-->
 					<div class="board-select">
 					    <select id="codeNoSelect" name="codeNo">
 					        <c:forEach items="${codeList}" var="code">
-					            <option value="${code.codeNo}" ${code.codeNo eq board.codeNo ? 'selected' : ''}>${code.codeName}</option>
+					        		<c:choose>
+					        			<c:when test="${code.codeNo ==4}">
+					        				<c:if test="${isAdmin}">
+					        					<option value="${code.codeNo}" ${code.codeNo eq board.codeNo ? 'selected' : ''}>${code.codeName}</option>
+                   						</c:if>
+                  					</c:when>
+                  					<c:otherwise>
+							            <option value="${code.codeNo}" ${code.codeNo eq board.codeNo ? 'selected' : ''}>${code.codeName}</option>
+                						</c:otherwise>
+					        		</c:choose>
 					        </c:forEach>
 					    </select>
 					</div>

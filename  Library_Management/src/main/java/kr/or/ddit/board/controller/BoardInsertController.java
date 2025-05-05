@@ -57,6 +57,14 @@ public class BoardInsertController extends HttpServlet{
                 throw new IllegalArgumentException("잘못된 게시판 번호입니다.");
             }
             
+            // 공지사항(codeNo=4)인 경우 관리자 권한 확인
+            if (codeNo == 4) {
+                String userRole = (String) req.getSession().getAttribute("role");
+                if (!"ADMIN".equals(userRole)) {
+                    throw new IllegalStateException("공지사항은 관리자만 작성할 수 있습니다.");
+                }
+            }
+            
             // 뷰로 전달할 데이터 설정
             req.setAttribute("codeNo", codeNo);
             req.setAttribute("codeList", codeList);
@@ -96,6 +104,15 @@ public class BoardInsertController extends HttpServlet{
             }
             
             int codeNo = Integer.parseInt(codeNoStr);
+            
+            // 공지사항(codeNo=4)인 경우 관리자 권한 확인
+            if (codeNo == 4) {
+                String userRole = loginUser.getRole();;
+                if (!"ADMIN".equals(userRole)) {
+                    throw new IllegalStateException("공지사항은 관리자만 작성할 수 있습니다.");
+                }
+            }
+            
             
             // 게시글 정보 설정
             BookBoardVo board = new BookBoardVo();
@@ -162,6 +179,12 @@ public class BoardInsertController extends HttpServlet{
         if (loginUser == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
+        // 관리자 권한 확인
+        boolean isAdmin = false;
+        if(loginUser != null && "ADMIN".equals(loginUser.getRole())) {
+        		isAdmin = true;
+        }
+        req.setAttribute("isAdmin", isAdmin);
         
         return loginUser;
     }

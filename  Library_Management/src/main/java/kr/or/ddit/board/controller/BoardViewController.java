@@ -67,11 +67,16 @@ public class BoardViewController extends HttpServlet {
     			if(loginUser != null && board.getUserNo() == userNo) {
     				isAuthor = true;
     			}
+    			boolean isAdmin = false;
+    			if(loginUser != null && "ADMIN".equals(loginUser.getRole())) {
+    				isAdmin = true;
+    			}
                 
                 contentPage = "/WEB-INF/view/users/users_boardDetail.jsp";
                 forwardPage = "/WEB-INF/view/users/users_board.jsp";
                 req.setAttribute("board", board);
                 req.setAttribute("isAuthor", isAuthor);
+                req.setAttribute("isAdmin", isAdmin);
                 
 //                // 도서 정보 조회 (게시글에 도서 번호가 있는 경우)
 //                if (board != null && board.getBookNo() > 0) {

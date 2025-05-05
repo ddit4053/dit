@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/users_boardList.css">
-<script src="${pageContext.request.contextPath}/resource/js/users/users_boardList.js"></script>
 <div class="info-content">
     <div class="info-content-header">
         <h2 class="content-title">${pageTitle}</h2>
@@ -64,6 +63,9 @@
 	                <input type="text" name="searchKeyword" class="search-input" placeholder="검색어를 입력하세요">
 	                <button type="button" class="search-btn" onclick="searchBoard()">검색</button>
             	</form>
+            	
+            	<%-- 관리자 여부 확인 --%>
+			<c:set var="isAdmin" value="${sessionScope.role eq 'ADMIN'}" />
             	<!-- 글쓰기 에디터 진입 -->
             	<div class="board-editor">
             	<button type="button" class="go-to-editor">글쓰기</button>
@@ -72,3 +74,9 @@
         </div>
     </div>
 </div>
+
+<script>
+	const isAdmin = ${isAdmin};
+</script>
+
+<script src="${pageContext.request.contextPath}/resource/js/users/users_boardList.js"></script>

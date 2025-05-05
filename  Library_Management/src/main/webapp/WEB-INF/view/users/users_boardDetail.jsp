@@ -37,17 +37,25 @@
 	    	</div>
 	   	</c:if>
 	   	
-        <!-- 작성자만 보이는 버튼 영역 -->
-        <c:if test="${isAuthor}">
-            <div class="board-actions">
-                <button class="btn-update" onclick="updateBoard(${board.boardNo})">
-                    수정
-                </button>
-                <button class="btn-delete" onclick="deleteBoard(${board.boardNo})">
-                    삭제
-                </button>
-            </div>
-        </c:if>
+        <!-- 수정, 삭제 버튼 영역 -->
+        <c:choose>
+        		<c:when test="${board.codeNo == 4}" >
+        			<c:if test="${isAdmin}">
+		            <div class="board-actions">
+		                <button class="btn-update" onclick="updateBoard(${board.boardNo})">수정</button>
+		                <button class="btn-delete" onclick="deleteBoard(${board.boardNo})">삭제</button>
+		            </div>
+        			</c:if>
+     		</c:when>
+     		<c:otherwise>
+     			<c:if test="${isAuthor}">
+		            <div class="board-actions">
+		                <button class="btn-update" onclick="updateBoard(${board.boardNo})">수정</button>
+		                <button class="btn-delete" onclick="deleteBoard(${board.boardNo})">삭제</button>
+		            </div>
+        			</c:if>
+     		</c:otherwise>
+     	</c:choose>	 
     </div>
     
 	    <!-- 댓글 영역 -->
@@ -129,7 +137,7 @@
 	                    </div>                
 					</c:forEach>			            
 		        </div>
-	    	</div>
+	    		</div>
 	   </c:if> 
 	</div>
 	

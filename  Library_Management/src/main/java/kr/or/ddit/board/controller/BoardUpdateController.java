@@ -58,10 +58,17 @@ public class BoardUpdateController extends HttpServlet {
                 throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
             }
             
-            // 작성자 확인 (본인 글만 수정 가능)
-            boolean isAdmin = "ADMIN".equals(loginUser.getRole());
-            if (!isAdmin && board.getUserNo() != loginUser.getUserNo()) {
-                throw new IllegalStateException("자신의 게시글만 수정할 수 있습니다.");
+            // 공지사항인 경우 관리자 권한 확인
+            if (board.getCodeNo() == 4) {
+                String userRole = loginUser.getRole();
+                if (!"ADMIN".equals(userRole)) {
+                    throw new IllegalStateException("공지사항은 관리자만 수정할 수 있습니다.");
+                }
+            } else {
+                // 작성자 확인 (본인 글만 수정 가능)
+                if (board.getUserNo() != loginUser.getUserNo()) {
+                    throw new IllegalStateException("자신의 게시글만 수정할 수 있습니다.");
+                }
             }
             
             // 게시판 코드 목록 조회
@@ -119,10 +126,20 @@ public class BoardUpdateController extends HttpServlet {
                 throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
             }
             
+            // 권한 확인
+            String userRole = loginUser.getRole();
+            boolean isAdmin = "ADMIN".equals(userRole);
             
-            // 작성자 확인 (본인 글만 수정 가능)
-            if (originalBoard.getUserNo() != loginUser.getUserNo()) {
-                throw new IllegalStateException("자신의 게시글만 수정할 수 있습니다.");
+            // 공지사항 관련 권한 체크 (기존이 공지사항이거나 수정 후 공지사항이 될 경우)
+            if (originalBoard.getCodeNo() == 4 || codeNo == 4) {
+                if (!isAdmin) {
+                    throw new IllegalStateException("공지사항은 관리자만 수정할 수 있습니다.");
+                }
+            } else {
+                // 일반 게시판인 경우 작성자 확인
+                if (originalBoard.getUserNo() != loginUser.getUserNo()) {
+                    throw new IllegalStateException("자신의 게시글만 수정할 수 있습니다.");
+                }
             }
             
             // 게시글 정보 업데이트
@@ -198,6 +215,13 @@ public class BoardUpdateController extends HttpServlet {
         if (loginUser == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
+        
+        // 관리자 권한 확인
+        boolean isAdmin = false;
+        if(loginUser != null && "ADMIN".equals(loginUser.getRole())) {
+        		isAdmin = true;
+        }
+        req.setAttribute("isAdmin", isAdmin);
         
         return loginUser;
     }

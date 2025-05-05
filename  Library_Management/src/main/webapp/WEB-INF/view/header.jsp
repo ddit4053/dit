@@ -48,7 +48,6 @@
 				      <c:choose>
 				        <%--관리자  --%> 
 				        <c:when test="${sessionScope.role eq 'ADMIN'}">
-				          <a href="/admin.jsp">관리자페이지</a>
 				          <a href="${pageContext.request.contextPath}/user/logout.do">로그아웃</a>
 				        </c:when>
 				

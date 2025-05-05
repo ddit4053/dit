@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (writeButton) {
     writeButton.addEventListener("click", function() {
 		const codeNo = getBoardCodeNo(); // 현재 게시판 타입에 맞는 codeNo 가져오기
+		if(codeNo == 4 && !isAdmin){
+			alert("관리자만 작성 가능한 게시판입니다.");
+			return;
+		}
 		window.location.href = contextPath + "/insert?codeNo=" + codeNo;
     });
   } else {
