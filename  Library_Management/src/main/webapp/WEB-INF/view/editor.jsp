@@ -42,12 +42,12 @@
                         >${board.title}</textarea>
                     </div>
                     
-                    <!-- 게시판 선택 드롭다운, 관리자만 공지사항 게시판으로 이동 가능-->
+                    <!-- 게시판 선택 드롭다운, 관리자만 공지사항, 교육행사 게시판으로 이동 가능-->
 					<div class="board-select">
 					    <select id="codeNoSelect" name="codeNo">
 					        <c:forEach items="${codeList}" var="code">
 					        		<c:choose>
-					        			<c:when test="${code.codeNo ==4}">
+					        			<c:when test="${code.codeNo == 4 || code.codeNo == 5}">
 					        				<c:if test="${isAdmin}">
 					        					<option value="${code.codeNo}" ${code.codeNo eq board.codeNo ? 'selected' : ''}>${code.codeName}</option>
                    						</c:if>
@@ -124,12 +124,15 @@
 
 <script>
     const contextPath = '${pageContext.request.contextPath}';
+    const currentURL = window.location.pathname;
+    const isAdmin = ${isAdmin};
+    console.log("JSP isAdmin 값:", "${isAdmin}");
+    console.log("현재 URL:", currentURL);
 </script>
+<script src="${pageContext.request.contextPath}/resource/js/editor/editorAjax.js"></script>
 <!-- 스크립트 로드 -->
-<script src="${pageContext.request.contextPath}/resource/js/breadcrumb.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
 <!-- 에디터 기능 관련 스크립트 -->
-<script src="${pageContext.request.contextPath}/resource/js/editor/editorAjax.js"></script>
 <script src="${pageContext.request.contextPath}/resource/js/editor/editorToolbox.js"></script>
 
 

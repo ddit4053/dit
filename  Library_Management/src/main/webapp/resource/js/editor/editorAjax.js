@@ -98,42 +98,90 @@ document.addEventListener("DOMContentLoaded", function () {
               ? "게시글이 수정되었습니다."
               : "게시글이 등록되었습니다."
           );
-
+		  // 약간의 지연 후 강제 리다이렉트 (다른 스크립트의 간섭 방지)
+		  /*
+		    setTimeout(function() {
+				if(isAdmin) {
+				    console.log("관리자 확인됨, 관리자 페이지로 리다이렉트 시도");
+				    try {
+				      // 에러 방지 디버깅을 위한 코드
+				      console.log("contextPath 값:", contextPath);
+				      const redirectUrl = contextPath + "/admin/board";
+				      console.log("최종 리다이렉트 URL:", redirectUrl);
+				      
+				      // 디버깅 로그를 더 오래 볼 수 있도록 로컬 스토리지에 저장
+				      localStorage.setItem('lastRedirect', redirectUrl);
+				      localStorage.setItem('redirectTime', new Date().toString());
+				      
+				      // 리다이렉트 실행
+				      window.location.replace(redirectUrl);
+				    } catch(e) {
+				      // 에러 발생시 로컬 스토리지에 에러 저장
+				      localStorage.setItem('redirectError', e.toString());
+				      console.error("리다이렉트 중 오류:", e);
+				      
+				      // 에러 발생해도 일단 리다이렉트 시도
+				      window.location.href = contextPath + "/admin/board";
+				    }
+				  } else {
+		        window.history.go(-2);
+		        setTimeout(function() {
+		          window.location.reload();
+		        }, 100);
+		      }
+		    }, 500);  // 지연 시간 약간 늘림
+		  
+		  return;
+		   
+		   */
+		  // 시발 리다이렉트 족버그 
           // 게시판 유형에 따라 목록 또는 상세 페이지로 이동
           let redirectUrl = "";
-          switch (parseInt(codeNo)) {
-            case 1:
-              redirectUrl = contextPath + "/community/reviews";
-              break;
-            case 2:
-              redirectUrl = contextPath + "/community/discussions";
-              break;
-            case 3:
-              redirectUrl = contextPath + "/community/recommendations";
-              break;
-            case 4:
-              redirectUrl = contextPath + "/support/notices";
-              break;
-            case 5:
-              redirectUrl = contextPath + "/support/events";
-              break;
-            case 6:
-              redirectUrl = contextPath + "/support/qa";
-              break;
-            default:
-              redirectUrl = contextPath + "/community/reviews";
-          }
-          // 수정 모드인 경우 상세 페이지로 이동, 아니면 목록 페이지로 이동
-          if (mode === "update") {
-            if (
-              originalCodeNo &&
-              parseInt(codeNo) !== parseInt(originalCodeNo)
-            ) {
-              // 게시판이 변경된 경우 변경된 게시판 목록으로 리다이렉트
-              console.log("게시판 변경됨:", originalCodeNo, "->", codeNo);
-            } else {
-              // 게시판이 변경되지 않은 경우 상세 페이지로 이동
-              redirectUrl += "/Detail?boardNo=" + (data.boardNo || boardNo);
+
+          if (isAdmin) {
+            console.log("관리자로 확인되어 관리자 페이지로 리다이렉트합니다.");
+            redirectUrl = contextPath + "/admin/board/list";
+
+            if (mode === "update") {
+              redirectUrl =
+                contextPath +
+                "/admin/board/Detail?boardNo=" +
+                (data.boardNo || boardNo);
+            }
+          } else {
+            // 일반 사용자인 경우에만 이 로직 실행
+            switch (parseInt(codeNo)) {
+              case 1:
+                redirectUrl = contextPath + "/community/reviews";
+                break;
+              case 2:
+                redirectUrl = contextPath + "/community/discussions";
+                break;
+              case 3:
+                redirectUrl = contextPath + "/community/recommendations";
+                break;
+              case 5:
+                redirectUrl = contextPath + "/support/events";
+                break;
+              case 6:
+                redirectUrl = contextPath + "/support/qa";
+                break;
+              default:
+                redirectUrl = contextPath + "/community/reviews";
+            }
+
+            // 수정 모드인 경우 상세 페이지로 이동
+            if (mode === "update") {
+              if (
+                originalCodeNo &&
+                parseInt(codeNo) !== parseInt(originalCodeNo)
+              ) {
+                // 게시판이 변경된 경우 변경된 게시판 목록으로 리다이렉트
+                console.log("게시판 변경됨:", originalCodeNo, "->", codeNo);
+              } else {
+                // 게시판이 변경되지 않은 경우 상세 페이지로 이동
+                redirectUrl += "/Detail?boardNo=" + (data.boardNo || boardNo);
+              }
             }
           }
 
@@ -172,5 +220,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
 });

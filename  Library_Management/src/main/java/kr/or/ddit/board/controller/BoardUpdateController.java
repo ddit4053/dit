@@ -59,10 +59,10 @@ public class BoardUpdateController extends HttpServlet {
             }
             
             // 공지사항인 경우 관리자 권한 확인
-            if (board.getCodeNo() == 4) {
+            if (board.getCodeNo() == 4 || board.getCodeNo() == 5) {
                 String userRole = loginUser.getRole();
                 if (!"ADMIN".equals(userRole)) {
-                    throw new IllegalStateException("공지사항은 관리자만 수정할 수 있습니다.");
+                    throw new IllegalStateException("관리자만 수정할 수 있습니다.");
                 }
             } else {
                 // 작성자 확인 (본인 글만 수정 가능)
@@ -130,10 +130,10 @@ public class BoardUpdateController extends HttpServlet {
             String userRole = loginUser.getRole();
             boolean isAdmin = "ADMIN".equals(userRole);
             
-            // 공지사항 관련 권한 체크 (기존이 공지사항이거나 수정 후 공지사항이 될 경우)
-            if (originalBoard.getCodeNo() == 4 || codeNo == 4) {
+            // 공지사항 관련 권한 체크 (기존이 공지사항이거나 수정 후 공지사항이 될 경우 + 교육행사 게시판)
+            if (originalBoard.getCodeNo() == 4 || codeNo == 4  || codeNo == 5) {
                 if (!isAdmin) {
-                    throw new IllegalStateException("공지사항은 관리자만 수정할 수 있습니다.");
+                    throw new IllegalStateException("관리자만 수정할 수 있습니다.");
                 }
             } else {
                 // 일반 게시판인 경우 작성자 확인

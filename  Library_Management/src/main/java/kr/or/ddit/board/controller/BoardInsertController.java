@@ -57,11 +57,11 @@ public class BoardInsertController extends HttpServlet{
                 throw new IllegalArgumentException("잘못된 게시판 번호입니다.");
             }
             
-            // 공지사항(codeNo=4)인 경우 관리자 권한 확인
-            if (codeNo == 4) {
-                String userRole = (String) req.getSession().getAttribute("role");
+            // 공지사항, 교육행사(codeNo=4,5)인 경우 관리자 권한 확인
+            if (codeNo == 4 || codeNo == 5) {
+                String userRole = loginUser.getRole();
                 if (!"ADMIN".equals(userRole)) {
-                    throw new IllegalStateException("공지사항은 관리자만 작성할 수 있습니다.");
+                    throw new IllegalStateException("관리자만 작성할 수 있습니다.");
                 }
             }
             
@@ -105,11 +105,11 @@ public class BoardInsertController extends HttpServlet{
             
             int codeNo = Integer.parseInt(codeNoStr);
             
-            // 공지사항(codeNo=4)인 경우 관리자 권한 확인
-            if (codeNo == 4) {
+            // 관리자 권한 확인
+            if (codeNo == 4 || codeNo == 5) {
                 String userRole = loginUser.getRole();;
                 if (!"ADMIN".equals(userRole)) {
-                    throw new IllegalStateException("공지사항은 관리자만 작성할 수 있습니다.");
+                    throw new IllegalStateException("관리자만 작성할 수 있습니다.");
                 }
             }
             

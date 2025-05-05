@@ -3,8 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
-<jsp:include page="../header.jsp" />
-<jsp:include page="../nav.jsp" />
+<jsp:include page="header.jsp" />
+<jsp:include page="nav.jsp" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/board.css">
 
 <div class="main-content">
@@ -18,7 +18,7 @@
         
         <div class="content-layout">
             <!-- 사이드바 포함 -->
-            <jsp:include page="../sidebar.jsp" />
+            <jsp:include page="sidebar.jsp" />
             
             <!-- 메인 콘텐츠 영역 -->
             <div class="main-content-area">
@@ -28,4 +28,4 @@
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/resource/js/breadcrumb.js"></script>
-<jsp:include page="../footer.jsp" />
+<jsp:include page="footer.jsp" />

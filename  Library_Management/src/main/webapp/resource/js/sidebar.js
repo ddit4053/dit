@@ -175,46 +175,7 @@ const menuStructure = {
     {
       title: "게시판 관리",
       url: "/admin/board",
-      subMenus: [
-        {
-          title: "커뮤니티 게시판",
-          subMenus: [
-            {
-              title: "독후감 게시판 관리",
-              url: "/admin/community/reviews",
-            },
-            {
-              title: "토론 게시판 관리",
-              url: "/admin/community/discussions",
-            },
-            {
-              title: "추천도서 게시판 관리",
-              url: "/admin/community/recommendations",
-            },
-          ],
-        },
-        {
-          title: "이용안내 게시판",
-          subMenus: [
-            {
-              title: "공지사항 게시판 관리",
-              url: "/admin/support/notices",
-            },
-            {
-              title: "교육/행사 관리",
-              url: "/admin/support/events",
-            },
-            {
-              title: "자주 묻는 질문 관리",
-              url: "/admin/support/faq",
-            },
-            {
-              title: "1:1문의 관리",
-              url: "/admin/support/qa",
-            },
-          ],
-        },
-      ],
+      subMenus: [{ title: "게시판 현황", url: "/admin/board/list"}],
     },
   ],
 };

@@ -58,10 +58,10 @@ public class BoardDeleteController extends HttpServlet{
             // 권한 확인
             boolean isAdmin = "ADMIN".equals(loginUser.getRole());
             
-            // 공지사항인 경우 관리자 권한 확인
-            if (board.getCodeNo() == 4) {
+            // 관리자 권한 확인
+            if (board.getCodeNo() == 4 || board.getCodeNo() == 5) {
                 if (!isAdmin) {
-                    throw new IllegalStateException("공지사항은 관리자만 삭제할 수 있습니다.");
+                    throw new IllegalStateException("관리자만 삭제할 수 있습니다.");
                 }
             } else {
                 // 일반 게시판인 경우 작성자 확인 (본인 글만 삭제 가능)
