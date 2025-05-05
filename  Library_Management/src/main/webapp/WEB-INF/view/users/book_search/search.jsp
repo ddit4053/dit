@@ -31,7 +31,7 @@
                     <option value="publisher">출판사</option>
                     <option value="isbn">ISBN</option>
                 </select>
-                <input type="text" name="keyword" class="search-input" placeholder="검색어를 입력하세요" required>
+                <input type="text" name="keyword" class="search-input" placeholder="검색어를 입력하세요">
                 <button type="submit" class="search-button">
                     <i class="fas fa-search"></i> 검색
                 </button>

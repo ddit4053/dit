@@ -19,23 +19,28 @@
 
 
 <sql id="dynamicCondition">
-   <where>
-      <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
-         ${searchType} like '%' || #{keyword} || '%'
-         <if test="pubdate != null and pubdate != ''">
-            and pubdate between '20'||#{pubdate}||'-01-01' and '20'||#{pubdate}||'-12-31'
-         </if>
-         <if test="categoryId != null">
-            AND CATEGORY_NO IN (
-                SELECT CATEGORY_NO 
-                FROM BOOK_CATEGORIES
-                START WITH CATEGORY_NO = #{categoryId}
-                CONNECT BY PRIOR CATEGORY_NO = PARENT_ID
-            )
-         </if>
-      </if>
-   </where>
+  <where>
+    BOOK_STATUS = '보유'
+
+    <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
+      AND ${searchType} LIKE '%' || #{keyword} || '%'
+    </if>
+
+    <if test="pubdate != null and pubdate != ''">
+      AND pubdate BETWEEN '20' || #{pubdate} || '-01-01' AND '20' || #{pubdate} || '-12-31'
+    </if>
+
+    <if test="categoryId != null">
+      AND CATEGORY_NO IN (
+        SELECT CATEGORY_NO
+        FROM BOOK_CATEGORIES
+        START WITH CATEGORY_NO = #{categoryId}
+        CONNECT BY PRIOR CATEGORY_NO = PARENT_ID
+      )
+    </if>
+  </where>
 </sql>
+
 
 	<insert id="insertBooks" parameterType="BooksVo">
 		insert into books
@@ -60,18 +65,19 @@
 	
 	<!-- 책 검색 리스트 -->
 	<select id="searchBookList" resultType="BooksVo" parameterType="Map">
-		   SELECT * FROM (
-	        SELECT b.*, ROWNUM rn
-	        FROM (
-	            SELECT * FROM books
-	            <include refid="dynamicCondition"/>
-	            and BOOK_STATUS = '보유'
-	            ORDER BY book_no DESC
-	        ) b
-	        WHERE ROWNUM &lt;= #{offset} + #{limit}
-	    )
-	    WHERE rn &gt; #{offset}
+	  SELECT * FROM (
+		    SELECT b.*, ROWNUM rn
+		    FROM (
+		      SELECT *
+		      FROM books
+		      <include refid="dynamicCondition"/>
+		      ORDER BY book_no DESC
+		    ) b
+		    WHERE ROWNUM &lt;= #{offset} + #{limit}
+		  )
+		  WHERE rn &gt; #{offset}
 	</select>
+
 	
 	<!-- 책카운트갯수 -->
 		<select id="countSearchBook" resultType="int" parameterType="Map">

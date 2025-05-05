@@ -72,7 +72,7 @@ public class BooksSearchController extends HttpServlet {
 		List<BooksVo> SearchBookList = null;
 		String query = req.getParameter("query"); // 메인화면에서 검색
 		System.out.println(query);
-		if(query != null) {
+		if(query != null && !query.trim().isEmpty()) {
 			Map<String, Object> mapMain = new HashMap<String, Object>();
 			mapMain.put("query", query);
 			mapMain.put("limit", pageSize);
