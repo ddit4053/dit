@@ -31,7 +31,7 @@
             JOIN BOOK_LOANS L ON A.LOAN_NO=L.LOAN_NO
             LEFT JOIN REAL_BOOK R ON L.REAL_BOOK=R.REAL_BOOK
             LEFT JOIN BOOKS B ON R.BOOK_NO=B.BOOK_NO
-		  
+		   ORDER BY A.APPROVED_BY DESC
 		  
 	</select>
 	
@@ -85,5 +85,19 @@
 		WHERE approval_no =#{approvalNo}
 		  AND approval_status ='대기'
 	</update>
+	
+	<select id="selectApprovalContact" parameterType="int" resultType="map">
+	  SELECT 
+	    u.NAME AS "name",
+	    u.EMAIL AS "email",
+	    b.BOOK_TITLE AS "bookTitle"
+	  FROM BOOK_LOAN_APPROVAL a
+	  JOIN USERS u ON a.USER_NO = u.USER_NO
+	  JOIN BOOK_LOANS l ON a.LOAN_NO = l.LOAN_NO
+	  JOIN REAL_BOOK r ON l.REAL_BOOK = r.REAL_BOOK
+	  JOIN BOOKS b ON r.BOOK_NO = b.BOOK_NO
+	  WHERE a.APPROVAL_NO = #{approvalNo}
+	</select>
+	
 	
 </mapper>

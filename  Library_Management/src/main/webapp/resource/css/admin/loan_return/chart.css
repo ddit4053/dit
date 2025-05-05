@@ -1,4 +1,6 @@
 /* admin/loan_return/chart.css */
+
+/* 서브 내비게이션 */
 .subnav {
   margin-bottom: 1rem;
 }
@@ -14,32 +16,53 @@
   font-weight: bold;
   border-bottom: 2px solid #fff;
 }
-#myChart, #myChart1 {
-  width: 100%;  /* 레이아웃에 맞춰 늘리기 */
-  max-width: 600px;
-  height: auto;
-}
-/* 1) 차트 컨테이너 중앙 정렬 */
+
+/* 전체 차트 컨테이너: 2열 레이아웃 */
 .statistics-content {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);   /* 2칸(50%·50%) */
-  gap: 2rem;              /* 차트 사이 여백 */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* 가운데 정렬 */
+  gap: 2rem;
   padding: 1rem 0;
 }
 
-/* 2) 캔버스 최대 너비, 반응형 처리 */
+/* 공통 차트 박스 */
+.chart-block {
+  flex: 1 1 45%;   /* grow, shrink, basis */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px; /* 너무 커지지 않도록 제한 */
+}
+
+/* 차트 canvas에 공통 스타일 */
 .statistics-content canvas {
   width: 100% !important;
-  max-width: none;       /* 원하는 최대 너비 */
   height: auto !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 500px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 
-/* 3) 소제목(차트 제목)도 중앙 정렬 */
+/* 세 번째 차트는 두 칸 모두 사용 */
+.full-width {
+  flex: 1 1 100%;
+}
+
+/* 차트 제목 */
 .statistics-content h2 {
   width: 100%;
-  max-width: 700px;
-  text-align: left;       /* 제목은 왼쪽 정렬하거나 center 로 바꿔도 됨 */
+  text-align: left;
   margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+/* 캔버스 사이즈 제한 (세 차트 공통) */
+#myChart, #myChart1, #userLoanChart {
+  max-width: 400px;
+  width: 100%;
+}
+.statistics-wrapper {
+  overflow-x: auto;
+  min-width: 100px;
 }

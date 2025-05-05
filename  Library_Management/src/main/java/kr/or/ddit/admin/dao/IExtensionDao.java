@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.ddit.vo.BookLoanApprovalVo;
+import kr.or.ddit.vo.Noti;
 
 public interface IExtensionDao {
 	
@@ -18,5 +19,8 @@ public interface IExtensionDao {
 	
 	//연장 거절
 	public int rejectLoanExtension(BookLoanApprovalVo vo);
+	
+	//
+	public Map<String, Object> selectApprovalContact(int approvalNo);
 
 }

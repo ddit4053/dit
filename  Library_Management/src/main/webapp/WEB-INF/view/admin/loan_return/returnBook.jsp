@@ -15,11 +15,37 @@
     <div class="alert">${sessionScope.msg}</div>
     <c:remove var="msg" scope="session"/>
   </c:if>
-
-  <%
-    String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-  %>
-
+	<!-- 검색 폼 -->
+	<form method="get" action="${pageContext.request.contextPath}/admin/loans/management" style="margin-bottom: 1em;">
+	  <select name="stype">
+	    <option value="loanNo" ${param.stype == 'loanNo' ? 'selected' : ''}>대출번호</option>
+	    <option value="name" ${param.stype == 'name' ? 'selected' : ''}>사용자명</option>
+	    <option value="bookTitle" ${param.stype == 'bookTitle' ? 'selected' : ''}>도서명</option>
+	  </select>
+	  <input type="text" name="sword" value="${param.sword}" placeholder="검색어 입력"/>
+	  <button type="submit">검색</button>
+	  <input type="hidden" name="page" value="1"/>
+	  <input type="hidden" name="size" value="${paging.pageSize}"/>
+	</form>
+	
+ 
+  <!-- 페이지 사이즈 선택 폼 -->
+	<div style="text-align: right; margin-bottom: 0.5em;">
+	  <form method="get" id="pageSizeForm" style="display: inline;">
+	    <label>표시 개수:
+	      <select name="size" onchange="this.form.submit()">
+	        <option value="5" ${paging.pageSize == 5 ? 'selected' : ''}>5개</option>
+	        <option value="10" ${paging.pageSize == 10 ? 'selected' : ''}>10개</option>
+	        <option value="20" ${paging.pageSize == 20 ? 'selected' : ''}>20개</option>
+	      </select>
+	    </label>
+	    <input type="hidden" name="page" value="${paging.currentPage}" />
+		<input type="hidden" name="stype" value="${param.stype}" />
+		<input type="hidden" name="sword" value="${param.sword}" />
+	  </form>
+	</div>
+  
+  <!-- 반납 테이블 -->
   <table class="policy-table">
     <thead>
       <tr>
@@ -40,7 +66,16 @@
           <td>${v.name}</td>
           <td>${v.loanDate}</td>
           <td>${v.dueDate}</td>
-          <td>${v.returnDate}</td>
+          <td>
+			  <c:choose>
+			    <c:when test="${empty v.returnDate}">
+			      미반납
+			    </c:when>
+			    <c:otherwise>
+			      ${v.returnDate}
+			    </c:otherwise>
+			  </c:choose>
+		  </td>
           <td>
             <c:choose>
               <c:when test="${empty v.returnDate}">
@@ -58,30 +93,37 @@
         </tr>
       </c:forEach>
       <c:if test="${empty list}">
-        <tr><td colspan="6">처리할 대출 내역이 없습니다.</td></tr>
+        <tr><td colspan="7">처리할 대출 내역이 없습니다.</td></tr>
       </c:if>
     </tbody>
   </table>
 	
 	<c:if test="${paging.totalPages > 1}">
 	  <nav class="pagination">
-	    <c:if test="${paging.currentPage > 1}">
-      <a href="?page=1">«</a>
-	      <a href="?page=${paging.currentPage - 1}"> 이전</a>
+	    
+	    <!-- 처음 / 이전 블록 -->
+	    <c:if test="${paging.startPage > 1}">
+	      <a href="?page=1&size=${paging.pageSize}&stype=${param.stype}&sword=${param.sword}">«</a>
+	      <a href="?page=${paging.startPage - paging.pageBlockSize}&size=${paging.pageSize}&stype=${param.stype}&sword=${param.sword}">◁</a>
 	    </c:if>
+	
+	    <!-- 숫자 페이지 -->
 	    <c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="p">
 	      <c:choose>
 	        <c:when test="${p == paging.currentPage}">
 	          <span class="current">${p}</span>
 	        </c:when>
 	        <c:otherwise>
-	          <a href="?page=${p}">${p}</a>
-	        </c:otherwise>
+	          <a href="?page=${p}&size=${paging.pageSize}&stype=${param.stype}&sword=${param.sword}">${p}</a>
+        </c:otherwise>
 	      </c:choose>
 	    </c:forEach>
-	    <c:if test="${paging.currentPage < paging.totalPages}">
-	      <a href="?page=${paging.currentPage + 1}">다음 </a>
-      <a href="?page=${paging.totalPages}">»</a>
+	
+	    <!-- 다음 블록 / 마지막 -->
+	    <c:if test="${paging.endPage < paging.totalPages}">
+	      <a href="?page=${paging.startPage + paging.pageBlockSize}&size=${paging.pageSize}&stype=${param.stype}&sword=${param.sword}">▷</a>
+	      <a href="?page=${paging.totalPages}&size=${paging.pageSize}&stype=${param.stype}&sword=${param.sword}">»</a>
 	    </c:if>
+	
 	  </nav>
 	</c:if>

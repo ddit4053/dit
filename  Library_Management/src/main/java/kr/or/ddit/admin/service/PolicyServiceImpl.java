@@ -43,7 +43,9 @@ public class PolicyServiceImpl implements IPolicyService {
 		
 		int up2 = dao.activateOne(policyNo);
 		
-		return up1>0&&up2>0;
+		int up3 = dao.applyCurrentPolicy();
+		
+		return up1>0&&up2>0&&up3>0;
 		
 	}
 

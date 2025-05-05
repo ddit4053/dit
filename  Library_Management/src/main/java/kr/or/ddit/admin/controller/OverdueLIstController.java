@@ -33,13 +33,37 @@ public class OverdueLIstController extends HttpServlet{
         }
 
         // 1-2) 서비스에서 데이터 조회
-        List<Map<String, Object>> list = service.selectBanUserMap();
-        req.setAttribute("list", list);
+        //List<Map<String, Object>> list = service.selectBanUserMap();
+        //req.setAttribute("list", list);
+        
+        int page = 1;
+        int size = 10; // 기본 페이지 사이즈
+        
+    	String p = req.getParameter("page");
+    	String s = req.getParameter("size");
+    	
+    	if(p != null) {
+    		try {
+				page = Integer.parseInt(p);
+			} catch (NumberFormatException e) {
+				page =1;
+			}
+    	}
+    	if(s != null) {
+    		try {
+    			size = Integer.parseInt(s);
+    		} catch (NumberFormatException e) {
+    			size =1;
+    		}
+    	}
+    	
+    	Map<String, Object> data = service.getBanUserListPaged(page,size);
+    	req.setAttribute("list", data.get("list"));
+    	req.setAttribute("paging", data.get("paging"));
 
         // 1-3) 레이아웃용 속성 세팅 (loans.jsp를 쓰신다면 그쪽에 맞게 경로 변경)
         req.setAttribute("pageTitle",       "연체자 목록");
         req.setAttribute("breadcrumbTitle", "대출/반납 관리 > 연체/정지 > 연체자 목록");
-        req.setAttribute("activeTab",       "overdue");  // loans.jsp 에서 탭 하이라이트용
         req.setAttribute("contentPage",     "/WEB-INF/view/admin/loan_return/overdueList.jsp");
 
         // 1-4) 공통 레이아웃으로 forward

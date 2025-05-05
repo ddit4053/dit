@@ -24,31 +24,30 @@ public class ChartController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
-    	 String servletPath = req.getServletPath();  // e.g. "/admin/loans/stats"
-         String tab = "chart";
-         if("/admin/loans/stats/chart".equals(servletPath)) {
-             tab = req.getParameter("tab") != null ? req.getParameter("tab") : "chart";
-         }
+    	 
     	
     	// 1) 차트용 데이터 조회
         List<Map<String,Object>> monthly = service.cartListMap();
         List<Map<String,Object>> overall = service.getOverallStatsMap();
+        List<Map<String,Object>> laonsUser = service.loansUserStats();
         // ▶ JSP(chart2.jsp) 에서 바로 사용할 수 있도록 List 자체를 속성으로 올려준다
         req.setAttribute("monthlyStats", monthly);
         req.setAttribute("overallStats", overall);
+        req.setAttribute("lonsUserStats", laonsUser);
         
         Gson gson = new GsonBuilder().create();
         req.setAttribute("monthlyJson", gson.toJson(monthly));
         req.setAttribute("overallJson", gson.toJson(overall));
+        req.setAttribute("laonsUserJson", gson.toJson(laonsUser));
 
-        // 2) 레이아웃 속성 세팅
+     // 2) 레이아웃 속성 세팅
         req.setAttribute("pageTitle",       "대출/반납 통계");
         req.setAttribute("breadcrumbTitle", "대출/반납 통계");
-        req.setAttribute("activeTab",       "chart");
         req.setAttribute("contentPage",     "/WEB-INF/view/admin/loan_return/chart2.jsp");
 
-        // 3) 공통 레이아웃으로 포워드
+     // 3) 공통 레이아웃으로 포워드
         req.getRequestDispatcher("/WEB-INF/view/admin/loan_return/loans.jsp")
            .forward(req, resp);
+        
     }
 }

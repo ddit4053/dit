@@ -67,3 +67,23 @@ h2 {
   border-color: #bbb;
   cursor: not-allowed;
 }
+
+/* 검색 폼 스타일 추가 (선택) */
+form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1em;
+}
+
+form select, form input[type="text"] {
+  padding: 6px;
+  font-size: 0.9em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  padding: 6px 10px;
+  font-size: 0.9em;
+}

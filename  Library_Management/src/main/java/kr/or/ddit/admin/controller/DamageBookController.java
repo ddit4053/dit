@@ -22,12 +22,37 @@ public class DamageBookController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 1) 현재 등록된 분실/파손 내역 조회
-        List<Map<String,Object>> list = service.damageBookList();
-        System.out.println("DEBUG → damageBookList size = " + list.size());
-
-        // 2) JSP에 전달
-        req.setAttribute("damageList", list);
+//        // 1) 현재 등록된 분실/파손 내역 조회
+//        List<Map<String,Object>> list = service.damageBookList();
+//        System.out.println("DEBUG → damageBookList size = " + list.size());
+//
+//        // 2) JSP에 전달
+//        req.setAttribute("damageList", list);
+    	
+    	int page = 1;
+        int size = 5; // 기본 페이지 사이즈
+        
+    	String p = req.getParameter("page");
+    	String s = req.getParameter("size");
+    	
+    	if(p != null) {
+    		try {
+				page = Integer.parseInt(p);
+			} catch (NumberFormatException e) {
+				page =1;
+			}
+    	}
+    	if(s != null) {
+    		try {
+    			size = Integer.parseInt(s);
+    		} catch (NumberFormatException e) {
+    			size =1;
+    		}
+    	}
+    	
+    	Map<String, Object> data = service.getDamageListPaged(page,size);
+    	req.setAttribute("damageList", data.get("list"));
+    	req.setAttribute("paging", data.get("paging"));
         
         // 2) 레이아웃 속성 설정
         req.setAttribute("pageTitle",       "분실/파손 도서");

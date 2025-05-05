@@ -84,30 +84,39 @@ public class ReturnBookServiceImpl implements IReturnBookService {
 
 
 	@Override
-	public Map<String, Object> getReturnListPaged(int currentPage) {
-		
-		int totalCount = dao.countReturnList();
-		    PagingVo paging = new PagingVo(currentPage, 10, totalCount);
+    public Map<String, Object> getReturnListPaged(int currentPage, int pageSize, String stype, String sword) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("stype", stype);
+        param.put("sword", sword);
 
-		    List<Map<String,Object>> list = dao.returnListPaged(paging);
+        int totalCount = dao.countReturnListWithSearch(param);
 
-		    Map<String,Object> result = new HashMap<>();
-		    result.put("list",   list);
-		    result.put("paging", paging);
-		    return result;
-	}
-	
-	public Map<String,Object> getReturnedListPaged(int currentPage) {
-	    int totalCount = dao.countReturnedList();
-	    PagingVo paging = new PagingVo(currentPage, 10, totalCount);
+        PagingVo paging = new PagingVo(currentPage, pageSize, totalCount);
+        param.put("startRow", paging.getStartRow());
+        param.put("endRow", paging.getEndRow());
+    
+        List<Map<String, Object>> list = dao.returnListPagedWithSearch(param);
 
-	    List<Map<String,Object>> list = dao.returnedListPaged(paging);
+        Map<String, Object> result = new HashMap<>();
+        result.put("list", list);
+        result.put("paging", paging);
+        return result;
+    }
 
-	    Map<String,Object> result = new HashMap<>();
-	    result.put("list",   list);
-	    result.put("paging", paging);
-	    return result;
-	}
+    @Override
+    public Map<String, Object> getReturnedListPaged(int currentPage, int pageSize) {
+        int totalCount = dao.countReturnedList();
+        PagingVo paging = new PagingVo(currentPage, pageSize, totalCount);
+
+        List<Map<String, Object>> list = dao.returnedListPaged(paging);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("list", list);
+        result.put("paging", paging);
+        return result;
+    }
+
+
 
 
 }

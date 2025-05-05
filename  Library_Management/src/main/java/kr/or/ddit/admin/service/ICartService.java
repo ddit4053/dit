@@ -12,4 +12,11 @@ public interface ICartService {
 	
 	public List<Map<String, Object>> getOverallStatsMap();
 
+	public List<Map<String, Object>> popularBooks();
+	
+	public List<Map<String, Object>> categoryStats();
+
+	public List<Map<String, Object>> loansUserStats();
+	
+	
 }

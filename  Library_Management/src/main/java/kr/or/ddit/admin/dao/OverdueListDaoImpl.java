@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import kr.or.ddit.util.MybatisUtil;
 import kr.or.ddit.vo.Noti;
+import kr.or.ddit.vo.PagingVo;
 
 
 public class OverdueListDaoImpl implements IOverdueListDao {
@@ -78,6 +79,20 @@ public class OverdueListDaoImpl implements IOverdueListDao {
 			}
 		}
 		return cnt;
+	}
+
+	@Override
+	public int countBanUserList() {
+		try ( SqlSession sql = MybatisUtil.getInstance() ) {
+		      return sql.selectOne("notiBan.countBanUserList");
+		    }
+	}
+
+	@Override
+	public List<Map<String, Object>> countBanUserPaged(PagingVo vo) {
+		try ( SqlSession sql = MybatisUtil.getInstance() ) {
+		      return sql.selectList("notiBan.countBanUserPaged", vo);
+		    }
 	}
 
 }

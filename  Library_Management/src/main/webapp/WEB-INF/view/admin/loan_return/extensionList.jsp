@@ -42,7 +42,7 @@
 		    <input type="hidden" name="approvalNo" value="${item.approvalNo}"/>
 		    <button type="submit"
 		      <c:if test="${item.approvedBy != null}">disabled</c:if>>
-		      거절
+		      반려
 		    </button>
 		  </form>
 	    </td>

@@ -34,13 +34,16 @@ public interface IReturnBookDao {
 	
     public void procReserveAndLoan(int bookNo);
     
-    // 페이징 처리를 위해
-    // 전체건수 조회
-    int countReturnList();
-    //페이징된 목록 조회
-    List<Map<String,Object>> returnListPaged(PagingVo paging);
+ // 🔍 검색 포함 페이징
+    List<Map<String, Object>> returnListPagedWithSearch(Map<String, Object> param);
+    int countReturnListWithSearch(Map<String, Object> param);
 
-	public int countReturnedList();
+    // ✅ 반납 완료 페이징용
+    int countReturnedList();
+    List<Map<String, Object>> returnedListPaged(PagingVo paging);
+    
+    
 
-	public List<Map<String, Object>> returnedListPaged(PagingVo paging);
+
+
 }
