@@ -96,8 +96,9 @@
 	
 	<!-- 게시판 목록 조회 -->
 	<select id="selectCodeList" resultType="BookBoardCodeVo">
-	SELECT *
+	SELECT CODE_NO, CODE_NAME
 	  FROM BOOK_BOARD_CODE
+	 ORDER BY CODE_NO ASC  
 	</select>
 	
 	

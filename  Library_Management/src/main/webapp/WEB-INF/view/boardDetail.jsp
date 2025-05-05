@@ -39,7 +39,7 @@
 	   	
         <!-- 수정, 삭제 버튼 영역 -->
         <c:choose>
-        		<c:when test="${board.codeNo == 4}" >
+        		<c:when test="${board.codeNo == 4 || board.codeNo == 5}" >
         			<c:if test="${isAdmin}">
 		            <div class="board-actions">
 		                <button class="btn-update" onclick="updateBoard(${board.boardNo})">수정</button>
