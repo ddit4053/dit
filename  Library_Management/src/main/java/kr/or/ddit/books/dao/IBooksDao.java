@@ -38,4 +38,8 @@ public interface IBooksDao {
 
 	public int insertRealBook();
 
+	public List<Integer> getFavoriteGenres(int userNo);
+
+	public List<BooksVo> getRecommendedBooks(List<Integer> favoriteGenres, int userNo);
+
 }

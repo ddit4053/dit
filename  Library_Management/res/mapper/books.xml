@@ -185,6 +185,37 @@
 		    )
 		    WHERE rnum &gt;= #{startRow}
 		</select>
+		
+	  <select id="getFavoriteGenres" resultType="int" parameterType="int">
+		    SELECT B.CATEGORY_NO
+		    FROM BOOK_LOANS L
+		    JOIN REAL_BOOK RB ON L.REAL_BOOK = RB.REAL_BOOK
+		    JOIN BOOKS B ON RB.BOOK_NO = B.BOOK_NO
+		    WHERE L.USER_NO = #{userNo}
+		    GROUP BY B.CATEGORY_NO
+		    ORDER BY COUNT(*) DESC
+		    FETCH FIRST 1 ROWS ONLY
+	  </select>
+	  
+		<select id="getRecommendedBooks" resultType="BooksVo" parameterType="Map">
+		  SELECT * FROM (
+		    SELECT DISTINCT *
+		    FROM BOOKS B
+		    WHERE B.CATEGORY_NO IN
+		      <foreach item="genre" collection="favoriteGenres" open="(" separator="," close=")">
+		        #{genre}
+		      </foreach>
+		      AND B.BOOK_NO NOT IN (
+		        SELECT RB.BOOK_NO
+		        FROM BOOK_LOANS L
+		        JOIN REAL_BOOK RB ON L.REAL_BOOK = RB.REAL_BOOK
+		        WHERE L.USER_NO = #{userNo}
+		      )
+		    ORDER BY DBMS_RANDOM.VALUE
+		  )
+		  WHERE ROWNUM &lt;= 5
+		</select>
+
 
 </mapper>
 

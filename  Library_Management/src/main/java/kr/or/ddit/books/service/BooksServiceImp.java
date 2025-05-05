@@ -138,6 +138,18 @@ public class BooksServiceImp implements IBooksService{
 		return booksDao.insertRealBook();
 	}
 
+	@Override
+	public List<Integer> getFavoriteGenres(int userNo) {
+		// TODO Auto-generated method stub
+		return booksDao.getFavoriteGenres(userNo);
+	}
+
+	@Override
+	public List<BooksVo> getRecommendedBooks(List<Integer> favoriteGenres, int userNo) {
+		// TODO Auto-generated method stub
+		return booksDao.getRecommendedBooks(favoriteGenres,userNo);
+	}
+
 	
 	
 

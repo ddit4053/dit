@@ -120,6 +120,20 @@ public class BooksDaoImpl extends MybatisDao implements IBooksDao {
 		return insert("books.insertRealBook",null);
 	}
 
+	@Override
+	public List<Integer> getFavoriteGenres(int userNo) {
+		// TODO Auto-generated method stub
+		return selectList("books.getFavoriteGenres",userNo);
+	}
+
+	@Override
+	public List<BooksVo> getRecommendedBooks(List<Integer> favoriteGenres, int userNo) {
+		  Map<String, Object> param = new HashMap<>();
+		  param.put("favoriteGenres", favoriteGenres);
+		  param.put("userNo", userNo);
+		  return selectList("books.getRecommendedBooks", param);
+}
+
 
 	
 }
