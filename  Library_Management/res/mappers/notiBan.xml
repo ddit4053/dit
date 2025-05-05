@@ -92,7 +92,7 @@
 		   INSERT INTO NOTI
 		      (NOTI_NO, NOTI_TYPE, MESSAGE, SENT_DATE, USER_NO)
 		    VALUES
-		      ((SELECT NVL(MAX(NOTI_NO),0)+1 FROM NOTI, 'OVERDUE_WARNING', #{message}, SYSDATE, #{userNo})
+		      ((SELECT NVL(MAX(NOTI_NO),0)+1 FROM NOTI), 'OVERDUE_WARNING', #{message}, SYSDATE, #{userNo})
 		  </insert>
 	
 	 <!-- 1) 반납예정 하루 전 건수 -->
