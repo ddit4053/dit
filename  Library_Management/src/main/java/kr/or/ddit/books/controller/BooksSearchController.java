@@ -71,7 +71,7 @@ public class BooksSearchController extends HttpServlet {
 		
 		List<BooksVo> SearchBookList = null;
 		String query = req.getParameter("query"); // 메인화면에서 검색
-		System.out.println(query);
+
 		if(query != null && !query.trim().isEmpty()) {
 			Map<String, Object> mapMain = new HashMap<String, Object>();
 			mapMain.put("query", query);
@@ -80,9 +80,9 @@ public class BooksSearchController extends HttpServlet {
 		    
 		    
 			SearchBookList = booksService.mainSearchBookList(mapMain);
-			System.out.println(SearchBookList);
+
 		    int totalCount = booksService.countMainSearchBook(mapMain);
-		    System.out.println(totalCount);
+
 		    
 		    int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 			

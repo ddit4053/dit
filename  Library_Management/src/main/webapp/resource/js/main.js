@@ -161,51 +161,36 @@ document.addEventListener("DOMContentLoaded", function () {
 	  
 
   // 추천 도서 데이터 가져오기
-  const fetchRecommendedBooks = () => {
-    const container = document.getElementById("recommendedBooksContainer");
+  function fetchRecommendedBooks() {
+      const container = document.getElementById("recommendedBooksContainer");
 
-    fetchData(
-      `${getContextPath()}/api/books/recommended`,
-      function (err, data) {
-        if (err) {
-          container.innerHTML =
-            '<div class="error">도서 정보를 불러오는데 실패했습니다.</div>';
-          return;
-        }
+      fetchData(`${getContextPath()}/api/books/recommended`, function (err, data) {
+          if (err || !data || data.length === 0) {
+              container.innerHTML = '<div class="error">추천 도서가 없습니다.</div>';
+              return;
+          }
 
-        if (data.length === 0) {
-          container.innerHTML =
-            '<div class="no-data">추천 도서가 없습니다.</div>';
-          return;
-        }
+          container.innerHTML = "";
 
-        container.innerHTML = "";
+          data.forEach((book) => {
+              const bookItem = document.createElement("div");
+              bookItem.className = "book-item";
 
-        data.forEach((book) => {
-          const bookItem = document.createElement("div");
-          bookItem.className = "book-item";
+              bookItem.innerHTML = `
+                  <div class="book-cover">
+                      <img src="${book.cover}" alt="${book.title}">
+                  </div>
+                  <div class="book-title">${book.title}</div>
+                  <div class="book-author">${book.author}</div>
+              `;
 
-          bookItem.innerHTML = `
-                    <div class="book-cover">
-                        <img src="${
-                          book.imageUrl ||
-                          `${getContextPath()}/resources/images/no-cover.jpg`
-                        }" alt="${book.title}">
-                    </div>
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-author">${book.authorName}</div>
-                `;
+              bookItem.addEventListener("click", function () {
+                  window.location.href = `${getContextPath()}/books/detail?bookNo=${book.bookNo}`;
+              });
 
-          bookItem.addEventListener("click", function () {
-            window.location.href = `${getContextPath()}/books/detail?id=${
-              book.bookId
-            }`;
+              container.appendChild(bookItem);
           });
-
-          container.appendChild(bookItem);
-        });
-      }
-    );
+      });
   };
 
   // 공지사항 데이터 가져오기
