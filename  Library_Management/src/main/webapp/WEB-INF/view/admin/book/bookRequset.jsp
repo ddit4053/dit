@@ -164,6 +164,7 @@
           <p><strong>출판사:</strong> ${book.reqBookPublisher}</p>
           <p><strong>신청일:</strong>${book.reqBookDate}</p>
           <p><strong>상태:</strong> ${book.reqBookStatus}</p>
+          <p><strong>신청인:</strong> ${book.name}</p>
           <p><strong>요청사유:</strong> ${book.reqBookComment}</p>
           
           

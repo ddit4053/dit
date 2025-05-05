@@ -27,17 +27,19 @@
 	</insert>
 	
 	<select id="getPagedRequestBooks" parameterType="Map" resultType="BookRequestsVo">
-		    SELECT * 
-		    FROM (
-		        SELECT a.*, ROWNUM rnum
-		        FROM (
-		            SELECT *
-		            FROM BOOK_REQUESTS
-		            ORDER BY REQ_BOOK_DATE DESC
-		        ) a
-		        WHERE ROWNUM &lt;= #{offset} + #{pageSize}
-		    )
-		    WHERE rnum &gt; #{offset}
+	SELECT *
+	FROM (
+	    SELECT a.*, ROWNUM rnum
+	    FROM (
+	        SELECT br.*, u.NAME
+	        FROM BOOK_REQUESTS br
+	        JOIN USERS u ON br.USER_NO = u.USER_NO
+	        ORDER BY br.REQ_BOOK_DATE DESC
+	    ) a
+	    WHERE ROWNUM &lt;= #{offset} + #{pageSize}
+	)
+	WHERE rnum &gt; #{offset}
+
 	</select>
 	
 	<select id="getTotalRequestCount" resultType="int">
