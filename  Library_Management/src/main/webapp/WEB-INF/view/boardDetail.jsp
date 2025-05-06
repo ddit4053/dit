@@ -37,23 +37,22 @@
 	    	</div>
 	   	</c:if>
 	   	
-        <!-- 수정, 삭제 버튼 영역 -->
-        <c:choose>
+        <!-- 게시글 수정, 삭제 버튼 영역 -->
+        <div class="board-actions">
+        	<c:choose>
         		<c:when test="${board.codeNo == 4 || board.codeNo == 5}" >
         			<c:if test="${isAdmin}">
-		            <div class="board-actions">
 		                <button class="btn-update" onclick="updateBoard(${board.boardNo})">수정</button>
 		                <button class="btn-delete" onclick="deleteBoard(${board.boardNo})">삭제</button>
-		            </div>
         			</c:if>
-     		</c:when>
+     			</c:when>
      		<c:otherwise>
      			<c:if test="${isAuthor}">
-		            <div class="board-actions">
-		                <button class="btn-update" onclick="updateBoard(${board.boardNo})">수정</button>
-		                <button class="btn-delete" onclick="deleteBoard(${board.boardNo})">삭제</button>
-		            </div>
-        			</c:if>
+	                <button class="btn-update" onclick="updateBoard(${board.boardNo})">수정</button>
+       			</c:if>
+       			<c:if test="${isAuthor || isAdmin}">
+	                <button class="btn-delete" onclick="deleteBoard(${board.boardNo})">삭제</button>
+	            </c:if>    
      		</c:otherwise>
      	</c:choose>	 
     </div>
@@ -90,12 +89,14 @@
 		                    <div class="comment-content">${comment.cmContent}</div>
 		                   
 		                    <!-- 댓글이 삭제되지 않았고, 작성자와 로그인 사용자가 같은 경우에만 수정/삭제 버튼 표시 -->
-		                    <c:if test="${comment.delYn ne 'Y' && sessionScope.user.userNo == comment.userNo}">
-		                        <div class="comment-actions">
-		                            <button class="btn-edit" onclick="showEditForm(${comment.cmNo}, '${comment.cmContent}')">수정</button>
-		                            <button class="btn-delete" onclick="deleteComment(${comment.cmNo})">삭제</button>
-		                        </div>
-		                    </c:if>
+                        	<div class="comment-actions">
+			                    <c:if test="${comment.delYn ne 'Y' && (sessionScope.user.userNo == comment.userNo)}">
+			                            <button class="btn-edit" onclick="showEditForm(${comment.cmNo}, '${comment.cmContent}')">수정</button>
+			                    </c:if>
+			                    <c:if test="${comment.delYn ne 'Y' && (sessionScope.user.userNo == comment.userNo || isAdmin)}">
+			                            <button class="btn-delete" onclick="deleteComment(${comment.cmNo})">삭제</button>
+	                            </c:if>
+	                        </div>
 		                    
 		                    <!-- 댓글에 대한 답글 입력 폼 토글 버튼 (로그인한 경우만, 삭제된 댓글에는 답글 달지 못하게) -->
 		                    <c:if test="${not empty sessionScope.user && comment.delYn ne 'Y'}">
@@ -124,12 +125,14 @@
 	                                        <div class="reply-content">${reply.cmContent}</div>
 	                                        
 	                                        <!-- 답글이 삭제되지 않았고, 작성자와 로그인 사용자가 같은 경우에만 수정/삭제 버튼 표시 -->
-		                                    <c:if test="${reply.delYn ne 'Y' && sessionScope.user.userNo == reply.userNo}">
-		                                        <div class="reply-actions">
-		                                            <button class="btn-edit" onclick="showEditForm(${reply.cmNo}, '${reply.cmContent}')">수정</button>
-		                                            <button class="btn-delete" onclick="deleteComment(${reply.cmNo})">삭제</button>
-		                                        </div>
-		                                    </c:if>
+	                                        <div class="reply-actions">
+			                                    <c:if test="${reply.delYn ne 'Y' && sessionScope.user.userNo == reply.userNo}">
+			                                            <button class="btn-edit" onclick="showEditForm(${reply.cmNo}, '${reply.cmContent}')">수정</button>
+			                                    </c:if>
+			                                    <c:if test="${reply.delYn ne 'Y' && (sessionScope.user.userNo == comment.userNo || isAdmin)}">
+			                                            <button class="btn-delete" onclick="deleteComment(${reply.cmNo})">삭제</button>
+			                                    </c:if>        
+	                                        </div>
 	                                    </div>
 	                                </c:forEach>
 	                            </div>
