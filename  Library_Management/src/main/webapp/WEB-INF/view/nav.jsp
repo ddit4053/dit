@@ -9,7 +9,7 @@
     		<c:when test ="${sessionScope.role eq 'ADMIN'}">
 	    		<%-- 관리자용 메뉴 --%>
 	    		<ul>
-	                <li><a href="${pageContext.request.contextPath}/admin/books">도서/자료 관리</a></li>
+	                <li><a href="${pageContext.request.contextPath}/admin/books/list">도서/자료 관리</a></li>
 	                <li><a href="${pageContext.request.contextPath}/admin/loans/management/list">대출/반납 관리</a></li>
 	                
 	                <li><a href="${pageContext.request.contextPath}/admin/readingMain.do">열람실 관리</a></li>

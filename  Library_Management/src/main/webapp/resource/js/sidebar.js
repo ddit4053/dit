@@ -96,7 +96,7 @@ const menuStructure = {
   admin: [
     {
       title: "도서/자료 관리",
-      url: "/admin/books/list",
+      url: "/admin/books",
       subMenus: [
         { title: "도서 목록", url: "/admin/books/list" },
         {
