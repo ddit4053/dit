@@ -28,7 +28,7 @@
                                 <input type="date" id="datePicker" class="date-picker">
                                 <button id="searchByDateBtn" class="search-date-btn">조회</button>
                             </div>
-                            <button id="resetDateBtn" class="reset-date-btn">전체 보기</button>
+                            
                         </div>
                     </div>
                     
@@ -43,11 +43,7 @@
                                 </div>
                             </c:when>
                             <c:otherwise>
-                                <div class="day-tabs">
-                                    <c:forEach var="dayEntry" items="${reservationsByDay}">
-                                        <button class="day-tab" data-day="${dayEntry.key}">${dayEntry.key}</button>
-                                    </c:forEach>
-                                </div>
+                               
                                 
                                 <div class="day-tab-contents">
                                     <c:forEach var="dayEntry" items="${reservationsByDay}">
