@@ -62,4 +62,12 @@ public interface IBoardService {
     
     // 댓글 삭제
     int deleteComment(int cmNo);
+    
+    /**
+     * 인기 게시글 목록을 반환하는 메서드
+     * @param params codeNo(게시판 유형), sortType(정렬 방식), limit(가져올 게시글 수)
+     * @return List<BookBoardVo> 인기 게시글 목록
+     */
+    List<BookBoardVo> selectPopularBoardList(Map<String, Object> params);
+    
 }

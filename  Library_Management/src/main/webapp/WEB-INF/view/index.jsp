@@ -88,8 +88,8 @@
     <section class="notice-section">
         <div class="half-section">
             <div class="section-header">
-                <h2>인기 토론</h2>
-                <a href="${pageContext.request.contextPath}/board/community/discussion/list" class="view-more">더보기</a>
+                <h2>인기 독후감</h2>
+                <a href="${pageContext.request.contextPath}/community/reviews" class="view-more">더보기</a>
             </div>
             <ul class="event-list" id="eventList">
                 <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
@@ -98,8 +98,8 @@
         </div>
         <div class="half-section">
             <div class="section-header">
-                <h2>공지사항</h2>
-                <a href="${pageContext.request.contextPath}/board/info/notice" class="view-more">더보기</a>
+                <h2>공지 사항</h2>
+                <a href="${pageContext.request.contextPath}/support/notices" class="view-more">더보기</a>
             </div>
             <ul class="notice-list" id="noticeList">
                 <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->

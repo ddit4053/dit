@@ -199,5 +199,10 @@ public class BoardServiceImpl implements IBoardService {
 		}
 		return 0;
 	}
+	
+	@Override
+	public List<BookBoardVo> selectPopularBoardList(Map<String, Object> params) {
+	    return boardDao.selectPopularBoardList(params);
+	}
 
 }

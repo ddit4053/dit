@@ -247,5 +247,45 @@
 	    UPDATE BOOK_BOARD
 	       SET FILE_GROUP_NUM = #{fileGroupNum, jdbcType=NUMERIC}
 	     WHERE BOARD_NO = #{boardNo}
-	</update>	
+	</update>
+	
+	
+	<!-- 인기 게시글 목록 조회 (조회수 순 또는 최신순) -->
+	<select id="selectPopularBoardList" parameterType="map" resultType="BookBoardVo">
+	    SELECT B.BOARD_NO,
+	           B.TITLE,
+	           B.CONTENT,
+	           TO_CHAR(B.WRITTEN_DATE, 'YYYY-MM-DD') AS WRITTEN_DATE,
+	           B.VIEWS,
+	           B.USER_NO,
+	           B.CODE_NO,
+	           B.FILE_GROUP_NUM,
+	           B.DELYN,
+	           U.NAME AS WRITER,
+	           (SELECT COUNT(*)
+	              FROM COMMENTS C
+	             WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENTS_COUNT
+	      FROM BOOK_BOARD B
+	      JOIN USERS U ON (B.USER_NO = U.USER_NO)
+	     WHERE B.CODE_NO = #{codeNo}
+	       AND B.DELYN = 'N'
+	     ORDER BY
+	    <choose>
+	        <when test="sortType == 'views'">
+	            B.VIEWS DESC
+	        </when>
+	        <when test="sortType == 'comments'">
+	            (SELECT COUNT(*) FROM COMMENTS C WHERE C.BOARD_NO = B.BOARD_NO) DESC
+	        </when>
+	        <when test="sortType == 'oldest'">
+	            B.WRITTEN_DATE ASC
+	        </when>
+	        <otherwise>
+	            B.WRITTEN_DATE DESC
+	        </otherwise>
+	    </choose>
+	    <if test="limit != null">
+	        FETCH FIRST #{limit} ROWS ONLY
+	    </if>
+	</select>	
 </mapper>

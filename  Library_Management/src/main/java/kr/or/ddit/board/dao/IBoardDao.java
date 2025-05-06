@@ -39,4 +39,11 @@ public interface IBoardDao {
     
     // 전체 게시글 수 조회
     int getTotalBoardCount(Map<String, Object> params);
+    
+    /**
+     * 인기 게시글 목록을 조회하는 메서드
+     * @param params codeNo(게시판 유형), sortType(정렬 방식), limit(가져올 게시글 수)
+     * @return List<BookBoardVo> 인기 게시글 목록
+     */
+    List<BookBoardVo> selectPopularBoardList(Map<String, Object> params);
 }

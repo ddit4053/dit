@@ -95,6 +95,11 @@ public class BoardDaoImpl extends MybatisDao implements IBoardDao {
 	public int updateBoardFileGroup(Map<String, Object> params) {
 	    return update("board.updateBoardFileGroup", params);
 	}
+
+	@Override
+	public List<BookBoardVo> selectPopularBoardList(Map<String, Object> params) {
+		return selectList("board.selectPopularBoardList", params);
+	}
     
 
 }

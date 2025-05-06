@@ -98,85 +98,91 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // 신착 도서 데이터 가져오기(페이징)
-	  let allBooks = [];
-	  let currentIndex = 0;
-	  const booksPerPage = 5;
-	
-	  function renderBooks() {
-	      const container = document.getElementById("newBooksContainer");
-	      container.innerHTML = "";
-	
-	      const booksToShow = allBooks.slice(currentIndex, currentIndex + booksPerPage);
-	      booksToShow.forEach((book) => {
-	          const bookItem = document.createElement("div");
-	          bookItem.className = "book-item";
-	
-	          bookItem.innerHTML = `
+  let allBooks = [];
+  let currentIndex = 0;
+  const booksPerPage = 5;
+
+  function renderBooks() {
+    const container = document.getElementById("newBooksContainer");
+    container.innerHTML = "";
+
+    const booksToShow = allBooks.slice(
+      currentIndex,
+      currentIndex + booksPerPage
+    );
+    booksToShow.forEach((book) => {
+      const bookItem = document.createElement("div");
+      bookItem.className = "book-item";
+
+      bookItem.innerHTML = `
 	              <div class="book-cover">
 	                  <img src="${book.cover}" alt="${book.title}">
 	              </div>
 	              <div class="book-title">${book.title}</div>
 	              <div class="book-author">${book.author}</div>
 	          `;
-	
-	          bookItem.addEventListener("click", function () {
-	              window.location.href = `${getContextPath()}/books/detail?bookNo=${book.bookNo}`;
-	          });
-	
-	          container.appendChild(bookItem);
-	      });
-	  }
-	//신착도서 불러오기
-	  function fetchNewBooks() {
-	      fetchData(`${getContextPath()}/api/books/new`, function (err, data) {
-	          const container = document.getElementById("newBooksContainer");
-	
-	          if (err || !data || data.length === 0) {
-	              container.innerHTML = '<div class="error">신착 도서가 없습니다.</div>';
-	              return;
-	          }
-	
-	          allBooks = data;
-	          currentIndex = 0;
-	          renderBooks();
-	      });
-	  }
-	
-	  //신착도서 페이징
-	  document.getElementById("prevBtn").addEventListener("click", () => {
-	      if (currentIndex >= booksPerPage) {
-	          currentIndex -= booksPerPage;
-	          renderBooks();
-	      }
-	  });
-	
-	  //신착도서 페이징
-	  document.getElementById("nextBtn").addEventListener("click", () => {
-	      if (currentIndex + booksPerPage < allBooks.length) {
-	          currentIndex += booksPerPage;
-	          renderBooks();
-	      }
-	  });
-	  
-	  
+
+      bookItem.addEventListener("click", function () {
+        window.location.href = `${getContextPath()}/books/detail?bookNo=${
+          book.bookNo
+        }`;
+      });
+
+      container.appendChild(bookItem);
+    });
+  }
+  //신착도서 불러오기
+  function fetchNewBooks() {
+    fetchData(`${getContextPath()}/api/books/new`, function (err, data) {
+      const container = document.getElementById("newBooksContainer");
+
+      if (err || !data || data.length === 0) {
+        container.innerHTML = '<div class="error">신착 도서가 없습니다.</div>';
+        return;
+      }
+
+      allBooks = data;
+      currentIndex = 0;
+      renderBooks();
+    });
+  }
+
+  //신착도서 페이징
+  document.getElementById("prevBtn").addEventListener("click", () => {
+    if (currentIndex >= booksPerPage) {
+      currentIndex -= booksPerPage;
+      renderBooks();
+    }
+  });
+
+  //신착도서 페이징
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    if (currentIndex + booksPerPage < allBooks.length) {
+      currentIndex += booksPerPage;
+      renderBooks();
+    }
+  });
 
   // 추천 도서 데이터 가져오기
   function fetchRecommendedBooks() {
-      const container = document.getElementById("recommendedBooksContainer");
+    const container = document.getElementById("recommendedBooksContainer");
 
-      fetchData(`${getContextPath()}/api/books/recommended`, function (err, data) {
-          if (err || !data || data.length === 0) {
-              container.innerHTML = '<div class="error">추천 도서가 없습니다.</div>';
-              return;
-          }
+    fetchData(
+      `${getContextPath()}/api/books/recommended`,
+      function (err, data) {
+        if (err || !data || data.length === 0) {
+          container.innerHTML =
+            '<div class="error">추천 도서가 없습니다.</div>';
+          return;
+        }
 
-          container.innerHTML = "";
+        container.innerHTML = "";
 
-          data.forEach((book) => {
-              const bookItem = document.createElement("div");
-              bookItem.className = "book-item";
+        data.forEach((book) => {
+          const bookItem = document.createElement("div");
+          bookItem.className = "book-item";
 
-              bookItem.innerHTML = `
+          bookItem.innerHTML = `
                   <div class="book-cover">
                       <img src="${book.cover}" alt="${book.title}">
                   </div>
@@ -184,92 +190,111 @@ document.addEventListener("DOMContentLoaded", function () {
                   <div class="book-author">${book.author}</div>
               `;
 
-              bookItem.addEventListener("click", function () {
-                  window.location.href = `${getContextPath()}/books/detail?bookNo=${book.bookNo}`;
-              });
-
-              container.appendChild(bookItem);
+          bookItem.addEventListener("click", function () {
+            window.location.href = `${getContextPath()}/books/detail?bookNo=${
+              book.bookNo
+            }`;
           });
-      });
-  };
 
-  // 공지사항 데이터 가져오기
+          container.appendChild(bookItem);
+        });
+      }
+    );
+  }
+
+  // 공지사항 데이터 가져오기 (최신순)
   const fetchNotices = () => {
     const container = document.getElementById("noticeList");
 
-    fetchData(`${getContextPath()}/api/notices`, function (err, data) {
-      if (err) {
+    // AJAX 요청 설정
+    const params = {
+      codeNo: 4, // 공지사항 게시판 코드
+      sortType: "latest", // 최신순 정렬
+      limit: 5, // 상위 5개만 가져오기
+    };
+
+    $.ajax({
+      url: `${getContextPath()}/popularBoardAjax`,
+      type: "GET",
+      data: params,
+      dataType: "json",
+      success: function (data) {
+        if (!data || data.length === 0) {
+          container.innerHTML =
+            '<li class="no-data">등록된 공지사항이 없습니다.</li>';
+          return;
+        }
+
+        container.innerHTML = "";
+
+        data.forEach((notice) => {
+          const li = document.createElement("li");
+
+          li.innerHTML = `
+          <a href="${getContextPath()}/support/notices/Detail?boardNo=${
+            notice.boardNo
+          }">
+            <span class="notice-title">${notice.title}</span>
+            <span class="notice-date">${notice.writtenDate}</span>
+          </a>
+        `;
+
+          container.appendChild(li);
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("공지사항을 불러오는데 실패했습니다:", error);
         container.innerHTML =
           '<li class="error">공지사항을 불러오는데 실패했습니다.</li>';
-        return;
-      }
-
-      if (data.length === 0) {
-        container.innerHTML =
-          '<li class="no-data">등록된 공지사항이 없습니다.</li>';
-        return;
-      }
-
-      container.innerHTML = "";
-
-      data.slice(0, 5).forEach((notice) => {
-        const li = document.createElement("li");
-        const date = new Date(notice.createdAt);
-        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
-
-        li.innerHTML = `
-                    <a href="${getContextPath()}/board/notice/detail?id=${
-          notice.postId
-        }">
-                        <span class="notice-title">${notice.title}</span>
-                        <span class="notice-date">${formattedDate}</span>
-                    </a>
-                `;
-
-        container.appendChild(li);
-      });
+      },
     });
   };
 
-  // 문화 행사 데이터 가져오기
-  const fetchEvents = () => {
+  // 인기 독후감 데이터 가져오기 (조회수 순)
+  const fetchPopularReviews = () => {
     const container = document.getElementById("eventList");
 
-    fetchData(`${getContextPath()}/api/events`, function (err, data) {
-      if (err) {
+    // AJAX 요청 설정
+    const params = {
+      codeNo: 1, // 독후감 게시판 코드
+      sortType: "views", // 조회수 순 정렬
+      limit: 5, // 상위 5개만 가져오기
+    };
+
+    $.ajax({
+      url: `${getContextPath()}/popularBoardAjax`,
+      type: "GET",
+      data: params,
+      dataType: "json",
+      success: function (data) {
+        if (!data || data.length === 0) {
+          container.innerHTML =
+            '<li class="no-data">등록된 독후감이 없습니다.</li>';
+          return;
+        }
+
+        container.innerHTML = "";
+
+        data.forEach((post) => {
+          const li = document.createElement("li");
+
+          li.innerHTML = `
+          <a href="${getContextPath()}/community/reviews/Detail?boardNo=${
+            post.boardNo
+          }">
+            <span class="event-title">${post.title}</span>
+            <span class="event-date">${post.writtenDate}</span>
+          </a>
+        `;
+
+          container.appendChild(li);
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("독후감을 불러오는데 실패했습니다:", error);
         container.innerHTML =
-          '<li class="error">행사 정보를 불러오는데 실패했습니다.</li>';
-        return;
-      }
-
-      if (data.length === 0) {
-        container.innerHTML =
-          '<li class="no-data">등록된 행사가 없습니다.</li>';
-        return;
-      }
-
-      container.innerHTML = "";
-
-      data.slice(0, 5).forEach((event) => {
-        const li = document.createElement("li");
-        const date = new Date(event.eventDate);
-        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
-
-        li.innerHTML = `
-                    <a href="${getContextPath()}/guide/event/detail?id=${
-          event.eventId
-        }">
-                        <span class="event-title">${event.title}</span>
-                        <span class="event-date">${formattedDate}</span>
-                    </a>
-                `;
-
-        container.appendChild(li);
-      });
+          '<li class="error">독후감을 불러오는데 실패했습니다.</li>';
+      },
     });
   };
 
@@ -327,6 +352,6 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchNewBooks();
   fetchRecommendedBooks();
   fetchNotices();
-  fetchEvents();
-  fetchReadingRoomStatus();
+  fetchPopularReviews();
+  /*fetchReadingRoomStatus();*/
 });
