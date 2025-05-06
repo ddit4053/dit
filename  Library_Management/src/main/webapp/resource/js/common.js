@@ -63,8 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
           {
             title: "게시판 관리",
             items: [
-              { name: "커뮤니티 게시판", url: "/admin/community/reviews" },
-              { name: "이용안내 게시판", url: "/admin/support/notices" },
+              { name: "게시판 현황", url: "/admin/board/list" },
             ],
           },
         ];

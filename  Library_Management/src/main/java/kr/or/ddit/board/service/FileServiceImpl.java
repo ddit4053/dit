@@ -7,7 +7,9 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import jakarta.servlet.ServletException;
@@ -16,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import kr.or.ddit.board.dao.FileDaoImpl;
 import kr.or.ddit.board.dao.IFileDao;
+import kr.or.ddit.vo.FileGroupVo;
 import kr.or.ddit.vo.File_StorageVo;
 import kr.or.ddit.vo.UsersVo;
 
@@ -44,6 +47,11 @@ public class FileServiceImpl implements IFileService{
 	@Override
 	public File_StorageVo getFileByNo(int fileNo) {
 		return fileDao.selectFileByNo(fileNo);
+	}
+	
+	@Override
+	public boolean updateFileReference(File_StorageVo file) {
+	    return fileDao.updateFileReference(file) > 0;
 	}
 
 	@Override
@@ -74,42 +82,34 @@ public class FileServiceImpl implements IFileService{
 	public boolean insertFile(File_StorageVo file) {
 		return fileDao.insertFile(file) > 0; // DB insert 성공일 때만 true 반환
 	} 
-
+	
+	
 	@Override
 	public boolean deleteFile(int fileNo) {
-		// 실제 파일 삭제 처리
-		File_StorageVo fileInfo = fileDao.selectFileByNo(fileNo);
-		if (fileInfo != null) {
-			File file = new File(fileInfo.getFilePath() + File.separator + fileInfo.getSaveName());
-			if(file.exists()) {
-				file.delete();
-			}
-		}
-		
-		// DB에서 파일 정보 삭제
-		return fileDao.deleteFile(fileNo) > 0;
+	    // 논리적 삭제만 처리 - 실제 파일은 삭제하지 않음
+	    return fileDao.deleteFile(fileNo) > 0;
 	}
 
 	@Override
 	public boolean deleteFilesByGroupNum(int fileGroupNum) {
-		// 파일 그룹에 속한 모든 파일 정보 조회
-		List<File_StorageVo> fileList = fileDao.selectFilesByGroupNum(fileGroupNum);
-		
-		// 실제 파일 삭제
-		for (File_StorageVo fileInfo : fileList) {
-			File file = new File(fileInfo.getFilePath() + File.separator + fileInfo.getSaveName());
-			if (file.exists()) {
-				file.delete();
-			}
-		}
-		
-		// DB에서 파일 정보 삭제
-		return fileDao.deleteFilesByGroupNum(fileGroupNum) > 0;
+	    // 논리적 삭제만 처리 - 실제 파일은 삭제하지 않음
+	    return fileDao.deleteFilesByGroupNum(fileGroupNum) > 0;
 	}
-
+	
+	/**
+     * 게시글 번호와 동일한 파일그룹 번호를 생성하는 메서드
+     * @param fileGroupNum 게시글 번호와 일치할 파일그룹 번호
+     * @param codeNo 게시판 코드 번호
+     * @return 생성된 파일그룹 번호 (게시글 번호와 동일)
+     */	
 	@Override
-	public int createFileGroup() {
-		return fileDao.createFileGroup();
+	public int createFileGroup(int fileGroupNum, int codeNo) {
+		// 게시글 번호와 동일한 파일 그룹 번호를 가진 파일 그룹 생성
+		Map<String, Object> map = new HashMap<>();
+		map.put("fileGroupNum", fileGroupNum);
+		map.put("codeNo", codeNo);
+		fileDao.createFileGroup(map);
+		return fileGroupNum;
 	}
 	
 	
@@ -142,8 +142,8 @@ public class FileServiceImpl implements IFileService{
 		UsersVo loginUser = (UsersVo) session.getAttribute("user");
 		int userNo = loginUser != null ? loginUser.getUserNo() : 0;
 		
-		// 새 파일 그룹 생성
-		int fileGroupNum = createFileGroup();
+		// 게시글의 번호를 파일그룹 번호로 사용 (게시글 ID와 파일그룹 ID를 동일하게 유지)
+		int fileGroupNum = referenceId;
 		
 		List<File_StorageVo> fileList = new ArrayList<>();
 		
@@ -192,4 +192,15 @@ public class FileServiceImpl implements IFileService{
 		}
 		return fileList;
 	}
+
+	@Override
+	public boolean updateFileGroupCodeNo(FileGroupVo fileGroup) {
+		return fileDao.updateFileGroupCodeNo(fileGroup) > 0;
+	}
+
+	@Override
+	public FileGroupVo selectFileGroup(int fileGroupNum) {
+		return fileDao.selectFileGroup(fileGroupNum);
+	}
+	
 }

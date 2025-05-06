@@ -6,6 +6,7 @@
         SELECT * 
           FROM FILE_STORAGE
          WHERE FILE_GROUP_NUM = #{fileGroupNum}
+           AND DELYN ='N'
          ORDER BY FILE_NO ASC
     </select>
     
@@ -32,29 +33,50 @@
 			        #{referenceType},
 			        #{referenceId},
 			        #{userNo},
-			        #{fileGroupNum}
+			        #{fileGroupNum},
+			        'N'   <!-- DELYN 기본값 -->
 			        )
     </insert>
     
-    <!-- 파일 삭제 -->
-    <delete id="deleteFile" parameterType="int">
-        DELETE FROM FILE_STORAGE
-        WHERE FILE_NO = #{fileNo}
-    </delete>
-    
-    <!-- 파일 그룹에 속한 모든 파일 삭제 -->
-    <delete id="deleteFilesByGroupNum" parameterType="int">
-        DELETE FROM FILE_STORAGE
-        WHERE FILE_GROUP_NUM = #{fileGroupNum}
-    </delete>
-    
     <!-- 새 파일 그룹 생성 -->
-    <insert id="createFileGroup" parameterType="int">
-        <selectKey keyProperty="fileGroupNum" resultType="int" order="AFTER">
-            SELECT FILE_GROUP_SEQ.CURRVAL FROM DUAL
-        </selectKey>
-        INSERT INTO FILE_GROUP (FILE_GROUP_NUM)
-        VALUES (FILE_GROUP_SEQ.NEXTVAL)
+    <insert id="createFileGroup" parameterType="map">
+        INSERT INTO FILE_GROUP (FILE_GROUP_NUM, CODE_NO)
+        VALUES (#{fileGroupNum}, #{codeNo})
     </insert>
+    
+    <!-- 파일 참조ID 변경 -->
+    <update id="updateFileReference" parameterType="File_StorageVo">
+	    UPDATE FILE_STORAGE
+	       SET REFERENCE_ID = #{referenceId}
+	     WHERE FILE_NO = #{fileNo}
+	</update>
+	
+	<!-- 파일 그룹 번호로 코드번호 조회 -->
+	<select id="selectFileGroup" parameterType="int"  resultType = "FileGroupVo">
+		SELECT *
+		  FROM FILE_GROUP
+		 WHERE FILE_GROUP_NUM = #{fileGroupNum} 
+	</select>
+	
+	<!-- 게시판 이동 시 파일그룹의 코드넘버 업데이트  -->
+	<update id="updateFileGroupCodeNo" parameterType = "FileGroupVo">
+		UPDATE FILE_GROUP
+		   SET CODE_NO = #{codeNo}
+		 WHERE FILE_GROUP_NUM = #{fileGroupNum} 
+	</update>
+   	
+   	<!-- 단일 파일 논리적 삭제 -->
+	<update id="deleteFile" parameterType="int">
+	    UPDATE FILE_STORAGE
+	       SET DELYN = 'Y'
+	     WHERE FILE_NO = #{fileNo}
+	</update>
+    
+    <!-- 파일 그룹에 속한 모든 파일 논리 삭제(DB 메타데이터만 삭제) -->
+    <update id="deleteFilesByGroupNum" parameterType="int">
+         UPDATE FILE_STORAGE
+       		SET DELYN = 'Y'
+    	  WHERE FILE_GROUP_NUM = #{fileGroupNum}
+    </update>
 
 </mapper>

@@ -15,4 +15,5 @@ public class File_StorageVo {
 	private int referenceId; // 참조 ID (예: 게시글 번호)
 	private int userNo;
 	private int fileGroupNum;
+	private String delYn;
 }

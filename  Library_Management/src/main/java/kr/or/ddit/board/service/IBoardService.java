@@ -3,6 +3,7 @@ package kr.or.ddit.board.service;
 import java.util.List;
 import java.util.Map;
 
+import kr.or.ddit.vo.BookBoardCodeVo;
 import kr.or.ddit.vo.BookBoardVo;
 import kr.or.ddit.vo.CommentsVo;
 
@@ -12,11 +13,17 @@ public interface IBoardService {
 	// 통합된 게시글 목록 조회 (검색, 페이징, 정렬 포함)
     Map<String, Object> selectBoardList(Map<String, Object> params);
     
+    // 게시판 목록 조회
+    List<BookBoardCodeVo> getCodeList();
+    
     // 게시글 상세 조회
     BookBoardVo selectBoardDetail(int boardNo);
     
     // 게시글 등록
     int insertBoard(BookBoardVo board);
+    
+    // 파일 그룹 번호 수정
+    int updateBoardFileGroup(int boardNo, Integer fileGroupNum);
     
     // 게시글 수정
     int updateBoard(BookBoardVo board);
@@ -24,12 +31,16 @@ public interface IBoardService {
     // 게시글 삭제
     int deleteBoard(int boardNo);
     
+    
     // 조회수 증가
     int updateViewCount(int boardNo);
     
     
     // 전체 게시글 수 조회
     int getTotalBoardCount(Map<String, Object> params);
+    
+    // 파일 그룹 번호 사용 여부 조회
+    boolean isFileGroupInUser(int fileGroupNum);
     
     
     // 단일 댓글 조회
@@ -51,7 +62,4 @@ public interface IBoardService {
     
     // 댓글 삭제
     int deleteComment(int cmNo);
-    
-    // 댓글 수 업데이트
-    int updateCommentCount(int boardNo);
 }

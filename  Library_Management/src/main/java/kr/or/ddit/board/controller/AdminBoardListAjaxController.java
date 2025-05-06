@@ -19,59 +19,46 @@ import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.vo.BookBoardVo;
 import kr.or.ddit.vo.PagingVo;
 
-@WebServlet(urlPatterns = {
-		"/reviewsListAjax",
-		"/discussionsListAjax",
-		"/recommendationsListAjax",
-		"/noticesListAjax",
-		"/qaListAjax"
-})
-// 게시판 목록 데이터 AJAX 처리
-public class BoardListAjaxController extends HttpServlet {
-	
-	private static final long serialVersionUTD = 1L;
-	private IBoardService boardService = BoardServiceImpl.getInstance();
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		resp.setContentType("application/json");
-		resp.setCharacterEncoding("UTF-8");
-		
-		try {
-			// 파라미터 받기
-			String pageStr = req.getParameter("page");
-			String searchType = req.getParameter("searchType");
-			String searchKeyword = req.getParameter("searchKeyword");
+@WebServlet("/admin/boardListAjax")
+// 관리자용 게시판 목록 데이터 AJAX 처리
+public class AdminBoardListAjaxController extends HttpServlet {
+    
+    private static final long serialVersionUTD = 1L;
+    private IBoardService boardService = BoardServiceImpl.getInstance();
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        
+        try {
+            // 파라미터 받기
+            String pageStr = req.getParameter("page");
+            String searchType = req.getParameter("searchType");
+            String searchKeyword = req.getParameter("searchKeyword");
             String hideNoticeStr = req.getParameter("hideNotice");
             String orderType = req.getParameter("orderType");
             String blockSizeStr = req.getParameter("blockSize");
+            String codeNoStr = req.getParameter("codeNo"); // 게시판 코드 파라미터 추가
             
             // 기본값 설정
             int currentPage = pageStr != null ? Integer.parseInt(pageStr) : 1;
             boolean hideNotice = "true".equals(hideNoticeStr);
             int pageSize = blockSizeStr != null ? Integer.parseInt(blockSizeStr) : 10;
-			
+            int codeNo = codeNoStr != null ? Integer.parseInt(codeNoStr) : 1; // 기본값 설정
+            
             // 정렬 타입 변환 (최신순, 과거순, 조회수순, 댓글순)
             String sortType = "latest"; // 기본값
             if("latest".equals(orderType)) {
-            	sortType = "latest";
+                sortType = "latest";
             } else if ("oldest".equals(orderType)) {
-            	sortType = "oldest";
+                sortType = "oldest";
             } else if ("views".equals(orderType)) {
-            	sortType = "views";
+                sortType = "views";
             } else if ("comments".equals(orderType)) {
                 sortType = "comments";
             }
-            
-            // URL 패턴에서 게시판 타입 판별
-            String requestURI = req.getRequestURI();
-            int codeNo = 1; // 기본값 독후감 
-            
-            if (requestURI.contains("discussionsListAjax"))  codeNo = 2;  // 토론
-            if (requestURI.contains("recommendationsListAjax"))   codeNo = 3;  // 회원도서추천
-            if (requestURI.contains("noticesListAjax")) 		codeNo = 4;  // 공지사항
-            if (requestURI.contains("qaListAjax")) 			codeNo = 6;  // QA
             
             // 검색 조건 설정
             Map<String, Object> params = new HashMap<>();
@@ -94,15 +81,15 @@ public class BoardListAjaxController extends HttpServlet {
             // 서비스 호출
             Map<String, Object> result = boardService.selectBoardList(params);
             @SuppressWarnings("unchecked")
-			List<BookBoardVo> boardList = (List<BookBoardVo>) result.get("boardList");
+            List<BookBoardVo> boardList = (List<BookBoardVo>) result.get("boardList");
             @SuppressWarnings("unchecked")
-			List<BookBoardVo> noticeList = (List<BookBoardVo>) result.get("noticeList");
+            List<BookBoardVo> noticeList = (List<BookBoardVo>) result.get("noticeList");
             PagingVo paging = (PagingVo) result.get("paging");
             
             // 공지사항 숨기기 옵션 처리
-            if (!hideNotice && noticeList != null && currentPage ==1) {
-            	// 공지사항 게시글 최상단 표시
-            	boardList.addAll(0, noticeList);
+            if (!hideNotice && noticeList != null && currentPage == 1) {
+                // 공지사항 게시글 최상단 표시
+                boardList.addAll(0, noticeList);
             }
             // JSON 응답 생성
             Map<String, Object> jsonResp = new HashMap<>();
@@ -115,7 +102,7 @@ public class BoardListAjaxController extends HttpServlet {
                 BookBoardVo firstBoard = boardList.get(0);
                 System.out.println("boardNo: " + firstBoard.getBoardNo());
                 System.out.println("title: " + firstBoard.getTitle());
-                System.out.println("writtenDate: " + firstBoard.getWrittenDate()); // 이 값이 null인지 확인
+                System.out.println("writtenDate: " + firstBoard.getWrittenDate());
             }
             
             // 직렬화
@@ -126,8 +113,8 @@ public class BoardListAjaxController extends HttpServlet {
             out.print(jsonString);
             out.flush();
             
-		} catch (Exception e) {
-			e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             
             Map<String, Object> errorResponse = new HashMap<>();
@@ -138,6 +125,6 @@ public class BoardListAjaxController extends HttpServlet {
             PrintWriter out = resp.getWriter();
             out.print(gson.toJson(errorResponse));
             out.flush();
-		}
-	}
+        }
+    }
 }

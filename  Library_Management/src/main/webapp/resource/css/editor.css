@@ -1,152 +1,535 @@
-/* 에디터 스타일 */
+/* 에디터 페이지 스타일 */
+/* 책GPT 도서관 시스템 에디터 공통 스타일 */
+
+/* 페이지 헤더 및 경로 표시 스타일 */
+.page-header {
+  margin-bottom: 25px;
+}
+
+.breadcrumb {
+  display: flex;
+  font-size: 14px;
+  color: var(--light-text);
+  margin-bottom: 10px;
+}
+
+.breadcrumb a {
+  color: var(--secondary-color);
+  margin-right: 5px;
+}
+
+.breadcrumb a:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+.breadcrumb span {
+  margin: 0 5px;
+}
+
+/* 콘텐츠 레이아웃 */
+.content-layout {
+  display: flex;
+  gap: 30px;
+}
+
+.main-content-area {
+  flex: 1;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* 에디터 상단 영역 스타일 */
 .editor-top {
-    margin-bottom: 20px;
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
 }
 
-.board-selecter {
-    margin-bottom: 10px;
-}
-
-.board-code {
-    padding: 8px 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    font-size: 14px;
-    width: 200px;
+.boardNo {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: var(--light-text);
+  font-size: 14px;
 }
 
 .textarea-row {
-    position: relative;
-    margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .textarea-input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    font-size: 18px;
-    font-weight: bold;
-    resize: none;
-    overflow: hidden;
-    min-height: 48px;
-    transition: border-color 0.3s;
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 16px;
+  resize: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 .textarea-input:focus {
-    outline: none;
-    border-color: #12b886;
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px rgba(141, 110, 99, 0.3);
 }
 
+.board-select {
+  display: flex;
+  align-items: center;
+}
+
+.board-select select {
+  padding: 8px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: var(--card-background);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.board-select select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px rgba(141, 110, 99, 0.3);
+}
+
+/* 에디터 메인 영역 스타일 */
 .editor-main {
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 100px);
 }
 
-.toolbox, .text-tool {
-    display: flex;
-    padding: 8px;
-    border-bottom: 1px solid #e0e0e0;
-    background-color: #f8f9fa;
+/* 툴바 영역 스타일 */
+.editor-toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #f9f7f6;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.toolbox {
+  display: flex;
+  gap: 10px;
 }
 
 .toolbox button, .text-tool button {
-    width: 36px;
-    height: 36px;
-    margin-right: 5px;
-    border: none;
-    background-color: transparent;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #495057;
-    transition: background-color 0.2s;
+  padding: 8px 12px;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .toolbox button:hover, .text-tool button:hover {
-    background-color: #e9ecef;
+  background-color: var(--secondary-color);
+  color: white;
 }
 
-/* 아이콘 스타일 (fontello 폰트 사용 가정) */
-.image-tool:before { content: '\e800'; font-family: 'fontello'; }
-.url-tool:before { content: '\e801'; font-family: 'fontello'; }
-.file-tool:before { content: '\e802'; font-family: 'fontello'; }
-.code-tool:before { content: '\e803'; font-family: 'fontello'; }
+.text-tool {
+  display: flex;
+  gap: 5px;
+}
 
-.h1Font:before { content: 'H1'; font-weight: bold; }
-.h2Font:before { content: 'H2'; font-weight: bold; }
-.h3Font:before { content: 'H3'; font-weight: bold; }
-.olFont:before { content: '1.'; font-weight: bold; }
-.ulFont:before { content: '•'; font-weight: bold; font-size: 18px; }
-.boldFont:before { content: 'B'; font-weight: bold; }
-.italicFont:before { content: 'I'; font-style: italic; font-weight: bold; }
-.strikeFont:before { content: 'S'; text-decoration: line-through; font-weight: bold; }
-
+/* 본문 에디터 스타일 */
 .editor-content {
-    padding: 20px;
+  flex: 1;
+  padding: 20px;
+  min-height: 400px;
 }
 
 .content-input {
-    width: 100%;
-    min-height: 400px;
-    border: none;
-    padding: 0;
-    font-size: 16px;
-    line-height: 1.6;
-    resize: none;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 15px;
+  line-height: 1.6;
+  resize: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 .content-input:focus {
-    outline: none;
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px rgba(141, 110, 99, 0.3);
 }
 
-/* 저장 버튼 스타일 */
-.save-button-container {
-    text-align: right;
-    margin-top: 20px;
+/* 에디터 버튼 영역 스타일 */
+.editor-buttons {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 20px;
+  border-top: 1px solid var(--border-color);
+  background-color: #f9f7f6;
+}
+
+.right-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.cancel-button, .save-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.cancel-button {
+  background-color: var(--card-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.cancel-button:hover {
+  background-color: #e0e0e0;
 }
 
 .save-button {
-    background-color: #12b886;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
 }
 
 .save-button:hover {
-    background-color: #0ca678;
+  background-color: var(--primary-color);
 }
 
-/* 미리보기 모드 스타일 (선택사항) */
-.preview-mode .content-input {
-    display: none;
+/* 툴팁 및 포커스 효과 */
+[aria-label] {
+  position: relative;
+}
+
+[aria-label]:hover::after {
+  content: attr(aria-label);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--text-color);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 100;
+  margin-bottom: 5px;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .content-layout {
+    flex-direction: column;
+  }
+  
+  .editor-toolbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .toolbox, .text-tool {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .editor-content {
+    min-height: 300px;
+  }
+  
+  .content-input {
+    min-height: 300px;
+  }
+}
+
+/* 에디터 진행 상태 표시 */
+.editor-status {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--border-color);
+  z-index: 1000;
+}
+
+.status-bar {
+  height: 100%;
+  background-color: var(--accent-color);
+  width: 0;
+  transition: width 0.3s;
+}
+
+/* 에디터 저장 알림 */
+.save-notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  z-index: 1000;
+}
+
+.save-notification.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* 에디터 미리보기 스타일 */
+.preview-toggle {
+  margin-left: auto;
+  padding: 8px 15px;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.preview-toggle:hover {
+  background-color: var(--primary-color);
+}
+
+.preview-mode .editor-content {
+  display: none;
 }
 
 .preview-content {
-    display: none;
-    padding: 20px;
-    line-height: 1.6;
+  display: none;
+  padding: 20px;
+  min-height: 400px;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  line-height: 1.6;
 }
 
 .preview-mode .preview-content {
-    display: block;
+  display: block;
 }
 
-/* 반응형 조정 */
-@media (max-width: 768px) {
-    .toolbox, .text-tool {
-        flex-wrap: wrap;
-    }
-    
-    .board-code {
-        width: 100%;
-    }
+/* 에디터 전환 애니메이션 */
+.content-input, .preview-content {
+  transition: opacity 0.3s;
+}
+
+/* 이미지 업로드 미리보기 스타일 */
+.image-preview {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.image-preview-item {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.image-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-image {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.remove-image:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* 동영상 임베드 관련 css */
+/* 미리보기 영역 스타일 */
+.content-preview {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.content-preview h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: var(--secondary-color);
+}
+
+.content-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+/* 유튜브 임베드 스타일 */
+.responsive-embed {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 비율 */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  margin: 15px 0;
+}
+
+.responsive-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.youtube-embed {
+  margin: 15px 0;
+}
+
+/* 첨부 파일 영역 스타일 */
+.attachment {
+  padding: 10px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.attachment-item {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.file-info {
+  margin-right: 10px;
+}
+
+.delete-attachment {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 5px;
+}
+
+.delete-attachment:hover {
+  color: #f44336;
+}
+
+/* 마크다운 미리보기 스타일 */
+#previewContent {
+  line-height: 1.6;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+#previewContent h1, 
+#previewContent h2, 
+#previewContent h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+  color: var(--primary-color);
+}
+
+#previewContent p {
+  margin-bottom: 1em;
+}
+
+#previewContent a {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+#previewContent a:hover {
+  text-decoration: underline;
+}
+
+#previewContent blockquote {
+  border-left: 4px solid var(--secondary-color);
+  padding-left: 15px;
+  margin-left: 0;
+  color: #666;
+}
+
+#previewContent code {
+  background-color: #f0f0f0;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+#previewContent pre {
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+#previewContent pre code {
+  background: none;
+  padding: 0;
+}
+
+#previewContent ul, 
+#previewContent ol {
+  padding-left: 25px;
+  margin-bottom: 1em;
+}
+
+#previewContent table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+#previewContent th, 
+#previewContent td {
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+}
+
+#previewContent th {
+  background-color: #f0f0f0;
 }

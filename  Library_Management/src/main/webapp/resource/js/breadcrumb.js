@@ -1,4 +1,4 @@
-// breadcrumb.js
+
 document.addEventListener("DOMContentLoaded", function () {
   generateBreadcrumb();
 });

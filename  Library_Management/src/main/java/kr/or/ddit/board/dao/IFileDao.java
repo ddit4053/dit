@@ -1,7 +1,9 @@
 package kr.or.ddit.board.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import kr.or.ddit.vo.FileGroupVo;
 import kr.or.ddit.vo.File_StorageVo;
 
 /**
@@ -10,8 +12,8 @@ import kr.or.ddit.vo.File_StorageVo;
 public interface IFileDao {
     
     /**
-     * 파일 그룹 번호로 파일 목록 조회
-     * @param fileGroupNum 파일 그룹 번호
+     * 파일 그룹으로 파일 목록 조회
+     * @param fileGroup 파일 그룹 Vo
      * @return 파일 목록
      */
     List<File_StorageVo> selectFilesByGroupNum(int fileGroupNum);
@@ -22,6 +24,12 @@ public interface IFileDao {
      * @return 파일 정보
      */
     File_StorageVo selectFileByNo(int fileNo);
+    
+    int updateFileReference(File_StorageVo file);
+    
+    FileGroupVo selectFileGroup(int fileGroupNum);
+    
+    int updateFileGroupCodeNo(FileGroupVo fileGroup);
     
     /**
      * 새 파일 등록
@@ -48,5 +56,7 @@ public interface IFileDao {
      * 새 파일 그룹 생성
      * @return 생성된 파일 그룹 번호
      */
-    int createFileGroup();
+    int createFileGroup(Map<String, Object> map);
+    
+
 }

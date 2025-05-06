@@ -6,6 +6,7 @@ import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import kr.or.ddit.vo.FileGroupVo;
 import kr.or.ddit.vo.File_StorageVo;
 
 /**
@@ -15,7 +16,7 @@ public interface IFileService {
     
     /**
      * 파일 그룹 번호로 파일 목록 조회
-     * @param fileGroupNum 파일 그룹 번호
+     * @param fileNo
      * @return 파일 목록
      */
     List<File_StorageVo> getFilesByGroupNum(int fileGroupNum);
@@ -26,6 +27,15 @@ public interface IFileService {
      * @return 파일 정보
      */
     File_StorageVo getFileByNo(int fileNo);
+    
+    // 파일 referId 업데이트
+    boolean updateFileReference(File_StorageVo file);
+    
+    // 파일 그룹 번호로 파일그룹 조회
+    FileGroupVo selectFileGroup(int fileGroupNum);
+    
+    // 파일 그룹의 코드 넘버 업데이트
+    boolean updateFileGroupCodeNo(FileGroupVo fileGroup);
     
     /**
      * 파일 다운로드 처리
@@ -43,24 +53,25 @@ public interface IFileService {
     boolean insertFile(File_StorageVo file);
     
     /**
-     * 파일 삭제
+     * 파일 논리 삭제
      * @param fileNo 파일 번호
      * @return 성공 여부
      */
     boolean deleteFile(int fileNo);
     
     /**
-     * 파일 그룹에 속한 모든 파일 삭제
+     * 파일 그룹에 속한 모든 파일 논리 삭제
      * @param fileGroupNum 파일 그룹 번호
      * @return 성공 여부
      */
     boolean deleteFilesByGroupNum(int fileGroupNum);
     
+    
     /**
      * 새 파일 그룹 생성
      * @return 생성된 파일 그룹 번호
      */
-    int createFileGroup();
+    int createFileGroup(int fileGroupNum, int codeNo);
     
     /**
      * 파일 업로드 처리

@@ -1,63 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
-  loadBoardList(1);
+  // 게시판 선택 드롭다운 변경 이벤트 리스너
+  const codeNoSelect = document.getElementById("codeNoSelect");
+  if (codeNoSelect) {
+    codeNoSelect.addEventListener("change", function() {
+      loadBoardList(1); // 페이지 1로 초기화하며 로드
+    });
+  }
+  
+  loadBoardList(1); // 초기 데이터 로드
   setupOptionListeners();
   
   // 글쓰기 버튼 이벤트 리스너
   const writeButton = document.querySelector(".go-to-editor");
   if (writeButton) {
     writeButton.addEventListener("click", function() {
-		const codeNo = getBoardCodeNo(); // 현재 게시판 타입에 맞는 codeNo 가져오기
-		if((codeNo == 4 || codeNo == 5) && !isAdmin){
-			alert("관리자만 작성 가능한 게시판입니다.");
-			return;
-		}
-		window.location.href = contextPath + "/insert?codeNo=" + codeNo;
+      const codeNo = document.getElementById("codeNoSelect").value;
+      window.location.href = contextPath + "/insert?codeNo=" + codeNo;
     });
   } else {
     console.error("글쓰기 버튼을 찾을 수 없습니다.");
   }
 });
-
-// codeNo를 반환하는 함수 추가
-function getBoardCodeNo() {
-  const boardType = getCurrentBoardType();
-  switch(boardType) {
-    case "reviews": return 1;
-    case "discussions": return 2;
-    case "recommendations": return 3;
-    case "notices": return 4;
-    case "qa": return 6;
-    default: return 1; // 기본값
-  }
-}
-
-const currentPath = window.location.pathname;
-function getCurrentBoardType() {
- 
-  if (currentPath.includes("community/reviews")) {
-    return "reviews";
-  } else if (currentPath.includes("/community/discussions")) {
-    return "discussions";
-  } else if (currentPath.includes("/community/recommendations")) {
-    return "recommendations";
-  } else if (currentPath.includes("/support/notices")) {
-    return "notices";
-  } else if (currentPath.includes("/support/qa")) {
-    return "qa";
-  }
-  return "reviews"; // 기본값
-}
-
-// API 엔드포인트 가져오기
-function getBoardApiEndpoint() {
-  const boardType = getCurrentBoardType();
-  return "/" + boardType + "ListAjax";
-}
-
-// 상세 페이지 URL 가져오기
-function getDetailPageUrl(boardNo) {
-  return currentPath + "/Detail?boardNo=" + boardNo;
-}
 
 // 옵션 변경 이벤트 리스너
 function setupOptionListeners() {
@@ -90,11 +53,17 @@ function loadBoardListCurrentOptions() {
   loadBoardList(1, searchType, searchKeyword);
 }
 
+// 상세 페이지 URL 가져오기
+function getDetailPageUrl(boardNo) {
+  return contextPath + "/admin/board/Detail?boardNo=" + boardNo;
+}
+
 // 게시글 목록 불러오기 함수
 function loadBoardList(page, searchType = "", searchKeyword = "") {
   const hideNotice = document.getElementById("isNoticeVisible").checked;
   const orderType = document.querySelector(".order-type").value;
   const blockSize = document.querySelector(".block-select").value;
+  const codeNo = document.getElementById("codeNoSelect").value;
 
   const params = {
     page: page,
@@ -103,10 +72,11 @@ function loadBoardList(page, searchType = "", searchKeyword = "") {
     hideNotice: hideNotice,
     orderType: orderType,
     blockSize: parseInt(blockSize.replace(/[^0-9]/g, "")),
+    codeNo: codeNo // 게시판 코드 추가
   };
 
   $.ajax({
-    url: contextPath + getBoardApiEndpoint(), // 동적 엔드포인트 생성
+    url: contextPath + "/admin/boardListAjax", // 단일 URL 사용
     type: "GET",
     data: params,
     dataType: "json",
@@ -115,9 +85,11 @@ function loadBoardList(page, searchType = "", searchKeyword = "") {
 
       displayBoardList(res.boardList);
       displayPagination(res.paging, searchType, searchKeyword);
+      
+      // 게시판 타이틀 업데이트
+      updateBoardTitle();
     },
     error: function (xhr, status, error) {
-      console.log("요청 URL:", getBoardApiEndpoint());
       console.error("Error:", error);
       console.error("상태:", status);
       console.error("응답:", xhr.responseText);
@@ -126,18 +98,36 @@ function loadBoardList(page, searchType = "", searchKeyword = "") {
   });
 }
 
+// 게시판 타이틀 업데이트
+function updateBoardTitle() {
+  const codeNoSelect = document.getElementById("codeNoSelect");
+  if (!codeNoSelect) return;
+  
+  const selectedOption = codeNoSelect.options[codeNoSelect.selectedIndex];
+  const boardName = selectedOption ? selectedOption.text : "게시판";
+  
+  const contentTitle = document.querySelector(".content-title");
+  if (contentTitle) {
+    contentTitle.textContent = boardName + " 관리";
+  }
+  
+  const contentDescription = document.querySelector(".content-description");
+  if (contentDescription) {
+    contentDescription.textContent = boardName + " 게시판 관리입니다.";
+  }
+}
+
 // 게시글 목록 표시 함수
 function displayBoardList(boardList) {
   const tbody = document.getElementById("boardTableBody");
   tbody.innerHTML = "";
-  const boardType = getCurrentBoardType();
   
-  console.log("서버에서 받은 게시글 목록:", boardList); // 전체 데이터 로깅
+  console.log("서버에서 받은 게시글 목록:", boardList);
 
   if (boardList && boardList.length > 0) {
     boardList.forEach((board) => {
-		console.log("게시글 날짜 데이터:", board.writtenDate); // 각 게시글의 날짜 데이터 로깅	
-		
+      console.log("게시글 날짜 데이터:", board.writtenDate);
+      
       const tr = document.createElement("tr");
 
       // 공지사항인 경우 클래스 추가
@@ -146,26 +136,27 @@ function displayBoardList(boardList) {
       }
 
       tr.innerHTML = `
-            <td>${board.boardNo}</td>
-            <td class="title">
-            <a href="${getDetailPageUrl(board.boardNo)}">
+        <td>${board.boardNo}</td>
+        <td class="title">
+          <a href="${getDetailPageUrl(board.boardNo)}">
             ${board.codeNo === 4 ? '<span class="notice-tag">공지</span>' : ""}
             ${board.title}
             ${
               board.commentsCount > 0
                 ? `<span class="comment-count">[${board.commentsCount}]</span>`
                 : ""
-            }</a>
-            </td>
-            <td>${board.writer}</td>
-            <td>${board.writtenDate}</td>
-            <td>${board.views}</td>
-        `;
+            }
+          </a>
+        </td>
+        <td>${board.writer}</td>
+        <td>${board.writtenDate}</td>
+        <td>${board.views}</td>
+      `;
       tbody.appendChild(tr);
     });
   } else {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td colspan="5" class="no-data">등록된 게시글이 없습니다.</td> `;
+    tr.innerHTML = `<td colspan="5" class="no-data">등록된 게시글이 없습니다.</td>`;
     tbody.appendChild(tr);
   }
 }
@@ -237,37 +228,3 @@ function searchBoard() {
 
   loadBoardList(1, searchType, searchKeyword);
 }
-
-// 날짜 포맷 함수
-/*function formatDate(dateStr) {
-  console.log("원본 날짜 문자열:", dateStr); // 원본 문자열 로깅
-  
-  // 날짜 문자열이 없거나 유효하지 않은 경우 처리
-  if (!dateStr || dateStr === "null" || dateStr === "undefined") {
-    return "-";
-  }
-  
-  // 서버에서 이미 포맷팅된 날짜가 왔다면 그대로 반환
-  if (typeof dateStr === 'string' && dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
-    return dateStr;
-  }
-  
-  try {
-	  const date = new Date(dateStr);
-	  
-	  // 유효한 날짜인지 확인
-      if (isNaN(date.getTime())) {
-        console.log("유효하지 않은 날짜:", dateStr);
-        return dateStr; // 원본 반환
-      }
-	  const year = date.getFullYear();
-	  const month = String(date.getMonth() + 1).padStart(2, "0");
-	  const day = String(date.getDate()).padStart(2, "0");
-	  return `${year}-${month}-${day}`;
-  } catch (e) {
-	console.error("날짜 변환 오류:", e);
-	return dateStr; // 오류 시 원본 반환
-  }
-}*/
-
-

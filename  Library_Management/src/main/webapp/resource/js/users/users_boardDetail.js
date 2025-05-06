@@ -1,3 +1,11 @@
+/**
+ * 게시글 수정 페이지로 이동
+ * @param {Number} boardNo - 게시글 번호
+ */
+function updateBoard(boardNo) {
+  window.location.href = `${contextPath}/update?boardNo=${boardNo}&mode=update`;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   // 컨텍스트 경로 가져오기
   const contextPath = document.getElementById("contextPath")?.value || "";
@@ -42,10 +50,20 @@ async function loadAttachedFiles() {
   const fileGroupNum = fileList.dataset.fileGroup;
   if (!fileGroupNum || fileGroupNum <= 0) return; // 첨부된 파일이 없는 경우 AJAX 요청하지 않음
 
+  const codeNo =
+    fileList.dataset.codeNo || document.getElementById("codeNo")?.value;
+
+  if (!codeNo) {
+    console.error("게시판 번호(codeNo)가 제공되지 않았습니다.");
+    fileList.innerHTML =
+      '<div class="error">파일 목록을 불러오는 중 오류가 발생하였습니다.</div>';
+    return;
+  }
+
   try {
     // 첨부파일 목록 AJAX
     const response = await fetch(
-      `${contextPath}/file/list?fileGroupNum=${fileGroupNum}`
+      `${contextPath}/file/list?fileGroupNum=${fileGroupNum}&codeNo=${codeNo}`
     );
 
     if (!response.ok) {
@@ -77,14 +95,14 @@ function renderFileList(files) {
     // 파일 아이콘 결정
     const fileIcon = getFileIcon(file.fileType);
 
+    // 파일 크기 포맷팅
+    const formattedSize = formatFileSize(file.fileSize);
+
     fileItems += `
         <div class="file-item">
             <span class="file-icon">${fileIcon}</span>
-            <span class="file-name">${file.orgName}</span>
-            <span class="file-size">${formatFileSize(file.fileSize)}</span>
-            <a href="${contextPath}/file/download?fileNo=${
-      file.fileNo
-    }" class="file-download">다운로드</a>
+            <span class="file-name">${file.orgName} (${formattedSize})</span>
+            <a href="${contextPath}/file/download?fileNo=${file.fileNo}" class="file-download">다운로드</a>
         </div>
     `;
   });
@@ -375,7 +393,7 @@ async function deleteBoard(boardNo) {
   }
 
   try {
-    const response = await fetch(`${contextPath}/board/delete`, {
+    const response = await fetch(`${contextPath}/delete`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -391,8 +409,17 @@ async function deleteBoard(boardNo) {
 
     if (data.success) {
       alert("게시글이 삭제되었습니다.");
-      // 게시글 목록 페이지로 이동
-      window.location.href = `${contextPath}/board/list`;
+      //이전 페이지로 이동 후 새로고침
+      if (document.referrer) {
+        window.location.replace(document.referrer);
+      } else {
+        // referrer가 없는 경우 브라우저 히스토리의 이전 페이지로 이동
+        window.history.back();
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+      }
     } else {
       alert(
         "게시글 삭제에 실패했습니다: " + (data.message || "알 수 없는 오류")
