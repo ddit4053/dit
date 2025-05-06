@@ -17,6 +17,24 @@
     <script src="${contextPath}/resource/js/user/mypage/dataLoader.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/searchFilter.js"></script>
     <script>
+	    function moveToBoard(boardNo, codeName) {
+
+	        if(boardNo) {
+	            if(codeName === "독후감 게시판") {
+	                window.location.href = '${contextPath}/community/reviews/Detail?boardNo=' + boardNo;
+	            }
+	        	if(codeName === "토론 게시판") {
+	        		window.location.href = '${contextPath}/community/discussions/Detail?boardNo=' + boardNo;
+	        	}
+	        	if(codeName === "추천 게시판") {
+	        		window.location.href = '${contextPath}/community/recommendations/Detail?boardNo=' + boardNo;
+	        	}
+	        	
+	        } else {
+	            alert('게시글 정보를 찾을 수 없습니다.');
+	        }
+	    }
+    
         $(document).ready(function() {
            
             function updateBookReportTable(bookReportList) {
@@ -67,23 +85,7 @@
             
         });
         
-        function moveToBoard(boardNo, codeName) {
-        	
-            if(boardNo) {
-                if(codeName === "독후감") {
-	                window.location.href = '${contextPath}/community/reviews/Detail?boardNo=' + boardNo;
-                }
-            	if(codeName === "토론") {
-            		window.location.href = '${contextPath}/community/discussions/Detail?boardNo=' + boardNo;
-            	}
-            	if(codeName === "추천") {
-            		window.location.href = '${contextPath}/community/recommendations/Detail?boardNo=' + boardNo;
-            	}
-            	
-            } else {
-                alert('게시글 정보를 찾을 수 없습니다.');
-            }
-        }
+
     </script>
 </head>
 <body>

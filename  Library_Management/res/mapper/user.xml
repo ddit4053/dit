@@ -573,6 +573,7 @@
         WHERE BB.CODE_NO = BBC.CODE_NO
         AND BB.USER_NO = U.USER_NO
         AND BB.USER_NO = #{userNo}
+        AND BB.DELYN = 'N'
 <!--         AND CODE_NAME LIKE '독후감'||'%' -->
     </select>
     
@@ -583,6 +584,7 @@
             WHERE BB.CODE_NO = BBC.CODE_NO
             AND BB.USER_NO = U.USER_NO
             AND BB.USER_NO = #{userNo}
+            AND BB.DELYN = 'N'
             <include refid="reportSearchCondition" />
 	        <include refid="periodCondition">
 	            <property name="dateColumn" value="WRITTEN_DATE"/>
