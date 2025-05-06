@@ -414,7 +414,7 @@ async function deleteBoard(boardNo) {
         window.location.replace(document.referrer);
       } else {
         // referrer가 없는 경우 브라우저 히스토리의 이전 페이지로 이동
-        window.history.back();
+        window.history.back(2);
 
         setTimeout(() => {
           window.location.reload();
