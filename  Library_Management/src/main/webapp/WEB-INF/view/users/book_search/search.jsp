@@ -4,6 +4,106 @@
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/book_search/search.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/book_search/request.css">
+<style>
+/* 신착 도서 섹션 */
+	.new-books-section {
+	    margin-bottom: 50px;
+	}
+	
+	.section-header {
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	}
+	
+	.section-header h2 {
+	    font-size: 22px;
+	    font-weight: bold;
+	    color: #333;
+	}
+	
+	.view-more {
+	    color: #8d6e63;
+	    text-decoration: none;
+	    font-size: 14px;
+	}
+	
+	.view-more:hover {
+	    text-decoration: underline;
+	}
+	
+	.books-container {
+	    display: flex;
+	    overflow-x: auto;
+	    gap: 15px;
+	    padding-top: 20px;
+	}
+	
+	.book-item {
+	    margin: 10px;
+	    padding: 10px;
+	    border-radius: 8px;
+	    width: 220px;
+	    text-align: center;
+	    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+	    cursor: pointer;
+	    transition: transform 0.3s ease-in-out;
+	}
+	
+	.book-item:hover {
+	    transform: scale(1.05);
+	}
+	
+	.book-cover img {
+	    width: 80%;
+	    height: auto;
+	    border-radius: 5px;
+	    margin-bottom: 10px;
+	    object-fit : cover;
+	}
+	
+	.book-title {
+	    font-size: 16px;
+	    font-weight: bold;
+	    color: #333;
+	}
+	
+	.book-author {
+	    font-size: 14px;
+	    color: #777;
+	}
+	
+	/* 추천 도서 섹션 */
+	.recommended-books-section {
+	    margin-bottom: 50px;
+	}
+	
+	.recommended-books-section .books-container {
+	    display: flex;
+	    flex-wrap: wrap;
+	    gap: 15px;
+	}
+	
+	.book-slider-controls {
+	    display: flex;
+	    justify-content: center;
+	    gap: 20px;
+	    margin-top: 20px;
+	}
+	
+	button {
+	    background-color: #8d6e63;
+	    color: white;
+	    padding: 10px 15px;
+	    border: none;
+	    border-radius: 5px;
+	    cursor: pointer;
+	}
+	
+	button:hover {
+	    background-color: #6d4c41;
+	}
+</style>
 <c:if test="${not empty requestSuccess}">
     <script>
         alert("도서 신청이 완료되었습니다.");
@@ -61,143 +161,34 @@
         </form>
     </div>
     
+    <section class="new-books-section">
+        <div class="section-header">
+            <h2>신착 도서</h2>
+            <a href="${pageContext.request.contextPath}/books/new" class="view-more">더보기</a>
+        </div>
+        <div class="books-container" id="newBooksContainer">
+            <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
+            <div class="loading">도서 정보를 불러오는 중...</div>
+        </div>
+
+		<div class="book-slider-controls">
+		    <button id="prevBtn">이전</button>
+		    <button id="nextBtn">다음</button>
+		</div>
+    </section>
+
     <!-- 추천 도서 섹션 -->
-    <div class="recommended-books">
-        <h3 class="recommended-title">
-            <i class="fas fa-star"></i> 추천 도서
-            <a href="${pageContext.request.contextPath}/books/recommend" class="more-link">더 보기 <i class="fas fa-chevron-right"></i></a>
-        </h3>
-        
-        <div class="book-grid">
-            <!-- 첫번째 책 -->
-            <div class="book-item">
-                <div class="book-cover">
-                    <img src="${pageContext.request.contextPath}/resource/images/book_covers/book1.jpg" alt="가위는 왜 가위처럼 생겼을까">
-                    <div class="book-hover">
-                        <a href="${pageContext.request.contextPath}/books/detail/1" class="book-detail-link">상세보기</a>
-                    </div>
-                </div>
-                <div class="book-info">
-                    <h4 class="book-title">가위는 왜 가위처럼 생겼을까</h4>
-                    <p class="book-author">다니카 마유키, 유키 치요코</p>
-                    <p class="book-publisher">오아시스</p>
-                </div>
-            </div>
-            
-            <!-- 두번째 책 -->
-            <div class="book-item">
-                <div class="book-cover">
-                    <img src="${pageContext.request.contextPath}/resource/images/book_covers/book2.jpg" alt="위대한 관찰">
-                    <div class="book-hover">
-                        <a href="${pageContext.request.contextPath}/books/detail/2" class="book-detail-link">상세보기</a>
-                    </div>
-                </div>
-                <div class="book-info">
-                    <h4 class="book-title">위대한 관찰 : 곤충학자의겨 거부했던 자연주의자 장</h4>
-                    <p class="book-author">조르주 박토르 클로즈</p>
-                    <p class="book-publisher">H(휴머니스트출판그룹)</p>
-                </div>
-            </div>
-            
-            <!-- 세번째 책 -->
-            <div class="book-item">
-                <div class="book-cover">
-                    <img src="${pageContext.request.contextPath}/resource/images/book_covers/book3.jpg" alt="기술은 세상을 어떻게 바꾸는가">
-                    <div class="book-hover">
-                        <a href="${pageContext.request.contextPath}/books/detail/3" class="book-detail-link">상세보기</a>
-                    </div>
-                </div>
-                <div class="book-info">
-                    <h4 class="book-title">기술은 세상을 어떻게 바꾸는가</h4>
-                    <p class="book-author">이정동</p>
-                    <p class="book-publisher">김영사</p>
-                </div>
-            </div>
-            
-            <!-- 네번째 책 -->
-            <div class="book-item">
-                <div class="book-cover">
-                    <img src="${pageContext.request.contextPath}/resource/images/book_covers/book4.jpg" alt="일생에 한번은 헌법을 읽어라">
-                    <div class="book-hover">
-                        <a href="${pageContext.request.contextPath}/books/detail/4" class="book-detail-link">상세보기</a>
-                    </div>
-                </div>
-                <div class="book-info">
-                    <h4 class="book-title">일생에 한번은 헌법을 읽어라</h4>
-                    <p class="book-author">이효원</p>
-                    <p class="book-publisher">현대지성</p>
-                </div>
-            </div>
+    <section class="recommended-books-section">
+        <div class="section-header">
+            <h2>추천 도서</h2>
+            <a href="${pageContext.request.contextPath}/books/recommend" class="view-more">더보기</a>
         </div>
-    </div>
-    
-    <!-- 신착 도서 섹션 -->
-    <div class="new-books">
-        <h3 class="new-books-title">
-            <i class="fas fa-book"></i> 신착 도서
-            <a href="${pageContext.request.contextPath}/books/new" class="more-link">더 보기 <i class="fas fa-chevron-right"></i></a>
-        </h3>
-        
-        <div class="book-slider">
-            <div class="book-list">
-                <!-- 첫번째 책 -->
-                <div class="book-slide-item">
-                    <div class="book-cover-small">
-                        <img src="${pageContext.request.contextPath}/resource/images/book_covers/book5.jpg" alt="완벽이라는 중독">
-                    </div>
-                    <div class="book-info-small">
-                        <h5 class="book-title-small">완벽이라는 중독</h5>
-                        <p class="book-author-small">토머스 커린</p>
-                    </div>
-                </div>
-                
-                <!-- 두번째 책 -->
-                <div class="book-slide-item">
-                    <div class="book-cover-small">
-                        <img src="${pageContext.request.contextPath}/resource/images/book_covers/book6.jpg" alt="명상의 기술">
-                    </div>
-                    <div class="book-info-small">
-                        <h5 class="book-title-small">명상의 기술</h5>
-                        <p class="book-author-small">이윤재</p>
-                    </div>
-                </div>
-                
-                <!-- 세번째 책 -->
-                <div class="book-slide-item">
-                    <div class="book-cover-small">
-                        <img src="${pageContext.request.contextPath}/resource/images/book_covers/book7.jpg" alt="알고리즘 사고법">
-                    </div>
-                    <div class="book-info-small">
-                        <h5 class="book-title-small">알고리즘 사고법</h5>
-                        <p class="book-author-small">김인수</p>
-                    </div>
-                </div>
-                
-                <!-- 네번째 책 -->
-                <div class="book-slide-item">
-                    <div class="book-cover-small">
-                        <img src="${pageContext.request.contextPath}/resource/images/book_covers/book8.jpg" alt="푸코의 진실게임">
-                    </div>
-                    <div class="book-info-small">
-                        <h5 class="book-title-small">푸코의 진실게임</h5>
-                        <p class="book-author-small">심세광</p>
-                    </div>
-                </div>
-                
-                <!-- 다섯번째 책 -->
-                <div class="book-slide-item">
-                    <div class="book-cover-small">
-                        <img src="${pageContext.request.contextPath}/resource/images/book_covers/book9.jpg" alt="철학의 즐거움">
-                    </div>
-                    <div class="book-info-small">
-                        <h5 class="book-title-small">철학의 즐거움</h5>
-                        <p class="book-author-small">김용석</p>
-                    </div>
-                </div>
-            </div>
+        <div class="books-container" id="recommendedBooksContainer">
+            <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
+            <div class="loading">도서 정보를 불러오는 중...</div>
         </div>
-    </div>
-</div>
+    </section>
+
 
 <!-- 신청 폼 모달 -->
 <div id="requestModal" class="modal">
@@ -246,6 +237,122 @@
             modal.style.display = "none";
         }
     }
+    
+ 
+
+</script>
+
+<script type="text/javascript">
+
+let allBooks = [];
+let currentIndex = 0;
+const booksPerPage = 4;
+
+// 공통 fetch 함수 정의
+function fetchData(url, callback) {
+    fetch(url)
+        .then(response => response.json())
+        .then(data => callback(null, data))
+        .catch(error => callback(error, null));
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    
+    // 신착 도서 불러오기
+    function fetchNewBooks() {
+        fetchData(`${pageContext.request.contextPath}/api/books/new`, function (err, data) {
+            const container = document.getElementById("newBooksContainer");
+
+            if (err || !data || data.length === 0) {
+                container.innerHTML = '<div class="error">신착 도서가 없습니다.</div>';
+                return;
+            }
+
+            allBooks = data;
+            currentIndex = 0;
+            renderBooks();
+        });
+    }
+
+    // 신착 도서 렌더링
+    function renderBooks() {
+        const container = document.getElementById("newBooksContainer");
+        container.innerHTML = "";
+
+        const end = Math.min(currentIndex + booksPerPage, allBooks.length);
+        for (let i = currentIndex; i < end; i++) {
+            const book = allBooks[i];
+
+            const bookItem = document.createElement("div");
+            bookItem.className = "book-item";
+            bookItem.innerHTML = `
+                <div class="book-cover">
+                    <img src="\${book.cover}" alt="${book.title}">
+                </div>
+                <div class="book-title">\${book.title}</div>
+                <div class="book-author">\${book.author}</div>
+            `;
+
+            bookItem.addEventListener("click", function () {
+                window.location.href = `${pageContext.request.contextPath}/books/detail?bookNo=\${book.bookNo}`;
+            });
+
+            container.appendChild(bookItem);
+        }
+    }
+
+    // 신착 도서 페이징 버튼 이벤트
+    document.getElementById("prevBtn").addEventListener("click", () => {
+        if (currentIndex >= booksPerPage) {
+            currentIndex -= booksPerPage;
+            renderBooks();
+        }
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+        if (currentIndex + booksPerPage < allBooks.length) {
+            currentIndex += booksPerPage;
+            renderBooks();
+        }
+    });
+
+    // 추천 도서 불러오기
+    function fetchRecommendedBooks() {
+        const container = document.getElementById("recommendedBooksContainer");
+
+        fetchData(`${pageContext.request.contextPath}/api/books/recommended`, function (err, data) {
+            if (err || !data || data.length === 0) {
+                container.innerHTML = '<div class="error">추천 도서가 없습니다.</div>';
+                return;
+            }
+
+            container.innerHTML = "";
+
+            data.forEach((book) => {
+                const bookItem = document.createElement("div");
+                bookItem.className = "book-item";
+
+                bookItem.innerHTML = `
+                    <div class="book-cover">
+                        <img src="\${book.cover}" alt="${book.title}">
+                    </div>
+                    <div class="book-title">\${book.title}</div>
+                    <div class="book-author">\${book.author}</div>
+                `;
+
+                bookItem.addEventListener("click", function () {
+                    window.location.href = `${pageContext.request.contextPath}/books/detail?bookNo=\${book.bookNo}`;
+                });
+
+                container.appendChild(bookItem);
+            });
+        });
+    }
+
+    // 초기 데이터 불러오기
+    fetchNewBooks();
+    fetchRecommendedBooks();
+});
 </script>
 
 <!-- Font Awesome CDN 추가 -->

@@ -203,24 +203,30 @@
 		    FETCH FIRST 1 ROWS ONLY
 	  </select>
 	  
-		<select id="getRecommendedBooks" resultType="BooksVo" parameterType="Map">
-		  SELECT * FROM (
-		    SELECT DISTINCT *
-		    FROM BOOKS B
-		    WHERE B.CATEGORY_NO IN
-		      <foreach item="genre" collection="favoriteGenres" open="(" separator="," close=")">
-		        #{genre}
-		      </foreach>
-		      AND B.BOOK_NO NOT IN (
-		        SELECT RB.BOOK_NO
-		        FROM BOOK_LOANS L
-		        JOIN REAL_BOOK RB ON L.REAL_BOOK = RB.REAL_BOOK
-		        WHERE L.USER_NO = #{userNo}
-		      )
-		    ORDER BY DBMS_RANDOM.VALUE
-		  )
-		  WHERE ROWNUM &lt;= 5
-		</select>
+	<select id="getRecommendedBooks" resultType="BooksVo" parameterType="Map">
+	  <if test="favoriteGenres != null and favoriteGenres.size() > 0">
+	    SELECT * FROM (
+	      SELECT DISTINCT *
+	      FROM BOOKS B
+	      WHERE B.CATEGORY_NO IN
+	        <foreach item="genre" collection="favoriteGenres" open="(" separator="," close=")">
+	          #{genre}
+	        </foreach>
+	        AND B.BOOK_NO NOT IN (
+	          SELECT RB.BOOK_NO
+	          FROM BOOK_LOANS L
+	          JOIN REAL_BOOK RB ON L.REAL_BOOK = RB.REAL_BOOK
+	          WHERE L.USER_NO = #{userNo}
+	        )
+	      ORDER BY DBMS_RANDOM.VALUE
+	    )
+	    WHERE ROWNUM &lt;= 5
+	  </if>
+	  <if test="favoriteGenres == null or favoriteGenres.size() == 0">
+	    SELECT * FROM BOOKS WHERE 1=0
+	    <!-- 또는 예외 처리를 유도하거나 기본 추천 도서 리스트를 조회 -->
+	  </if>
+	</select>
 
 
 </mapper>
