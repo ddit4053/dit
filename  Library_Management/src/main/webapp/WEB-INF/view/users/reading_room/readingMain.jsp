@@ -26,10 +26,16 @@
             height: 70px;
         }
         .header .title {
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
-        }
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+.header .title:hover {
+    opacity: 0.8;
+}
         .header .nav {
             display: flex;
             gap: 15px;
@@ -121,10 +127,10 @@
 </head>
 <body>
 <div class="header">
-    <div class="title">책GPT 도서관 시스템</div>
+   <a href="${ctx}/main.do" class="title">책GPT 도서관 시스템</a>
     <div style="display: flex; align-items: center;">
         <div class="nav">
-            <a href="${ctx}/index.jsp">HOME</a>
+            <a href="${ctx}/main.do">HOME</a>
             <a href="${ctx}/seatList.do?roomName=일반열람실">일반열람실</a>
             <a href="${ctx}/seatList.do?roomName=미디어열람실">미디어열람실</a>
             <a href="${ctx}/myReservation.do">MY예약현황</a>

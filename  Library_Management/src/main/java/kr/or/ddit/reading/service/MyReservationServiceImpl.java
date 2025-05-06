@@ -1,5 +1,6 @@
 package kr.or.ddit.reading.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import kr.or.ddit.reading.dao.IMyReservationDao;
@@ -30,5 +31,11 @@ public class MyReservationServiceImpl implements IMyReservationService {
     @Override
     public int cancelReservation(int rReserveNo) {
         return myReservationDao.updateReservationStatus(rReserveNo);
+    }
+    
+    @Override
+    public boolean hasUserReservedToday(int userNo, LocalDate date) {
+        List<ReadingReservationsVo> userReservations = myReservationDao.getReservationsByUserAndDate(userNo, date);
+        return userReservations != null && !userReservations.isEmpty();
     }
 }

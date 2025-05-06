@@ -403,7 +403,59 @@
                 }
             });
         };
-        
+        function validateForm() {
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            
+            // 기존 시간 유효성 검사 코드 유지
+            function timeToMinutes(timeStr) {
+                const [hours, minutes] = timeStr.split(':').map(Number);
+                return hours * 60 + minutes;
+            }
+            
+            const startMinutes = timeToMinutes(startTime);
+            const endMinutes = timeToMinutes(endTime);
+            
+            if (startMinutes >= endMinutes) {
+                alert('종료 시간은 시작 시간보다 이후여야 합니다.');
+                return false;
+            }
+            
+            if (endMinutes - startMinutes < 30) {
+                alert('최소 예약 시간은 30분입니다.');
+                return false;
+            }
+            
+            if (endMinutes - startMinutes > 180) {
+                alert('최대 예약 시간은 3시간입니다.');
+                return false;
+            }
+            
+            // 오늘 이미 예약한 좌석이 있는지 확인 (AJAX로 서버 확인)
+            let hasReservation = false;
+            
+            $.ajax({
+                type: 'GET',
+                url: '${ctx}/checkUserReservation.do',
+                async: false, // 동기 요청으로 처리
+                success: function(response) {
+                    if (response === 'true') {
+                        alert('이미 오늘 예약한 좌석이 있습니다. 하루에 한 좌석만 예약 가능합니다.');
+                        hasReservation = true;
+                    }
+                },
+                error: function() {
+                    alert('서버 오류가 발생했습니다. 다시 시도해주세요.');
+                    hasReservation = true;
+                }
+            });
+            
+            if (hasReservation) {
+                return false;
+            }
+            
+            return true;
+        }
         // 좌석 배치도 생성
         function createSeats() {
             const container = document.getElementById('seatContainer');

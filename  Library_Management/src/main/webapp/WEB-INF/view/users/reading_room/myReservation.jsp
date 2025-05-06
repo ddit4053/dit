@@ -42,6 +42,9 @@ th { background: #8d6e63; color: white; }
     color: white;
     background: #8d6e63;
 }
+.status-active {
+    background-color: #f8f4e6;
+}
 </style>
 </head>
 <body>
@@ -107,20 +110,38 @@ th { background: #8d6e63; color: white; }
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- 예약완료 상태인 항목 먼저 표시 -->
                     <c:forEach var="res" items="${reservations}">
-                        <tr id="row-${res.rReserveNo}">
-                            <td>${res.rReserveNo}</td>
-                            <td>${res.reserveDate}</td>
-                            <td>${res.seatNo}</td>
-                            <td>${res.startTime}</td>
-                            <td>${res.endTime}</td>
-                            <td>${res.rReserveStatus}</td>
-                            <td>
-                                <c:if test="${res.rReserveStatus eq '예약완료'}">
+                        <c:if test="${res.rReserveStatus eq '예약완료'}">
+                            <tr id="row-${res.rReserveNo}" class="status-active">
+                                <td>${res.rReserveNo}</td>
+                                <td>${res.reserveDate}</td>
+                                <td>${res.seatNo}</td>
+                                <td>${res.startTime}</td>
+                                <td>${res.endTime}</td>
+                                <td><strong>${res.rReserveStatus}</strong></td>
+                                <td>
                                     <button class="cancel-btn" data-reserveno="${res.rReserveNo}">취소</button>
-                                </c:if>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                    
+                    <!-- 나머지 상태의 항목 표시 -->
+                    <c:forEach var="res" items="${reservations}">
+                        <c:if test="${res.rReserveStatus ne '예약완료'}">
+                            <tr id="row-${res.rReserveNo}">
+                                <td>${res.rReserveNo}</td>
+                                <td>${res.reserveDate}</td>
+                                <td>${res.seatNo}</td>
+                                <td>${res.startTime}</td>
+                                <td>${res.endTime}</td>
+                                <td>${res.rReserveStatus}</td>
+                                <td>
+                                    <!-- 취소완료인 경우 버튼 없음 -->
+                                </td>
+                            </tr>
+                        </c:if>
                     </c:forEach>
                 </tbody>
             </table>
@@ -145,7 +166,11 @@ $(document).ready(function() {
             data: { rReserveNo: rReserveNo },
             success: function(response) {
                 alert('예약이 취소되었습니다.');
-                $('#row-' + rReserveNo).remove(); // 테이블에서 삭제
+                // 행 삭제 대신 상태 및 버튼 업데이트
+                var row = $('#row-' + rReserveNo);
+                row.removeClass('status-active');
+                row.find('td:eq(5)').text('취소완료');
+                row.find('td:eq(6)').empty(); // 취소 버튼 제거
             },
             error: function() {
                 alert('취소 실패! 다시 시도해주세요.');

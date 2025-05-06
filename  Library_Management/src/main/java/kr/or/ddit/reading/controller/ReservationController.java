@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -78,6 +79,14 @@ public class ReservationController extends HttpServlet {
             if (!reservationService.isWithinOperatingHours(startTimeStr, endTimeStr)) {
                 response.setContentType("text/html;charset=UTF-8");
                 response.getWriter().write("<script>alert('운영 시간 내에 예약해주세요. (09:00~18:00)'); history.back();</script>");
+                return;
+            }
+
+            // *** 추가: 사용자가 해당 날짜에 이미 예약한 좌석이 있는지 확인 ***
+            List<ReadingReservationsVo> userReservations = reservationService.selectReservationsByUserAndDate(userNo, reserveDate);
+            if (userReservations != null && !userReservations.isEmpty()) {
+                response.setContentType("text/html;charset=UTF-8");
+                response.getWriter().write("<script>alert('이미 해당 날짜에 예약한 좌석이 있습니다. 하루에 한 좌석만 예약 가능합니다.'); window.close();</script>");
                 return;
             }
 

@@ -83,7 +83,10 @@
 
 <!-- 헤더 컨테이너 추가 - name 속성 사용 -->
 <div class="header-container">
-  <div class="title" style="color: white; font-weight: bold;">${pageTitle}</div>
+  <div class="title" style="color: white; font-weight: bold;">
+  <!-- 메인 페이지 경로 수정 -->
+  <a href="${ctx}/main.do" style="color: white; text-decoration: none;">책GPT 도서관 시스템</a>
+</div>
   <div class="user-info">
     <c:choose>
       <c:when test="${not empty loginMember or not empty loginok or not empty user}">
@@ -106,6 +109,7 @@
 </div>
 
 <ul class="menu-tabs">
+  <!-- HOME 링크 수정 -->
   <li><a href="${ctx}/readingMain.do">HOME</a></li>
   <li><a href="${ctx}/seatList.do?roomName=일반열람실" class="${roomName == '일반열람실' ? 'active' : ''}">일반열람실</a></li>
   <li><a href="javascript:alert('서비스 준비중입니다.');">미디어 열람실(공사중)</a></li>
