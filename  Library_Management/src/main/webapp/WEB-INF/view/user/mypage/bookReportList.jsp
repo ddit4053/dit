@@ -26,8 +26,11 @@
 	        	if(codeName === "토론 게시판") {
 	        		window.location.href = '${contextPath}/community/discussions/Detail?boardNo=' + boardNo;
 	        	}
-	        	if(codeName === "추천 게시판") {
+	        	if(codeName === "회원 도서 추천 게시판") {
 	        		window.location.href = '${contextPath}/community/recommendations/Detail?boardNo=' + boardNo;
+	        	}
+	        	if(codeName === "1:1 문의 게시판") {
+	        		window.location.href = '${contextPath}/support/qa/Detail?boardNo=' + boardNo;
 	        	}
 	        	
 	        } else {
