@@ -10,6 +10,8 @@
     <title>책GPT 도서관 시스템</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/common.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/main.css">
+    <!-- 다크모드를 위한 아이콘 폰트 추가 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body data-role="${sessionScope.role != null ? sessionScope.role : 'USER'}">
@@ -49,6 +51,9 @@
 				        <%--관리자  --%> 
 				        <c:when test="${sessionScope.role eq 'ADMIN'}">
 				          <a href="${pageContext.request.contextPath}/user/logout.do">로그아웃</a>
+				          <button class="theme-toggle" aria-label="테마 변경">
+				          	<i class="fas fa-moon"></i>
+				          </button>	
 				        </c:when>
 				
 				        <%-- 일반 사용자 --%>
@@ -62,3 +67,45 @@
             </div>
         </div>
     </header>
+    
+<!-- 다크모드 토글 스크립트 -->
+<c:if test="${sessionScope.role eq 'ADMIN'}">
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeToggle = document.querySelector(".theme-toggle");
+    
+    // 저장된 테마 확인
+    const savedTheme = localStorage.getItem("theme");
+    
+    // 초기 상태 설정
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-mode");
+      themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+      themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+    
+    // 클릭 이벤트 처리
+    themeToggle.addEventListener("click", function() {
+      // 바디에 트랜지션 클래스 추가
+      document.body.classList.add("dark-mode-transition");
+      
+      // 다크모드 토글
+      const isDarkMode = document.body.classList.toggle("dark-mode");
+      
+      // 아이콘 변경
+      this.innerHTML = isDarkMode 
+        ? '<i class="fas fa-sun"></i>' 
+        : '<i class="fas fa-moon"></i>';
+      
+      // 테마 저장
+      localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+      
+      // 트랜지션 효과 후 클래스 제거
+      setTimeout(() => {
+        document.body.classList.remove("dark-mode-transition");
+      }, 500);
+    });
+  });
+</script>
+</c:if>    

@@ -12,6 +12,28 @@
   --dropdown-bg: #3e2723; /* 어두운 브라운 - 드롭다운 배경 */
 }
 
+/* 다크 모드 테마 정의 - 네비/푸터만 변경 */
+.dark-mode {
+  /* 기본 변수는 그대로 유지 (흰색 배경 위한 값) */
+  --primary-color: #5d4037; 
+  --secondary-color: #8d6e63;
+  --background-color: #f5f5f5;
+  --text-color: #263238;
+  --light-text: #546e7a;
+  --accent-color: #ff5722;
+  --border-color: #d7ccc8;
+  --card-background: #ffffff;
+  --hover-color: #efebe9;
+  
+  /* 네비/푸터용 어두운 색상 변수 추가 */
+  --nav-bg-color: #222639;
+  --nav-text-color: #e0e0e0;
+  --nav-link-color: #a7a7c5;
+  --nav-hover-color: #ffffff;
+  --footer-border-color: rgba(255, 255, 255, 0.1);
+  --dropdown-bg: #1a1a2e;
+}
+
 /* 공통 스타일 정의 */
 * {
   margin: 0;
@@ -24,6 +46,7 @@ body {
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--background-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
@@ -48,6 +71,7 @@ h5,
 h6 {
   font-family: "Noto Serif KR", serif;
   color: var(--primary-color);
+  transition: color 0.3s ease;
 }
 
 .btn {
@@ -65,9 +89,9 @@ h6 {
 }
 
 .header-nav-container {
-	position: stickey;
-	top: 0;
-	z-index: 100;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 /* 헤더 스타일 */
@@ -95,7 +119,39 @@ h6 {
   letter-spacing: 0.5px;
 }
 
+/* 다크 모드 버튼 스타일 */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
 
+.theme-toggle i {
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* 관리자 표시 배지 */
+.admin-badge {
+  background-color: #4a6491;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
 
 /* 반짝이는 그라데이션 애니메이션 */
 @keyframes shine {
@@ -136,8 +192,12 @@ h6 {
     font-size: 1rem;
     padding: 6px 12px;
   }
+  
+  .theme-toggle {
+    margin-left: 5px;
+    font-size: 14px;
+  }
 }
-
 
 .main-header {
   background-color: var(--card-background);
@@ -183,6 +243,20 @@ h6 {
   color: white;
   position: relative;
   z-index: 100;
+}
+
+/* 네비게이션 다크모드 */
+.dark-mode .main-nav {
+  background-color: var(--nav-bg-color);
+  color: var(--nav-text-color);
+}
+
+.dark-mode .main-nav a {
+  color: var(--nav-link-color);
+}
+
+.dark-mode .main-nav a:hover {
+  color: var(--nav-hover-color);
 }
 
 .nav-container {
@@ -311,6 +385,24 @@ h6 {
   color: white;
 }
 
+/* 메가 드롭다운 다크모드 */
+.dark-mode .mega-dropdown-container {
+  background-color: var(--nav-bg-color);
+}
+
+.dark-mode .mega-menu-column h3 {
+  color: var(--nav-text-color);
+  border-bottom-color: var(--footer-border-color);
+}
+
+.dark-mode .mega-menu-column a {
+  color: var(--nav-link-color);
+}
+
+.dark-mode .mega-menu-column a:hover {
+  color: var(--nav-hover-color);
+}
+
 /* 메뉴 활성화 시 스타일 */
 .main-nav > .nav-container > ul > li.active > a {
   background-color: rgba(255, 255, 255, 0.1);
@@ -403,6 +495,31 @@ section {
   margin-top: 50px;
 }
 
+/* 푸터 다크모드 */
+.dark-mode .main-footer {
+  background-color: var(--nav-bg-color);
+  color: var(--nav-text-color);
+}
+
+.dark-mode .footer-info h3,
+.dark-mode .footer-links h3,
+.dark-mode .footer-hours h3 {
+  color: var(--nav-text-color);
+}
+
+.dark-mode .footer-links a {
+  color: var(--nav-link-color);
+}
+
+.dark-mode .footer-links a:hover {
+  color: var(--nav-hover-color);
+}
+
+.dark-mode .copyright {
+  color: var(--nav-link-color);
+  border-top-color: var(--footer-border-color);
+}
+
 .footer-container {
   display: flex;
   justify-content: space-between;
@@ -457,6 +574,11 @@ section {
 
 .copyright a:hover {
   color: white;
+}
+
+/* 애니메이션 및 전환 효과 */
+.dark-mode-transition {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* 폰트 로딩 */

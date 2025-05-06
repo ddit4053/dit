@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div style="position:sticky; top:0; z-index:100;">
 	<jsp:include page="header.jsp" />
 	<jsp:include page="nav.jsp" />
@@ -89,7 +89,12 @@
         <div class="half-section">
             <div class="section-header">
                 <h2>인기 독후감</h2>
-                <a href="${pageContext.request.contextPath}/community/reviews" class="view-more">더보기</a>
+                <c:if test="${isAdmin}">
+                	<a href="${pageContext.request.contextPath}/admin/board" class="view-more">더보기</a>
+                </c:if>
+                <c:if test="${!isAdmin}">
+                	<a href="${pageContext.request.contextPath}/community/reviews" class="view-more">더보기</a>
+            	</c:if>
             </div>
             <ul class="event-list" id="eventList">
                 <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
@@ -99,7 +104,13 @@
         <div class="half-section">
             <div class="section-header">
                 <h2>공지 사항</h2>
-                <a href="${pageContext.request.contextPath}/support/notices" class="view-more">더보기</a>
+                
+                <c:if test="${isAdmin}">
+                	<a href="${pageContext.request.contextPath}/admin/board" class="view-more">더보기</a>
+                </c:if>
+                <c:if test="${!isAdmin}">
+                	<a href="${pageContext.request.contextPath}/support/notices" class="view-more">더보기</a>
+                </c:if>
             </div>
             <ul class="notice-list" id="noticeList">
                 <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
