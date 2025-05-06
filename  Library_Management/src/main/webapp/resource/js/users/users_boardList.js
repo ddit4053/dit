@@ -26,7 +26,6 @@ function getBoardCodeNo() {
     case "discussions": return 2;
     case "recommendations": return 3;
     case "notices": return 4;
-    case "events": return 5;
     case "qa": return 6;
     default: return 1; // 기본값
   }
@@ -43,8 +42,6 @@ function getCurrentBoardType() {
     return "recommendations";
   } else if (currentPath.includes("/support/notices")) {
     return "notices";
-  } else if (currentPath.includes("/support/events")) {
-    return "events";
   } else if (currentPath.includes("/support/qa")) {
     return "qa";
   }

@@ -24,7 +24,6 @@ import kr.or.ddit.vo.PagingVo;
 		"/discussionsListAjax",
 		"/recommendationsListAjax",
 		"/noticesListAjax",
-		"/eventsListAjax",
 		"/qaListAjax"
 })
 // 게시판 목록 데이터 AJAX 처리
@@ -72,7 +71,6 @@ public class BoardListAjaxController extends HttpServlet {
             if (requestURI.contains("discussionsListAjax"))  codeNo = 2;  // 토론
             if (requestURI.contains("recommendationsListAjax"))   codeNo = 3;  // 회원도서추천
             if (requestURI.contains("noticesListAjax")) 		codeNo = 4;  // 공지사항
-            if (requestURI.contains("eventsListAjax")) 		codeNo = 5;  // 교육행사
             if (requestURI.contains("qaListAjax")) 			codeNo = 6;  // QA
             
             // 검색 조건 설정

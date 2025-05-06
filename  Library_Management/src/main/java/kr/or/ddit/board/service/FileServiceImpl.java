@@ -127,7 +127,7 @@ public class FileServiceImpl implements IFileService{
 	public List<File_StorageVo> uploadFiles(HttpServletRequest req, String referenceType, int referenceId)
 			throws IOException, ServletException {
 		// 파일 저장 경로 설정 (날짜 기반 폴더 구조)
-		String rootPath = "E:/FileTest/"; // 실제 환경에 맞게 조정 필요
+		String rootPath = "D:/upload/"; // 실제 환경에 맞게 조정 필요
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		String folder = sdf.format(new Date());
 		

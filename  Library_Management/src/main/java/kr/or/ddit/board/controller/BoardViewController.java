@@ -128,7 +128,7 @@ public class BoardViewController extends HttpServlet {
                     break;
                     
                 case "/events":
-                    contentPage = "/WEB-INF/view/boardList.jsp";
+                    contentPage = "/WEB-INF/view/users/edu.jsp";
                     forwardPage = "/WEB-INF/view/board.jsp";
                     pageTitle = "교육/행사 게시판";
                     pageDescription = "도서관에서 진행되는 다양한 교육 프로그램과 문화행사 정보를 안내하는 공간입니다. 참여하고 싶은 행사를 확인해보세요.";

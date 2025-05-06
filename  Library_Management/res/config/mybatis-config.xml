@@ -73,7 +73,7 @@
 		<mapper resource="mapper/comments.xml"/>
 		<mapper resource="mapper/user.xml"/>
 		<mapper resource="mapper/file.xml"/>
-
+		<mapper resource="mapper/edu_event.xml"/>
 	</mappers>
 
 </configuration>

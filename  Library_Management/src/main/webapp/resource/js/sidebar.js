@@ -10,7 +10,7 @@ const menuStructure = {
           title: "회원정보 수정",
           url: "/user/mypage/updateInfo.do",
           subMenus: [
-            { title: "회원정보 수정", url: "/user/mypage/bookResList.do" },
+            { title: "회원정보 수정", url: "/user/mypage/updateInfo.do" },
             { title: "비밀번호 변경", url: "/user/mypage/changePassword.do" },
             { title: "회원탈퇴", url: "/user/mypage/quitUser.do" },
           ],
@@ -43,7 +43,7 @@ const menuStructure = {
           subMenus: [{ title: "카테고리 검색", url: "/books/search/searchCategory" }],
         },
         { title: "신착 도서", url: "/books/new" },
-        { title: "관심 도서", url: "/books/favor" },
+        { title: "관심 도서", url: "/books/favor/user/mypage/bookFavoritesList.do" },
         { title: "추천 도서", url: "/books/recommend" },
       ],
     },
@@ -96,7 +96,7 @@ const menuStructure = {
   admin: [
     {
       title: "도서/자료 관리",
-      url: "/admin/books",
+      url: "/admin/books/list",
       subMenus: [
         { title: "도서 목록", url: "/admin/books/list" },
         {
@@ -156,8 +156,6 @@ const menuStructure = {
           title: "대출/반납 통계",
           url: "/admin/loans/stats",
           subMenus: [
-            { title: "대출 예약 통계", url: "/admin/loans/stats/reservation" },
-            { title: "누적 대출 통계", url: "/admin/loans/stats/cumulative" },
             {
               title: "대출/반납/연체 월별 통계",
               url: "/admin/loans/stats/chart",
