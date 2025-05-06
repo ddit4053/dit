@@ -108,17 +108,7 @@
         </div>
     </section>
 
-    <!-- 열람실 현황 섹션 -->
-    <section class="reading-room-section">
-        <div class="section-header">
-            <h2>열람실 현황</h2>
-            <a href="${pageContext.request.contextPath}/readingMain.do" class="view-more">예약하기</a>
-        </div>
-        <div class="room-status" id="roomStatus">
-            <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
-            <div class="loading">열람실 정보를 불러오는 중...</div>
-        </div>
-    </section>
+
 </main>
 
 <script src="${pageContext.request.contextPath}/resource/js/main.js"></script>
