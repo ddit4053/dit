@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
           {
             title: "열람실 관리",
             items: [
-              { name: "열람실 이용 내역", url: "/admin/reading" },
+              { name: "열람실 예약 현황", url: "/admin/readingMain.do" },
             ],
           },
           {

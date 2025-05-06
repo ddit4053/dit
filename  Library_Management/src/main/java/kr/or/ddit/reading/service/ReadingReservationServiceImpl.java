@@ -96,4 +96,17 @@ public class ReadingReservationServiceImpl implements IReadingReservationService
         }
         return LocalTime.parse(timeStr);
     }
+    
+    // 추가: 사용자가 특정 날짜에 예약한 내역이 있는지 확인
+    @Override
+    public boolean hasUserReservedToday(int userNo, LocalDate date) {
+        List<ReadingReservationsVo> userReservations = reservationDao.selectReservationsByUserAndDate(userNo, date);
+        return userReservations != null && !userReservations.isEmpty();
+    }
+    
+    // 추가: 특정 사용자의 특정 날짜 예약 내역 조회
+    @Override
+    public List<ReadingReservationsVo> selectReservationsByUserAndDate(int userNo, LocalDate date) {
+        return reservationDao.selectReservationsByUserAndDate(userNo, date);
+    }
 }

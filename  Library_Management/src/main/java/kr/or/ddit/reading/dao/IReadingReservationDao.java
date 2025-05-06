@@ -20,4 +20,6 @@ public interface IReadingReservationDao {
     List<ReadingReservationsVo> selectReservationsByRoomAndDate(String roomName, LocalDate reserveDate);
 
     List<ReadingReservationsVo> selectReservationsBySeatAndDate(int seatNo, LocalDate reserveDate);
+    
+    List<ReadingReservationsVo> selectReservationsByUserAndDate(int userNo, LocalDate date);
 }
