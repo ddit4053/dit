@@ -32,6 +32,6 @@
 		    USERS u ON br.USER_NO = u.USER_NO
 		WHERE
 		    br.BOOK_NO = #{bookNo}
-
+		order by RESERVE_NO DESC
 	</select>
 </mapper>

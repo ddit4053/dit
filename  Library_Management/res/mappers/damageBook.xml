@@ -84,6 +84,7 @@
 	  FROM DAMAGED_LOST_BOOK D
 	  JOIN REAL_BOOK R ON D.REAL_BOOK=R.REAL_BOOK
 	  JOIN BOOKS B ON R.BOOK_NO= B.BOOK_NO
+
 	</select>
 	
 	 <update id="updateDamage">
@@ -118,6 +119,7 @@
 	  FROM DAMAGED_LOST_BOOK D
 	  JOIN REAL_BOOK R ON D.REAL_BOOK=R.REAL_BOOK
 	  JOIN BOOKS B ON R.BOOK_NO= B.BOOK_NO
+	  order by D.REPORT_DATE DESC
 	      ) row_
 	    WHERE ROWNUM &lt;= #{endRow}
 	  )

@@ -79,36 +79,34 @@ document.addEventListener("DOMContentLoaded", function () {
         // 첨부 파일 목록에 추가
         addAttachmentToList(file.name, fileInput);
         
-        // 파일을 서버에 업로드하는 대신 임시로 URL 생성
-        // 실제 구현에서는 서버에 업로드 후 반환된 URL을 사용해야 함
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const imageUrl = e.target.result;
-          
-          // 이미지 크기 가져오기
-          const img = new Image();
-          img.onload = function() {
-            // 본문에 이미지 삽입
-            insertImageToContent(imageUrl, this.width, this.height, file.name);
-          };
-          img.src = imageUrl;
-        };
-        reader.readAsDataURL(file);
-        
-        // 서버에 업로드하는 실제 구현 예시 (주석 처리)
-        /* 
-        const formData = new FormData();
-        formData.append('file', file);
-        
-        fetch(`${contextPath}/file/upload`, {
+		
+		// 서버에 파일 업로드
+      const formData = new FormData();
+      formData.append('file', file);
+	  
+	  
+	  // 현재 게시글 번호 또는 임시 번호 설정
+	  const urlParams = new URLSearchParams(window.location.search);
+	  const boardNo = urlParams.get("boardNo") || "temp"; // 없으면 임시값
+
+	  // 필수 파라미터 추가
+	  formData.append('referenceType', 'BOARD');
+	  formData.append('referenceId', boardNo);
+	  
+      
+    fetch(`${contextPath}/file/upload`, {
           method: 'POST',
           body: formData
         })
         .then(response => response.json())
         .then(data => {
           if (data.success) {
-            // 서버에서 반환한 이미지 URL과 크기 정보로 본문에 삽입
-            insertImageToContent(data.fileUrl, data.width, data.height, file.name);
+            // 성공적으로 업로드된 파일 정보 추출
+            const fileInfo = data.files[0];
+            const fileUrl = `${contextPath}/file/download?fileNo=${fileInfo.fileNo}`;
+            
+            // 본문에 이미지 삽입
+            insertImageToContent(fileUrl, 800, 600, file.name); // 기본 크기 지정 (또는 서버에서 제공하는 크기 사용)
           } else {
             alert('이미지 업로드에 실패했습니다: ' + (data.message || '알 수 없는 오류'));
           }
@@ -116,8 +114,22 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => {
           console.error('이미지 업로드 중 오류 발생:', error);
           alert('이미지 업로드 중 오류가 발생했습니다.');
+          
+          // 업로드 실패 시 임시 URL로 이미지 표시 (개발 중에만 사용)
+          const reader = new FileReader();
+          reader.onload = function(e) {
+        const imageUrl = e.target.result;
+            
+            // 이미지 크기 가져오기
+            const img = new Image();
+            img.onload = function() {
+              // 본문에 이미지 삽입
+              insertImageToContent(imageUrl, this.width, this.height, file.name);
+            };
+            img.src = imageUrl;
+          };
+          reader.readAsDataURL(file);
         });
-        */
       }
     });
 
