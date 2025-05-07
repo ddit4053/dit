@@ -8,6 +8,7 @@ import kr.or.ddit.board.dao.BoardDaoImpl;
 import kr.or.ddit.board.dao.CommentsDaoImpl;
 import kr.or.ddit.board.dao.IBoardDao;
 import kr.or.ddit.board.dao.ICommentsDao;
+import kr.or.ddit.util.ContentPreprocessor;
 import kr.or.ddit.vo.BookBoardCodeVo;
 import kr.or.ddit.vo.BookBoardVo;
 import kr.or.ddit.vo.CommentsVo;
@@ -101,6 +102,14 @@ public class BoardServiceImpl implements IBoardService {
         
         // 게시글 조회
         BookBoardVo board = boardDao.selectBoardDetail(boardNo);
+        
+        // 게시글 내용 HTML 처리
+        if (board != null && board.getContent() != null) {
+            String content = board.getContent();
+            // ContentPreprocessor 유틸리티 클래스를 사용하여 내용 처리
+            content = ContentPreprocessor.preprocessContent(content);
+            board.setContent(content);
+        }
         
         // 댓글 목록 조회
         List<CommentsVo> comments = commentsDao.selectCommentsList(boardNo);
