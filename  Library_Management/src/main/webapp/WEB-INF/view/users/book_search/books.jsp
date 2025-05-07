@@ -12,6 +12,7 @@
             <h1 class="page-title">${pageTitle}</h1>
             <div class="breadcrumb">
                 <a href="${pageContext.request.contextPath}/main.do">홈</a> > 
+                <a href="${pageContext.request.contextPath}/books/search">도서 검색</a> > 
                 <span>${breadcrumbTitle}</span>
             </div>
         </div>
