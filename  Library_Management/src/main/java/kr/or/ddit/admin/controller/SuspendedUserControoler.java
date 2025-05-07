@@ -22,7 +22,7 @@ public class SuspendedUserControoler extends HttpServlet{
 		//req.setAttribute("list", list);
 		
 		int page = 1;
-        int size = 5; // 기본 페이지 사이즈
+        int size = 10; // 기본 페이지 사이즈
         
     	String p = req.getParameter("page");
     	String s = req.getParameter("size");

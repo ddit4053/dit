@@ -62,7 +62,7 @@
 	         , u.STATUS      as "status"
 	    FROM USERS u
 	    JOIN BOOK_LOANS bl ON u.USER_NO = bl.USER_NO
-	    JOIN BAN_USERS bu ON u.USER_NO = bu.USER_NO
+	    JOIN BAN_USERS bu ON u.USER_NO = bu.USER_NO AND bl.LOAN_NO =bu.LOAN_NO
 	    JOIN REAL_BOOK r ON bl.REAL_BOOK=r.REAL_BOOK
 	    JOIN BOOKS b ON R.BOOK_NO=b.BOOK_NO
 	   WHERE bl.RETURN_DATE IS NULL
