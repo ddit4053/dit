@@ -22,9 +22,15 @@
 	    </div>
 	    
 	    <!-- 게시글 내용 영역 -->
-	    <div class="board-content">
-	        ${board.content}
-	    </div>
+		<article id="content">
+		    <div class="inner">
+		        <div class="entry-content" id="article-view">
+		            <div class="contents_style">
+		                ${board.content}
+		            </div>
+		        </div>
+		    </div>
+		</article>
 	    
 	    <!-- 첨부파일이 있는 경우 표시 -->
 	    <c:if test="${board.fileGroupNum > 0}">
