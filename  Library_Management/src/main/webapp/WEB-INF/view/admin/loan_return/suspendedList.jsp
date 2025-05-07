@@ -44,11 +44,11 @@
         <td><c:out value="${item.loanDate}"/></td>
         <td>
 		  <c:choose>
-		    <c:when test="${empty v.returnDate}">
+		    <c:when test="${empty item.returnDate}">
 		      미반납
 		    </c:when>
 		    <c:otherwise>
-		      ${v.returnDate}
+		      ${item.returnDate}
 		    </c:otherwise>
 		  </c:choose>
 		</td>
