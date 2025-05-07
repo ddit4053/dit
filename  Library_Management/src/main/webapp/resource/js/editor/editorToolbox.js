@@ -39,7 +39,33 @@ document.addEventListener("DOMContentLoaded", function () {
     attachmentArea.appendChild(attachmentItem);
   };
 
-  // 이미지 툴 기능 처리
+  // 이미지를 본문에 삽입하는 함수
+  const insertImageToContent = (imageUrl, width, height, fileName) => {
+    const contentArea = document.getElementById("contentInput");
+    if (!contentArea) return;
+
+    // figure 태그로 이미지 감싸기
+    const imageHtml = `
+<figure class="imageblock aligncenter" data-ke-mobilestyle="widthOrigin" data-filename="${fileName}" data-origin-width="${width}" data-origin-height="${height}">
+  <img src="${imageUrl}" alt="${fileName}" width="${width}" height="${height}" />
+  <figcaption></figcaption>
+</figure>
+`;
+    
+    // 현재 커서 위치에 이미지 HTML 삽입
+    const cursorPos = contentArea.selectionStart;
+    const textBefore = contentArea.value.substring(0, cursorPos);
+    const textAfter = contentArea.value.substring(cursorPos);
+    contentArea.value = textBefore + imageHtml + textAfter;
+    
+    // 커서 위치 이동
+    const newCursorPos = cursorPos + imageHtml.length;
+    contentArea.selectionStart = newCursorPos;
+    contentArea.selectionEnd = newCursorPos;
+    contentArea.focus();
+  };
+
+  // 이미지 툴 기능 처리 (수정됨)
   const handleImageTool = () => {
     const fileInput = createHiddenFileInput();
     fileInput.accept = "image/*"; // 이미지 파일만 허용
@@ -49,8 +75,49 @@ document.addEventListener("DOMContentLoaded", function () {
     fileInput.addEventListener("change", function () {
       if (this.files && this.files[0]) {
         const file = this.files[0];
-        // 첨부 파일 목록에만 추가 (본문에는 삽입하지 않음)
+        
+        // 첨부 파일 목록에 추가
         addAttachmentToList(file.name, fileInput);
+        
+        // 파일을 서버에 업로드하는 대신 임시로 URL 생성
+        // 실제 구현에서는 서버에 업로드 후 반환된 URL을 사용해야 함
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imageUrl = e.target.result;
+          
+          // 이미지 크기 가져오기
+          const img = new Image();
+          img.onload = function() {
+            // 본문에 이미지 삽입
+            insertImageToContent(imageUrl, this.width, this.height, file.name);
+          };
+          img.src = imageUrl;
+        };
+        reader.readAsDataURL(file);
+        
+        // 서버에 업로드하는 실제 구현 예시 (주석 처리)
+        /* 
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        fetch(`${contextPath}/file/upload`, {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // 서버에서 반환한 이미지 URL과 크기 정보로 본문에 삽입
+            insertImageToContent(data.fileUrl, data.width, data.height, file.name);
+          } else {
+            alert('이미지 업로드에 실패했습니다: ' + (data.message || '알 수 없는 오류'));
+          }
+        })
+        .catch(error => {
+          console.error('이미지 업로드 중 오류 발생:', error);
+          alert('이미지 업로드 중 오류가 발생했습니다.');
+        });
+        */
       }
     });
 
@@ -70,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return /<[a-z][\s\S]*>/i.test(text);
   };
 
-  // 링크 툴 기능 처리 (수정됨)
+  // 링크 툴 기능 처리
   const handleUrlTool = () => {
     // 사용자에게 URL 입력 받기
     const url = prompt("추가할 링크 URL을 입력하세요:", "http://");
@@ -95,11 +162,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (selectedOption === "1") {
         // 임베드 코드 생성
-        const embedCode = `\n<div class="youtube-embed">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" 
-  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
-  gyroscope; picture-in-picture" allowfullscreen></iframe>
-  </div>\n`;
+        const embedCode = `
+<figure class="imageblock aligncenter" data-ke-mobilestyle="widthOrigin">
+  <div class="youtube-embed">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" 
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
+    gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  <figcaption></figcaption>
+</figure>
+`;
 
         // 에디터에 삽입
         const contentArea = document.getElementById("contentInput");
@@ -150,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fileInput.click(); // 파일 선택 다이얼로그 표시
   };
 
-  // 본문 입력 시 자동으로 유튜브 URL 감지하여 임베드하는 기능 (수정됨)
+  // 본문 입력 시 자동으로 유튜브 URL 감지하여 임베드하는 기능
   const handleContentInput = (e) => {
     const contentArea = e.target;
     const content = contentArea.value;
@@ -221,11 +293,16 @@ document.addEventListener("DOMContentLoaded", function () {
             // 선택된 옵션에 따라 처리
             if (option === "임베드") {
               // 임베드 코드 생성
-              const embedCode = `\n<div class="youtube-embed">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" 
-  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
-  gyroscope; picture-in-picture" allowfullscreen></iframe>
-  </div>\n`;
+              const embedCode = `
+<figure class="imageblock aligncenter" data-ke-mobilestyle="widthOrigin">
+  <div class="youtube-embed">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" 
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
+    gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  <figcaption></figcaption>
+</figure>
+`;
 
               contentArea.value = textBefore + embedCode + textAfter;
             } else {
@@ -363,8 +440,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 attachmentItem.appendChild(fileInfo);
                 attachmentItem.appendChild(deleteButton);
                 attachmentArea.appendChild(attachmentItem);
-                
-                // 이미지 파일은 본문에 추가하지 않음 - 첨부파일 목록에만 표시
               }
             });
           }
@@ -373,17 +448,6 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Error loading files:", error);
         });
     }
-  };
-
-  // 마크다운 라이브러리 확인
-  const checkMarkdownLibrary = () => {
-    if (typeof marked === "undefined") {
-      console.error(
-        "Marked library is not loaded. Please check the script import."
-      );
-      return false;
-    }
-    return true;
   };
 
   // 버튼에 이벤트 리스너 등록
@@ -468,11 +532,16 @@ document.addEventListener("DOMContentLoaded", function () {
       if (youtubeId) {
         // URL을 임베드 코드로 변환할지 사용자에게 확인
         if (confirm(`유튜브 영상 링크를 임베드로 변환하시겠습니까? (${url})`)) {
-          const embedCode = `\n<div class="youtube-embed">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" 
-  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
-  gyroscope; picture-in-picture" allowfullscreen></iframe>
-  </div>\n`;
+          const embedCode = `
+<figure class="imageblock aligncenter" data-ke-mobilestyle="widthOrigin">
+  <div class="youtube-embed">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" 
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
+    gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  <figcaption></figcaption>
+</figure>
+`;
 
           // URL을 임베드 코드로 대체
           newContent = newContent.substring(0, startPos) + embedCode + newContent.substring(endPos);
