@@ -34,9 +34,20 @@
 			        #{referenceId},
 			        #{userNo},
 			        #{fileGroupNum},
-			        'N'   <!-- DELYN 기본값 -->
+			        'N',   <!-- DELYN 기본값 -->
+			        #{isTemp, jdbcType=CHAR}  <!-- IS_TEMP 값, 없을 경우 NULL 허용 -->
 			        )
     </insert>
+    
+    <!-- 임시 파일을 영구 파일로 변환 (게시글 저장 후 사용) -->
+	<update id="updateTempFiles" parameterType="map">
+	    UPDATE FILE_STORAGE
+	    SET REFERENCE_ID = #{boardNo},
+	        IS_TEMP = 'N',
+	        FILE_GROUP_NUM = #{boardNo}
+	    WHERE FILE_GROUP_NUM = #{tempGroupNum}
+	    AND IS_TEMP = 'Y'
+	</update>
     
     <!-- 새 파일 그룹 생성 -->
     <insert id="createFileGroup" parameterType="map">

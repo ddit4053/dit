@@ -176,6 +176,7 @@
 			FROM (
 			    SELECT *
 			    FROM BOOKS
+			    where BOOK_STATUS = '보유'
 			    ORDER BY INSERT_DATE DESC
 			)
 			WHERE ROWNUM &lt;= 30
@@ -185,7 +186,9 @@
 		<select id="getNewBooksByPage" resultType="BooksVo" parameterType="Map">
 		    SELECT * FROM (
 		        SELECT B.*, ROWNUM AS rnum FROM (
-		            SELECT * FROM BOOKS ORDER BY INSERT_DATE DESC
+		            SELECT * FROM BOOKS 
+		            where BOOK_STATUS = '보유'
+		            ORDER BY INSERT_DATE DESC
 		        ) B
 		        WHERE ROWNUM &lt;= #{endRow}
 		    )

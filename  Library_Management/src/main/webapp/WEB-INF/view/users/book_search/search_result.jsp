@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>알라딘 도서 리스트</title>
+<title>도서 리스트</title>
 <style>
  body {
     font-family: Arial, sans-serif;

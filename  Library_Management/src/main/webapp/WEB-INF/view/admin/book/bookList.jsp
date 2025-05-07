@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>알라딘 도서 리스트</title>
+<title>도서 리스트</title>
 <script src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
 <style>
 
@@ -259,7 +259,7 @@
 <body>
    <header>
 	    <div style="display: flex; justify-content: space-between; align-items: center;">
-	        <h1>알라딘 도서 리스트</h1>
+	        <h1>도서 리스트</h1>
 	        <div class="select-wrapper">
 	            <select id="listSelector" style="padding: 6px; font-size: 14px;">
 	                <option value="available">보유 도서</option>

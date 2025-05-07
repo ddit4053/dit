@@ -35,7 +35,7 @@ const menuStructure = {
 
     {
       title: "자료검색",
-      url: "/books/",
+      url: "/books",
       subMenus: [
         {
           title: "도서 검색",

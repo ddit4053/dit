@@ -16,4 +16,5 @@ public class File_StorageVo {
 	private int userNo;
 	private int fileGroupNum;
 	private String delYn;
+	private String isTemp; // 임시 파일 여부(Y/N)
 }
