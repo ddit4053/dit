@@ -9,10 +9,10 @@
     		<c:when test ="${sessionScope.role eq 'ADMIN'}">
 	    		<%-- 관리자용 메뉴 --%>
 	    		<ul>
-	                <li><a href="${pageContext.request.contextPath}/admin/books">도서/자료 관리</a></li>
+	                <li><a href="${pageContext.request.contextPath}/admin/books/list">도서/자료 관리</a></li>
 	                <li><a href="${pageContext.request.contextPath}/admin/loans/management/list">대출/반납 관리</a></li>
 	                
-	                <li><a href="${pageContext.request.contextPath}/admin/reading">열람실 관리</a></li>
+	                <li><a href="${pageContext.request.contextPath}/admin/readingMain.do">열람실 관리</a></li>
 	                <li><a href="${pageContext.request.contextPath}/admin/board">게시판 관리</a></li>
 	           	</ul>
          	</c:when>
@@ -20,7 +20,7 @@
 	    		<%-- 일반 사용자용 메뉴 --%>
 	        	<ul>
 		            <li><a href="${pageContext.request.contextPath}/books/search">자료 검색</a></li>
-		            <li><a href="${pageContext.request.contextPath}/reading/status">열람실 예약</a></li>
+		            <li><a href="${pageContext.request.contextPath}/readingMain.do">열람실 예약</a></li>
 		            <li><a href="${pageContext.request.contextPath}/about/greetings">도서관 소개</a></li>
 		            <li><a href="${pageContext.request.contextPath}/community/reviews">커뮤니티</a></li>
 		            <li><a href="${pageContext.request.contextPath}/support/notices">이용안내</a></li>

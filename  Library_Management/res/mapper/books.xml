@@ -19,58 +19,65 @@
 
 
 <sql id="dynamicCondition">
-   <where>
-      <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
-         ${searchType} like '%' || #{keyword} || '%'
-         <if test="pubdate != null and pubdate != ''">
-            and pubdate between '20'||#{pubdate}||'-01-01' and '20'||#{pubdate}||'-12-31'
-         </if>
-         <if test="categoryId != null">
-            AND CATEGORY_NO IN (
-                SELECT CATEGORY_NO 
-                FROM BOOK_CATEGORIES
-                START WITH CATEGORY_NO = #{categoryId}
-                CONNECT BY PRIOR CATEGORY_NO = PARENT_ID
-            )
-         </if>
-      </if>
-   </where>
+  <where>
+    BOOK_STATUS = '보유'
+
+    <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
+      AND ${searchType} LIKE '%' || #{keyword} || '%'
+    </if>
+
+    <if test="pubdate != null and pubdate != ''">
+      AND pubdate BETWEEN '20' || #{pubdate} || '-01-01' AND '20' || #{pubdate} || '-12-31'
+    </if>
+
+    <if test="categoryId != null">
+      AND CATEGORY_NO IN (
+        SELECT CATEGORY_NO
+        FROM BOOK_CATEGORIES
+        START WITH CATEGORY_NO = #{categoryId}
+        CONNECT BY PRIOR CATEGORY_NO = PARENT_ID
+      )
+    </if>
+  </where>
 </sql>
+
 
 	<insert id="insertBooks" parameterType="BooksVo">
 		insert into books
 		values(SEQ_BOOKS.NEXTVAL,#{bookTitle},#{isbn},#{pubdate},#{cover},
-		'보유',#{author},#{publisher},#{categoryNo},sysdate)
+		'보유',#{author},#{publisher},10,sysdate)
 	</insert>
 
 	<!-- 모든책 검색 -->
 	<select id="listBooks" resultType="BooksVo" parameterType="Map">
            SELECT * FROM books
            where BOOK_STATUS ='보유'
-           ORDER BY book_no 
+           ORDER BY book_no DESC
 	</select>
 	
 	<!-- 삭제책 검색 -->
 	<select id="getDeletedBooks" resultType="BooksVo">
 		SELECT * FROM books
            where BOOK_STATUS ='삭제'
-           ORDER BY book_no 
+           ORDER BY book_no DESC
 	</select>
 
 	
 	<!-- 책 검색 리스트 -->
 	<select id="searchBookList" resultType="BooksVo" parameterType="Map">
-		   SELECT * FROM (
-	        SELECT b.*, ROWNUM rn
-	        FROM (
-	            SELECT * FROM books
-	            <include refid="dynamicCondition"/>
-	            ORDER BY book_no DESC
-	        ) b
-	        WHERE ROWNUM &lt;= #{offset} + #{limit}
-	    )
-	    WHERE rn &gt; #{offset}
+	  SELECT * FROM (
+		    SELECT b.*, ROWNUM rn
+		    FROM (
+		      SELECT *
+		      FROM books
+		      <include refid="dynamicCondition"/>
+		      ORDER BY book_no DESC
+		    ) b
+		    WHERE ROWNUM &lt;= #{offset} + #{limit}
+		  )
+		  WHERE rn &gt; #{offset}
 	</select>
+
 	
 	<!-- 책카운트갯수 -->
 		<select id="countSearchBook" resultType="int" parameterType="Map">
@@ -95,9 +102,10 @@
 	        FROM (
 	            		SELECT *
 						FROM books
-						WHERE book_title LIKE '%' || #{query} || '%'
+						WHERE (book_title LIKE '%' || #{query} || '%'
 						   OR author LIKE '%' || #{query} || '%'
-						   OR publisher LIKE '%' || #{query} || '%'
+						   OR publisher LIKE '%' || #{query} || '%')
+						AND BOOK_STATUS = '보유' 
 						ORDER BY book_no DESC
 	        ) b
 	        WHERE ROWNUM &lt;= #{offset} + #{limit}
@@ -138,6 +146,15 @@
 		    WHERE R.BOOK_NO = #{bookNo}
 	</select>
 	
+	<insert id="insertRealBook">
+		INSERT INTO REAL_BOOK
+		VALUES (
+		  SEQ_REAL_BOOK.NEXTVAL,
+		  (SELECT MAX(BOOK_NO) FROM BOOKS),
+		  '대여가능'
+		)
+	</insert>
+	
 	<!--  관리자 도서 삭제(상태 삭제처리) -->
 	<update id="bookDelete" parameterType="int">
 	    UPDATE BOOKS
@@ -163,5 +180,54 @@
 			)
 			WHERE ROWNUM &lt;= 30
 		</select>
+		
+	<!--신착도서 페이징  -->	
+		<select id="getNewBooksByPage" resultType="BooksVo" parameterType="Map">
+		    SELECT * FROM (
+		        SELECT B.*, ROWNUM AS rnum FROM (
+		            SELECT * FROM BOOKS ORDER BY INSERT_DATE DESC
+		        ) B
+		        WHERE ROWNUM &lt;= #{endRow}
+		    )
+		    WHERE rnum &gt;= #{startRow}
+		</select>
+		
+	  <select id="getFavoriteGenres" resultType="int" parameterType="int">
+		    SELECT B.CATEGORY_NO
+		    FROM BOOK_LOANS L
+		    JOIN REAL_BOOK RB ON L.REAL_BOOK = RB.REAL_BOOK
+		    JOIN BOOKS B ON RB.BOOK_NO = B.BOOK_NO
+		    WHERE L.USER_NO = #{userNo}
+		    GROUP BY B.CATEGORY_NO
+		    ORDER BY COUNT(*) DESC
+		    FETCH FIRST 1 ROWS ONLY
+	  </select>
+	  
+	<select id="getRecommendedBooks" resultType="BooksVo" parameterType="Map">
+	  <if test="favoriteGenres != null and favoriteGenres.size() > 0">
+	    SELECT * FROM (
+	      SELECT DISTINCT *
+	      FROM BOOKS B
+	      WHERE B.CATEGORY_NO IN
+	        <foreach item="genre" collection="favoriteGenres" open="(" separator="," close=")">
+	          #{genre}
+	        </foreach>
+	        AND B.BOOK_NO NOT IN (
+	          SELECT RB.BOOK_NO
+	          FROM BOOK_LOANS L
+	          JOIN REAL_BOOK RB ON L.REAL_BOOK = RB.REAL_BOOK
+	          WHERE L.USER_NO = #{userNo}
+	        )
+	      ORDER BY DBMS_RANDOM.VALUE
+	    )
+	    WHERE ROWNUM &lt;= 5
+	  </if>
+	  <if test="favoriteGenres == null or favoriteGenres.size() == 0">
+	    SELECT * FROM BOOKS WHERE 1=0
+	    <!-- 또는 예외 처리를 유도하거나 기본 추천 도서 리스트를 조회 -->
+	  </if>
+	</select>
+
+
 </mapper>
 

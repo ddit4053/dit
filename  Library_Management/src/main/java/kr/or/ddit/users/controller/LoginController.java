@@ -80,12 +80,27 @@ public class LoginController extends HttpServlet{
                 resp.addCookie(cookie);
             }
             
-            resp.sendRedirect(req.getContextPath() + "/main.do");
+//            resp.sendRedirect(req.getContextPath() + "/main.do");
+            // 수정된 부분: prevPage 세션 속성 확인하여 리다이렉트
+            String redirectUrl = (String) session.getAttribute("prevPage");
+            if (redirectUrl == null || redirectUrl.isEmpty()) {
+                redirectUrl = req.getContextPath() + "/main.do";
+            } else {
+                session.removeAttribute("prevPage");
+            }
+            resp.sendRedirect(redirectUrl);
         }
 	}
 	
 	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		// 리다이렉트 파라미터 처리 추가
+        String redirect = req.getParameter("redirect");
+        if (redirect != null && !redirect.isEmpty()) {
+            HttpSession session = req.getSession();
+            session.setAttribute("prevPage", redirect);
+        }
 		
 		ServletContext ctx = req.getServletContext();
         ctx.getRequestDispatcher("/WEB-INF/view/user/login.jsp").forward(req, resp);

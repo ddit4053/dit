@@ -9,6 +9,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 25px 0;
   margin-right: 30px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .sidebar-title {
@@ -18,6 +19,7 @@
   padding: 0 25px 15px;
   margin-bottom: 15px;
   border-bottom: 1px solid var(--border-color);
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 .sidebar-menu {
@@ -117,47 +119,48 @@
   background-color: var(--hover-color);
 }
 
-/* 다크 모드 테마용 스타일 */
-.dark-theme .sidebar {
-  background-color: #1e1e2d;
+/* 사이드바는 다크모드에서도 흰색 배경 유지 (관리자 모드에도 흰색 배경) */
+.dark-mode .sidebar {
+  background-color: var(--card-background);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.dark-theme .sidebar-title {
-  color: #e6e6e6;
-  border-bottom-color: #333340;
+.dark-mode .sidebar-title {
+  color: var(--primary-color);
+  border-bottom-color: var(--border-color);
 }
 
-.dark-theme .sidebar-link {
-  color: #a7a7c5;
+.dark-mode .sidebar-link {
+  color: var(--text-color);
 }
 
-.dark-theme .sidebar-link:hover {
-  background-color: #333340;
-  color: #ffffff;
+.dark-mode .sidebar-link:hover {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
 }
 
-.dark-theme .sidebar-menu-item.active > .sidebar-link {
-  background-color: #333340;
-  color: #ffffff;
+.dark-mode .sidebar-menu-item.active > .sidebar-link {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
   border-left-color: var(--accent-color);
 }
 
-.dark-theme .sidebar-submenu {
-  background-color: rgba(255, 255, 255, 0.02);
+.dark-mode .sidebar-submenu {
+  background-color: rgba(0, 0, 0, 0.02);
 }
 
-.dark-theme .sidebar-sublink {
-  color: #82829c;
+.dark-mode .sidebar-sublink {
+  color: var(--light-text);
 }
 
-.dark-theme .sidebar-sublink:hover {
-  color: #ffffff;
-  background-color: #333340;
+.dark-mode .sidebar-sublink:hover {
+  color: var(--primary-color);
+  background-color: var(--hover-color);
 }
 
-.dark-theme .sidebar-submenu-item.active > .sidebar-sublink {
-  color: #b6b6d9;
+.dark-mode .sidebar-submenu-item.active > .sidebar-sublink {
+  color: var(--secondary-color);
+  background-color: var(--hover-color);
 }
 
 /* 반응형 대응 */

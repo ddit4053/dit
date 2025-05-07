@@ -31,5 +31,13 @@ public interface IBooksService {
 	public List<BooksVo> getDeletedBooks();
 
 	public List<BooksVo> newBookList();
+
+	public List<BooksVo> getNewBooksByPage(int page, int pageSize);
+
+	public int insertRealBook();
+
+	public List<Integer> getFavoriteGenres(int userNo);
+
+	public List<BooksVo> getRecommendedBooks(List<Integer> favoriteGenres, int userNo);
 	
 }

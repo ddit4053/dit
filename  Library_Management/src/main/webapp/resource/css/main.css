@@ -16,6 +16,7 @@
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
 }
 
 .slide {
@@ -35,6 +36,7 @@
   height: 100%;
   object-fit: cover;
   filter: brightness(0.9);
+  transition: filter 0.3s ease;
 }
 
 .slide-content {
@@ -134,6 +136,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .main-search-container {
@@ -145,6 +148,7 @@
   font-size: 24px;
   margin-bottom: 20px;
   color: var(--primary-color);
+  transition: color 0.3s ease;
 }
 
 .main-search-box {
@@ -159,7 +163,9 @@
   border: 2px solid var(--border-color);
   border-radius: 8px 0 0 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  background-color: var(--card-background);
+  color: var(--text-color);
 }
 
 .main-search-box input:focus {
@@ -185,6 +191,7 @@
 .search-options {
   color: var(--light-text);
   font-size: 14px;
+  transition: color 0.3s ease;
 }
 
 .popular-keyword {
@@ -192,6 +199,7 @@
   margin: 0 5px;
   color: var(--secondary-color);
   text-decoration: underline;
+  transition: color 0.3s ease;
 }
 
 .popular-keyword:hover {
@@ -220,13 +228,20 @@
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: box-shadow 0.3s ease;
 }
 
 .book-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s;
+  width: 70%;
+  height: 70%;
+  object-fit: cover;  /* 이미지 비율 유지하면서 부모 요소에 맞게 크기 조정 */
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .book-cover:hover img {
@@ -238,11 +253,35 @@
   margin-bottom: 5px;
   font-size: 16px;
   color: var(--text-color);
+  transition: color 0.3s ease;
 }
 
 .book-author {
   color: var(--light-text);
   font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.book-slider-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 0 20px;
+}
+
+.book-slider-controls button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.book-slider-controls button:hover {
+    background-color: var(--primary-color);
 }
 
 /* 공지사항 및 이벤트 섹션 */
@@ -282,6 +321,7 @@
 .event-date {
   color: var(--light-text);
   font-size: 14px;
+  transition: color 0.3s ease;
 }
 
 /* 열람실 현황 섹션 */
@@ -300,7 +340,7 @@
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s;
+  transition: transform 0.3s, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .room-card:hover {
@@ -311,26 +351,30 @@
   font-weight: bold;
   margin-bottom: 10px;
   color: var(--primary-color);
+  transition: color 0.3s ease;
 }
 
 .seat-info {
   font-size: 24px;
   margin-bottom: 15px;
   color: var(--text-color);
+  transition: color 0.3s ease;
 }
 
 .availability-percentage {
   width: 100%;
   height: 10px;
-  background-color: #d7ccc8;
+  background-color: var(--border-color);
   border-radius: 5px;
   overflow: hidden;
   margin-bottom: 15px;
+  transition: background-color 0.3s ease;
 }
 
 .availability-bar {
   height: 100%;
   background-color: var(--secondary-color);
+  transition: background-color 0.3s ease;
 }
 
 .room-card .btn {
@@ -341,6 +385,13 @@
 
 .room-card .btn:hover {
   background-color: var(--primary-color);
+}
+
+/* 로딩 및 에러 문구 */
+.error,
+.loading,
+.no-data {
+  color: var(--light-text);
 }
 
 /* 반응형 - 모바일 */

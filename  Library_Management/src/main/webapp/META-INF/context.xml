@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Resource
+        name="jdbc/oracleDB"
+        auth="Container"
+        type="javax.sql.DataSource"
+        driverClassName="oracle.jdbc.driver.OracleDriver"
+        url="jdbc:oracle:thin:@112.220.114.131:1521:xe"
+        username="TEAM3_202502M"
+        password="JAVA"
+        maxTotal="20"
+        maxIdle="10"
+        minIdle="5"
+        maxWaitMillis="10000"
+        validationQuery="SELECT 1 FROM DUAL"
+        testOnBorrow="true"
+        testWhileIdle="true"
+        timeBetweenEvictionRunsMillis="30000"
+        removeAbandonedTimeout="60"
+        removeAbandonedOnBorrow="true"
+        removeAbandonedOnMaintenance="true"
+        logAbandoned="true" />
+</Context>

@@ -7,5 +7,4 @@ public class BookBoardCodeVo {
 	
 	private int codeNo;
 	private String codeName;
-	private String codeType;
 }

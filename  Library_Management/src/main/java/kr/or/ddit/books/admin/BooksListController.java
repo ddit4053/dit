@@ -39,24 +39,36 @@ public class BooksListController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 String type = request.getParameter("type");
-		
-		Map<String, Object> map = new HashMap<>();
+	    String type = request.getParameter("type");
+	    int page = Integer.parseInt(request.getParameter("page")); // 페이지 번호
+	    int pageSize = 5; // 한 페이지당 도서 수
 
-		List<BooksVo> bookList= new ArrayList<BooksVo>();
-		
-		  if ("available".equals(type)) {
-	            bookList = booksService.listBooks(map);
-        } else if ("deleted".equals(type)) {
-	            bookList = booksService.getDeletedBooks();
-        }
-		
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonResponse = gson.toJson(bookList);
+	    List<BooksVo> bookList = new ArrayList<>();
+	    if ("available".equals(type)) {
+	        bookList = booksService.listBooks(new HashMap<>());
+	    } else if ("deleted".equals(type)) {
+	        bookList = booksService.getDeletedBooks();
+	    }
 
-        // JSON 응답 설정
-        response.setContentType("application/json");
-        response.getWriter().write(jsonResponse);
+	    // 전체 개수와 페이지 계산
+	    int totalBooks = bookList.size();
+	    int totalPages = (int) Math.ceil((double) totalBooks / pageSize);
+
+	    // 현재 페이지에 해당하는 데이터만 추출
+	    int startIndex = (page - 1) * pageSize;
+	    int endIndex = Math.min(startIndex + pageSize, totalBooks);
+	    List<BooksVo> pageBooks = bookList.subList(startIndex, endIndex);
+
+	    // 응답 데이터 구성
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("books", pageBooks);
+	    result.put("totalPages", totalPages);
+
+	    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	    String jsonResponse = gson.toJson(result);
+
+	    response.setContentType("application/json");
+	    response.getWriter().write(jsonResponse);
 		
 	}
 

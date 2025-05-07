@@ -69,17 +69,5 @@ public class CommentsDaoImpl extends MybatisDao implements ICommentsDao {
 	public int getCommentCount(int boardNo) {
 		return selectOne("comments.getCommentCount", boardNo);
 	}
-	
-	// 댓글 수 업데이트
-	@Override
-	public int updateCommentCount(int boardNo, int commentCount) {
-		Map<String, Object> params = Map.of(
-				"boardNo", boardNo,
-				"commentCount", commentCount
-				);
-		return update("comments.updateCommentCount", params);
-	}
-
-	
 
 }

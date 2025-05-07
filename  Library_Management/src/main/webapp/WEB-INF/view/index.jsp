@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div style="position:sticky; top:0; z-index:100;">
 	<jsp:include page="header.jsp" />
 	<jsp:include page="nav.jsp" />
@@ -65,6 +65,11 @@
             <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
             <div class="loading">도서 정보를 불러오는 중...</div>
         </div>
+
+		<div class="book-slider-controls">
+		    <button id="prevBtn">이전</button>
+		    <button id="nextBtn">다음</button>
+		</div>
     </section>
 
     <!-- 추천 도서 섹션 -->
@@ -83,8 +88,13 @@
     <section class="notice-section">
         <div class="half-section">
             <div class="section-header">
-                <h2>인기 토론</h2>
-                <a href="${pageContext.request.contextPath}/board/community/discussion/list" class="view-more">더보기</a>
+                <h2>인기 독후감</h2>
+                <c:if test="${isAdmin}">
+                	<a href="${pageContext.request.contextPath}/admin/board" class="view-more">더보기</a>
+                </c:if>
+                <c:if test="${!isAdmin}">
+                	<a href="${pageContext.request.contextPath}/community/reviews" class="view-more">더보기</a>
+            	</c:if>
             </div>
             <ul class="event-list" id="eventList">
                 <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
@@ -93,8 +103,14 @@
         </div>
         <div class="half-section">
             <div class="section-header">
-                <h2>공지사항</h2>
-                <a href="${pageContext.request.contextPath}/board/info/notice" class="view-more">더보기</a>
+                <h2>공지 사항</h2>
+                
+                <c:if test="${isAdmin}">
+                	<a href="${pageContext.request.contextPath}/admin/board" class="view-more">더보기</a>
+                </c:if>
+                <c:if test="${!isAdmin}">
+                	<a href="${pageContext.request.contextPath}/support/notices" class="view-more">더보기</a>
+                </c:if>
             </div>
             <ul class="notice-list" id="noticeList">
                 <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
@@ -103,17 +119,7 @@
         </div>
     </section>
 
-    <!-- 열람실 현황 섹션 -->
-    <section class="reading-room-section">
-        <div class="section-header">
-            <h2>열람실 현황</h2>
-            <a href="${pageContext.request.contextPath}/reading" class="view-more">예약하기</a>
-        </div>
-        <div class="room-status" id="roomStatus">
-            <!-- 서블릿에서 데이터를 가져와 JavaScript로 채울 예정 -->
-            <div class="loading">열람실 정보를 불러오는 중...</div>
-        </div>
-    </section>
+
 </main>
 
 <script src="${pageContext.request.contextPath}/resource/js/main.js"></script>

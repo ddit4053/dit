@@ -12,14 +12,13 @@
 <head>
     <meta charset="UTF-8">
     <title>관심도서</title>
-    <link rel="stylesheet" type="text/css" href="${contextPath}/resource/css/user/mypage/mypage-list.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/pagination.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/dataLoader.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/searchFilter.js"></script>
     <script>
         
-        let loadBookFavoritesList;
+    	window.loadBookFavoritesList = null;
     	
 	    function deleteFavorite(favoriteNo, buttonElem) {
 	        if (!confirm("등록된 관심도서를 삭제 하시겠습니까?")) {
@@ -88,12 +87,12 @@
                 searchOptions: searchOptions
             });
             
-            const loadBookFavoritesList = searchFilterHandler.createAdvancedDataLoader(
+            window.loadBookFavoritesList = searchFilterHandler.createAdvancedDataLoader(
                 '${contextPath}/user/mypage/bookFavoritesList.do', 
                 updateBookFavoritesTable
             );
             
-            loadBookFavoritesList(1);
+            window.loadBookFavoritesList(1);
             
             searchFilterHandler.setupAdvancedPaginationHandlers();
             

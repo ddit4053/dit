@@ -1,17 +1,66 @@
 /* 게시판 스타일 */
 
-/*boardTopOption 상단 옵션바 스타일*/
+/* 관리자용 게시판 선택 드롭다운 스타일 */
+.board-select {
+  grid-area: board-select;
+}
+
+.board-select select {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: #fff;
+  color: var(--primary-color);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.board-select select:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 3px rgba(0,0,0,0.1);
+}
+
+.board-select select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+/* Grid 레이아웃으로 변경 */
 .boardTopOption {
-  display: flex;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-areas: "board-select . hide-notice order-search block-size";
+  grid-template-columns: auto 1fr auto auto auto;
   align-items: center;
   margin: 15px 0;
   gap: 15px;
 }
 
+/* 일반 사용자일 경우 board-select 영역 숨기기 */
+.info-content:not(.admin) .board-select {
+  display: none;
+}
+
+/* 일반 사용자일 경우 그리드 레이아웃 조정 */
+.info-content:not(.admin) .boardTopOption {
+  grid-template-areas: ". hide-notice order-search block-size";
+  grid-template-columns: 1fr auto auto auto;
+}
+
 .hideNotice {
+  grid-area: hide-notice;
   display: flex;
   align-items: center;
+}
+
+.order-search {
+  grid-area: order-search;
+}
+
+.block-size {
+  grid-area: block-size;
 }
 
 .input_check {
@@ -180,6 +229,18 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
+  }
+  
+  /* 모바일 화면에서 그리드 레이아웃 조정 */
+  .boardTopOption {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .board-select, .hideNotice, .order-search, .block-size {
+    width: 100%;
   }
 }
 

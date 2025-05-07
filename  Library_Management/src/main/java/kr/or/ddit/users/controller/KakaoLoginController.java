@@ -29,7 +29,7 @@ public class KakaoLoginController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
     private static final String CLIENT_ID = "78f92474c2082285757621952de71283";
-    private static final String REDIRECT_URI = "http://localhost:8080/PROJECT2/kakao/callback";
+    private static final String REDIRECT_URI = "http://localhost:28080/_Library_Management/kakao/callback";
     
     private IUserService userService = UserServiceImpl.getInstance();
     

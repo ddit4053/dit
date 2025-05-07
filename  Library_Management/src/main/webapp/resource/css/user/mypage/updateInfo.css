@@ -1,8 +1,7 @@
-/* 마이페이지 공통 스타일 - updateInfo.css */
-/* 사이트 공통 변수를 활용 (common.css 연계) */
+/* 마이페이지 공통 스타일 - 래퍼 클래스 활용하여 범위 제한 */
 
 /* 탭 메뉴 스타일 */
-.tab-menu {
+.mypage-contents .tab-menu {
   display: flex;
   background-color: var(--card-background);
   border-radius: 8px 8px 0 0;
@@ -11,7 +10,7 @@
   overflow: hidden;
 }
 
-.tab-menu a {
+.mypage-contents .tab-menu a {
   padding: 15px 25px;
   color: var(--light-text);
   font-weight: 500;
@@ -20,19 +19,19 @@
   transition: color 0.3s;
 }
 
-.tab-menu a:hover {
+.mypage-contents .tab-menu a:hover {
   color: var(--primary-color);
   background-color: var(--hover-color);
 }
 
-.tab-menu a.active {
+.mypage-contents .tab-menu a.active {
   color: var(--primary-color);
   background-color: var(--hover-color);
   font-weight: 600;
   position: relative;
 }
 
-.tab-menu a.active::after {
+.mypage-contents .tab-menu a.active::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -43,7 +42,7 @@
 }
 
 /* 폼 컨테이너 스타일 */
-.form-container {
+.mypage-contents .form-container {
   background-color: var(--card-background);
   border-radius: 0 0 8px 8px;
   padding: 30px;
@@ -52,43 +51,43 @@
 }
 
 /* 메시지 스타일 */
-.message {
+.mypage-contents .message {
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 6px;
   font-weight: 500;
 }
 
-.success-message {
+.mypage-contents .success-message {
   background-color: rgba(76, 175, 80, 0.1);
   color: #4CAF50;
   border: 1px solid rgba(76, 175, 80, 0.3);
 }
 
-.error-message {
+.mypage-contents .error-message {
   background-color: rgba(244, 67, 54, 0.1);
   color: #F44336;
   border: 1px solid rgba(244, 67, 54, 0.3);
 }
 
 /* 폼 그룹 스타일 */
-.form-group {
+.mypage-contents .form-group {
   margin-bottom: 20px;
 }
 
-.form-group label {
+.mypage-contents .form-group label {
   display: block;
   margin-bottom: 8px;
   color: var(--text-color);
   font-weight: 500;
 }
 
-.form-group p {
+.mypage-contents .form-group p {
   padding: 10px 0;
   color: var(--text-color);
 }
 
-.form-control {
+.mypage-contents .form-control {
   width: 100%;
   padding: 12px;
   border: 1px solid var(--border-color);
@@ -99,75 +98,75 @@
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.form-control:focus {
+.mypage-contents .form-control:focus {
   border-color: var(--secondary-color);
   box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.2);
   outline: none;
 }
 
-.form-control.readonly {
+.mypage-contents .form-control.readonly {
   background-color: var(--hover-color);
   cursor: not-allowed;
 }
 
 /* 폼 입력 컨테이너 (에러 상태용) */
-.form-input {
+.mypage-contents .form-input {
   position: relative;
 }
 
-.form-input.is-error .form-control {
+.mypage-contents .form-input.is-error .form-control {
   border-color: #F44336;
 }
 
-.error-text {
+.mypage-contents .error-text {
   color: #F44336;
   font-size: 13px;
   margin-top: 5px;
   display: none;
 }
 
-.form-input.is-error .error-text {
+.mypage-contents .form-input.is-error .error-text {
   display: block;
 }
 
 /* 성별 라디오 버튼 스타일 */
-.gender-group {
+.mypage-contents .gender-group {
   display: flex;
   gap: 20px;
 }
 
-.gender-group div {
+.mypage-contents .gender-group div {
   display: flex;
   align-items: center;
 }
 
-.gender-group input[type="radio"] {
+.mypage-contents .gender-group input[type="radio"] {
   margin-right: 8px;
 }
 
 /* 주소 관련 스타일 */
-.address-group {
+.mypage-contents .address-group {
   display: flex;
   gap: 10px;
 }
 
-.address-group .form-control {
+.mypage-contents .address-group .form-control {
   flex: 1;
 }
 
-.address-group .btn {
+.mypage-contents .address-group .btn {
   flex-shrink: 0;
 }
 
 /* 비밀번호 규칙 텍스트 */
-.password-rules {
+.mypage-contents .password-rules {
   font-size: 13px;
   color: var(--light-text);
   margin-top: 5px;
 }
 
 /* 버튼 스타일 */
-.btn {
+.mypage-contents .btn {
   padding: 12px 25px;
   border: none;
   border-radius: 4px;
@@ -177,62 +176,62 @@
   transition: background-color 0.3s, transform 0.1s;
 }
 
-.btn:active {
+.mypage-contents .btn:active {
   transform: translateY(1px);
 }
 
-.btn-primary {
+.mypage-contents .btn-primary {
   background-color: var(--secondary-color);
   color: white;
 }
 
-.btn-primary:hover {
+.mypage-contents .btn-primary:hover {
   background-color: var(--primary-color);
 }
 
-.btn-secondary {
+.mypage-contents .btn-secondary {
   background-color: #e0e0e0;
   color: var(--text-color);
 }
 
-.btn-secondary:hover {
+.mypage-contents .btn-secondary:hover {
   background-color: #d5d5d5;
 }
 
 /* 반응형 스타일 */
 @media (max-width: 768px) {
-  .tab-menu {
+  .mypage-contents .tab-menu {
     flex-direction: column;
     border-radius: 8px;
     margin-bottom: 20px;
     border-bottom: none;
   }
   
-  .tab-menu a {
+  .mypage-contents .tab-menu a {
     border-bottom: 1px solid var(--border-color);
   }
   
-  .tab-menu a:last-child {
+  .mypage-contents .tab-menu a:last-child {
     border-bottom: none;
   }
   
-  .tab-menu a.active::after {
+  .mypage-contents .tab-menu a.active::after {
     width: 4px;
     height: 100%;
     top: 0;
     bottom: auto;
   }
   
-  .form-container {
+  .mypage-contents .form-container {
     border-radius: 8px;
     padding: 20px;
   }
   
-  .address-group {
+  .mypage-contents .address-group {
     flex-direction: column;
   }
   
-  .btn {
+  .mypage-contents .btn {
     width: 100%;
     margin-bottom: 10px;
   }

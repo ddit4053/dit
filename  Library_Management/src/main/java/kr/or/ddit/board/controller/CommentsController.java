@@ -153,11 +153,7 @@ public class CommentsController extends HttpServlet {
             
             // 댓글 저장
             int result = boardService.insertComment(comment);
-            
-            // 댓글 수 업데이트
-            if (result > 0) {
-                boardService.updateCommentCount(comment.getBoardNo());
-            }
+                        
             
             // 응답 생성
             Map<String, Object> response = new HashMap<>();
@@ -307,11 +303,6 @@ public class CommentsController extends HttpServlet {
             
             // 답글 저장
             int result = boardService.insertReplyComment(reply);
-            
-            // 댓글 수 업데이트
-            if (result > 0) {
-                boardService.updateCommentCount(boardNo);
-            }
             
             // 응답 생성
             Map<String, Object> response = new HashMap<>();

@@ -36,7 +36,11 @@
 			<typeAlias type="kr.or.ddit.vo.FileGroupVo" alias="FileGroupVo"/>
 			<typeAlias type="kr.or.ddit.vo.File_StorageVo" alias="File_StorageVo"/>
 			<typeAlias type="kr.or.ddit.vo.BookBoardCodeVo" alias="BookBoardCodeVo"/>
+			<typeAlias type="kr.or.ddit.vo.BookRequestsVo" alias="BookRequestsVo"/>
 
+            <typeAlias type="kr.or.ddit.vo.ReadingReservationsVo" alias="ReadingReservationsVo"/>
+            
+				
 		</typeAliases>
 	
 	<environments default="dev">
@@ -48,9 +52,9 @@
 				<property name="username" value="${user}"/>
 				<property name="password" value="${pass}"/>
 				<!-- 활성화된 최대 커넥션 수 -->
-				<property name="poolMaximumActiveConnections" value="1"/>
+				<property name="poolMaximumActiveConnections" value="10"/>
 				<!-- 유휴상태에서의  최대 커넥션 수 -->
-				<property name="poolMaximumIdleConnections" value="1"/>
+				<property name="poolMaximumIdleConnections" value="5"/>
 			</dataSource>
 		</environment>
 	</environments>
@@ -73,7 +77,12 @@
 		<mapper resource="mapper/comments.xml"/>
 		<mapper resource="mapper/user.xml"/>
 		<mapper resource="mapper/file.xml"/>
+		<mapper resource="mapper/edu_event.xml"/>
+		<mapper resource="mapper/bookRequset.xml"/>
+        <mapper resource="mapper/ReservationMapper.xml" />
 
 	</mappers>
+	
+	
 
 </configuration>

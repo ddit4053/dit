@@ -8,6 +8,7 @@ import kr.or.ddit.board.dao.BoardDaoImpl;
 import kr.or.ddit.board.dao.CommentsDaoImpl;
 import kr.or.ddit.board.dao.IBoardDao;
 import kr.or.ddit.board.dao.ICommentsDao;
+import kr.or.ddit.vo.BookBoardCodeVo;
 import kr.or.ddit.vo.BookBoardVo;
 import kr.or.ddit.vo.CommentsVo;
 import kr.or.ddit.vo.PagingVo;
@@ -86,6 +87,12 @@ public class BoardServiceImpl implements IBoardService {
         return result;
     }
     
+    // 게시판 목록 조회
+    @Override
+	public List<BookBoardCodeVo> getCodeList() {
+		return boardDao.selectCodeList();
+	}
+    
     // 게시글 상세 조회
     @Override
     public BookBoardVo selectBoardDetail(int boardNo) {
@@ -115,14 +122,25 @@ public class BoardServiceImpl implements IBoardService {
     public int getTotalBoardCount(Map<String, Object> params) {
         return boardDao.getTotalBoardCount(params);
     }
-
+    
+    // 게시글 등록
     @Override
     public int insertBoard(BookBoardVo board) {
         return boardDao.insertBoard(board);
     }
+    
+    // 파일 첨부 없이 게시글 등록 시 파일 그룹 번호 수정
+    @Override
+    public int updateBoardFileGroup(int boardNo, Integer fileGroupNum) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("boardNo", boardNo);
+        params.put("fileGroupNum", fileGroupNum);
+        return boardDao.updateBoardFileGroup(params);
+    }
 
     @Override
     public int updateBoard(BookBoardVo board) {
+    	System.out.println("서비스 레이어 - 게시글 수정 요청: boardNo=" + board.getBoardNo() + ", codeNo=" + board.getCodeNo());
         return boardDao.updateBoard(board);
     }
 
@@ -131,6 +149,12 @@ public class BoardServiceImpl implements IBoardService {
         return boardDao.deleteBoard(boardNo);
     }
     
+    
+    // 파일 그룹 번호 사용 여부 조회
+ 	@Override
+ 	public boolean isFileGroupInUser(int fileGroupNum) {
+ 		return boardDao.isFileGroupInUse(fileGroupNum);
+ 	}
     
     
     // 단일 댓글 조회
@@ -163,13 +187,6 @@ public class BoardServiceImpl implements IBoardService {
 		return commentsDao.updateComments(comment);
 	}
 	
-	// 댓글 수 업데이트
-    @Override
-    public int updateCommentCount(int boardNo) {
-        int commentCount = commentsDao.getCommentCount(boardNo);
-        return commentsDao.updateCommentCount(boardNo, commentCount);
-    }
-
 	// 댓글 삭제
 	@Override
 	public int deleteComment(int cmNo) {
@@ -178,15 +195,14 @@ public class BoardServiceImpl implements IBoardService {
 		if(comment != null) {
 			int result = commentsDao.deleteComments(cmNo);
 			
-			if(result > 0) {
-				updateCommentCount(comment.getBoardNo());
-			}
 			return result;
 		}
 		return 0;
 	}
 	
-	
-    
+	@Override
+	public List<BookBoardVo> selectPopularBoardList(Map<String, Object> params) {
+	    return boardDao.selectPopularBoardList(params);
+	}
 
 }

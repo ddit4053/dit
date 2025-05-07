@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,7 +24,6 @@ import kr.or.ddit.vo.PagingVo;
 		"/discussionsListAjax",
 		"/recommendationsListAjax",
 		"/noticesListAjax",
-		"/eventsListAjax",
 		"/qaListAjax"
 })
 // 게시판 목록 데이터 AJAX 처리
@@ -71,7 +71,6 @@ public class BoardListAjaxController extends HttpServlet {
             if (requestURI.contains("discussionsListAjax"))  codeNo = 2;  // 토론
             if (requestURI.contains("recommendationsListAjax"))   codeNo = 3;  // 회원도서추천
             if (requestURI.contains("noticesListAjax")) 		codeNo = 4;  // 공지사항
-            if (requestURI.contains("eventsListAjax")) 		codeNo = 5;  // 교육행사
             if (requestURI.contains("qaListAjax")) 			codeNo = 6;  // QA
             
             // 검색 조건 설정
@@ -110,8 +109,17 @@ public class BoardListAjaxController extends HttpServlet {
             jsonResp.put("boardList", boardList);
             jsonResp.put("paging", paging);
             
+            // 직렬화 전에 boardList의 각 항목을 확인
+            if (boardList != null && !boardList.isEmpty()) {
+                System.out.println("첫 번째 게시글 정보:");
+                BookBoardVo firstBoard = boardList.get(0);
+                System.out.println("boardNo: " + firstBoard.getBoardNo());
+                System.out.println("title: " + firstBoard.getTitle());
+                System.out.println("writtenDate: " + firstBoard.getWrittenDate()); // 이 값이 null인지 확인
+            }
+            
             // 직렬화
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").serializeNulls().create();
             String jsonString = gson.toJson(jsonResp);
             
             PrintWriter out = resp.getWriter();

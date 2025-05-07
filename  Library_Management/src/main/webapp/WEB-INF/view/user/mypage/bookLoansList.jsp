@@ -12,14 +12,13 @@
 <head>
     <meta charset="UTF-8">
     <title>도서 대출현황</title>
-    <link rel="stylesheet" type="text/css" href="${contextPath}/resource/css/user/mypage/mypage-list.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/pagination.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/dataLoader.js"></script>
     <script src="${contextPath}/resource/js/user/mypage/searchFilter.js"></script>
     <script>
        
-    	let loadBookLoansList;
+    	window.loadBookLoansList;
     	
         function requestExtension(loanNo, buttonElem) {
             if (!confirm("선택한 도서의 대출 기간을 연장하시겠습니까?")) {
@@ -76,8 +75,8 @@
                             extensionCell.html('<div class="status-container status-waiting"><span class="status-text">대기</span></div>');
                         } else if (loan.APPROVAL_STATUS === '승인') {
                             extensionCell.html('<div class="status-container status-approved"><span class="status-text">연장완료</span></div>');
-                        } else if (loan.APPROVAL_STATUS === '거부') {
-                            extensionCell.html('<div class="status-container status-rejected"><span class="status-text">연장거부</span></div>');
+                        } else if (loan.APPROVAL_STATUS === '반려') {
+                            extensionCell.html('<div class="status-container status-rejected"><span class="status-text">반려</span></div>');
                         }
                         row.append(extensionCell);
                         tableBody.append(row);
@@ -100,12 +99,12 @@
                 searchOptions: searchOptions
             });
             
-            const loadBookLoansList = searchFilterHandler.createAdvancedDataLoader(
+            window.loadBookLoansList = searchFilterHandler.createAdvancedDataLoader(
                 '${contextPath}/user/mypage/bookLoansList.do', 
                 updateBookLoanTable
             );
 
-            loadBookLoansList(1);
+            window.loadBookLoansList(1);
             
 			searchFilterHandler.setupAdvancedPaginationHandlers();
             

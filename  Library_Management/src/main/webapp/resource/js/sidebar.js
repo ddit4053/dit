@@ -10,7 +10,7 @@ const menuStructure = {
           title: "회원정보 수정",
           url: "/user/mypage/updateInfo.do",
           subMenus: [
-            { title: "회원정보 수정", url: "/user/mypage/bookResList.do" },
+            { title: "회원정보 수정", url: "/user/mypage/updateInfo.do" },
             { title: "비밀번호 변경", url: "/user/mypage/changePassword.do" },
             { title: "회원탈퇴", url: "/user/mypage/quitUser.do" },
           ],
@@ -29,7 +29,7 @@ const menuStructure = {
         { title: "신규도서 신청현황", url: "/user/mypage/bookReqList.do" },
         { title: "열람실 이용내역", url: "/user/mypage/resList.do" },
         { title: "교육/행사 신청내역", url: "/user/mypage/eventReqList.do" },
-        { title: "독후감 작성내역", url: "/user/mypage/bookReportList.do" },
+        { title: "게시글 작성내역", url: "/user/mypage/bookReportList.do" },
       ],
     },
 
@@ -43,7 +43,7 @@ const menuStructure = {
           subMenus: [{ title: "카테고리 검색", url: "/books/search/searchCategory" }],
         },
         { title: "신착 도서", url: "/books/new" },
-        { title: "관심 도서", url: "/books/favor" },
+        { title: "관심 도서", url: "/user/mypage/bookFavoritesList.do" },
         { title: "추천 도서", url: "/books/recommend" },
       ],
     },
@@ -51,8 +51,8 @@ const menuStructure = {
       title: "열람실",
       url: "/reading/",
       subMenus: [
-        { title: "열람실 현황", url: "/reading/status" },
-        { title: "열람실 예약", url: "/reading/booking" },
+        { title: "열람실 현황", url: "/readingMain.do" },
+        { title: "열람실 예약", url: "/readingMain.do" },
       ],
     },
     {
@@ -100,9 +100,7 @@ const menuStructure = {
       subMenus: [
         { title: "도서 목록", url: "/admin/books/list" },
         {
-          title: "신청 도서",
-          url: "/admin/books/requests",
-          subMenus: [{ title: "신청 목록", url: "/admin/books/requests/list" }],
+          title: "신청 도서", url: "/admin/books/requests"
         },
         {
           title: "분실/파손 도서",
@@ -173,46 +171,7 @@ const menuStructure = {
     {
       title: "게시판 관리",
       url: "/admin/board",
-      subMenus: [
-        {
-          title: "커뮤니티 게시판",
-          subMenus: [
-            {
-              title: "독후감 게시판 관리",
-              url: "/admin/community/reviews",
-            },
-            {
-              title: "토론 게시판 관리",
-              url: "/admin/community/discussions",
-            },
-            {
-              title: "추천도서 게시판 관리",
-              url: "/admin/community/recommendations",
-            },
-          ],
-        },
-        {
-          title: "이용안내 게시판",
-          subMenus: [
-            {
-              title: "공지사항 게시판 관리",
-              url: "/admin/support/notices",
-            },
-            {
-              title: "교육/행사 관리",
-              url: "/admin/support/events",
-            },
-            {
-              title: "자주 묻는 질문 관리",
-              url: "/admin/support/faq",
-            },
-            {
-              title: "1:1문의 관리",
-              url: "/admin/support/qa",
-            },
-          ],
-        },
-      ],
+      subMenus: [{ title: "게시판 현황", url: "/admin/board/list"}],
     },
   ],
 };
