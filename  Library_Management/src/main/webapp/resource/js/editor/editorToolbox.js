@@ -64,6 +64,9 @@ document.addEventListener("DOMContentLoaded", function () {
     contentArea.selectionEnd = newCursorPos;
     contentArea.focus();
   };
+  
+  
+  
 
   // 이미지 툴 기능 처리 (수정됨)
   const handleImageTool = () => {
@@ -87,11 +90,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	  
 	  // 현재 게시글 번호 또는 임시 번호 설정
 	  const urlParams = new URLSearchParams(window.location.search);
-	  const boardNo = urlParams.get("boardNo") || "temp"; // 없으면 임시값
+	  const boardNo = urlParams.get("boardNo");
 
 	  // 필수 파라미터 추가
 	  formData.append('referenceType', 'BOARD');
-	  formData.append('referenceId', boardNo);
+	  formData.append('referenceId', boardNo ? boardNo : -1); // 없으면 임시값으로 -1 사용
+	  formData.append('isTemp', boardNo ? 'N' : 'Y'); // 임시 파일 여부 표시
 	  
       
     fetch(`${contextPath}/file/upload`, {
@@ -461,6 +465,90 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
   };
+  
+  // 세션 ID를 기반으로 임시 파일 그룹 번호 계산하는 함수
+  const getTempFileGroupNum = () => {
+    // JSESSIONID 쿠키에서 세션 ID 가져오기
+    const cookies = document.cookie.split(';');
+    let sessionId = '';
+    
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.indexOf('JSESSIONID=') === 0) {
+        sessionId = cookie.substring('JSESSIONID='.length, cookie.length);
+        break;
+      }
+    }
+    
+    // 세션 ID 해시코드 계산
+    let hash = 0;
+    for (let i = 0; i < sessionId.length; i++) {
+      const char = sessionId.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // 32비트 정수로 변환
+    }
+    
+    return Math.abs(hash);
+  };
+
+  // 임시 파일을 영구 파일로 업데이트하는 함수
+  const updateTempFilesToPermanent = (boardNo) => {
+    const tempGroupNum = getTempFileGroupNum();
+    
+    // 디버그용 로그
+    console.log('임시 파일 업데이트 요청:', { tempGroupNum, boardNo });
+    
+    fetch(`${contextPath}/file/updateTempFiles`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `tempGroupNum=${tempGroupNum}&boardNo=${boardNo}`
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('임시 파일 업데이트 결과:', data);
+      if (!data.success) {
+        console.error('임시 파일 업데이트 실패:', data.message);
+      }
+    })
+    .catch(error => {
+      console.error('임시 파일 업데이트 중 오류 발생:', error);
+    });
+  };
+
+  // 폼 제출 이벤트 리스너 등록
+  const boardForm = document.getElementById('boardForm');
+  if (boardForm) {
+    // 기존 제출 이벤트 보존
+    const originalSubmit = boardForm.onsubmit;
+    
+    boardForm.onsubmit = function(event) {
+      // 기존 제출 이벤트가 있으면 실행
+      let result = true;
+      if (typeof originalSubmit === 'function') {
+        result = originalSubmit.call(this, event);
+      }
+      
+      // 기존 제출 이벤트가 false를 반환하면 중단
+      if (result === false) {
+        return false;
+      }
+      
+      // 폼 데이터에서 boardNo 필드 찾기 (게시글 저장 후 생성된 번호)
+      const boardNoField = document.querySelector('input[name="boardNo"]');
+      
+      // 폼이 제출된 후 처리 (게시글 저장 후)
+      if (boardNoField && boardNoField.value) {
+        // 약간의 지연 후 임시 파일 업데이트 요청 (게시글 저장이 완료된 후)
+        setTimeout(() => {
+          updateTempFilesToPermanent(boardNoField.value);
+        }, 500);
+      }
+      
+      return true;
+    };
+  }
 
   // 버튼에 이벤트 리스너 등록
   const imageTool = document.querySelector(".image-tool");

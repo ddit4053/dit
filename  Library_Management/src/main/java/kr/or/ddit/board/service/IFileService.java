@@ -52,6 +52,10 @@ public interface IFileService {
      */
     boolean insertFile(File_StorageVo file);
     
+    
+    // 임시 파일을 영구 파일로 변환
+    boolean updateTempFilesToPermanent(int tempGroupNum, int boardNo);
+    
     /**
      * 파일 논리 삭제
      * @param fileNo 파일 번호

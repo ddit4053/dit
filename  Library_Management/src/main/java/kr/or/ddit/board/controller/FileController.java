@@ -102,6 +102,9 @@ public class FileController extends HttpServlet {
                 case "/delete":
                     deleteFile(req, resp);
                     break;
+                case "/updateTempFiles":
+                    updateTempFiles(req, resp);
+                    break;    
                 default:
                     resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                     break;
@@ -203,11 +206,12 @@ public class FileController extends HttpServlet {
             throw new IllegalArgumentException("참조 유형이 제공되지 않았습니다.");
         }
         
-        if (referenceIdStr == null || referenceIdStr.trim().isEmpty()) {
-            throw new IllegalArgumentException("참조 ID가 제공되지 않았습니다.");
+        int referenceId = -1;
+        if (referenceIdStr != null && !referenceIdStr.trim().isEmpty() && !"-1".equals(referenceIdStr)) {
+            referenceId = Integer.parseInt(referenceIdStr);
         }
         
-        int referenceId = Integer.parseInt(referenceIdStr);
+        System.out.println("파일 업로드 - referenceId: " + referenceId);
         
         // 파일 확장자 검증 로직 추가
         boolean hasInvalidFile = req.getParts().stream()
@@ -237,6 +241,44 @@ public class FileController extends HttpServlet {
             out.print(gson.toJson(response));
         }
     }
+    
+    /**
+     * 임시 파일을 영구 파일로 업데이트
+     */
+    private void updateTempFiles(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        
+        // 요청 파라미터 검증
+        String tempGroupNumStr = req.getParameter("tempGroupNum");
+        String boardNoStr = req.getParameter("boardNo");
+        
+        if (tempGroupNumStr == null || tempGroupNumStr.trim().isEmpty()) {
+            throw new IllegalArgumentException("임시 파일 그룹 번호가 제공되지 않았습니다.");
+        }
+        
+        if (boardNoStr == null || boardNoStr.trim().isEmpty()) {
+            throw new IllegalArgumentException("게시글 번호가 제공되지 않았습니다.");
+        }
+        
+        int tempGroupNum = Integer.parseInt(tempGroupNumStr);
+        int boardNo = Integer.parseInt(boardNoStr);
+        
+        // 임시 파일 업데이트 처리
+        boolean success = fileService.updateTempFilesToPermanent(tempGroupNum, boardNo);
+        
+        // 업데이트 결과 응답
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", success);
+        response.put("message", success ? "임시 파일이 성공적으로 업데이트되었습니다." : "임시 파일 업데이트에 실패했습니다.");
+        
+        // JSON 응답 전송
+        Gson gson = new Gson();
+        try (PrintWriter out = resp.getWriter()) {
+            out.print(gson.toJson(response));
+        }
+    }
+    
     
     /**
      * 파일 삭제

@@ -43,6 +43,12 @@ public class FileDaoImpl extends MybatisDao implements IFileDao{
 		return insert("file.insertFile", file);
 	}
 	
+	// 임시 파일을 영구 파일로 업데이트
+	@Override
+	public int updateTempFiles(Map<String, Object> map) {
+		return update("file.updateTempFiles", map);
+	}
+	
 	// 파일번호로 파일 논리적 삭제
 	@Override
 	public int deleteFile(int fileNo) {

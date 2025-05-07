@@ -38,6 +38,9 @@ public interface IFileDao {
      */
     int insertFile(File_StorageVo file);
     
+    // 임시 파일을 영구 파일로 업데이트
+    int updateTempFiles(Map<String, Object> map);
+    
     /**
      * 파일 삭제
      * @param fileNo 파일 번호
