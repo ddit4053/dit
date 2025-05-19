@@ -1,0 +1,76 @@
+@charset "UTF-8";
+   body {
+       font-family: Arial, sans-serif;
+       background-color: #f9f9f9;
+       margin: 0;
+       padding: 20px;
+   }
+
+   header h1 {
+       text-align: center;
+       color: #333;
+   }
+
+   .container {
+       max-width: 900px;
+       margin: 0 auto;
+   }
+
+   .book-card {
+       display: flex;
+       background-color: #fff;
+       border-radius: 15px;
+       box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+       padding: 20px;
+       margin-bottom: 30px;
+       align-items: center;
+       transition: transform 0.3s ease, box-shadow 0.3s ease;
+       cursor: pointer;
+   }
+
+   .book-card:hover {
+       transform: translateY(-10px);
+       box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+   }
+
+   .book-card img {
+       width: 150px;
+       height: auto;
+       margin-right: 30px;
+       border-radius: 8px;
+       transition: transform 0.3s ease;
+   }
+
+   .book-card img:hover {
+       transform: scale(1.05);
+   }
+
+   .book-info {
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       width: 100%;
+   }
+
+   .book-info h3 {
+       margin: 0 0 15px 0;
+       font-size: 22px;
+       color: #333;
+       line-height: 1.4;
+   }
+
+   .book-info .subtitle {
+       font-size: 18px;
+       color: #888;
+       font-style: italic;
+   }
+
+   .book-info p {
+       margin: 6px 0;
+       color: #555;
+       font-size: 16px;
+   }
+
+   .book-info p strong {
+       color: #222;
+   }

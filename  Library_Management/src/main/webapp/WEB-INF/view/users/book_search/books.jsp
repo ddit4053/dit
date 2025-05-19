@@ -5,7 +5,9 @@
 <jsp:include page="../../header.jsp" />
 <jsp:include page="../../nav.jsp" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/board.css">
-
+<script src="${pageContext.request.contextPath}/resource/js/jquery-3.7.1.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/users/book_search/books.css">
+<script src="${pageContext.request.contextPath}/resource/js/users/book_search/books.js"></script>
 <div class="main-content">
     <div class="container">
         <div class="page-header">

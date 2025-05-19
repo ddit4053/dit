@@ -1,0 +1,193 @@
+@charset "UTF-8";
+
+body {
+	font-family: 'Arial', sans-serif;
+	background-color: #f4f4f9;
+	margin: 0;
+	padding: 20px;
+}
+
+.container {
+	max-width: 1000px;
+	margin: 0 auto;
+	background-color: #fff;
+	padding: 20px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+}
+
+.book-detail {
+  display: flex;
+  gap: 20px;
+}
+
+.book-cover {
+  flex: 0 0 150px; /* 고정 너비 */
+}
+
+.book-cover img {
+  width: 150px;
+  height: auto;
+  object-fit: cover; /* 비율 유지하면서 자르기 */
+  display: block;
+}
+
+.book-info {
+  flex: 1; /* 남은 공간 차지 */
+  min-width: 0; /* 줄어들 수 있도록 */
+  overflow-wrap: break-word;
+}
+
+.book-info h2 {
+	font-size: 24px;
+	color: #333;
+	margin-bottom: 10px;
+}
+
+.book-info p {
+	font-size: 16px;
+	color: #555;
+	margin-bottom: 10px;
+}
+
+.book-info strong {
+	color: #333;
+}
+
+.button {
+	display: inline-block;
+	padding: 10px 20px;
+	background-color: #4CAF50;
+	color: white;
+	text-decoration: none;
+	border-radius: 5px;
+	margin-top: 20px;
+	font-size: 16px;
+}
+
+.button:hover {
+	background-color: #45a049;
+}
+
+.back-link {
+	margin-top: 20px;
+	text-align: right;
+}
+
+.back-link a {
+	text-decoration: none;
+	color: #4CAF50;
+	font-size: 16px;
+}
+
+.back-link a:hover {
+	text-decoration: underline;
+}
+
+.subtitle {
+	font-size: 16px;
+	color: gray;
+}
+
+.reserve-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+	background-color: #f9f9f9;
+	font-size: 14px;
+}
+
+.reserve-table th {
+	color: white;
+	border: 1px solid #ccc;
+	padding: 10px;
+	text-align: center;
+}
+
+.reserve-table td {
+	border: 1px solid #ccc;
+	padding: 10px;
+	text-align: center;
+}
+
+.reserve-table th {
+	background-color: #8d6e63;
+	font-weight: bold;
+}
+
+.reserve-table tr:hover {
+	background-color: #f1f1f1;
+}
+
+.favorite-btn {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 24px;
+	color: #ccc;
+}
+
+.favorite-btn.favorited i {
+	color: red;
+}
+
+.favorite-btn i {
+	pointer-events: none; /* 아이콘 클릭시 버튼 클릭되게 */
+}
+
+.rating {
+	display: flex;
+	justify-content: left;
+	gap: 10px;
+}
+
+.star {
+	font-size: 30px;
+	color: #ccc; /* 기본 색상 (빈 별) */
+	cursor: pointer;
+}
+
+.star.filled {
+	color: #ffcc00; /* 채워진 별 색상 */
+}
+
+.star:hover {
+	color: #ffcc00; /* hover 시 별 색상 */
+}
+
+.btn {
+   padding: 8px 16px;
+   font-size: 14px;
+   border: none;
+   border-radius: 6px;
+   cursor: pointer;
+   margin-right: 5px;
+   transition: background-color 0.2s ease;
+ }
+
+ .btn-submit {
+   background-color: #4CAF50; 
+   color: white;
+ }
+
+ .btn-submit:hover {
+   background-color: #45a049;
+ }
+
+ .btn-edit {
+   background-color: #8d6e63; 
+   color: white;
+ }
+
+ .btn-edit:hover {
+   background-color: #6d4c41;
+ }
+
+ .btn-delete {
+   background-color: #8d6e63; 
+   color: white;
+ }
+
+ .btn-delete:hover {
+   background-color: #6d4c41;
+ }
